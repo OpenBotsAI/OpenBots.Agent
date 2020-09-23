@@ -19,30 +19,31 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
-using SwaggerDateConverter = OpenBots.Service.API.Client.SwaggerDateConverter;
+using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
 
-namespace OpenBots.Service.API.Model
+namespace IO.Swagger.Model
 {
     /// <summary>
-    /// QueueItem Model
+    /// ProcessExecutionLog
     /// </summary>
     [DataContract]
-        public partial class QueueItem :  IEquatable<QueueItem>, IValidatableObject
+        public partial class ProcessExecutionLog :  IEquatable<ProcessExecutionLog>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QueueItem" /> class.
+        /// Initializes a new instance of the <see cref="ProcessExecutionLog" /> class.
         /// </summary>
-        /// <param name="isLocked">Whether a QueueItem is locked by a job or not.</param>
-        /// <param name="lockedOn">When the QueueItem was locked.</param>
-        /// <param name="lockedUntil">When to lock QueueItem if still being executed.</param>
-        /// <param name="lockedBy">Which Agent locked the QueueItem.</param>
-        /// <param name="queueId">Which Queue the QueueItem belongs to.</param>
-        /// <param name="dataJson">Data in JSON or Text format.</param>
-        /// <param name="state">Failed, Expired, Successful, New.</param>
-        /// <param name="stateMessage">Message given to user after state of QueueItem was changed.</param>
-        /// <param name="lockTransactionKey">Guid generated when item is dequeued.</param>
-        /// <param name="lockedEndTime">Tells when QueueItem has been executed and when IsLocked as been turned back to false.</param>
-        /// <param name="name">name (required).</param>
+        /// <param name="name">name.</param>
+        /// <param name="jobID">jobID.</param>
+        /// <param name="processID">processID.</param>
+        /// <param name="agentID">agentID.</param>
+        /// <param name="startedOn">startedOn.</param>
+        /// <param name="completedOn">completedOn.</param>
+        /// <param name="trigger">trigger.</param>
+        /// <param name="triggerDetails">triggerDetails.</param>
+        /// <param name="status">status.</param>
+        /// <param name="hasErrors">hasErrors.</param>
+        /// <param name="errorMessage">errorMessage.</param>
+        /// <param name="errorDetails">errorDetails.</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
         /// <param name="createdBy">createdBy.</param>
@@ -52,27 +53,20 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public QueueItem(bool? isLocked = default(bool?), DateTime? lockedOn = default(DateTime?), DateTime? lockedUntil = default(DateTime?), Guid? lockedBy = default(Guid?), Guid? queueId = default(Guid?), string dataJson = default(string), string state = default(string), string stateMessage = default(string), Guid? lockTransactionKey = default(Guid?), DateTime? lockedEndTime = default(DateTime?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public ProcessExecutionLog(string name = default(string), Guid? jobID = default(Guid?), Guid? processID = default(Guid?), Guid? agentID = default(Guid?), DateTime? startedOn = default(DateTime?), DateTime? completedOn = default(DateTime?), string trigger = default(string), string triggerDetails = default(string), string status = default(string), bool? hasErrors = default(bool?), string errorMessage = default(string), string errorDetails = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
-            // to ensure "name" is required (not null)
-            if (name == null)
-            {
-                throw new InvalidDataException("name is a required property for QueueItem and cannot be null");
-            }
-            else
-            {
-                this.Name = name;
-            }
-            this.IsLocked = isLocked;
-            this.LockedOn = lockedOn;
-            this.LockedUntil = lockedUntil;
-            this.LockedBy = lockedBy;
-            this.QueueId = queueId;
-            this.DataJson = dataJson;
-            this.State = state;
-            this.StateMessage = stateMessage;
-            this.LockTransactionKey = lockTransactionKey;
-            this.LockedEndTime = lockedEndTime;
+            this.Name = name;
+            this.JobID = jobID;
+            this.ProcessID = processID;
+            this.AgentID = agentID;
+            this.StartedOn = startedOn;
+            this.CompletedOn = completedOn;
+            this.Trigger = trigger;
+            this.TriggerDetails = triggerDetails;
+            this.Status = status;
+            this.HasErrors = hasErrors;
+            this.ErrorMessage = errorMessage;
+            this.ErrorDetails = errorDetails;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -93,80 +87,76 @@ namespace OpenBots.Service.API.Model
         }
         
         /// <summary>
-        /// Whether a QueueItem is locked by a job or not
-        /// </summary>
-        /// <value>Whether a QueueItem is locked by a job or not</value>
-        [DataMember(Name="isLocked", EmitDefaultValue=false)]
-        public bool? IsLocked { get; set; }
-
-        /// <summary>
-        /// When the QueueItem was locked
-        /// </summary>
-        /// <value>When the QueueItem was locked</value>
-        [DataMember(Name="lockedOn", EmitDefaultValue=false)]
-        public DateTime? LockedOn { get; set; }
-
-        /// <summary>
-        /// When to lock QueueItem if still being executed
-        /// </summary>
-        /// <value>When to lock QueueItem if still being executed</value>
-        [DataMember(Name="lockedUntil", EmitDefaultValue=false)]
-        public DateTime? LockedUntil { get; set; }
-
-        /// <summary>
-        /// Which Agent locked the QueueItem
-        /// </summary>
-        /// <value>Which Agent locked the QueueItem</value>
-        [DataMember(Name="lockedBy", EmitDefaultValue=false)]
-        public Guid? LockedBy { get; set; }
-
-        /// <summary>
-        /// Which Queue the QueueItem belongs to
-        /// </summary>
-        /// <value>Which Queue the QueueItem belongs to</value>
-        [DataMember(Name="queueId", EmitDefaultValue=false)]
-        public Guid? QueueId { get; set; }
-
-        /// <summary>
-        /// Data in JSON or Text format
-        /// </summary>
-        /// <value>Data in JSON or Text format</value>
-        [DataMember(Name="dataJson", EmitDefaultValue=false)]
-        public string DataJson { get; set; }
-
-        /// <summary>
-        /// Failed, Expired, Successful, New
-        /// </summary>
-        /// <value>Failed, Expired, Successful, New</value>
-        [DataMember(Name="state", EmitDefaultValue=false)]
-        public string State { get; set; }
-
-        /// <summary>
-        /// Message given to user after state of QueueItem was changed
-        /// </summary>
-        /// <value>Message given to user after state of QueueItem was changed</value>
-        [DataMember(Name="stateMessage", EmitDefaultValue=false)]
-        public string StateMessage { get; set; }
-
-        /// <summary>
-        /// Guid generated when item is dequeued
-        /// </summary>
-        /// <value>Guid generated when item is dequeued</value>
-        [DataMember(Name="lockTransactionKey", EmitDefaultValue=false)]
-        public Guid? LockTransactionKey { get; set; }
-
-        /// <summary>
-        /// Tells when QueueItem has been executed and when IsLocked as been turned back to false
-        /// </summary>
-        /// <value>Tells when QueueItem has been executed and when IsLocked as been turned back to false</value>
-        [DataMember(Name="lockedEndTime", EmitDefaultValue=false)]
-        public DateTime? LockedEndTime { get; set; }
-
-        /// <summary>
         /// Gets or Sets Name
         /// </summary>
         [DataMember(Name="name", EmitDefaultValue=false)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or Sets JobID
+        /// </summary>
+        [DataMember(Name="jobID", EmitDefaultValue=false)]
+        public Guid? JobID { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ProcessID
+        /// </summary>
+        [DataMember(Name="processID", EmitDefaultValue=false)]
+        public Guid? ProcessID { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AgentID
+        /// </summary>
+        [DataMember(Name="agentID", EmitDefaultValue=false)]
+        public Guid? AgentID { get; set; }
+
+        /// <summary>
+        /// Gets or Sets StartedOn
+        /// </summary>
+        [DataMember(Name="startedOn", EmitDefaultValue=false)]
+        public DateTime? StartedOn { get; set; }
+
+        /// <summary>
+        /// Gets or Sets CompletedOn
+        /// </summary>
+        [DataMember(Name="completedOn", EmitDefaultValue=false)]
+        public DateTime? CompletedOn { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Trigger
+        /// </summary>
+        [DataMember(Name="trigger", EmitDefaultValue=false)]
+        public string Trigger { get; set; }
+
+        /// <summary>
+        /// Gets or Sets TriggerDetails
+        /// </summary>
+        [DataMember(Name="triggerDetails", EmitDefaultValue=false)]
+        public string TriggerDetails { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Status
+        /// </summary>
+        [DataMember(Name="status", EmitDefaultValue=false)]
+        public string Status { get; set; }
+
+        /// <summary>
+        /// Gets or Sets HasErrors
+        /// </summary>
+        [DataMember(Name="hasErrors", EmitDefaultValue=false)]
+        public bool? HasErrors { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ErrorMessage
+        /// </summary>
+        [DataMember(Name="errorMessage", EmitDefaultValue=false)]
+        public string ErrorMessage { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ErrorDetails
+        /// </summary>
+        [DataMember(Name="errorDetails", EmitDefaultValue=false)]
+        public string ErrorDetails { get; set; }
 
         /// <summary>
         /// Gets or Sets Id
@@ -229,18 +219,19 @@ namespace OpenBots.Service.API.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class QueueItem {\n");
-            sb.Append("  IsLocked: ").Append(IsLocked).Append("\n");
-            sb.Append("  LockedOn: ").Append(LockedOn).Append("\n");
-            sb.Append("  LockedUntil: ").Append(LockedUntil).Append("\n");
-            sb.Append("  LockedBy: ").Append(LockedBy).Append("\n");
-            sb.Append("  QueueId: ").Append(QueueId).Append("\n");
-            sb.Append("  DataJson: ").Append(DataJson).Append("\n");
-            sb.Append("  State: ").Append(State).Append("\n");
-            sb.Append("  StateMessage: ").Append(StateMessage).Append("\n");
-            sb.Append("  LockTransactionKey: ").Append(LockTransactionKey).Append("\n");
-            sb.Append("  LockedEndTime: ").Append(LockedEndTime).Append("\n");
+            sb.Append("class ProcessExecutionLog {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  JobID: ").Append(JobID).Append("\n");
+            sb.Append("  ProcessID: ").Append(ProcessID).Append("\n");
+            sb.Append("  AgentID: ").Append(AgentID).Append("\n");
+            sb.Append("  StartedOn: ").Append(StartedOn).Append("\n");
+            sb.Append("  CompletedOn: ").Append(CompletedOn).Append("\n");
+            sb.Append("  Trigger: ").Append(Trigger).Append("\n");
+            sb.Append("  TriggerDetails: ").Append(TriggerDetails).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  HasErrors: ").Append(HasErrors).Append("\n");
+            sb.Append("  ErrorMessage: ").Append(ErrorMessage).Append("\n");
+            sb.Append("  ErrorDetails: ").Append(ErrorDetails).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
@@ -270,74 +261,79 @@ namespace OpenBots.Service.API.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as QueueItem);
+            return this.Equals(input as ProcessExecutionLog);
         }
 
         /// <summary>
-        /// Returns true if QueueItem instances are equal
+        /// Returns true if ProcessExecutionLog instances are equal
         /// </summary>
-        /// <param name="input">Instance of QueueItem to be compared</param>
+        /// <param name="input">Instance of ProcessExecutionLog to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(QueueItem input)
+        public bool Equals(ProcessExecutionLog input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.IsLocked == input.IsLocked ||
-                    (this.IsLocked != null &&
-                    this.IsLocked.Equals(input.IsLocked))
-                ) && 
-                (
-                    this.LockedOn == input.LockedOn ||
-                    (this.LockedOn != null &&
-                    this.LockedOn.Equals(input.LockedOn))
-                ) && 
-                (
-                    this.LockedUntil == input.LockedUntil ||
-                    (this.LockedUntil != null &&
-                    this.LockedUntil.Equals(input.LockedUntil))
-                ) && 
-                (
-                    this.LockedBy == input.LockedBy ||
-                    (this.LockedBy != null &&
-                    this.LockedBy.Equals(input.LockedBy))
-                ) && 
-                (
-                    this.QueueId == input.QueueId ||
-                    (this.QueueId != null &&
-                    this.QueueId.Equals(input.QueueId))
-                ) && 
-                (
-                    this.DataJson == input.DataJson ||
-                    (this.DataJson != null &&
-                    this.DataJson.Equals(input.DataJson))
-                ) && 
-                (
-                    this.State == input.State ||
-                    (this.State != null &&
-                    this.State.Equals(input.State))
-                ) && 
-                (
-                    this.StateMessage == input.StateMessage ||
-                    (this.StateMessage != null &&
-                    this.StateMessage.Equals(input.StateMessage))
-                ) && 
-                (
-                    this.LockTransactionKey == input.LockTransactionKey ||
-                    (this.LockTransactionKey != null &&
-                    this.LockTransactionKey.Equals(input.LockTransactionKey))
-                ) && 
-                (
-                    this.LockedEndTime == input.LockedEndTime ||
-                    (this.LockedEndTime != null &&
-                    this.LockedEndTime.Equals(input.LockedEndTime))
-                ) && 
-                (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
+                ) && 
+                (
+                    this.JobID == input.JobID ||
+                    (this.JobID != null &&
+                    this.JobID.Equals(input.JobID))
+                ) && 
+                (
+                    this.ProcessID == input.ProcessID ||
+                    (this.ProcessID != null &&
+                    this.ProcessID.Equals(input.ProcessID))
+                ) && 
+                (
+                    this.AgentID == input.AgentID ||
+                    (this.AgentID != null &&
+                    this.AgentID.Equals(input.AgentID))
+                ) && 
+                (
+                    this.StartedOn == input.StartedOn ||
+                    (this.StartedOn != null &&
+                    this.StartedOn.Equals(input.StartedOn))
+                ) && 
+                (
+                    this.CompletedOn == input.CompletedOn ||
+                    (this.CompletedOn != null &&
+                    this.CompletedOn.Equals(input.CompletedOn))
+                ) && 
+                (
+                    this.Trigger == input.Trigger ||
+                    (this.Trigger != null &&
+                    this.Trigger.Equals(input.Trigger))
+                ) && 
+                (
+                    this.TriggerDetails == input.TriggerDetails ||
+                    (this.TriggerDetails != null &&
+                    this.TriggerDetails.Equals(input.TriggerDetails))
+                ) && 
+                (
+                    this.Status == input.Status ||
+                    (this.Status != null &&
+                    this.Status.Equals(input.Status))
+                ) && 
+                (
+                    this.HasErrors == input.HasErrors ||
+                    (this.HasErrors != null &&
+                    this.HasErrors.Equals(input.HasErrors))
+                ) && 
+                (
+                    this.ErrorMessage == input.ErrorMessage ||
+                    (this.ErrorMessage != null &&
+                    this.ErrorMessage.Equals(input.ErrorMessage))
+                ) && 
+                (
+                    this.ErrorDetails == input.ErrorDetails ||
+                    (this.ErrorDetails != null &&
+                    this.ErrorDetails.Equals(input.ErrorDetails))
                 ) && 
                 (
                     this.Id == input.Id ||
@@ -395,28 +391,30 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.IsLocked != null)
-                    hashCode = hashCode * 59 + this.IsLocked.GetHashCode();
-                if (this.LockedOn != null)
-                    hashCode = hashCode * 59 + this.LockedOn.GetHashCode();
-                if (this.LockedUntil != null)
-                    hashCode = hashCode * 59 + this.LockedUntil.GetHashCode();
-                if (this.LockedBy != null)
-                    hashCode = hashCode * 59 + this.LockedBy.GetHashCode();
-                if (this.QueueId != null)
-                    hashCode = hashCode * 59 + this.QueueId.GetHashCode();
-                if (this.DataJson != null)
-                    hashCode = hashCode * 59 + this.DataJson.GetHashCode();
-                if (this.State != null)
-                    hashCode = hashCode * 59 + this.State.GetHashCode();
-                if (this.StateMessage != null)
-                    hashCode = hashCode * 59 + this.StateMessage.GetHashCode();
-                if (this.LockTransactionKey != null)
-                    hashCode = hashCode * 59 + this.LockTransactionKey.GetHashCode();
-                if (this.LockedEndTime != null)
-                    hashCode = hashCode * 59 + this.LockedEndTime.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
+                if (this.JobID != null)
+                    hashCode = hashCode * 59 + this.JobID.GetHashCode();
+                if (this.ProcessID != null)
+                    hashCode = hashCode * 59 + this.ProcessID.GetHashCode();
+                if (this.AgentID != null)
+                    hashCode = hashCode * 59 + this.AgentID.GetHashCode();
+                if (this.StartedOn != null)
+                    hashCode = hashCode * 59 + this.StartedOn.GetHashCode();
+                if (this.CompletedOn != null)
+                    hashCode = hashCode * 59 + this.CompletedOn.GetHashCode();
+                if (this.Trigger != null)
+                    hashCode = hashCode * 59 + this.Trigger.GetHashCode();
+                if (this.TriggerDetails != null)
+                    hashCode = hashCode * 59 + this.TriggerDetails.GetHashCode();
+                if (this.Status != null)
+                    hashCode = hashCode * 59 + this.Status.GetHashCode();
+                if (this.HasErrors != null)
+                    hashCode = hashCode * 59 + this.HasErrors.GetHashCode();
+                if (this.ErrorMessage != null)
+                    hashCode = hashCode * 59 + this.ErrorMessage.GetHashCode();
+                if (this.ErrorDetails != null)
+                    hashCode = hashCode * 59 + this.ErrorDetails.GetHashCode();
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.IsDeleted != null)

@@ -43,6 +43,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="lastReportedMessage">lastReportedMessage.</param>
         /// <param name="isHealthy">isHealthy.</param>
         /// <param name="isConnected">isConnected (required).</param>
+        /// <param name="credentialId">credentialId.</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -53,7 +54,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public AgentModel(Guid? machineCredentials = default(Guid?), string machineName = default(string), string macAddresses = default(string), string ipAddresses = default(string), bool? isEnabled = default(bool?), DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?), bool? isConnected = default(bool?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public AgentModel(Guid? machineCredentials = default(Guid?), string machineName = default(string), string macAddresses = default(string), string ipAddresses = default(string), bool? isEnabled = default(bool?), DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?), bool? isConnected = default(bool?), Guid? credentialId = default(Guid?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "machineName" is required (not null)
             if (machineName == null)
@@ -115,6 +116,7 @@ namespace OpenBots.Service.API.Model
             this.LastReportedWork = lastReportedWork;
             this.LastReportedMessage = lastReportedMessage;
             this.IsHealthy = isHealthy;
+            this.CredentialId = credentialId;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -201,6 +203,12 @@ namespace OpenBots.Service.API.Model
         public bool? IsConnected { get; set; }
 
         /// <summary>
+        /// Gets or Sets CredentialId
+        /// </summary>
+        [DataMember(Name="credentialId", EmitDefaultValue=false)]
+        public Guid? CredentialId { get; set; }
+
+        /// <summary>
         /// Gets or Sets Name
         /// </summary>
         [DataMember(Name="name", EmitDefaultValue=false)]
@@ -279,6 +287,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  LastReportedMessage: ").Append(LastReportedMessage).Append("\n");
             sb.Append("  IsHealthy: ").Append(IsHealthy).Append("\n");
             sb.Append("  IsConnected: ").Append(IsConnected).Append("\n");
+            sb.Append("  CredentialId: ").Append(CredentialId).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -379,6 +388,11 @@ namespace OpenBots.Service.API.Model
                     this.IsConnected.Equals(input.IsConnected))
                 ) && 
                 (
+                    this.CredentialId == input.CredentialId ||
+                    (this.CredentialId != null &&
+                    this.CredentialId.Equals(input.CredentialId))
+                ) && 
+                (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
@@ -461,6 +475,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.IsHealthy.GetHashCode();
                 if (this.IsConnected != null)
                     hashCode = hashCode * 59 + this.IsConnected.GetHashCode();
+                if (this.CredentialId != null)
+                    hashCode = hashCode * 59 + this.CredentialId.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)

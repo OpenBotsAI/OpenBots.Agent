@@ -32,6 +32,7 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="AuditLog" /> class.
         /// </summary>
+        /// <param name="objectId">Id of object being changed.</param>
         /// <param name="serviceName">Name of Service used.</param>
         /// <param name="methodName">Name of Methos used.</param>
         /// <param name="parametersJson">Parameters needed to make the change.</param>
@@ -47,8 +48,9 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public AuditLog(string serviceName = default(string), string methodName = default(string), string parametersJson = default(string), string exceptionJson = default(string), string changedFromJson = default(string), string changedToJson = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public AuditLog(Guid? objectId = default(Guid?), string serviceName = default(string), string methodName = default(string), string parametersJson = default(string), string exceptionJson = default(string), string changedFromJson = default(string), string changedToJson = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
+            this.ObjectId = objectId;
             this.ServiceName = serviceName;
             this.MethodName = methodName;
             this.ParametersJson = parametersJson;
@@ -74,6 +76,13 @@ namespace OpenBots.Service.API.Model
             this.UpdatedBy = updatedBy;
         }
         
+        /// <summary>
+        /// Id of object being changed
+        /// </summary>
+        /// <value>Id of object being changed</value>
+        [DataMember(Name="objectId", EmitDefaultValue=false)]
+        public Guid? ObjectId { get; set; }
+
         /// <summary>
         /// Name of Service used
         /// </summary>
@@ -178,6 +187,7 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class AuditLog {\n");
+            sb.Append("  ObjectId: ").Append(ObjectId).Append("\n");
             sb.Append("  ServiceName: ").Append(ServiceName).Append("\n");
             sb.Append("  MethodName: ").Append(MethodName).Append("\n");
             sb.Append("  ParametersJson: ").Append(ParametersJson).Append("\n");
@@ -227,6 +237,11 @@ namespace OpenBots.Service.API.Model
                 return false;
 
             return 
+                (
+                    this.ObjectId == input.ObjectId ||
+                    (this.ObjectId != null &&
+                    this.ObjectId.Equals(input.ObjectId))
+                ) && 
                 (
                     this.ServiceName == input.ServiceName ||
                     (this.ServiceName != null &&
@@ -313,6 +328,8 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
+                if (this.ObjectId != null)
+                    hashCode = hashCode * 59 + this.ObjectId.GetHashCode();
                 if (this.ServiceName != null)
                     hashCode = hashCode * 59 + this.ServiceName.GetHashCode();
                 if (this.MethodName != null)

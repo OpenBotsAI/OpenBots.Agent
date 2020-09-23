@@ -32,45 +32,49 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Body1" /> class.
         /// </summary>
-        /// <param name="contentType">contentType.</param>
-        /// <param name="contentDisposition">contentDisposition.</param>
-        /// <param name="headers">headers.</param>
-        /// <param name="length">length.</param>
-        /// <param name="name">name.</param>
-        /// <param name="fileName">fileName.</param>
-        public Body1(string contentType = default(string), string contentDisposition = default(string), Dictionary<string, List<string>> headers = default(Dictionary<string, List<string>>), long? length = default(long?), string name = default(string), string fileName = default(string))
+        /// <param name="id">id.</param>
+        /// <param name="name">name (required).</param>
+        /// <param name="type">type (required).</param>
+        /// <param name="textValue">textValue.</param>
+        /// <param name="numberValue">numberValue.</param>
+        /// <param name="jsonValue">jsonValue.</param>
+        /// <param name="binaryObjectID">binaryObjectID.</param>
+        /// <param name="_file">_file.</param>
+        /// <param name="organizationId">organizationId.</param>
+        public Body1(Guid? id = default(Guid?), string name = default(string), string type = default(string), string textValue = default(string), double? numberValue = default(double?), string jsonValue = default(string), Guid? binaryObjectID = default(Guid?), byte[] _file = default(byte[]), Guid? organizationId = default(Guid?))
         {
-            this.ContentType = contentType;
-            this.ContentDisposition = contentDisposition;
-            this.Headers = headers;
-            this.Length = length;
-            this.Name = name;
-            this.FileName = fileName;
+            // to ensure "name" is required (not null)
+            if (name == null)
+            {
+                throw new InvalidDataException("name is a required property for Body1 and cannot be null");
+            }
+            else
+            {
+                this.Name = name;
+            }
+            // to ensure "type" is required (not null)
+            if (type == null)
+            {
+                throw new InvalidDataException("type is a required property for Body1 and cannot be null");
+            }
+            else
+            {
+                this.Type = type;
+            }
+            this.Id = id;
+            this.TextValue = textValue;
+            this.NumberValue = numberValue;
+            this.JsonValue = jsonValue;
+            this.BinaryObjectID = binaryObjectID;
+            this.File = _file;
+            this.OrganizationId = organizationId;
         }
         
         /// <summary>
-        /// Gets or Sets ContentType
+        /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name="ContentType", EmitDefaultValue=false)]
-        public string ContentType { get; set; }
-
-        /// <summary>
-        /// Gets or Sets ContentDisposition
-        /// </summary>
-        [DataMember(Name="ContentDisposition", EmitDefaultValue=false)]
-        public string ContentDisposition { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Headers
-        /// </summary>
-        [DataMember(Name="Headers", EmitDefaultValue=false)]
-        public Dictionary<string, List<string>> Headers { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Length
-        /// </summary>
-        [DataMember(Name="Length", EmitDefaultValue=false)]
-        public long? Length { get; set; }
+        [DataMember(Name="Id", EmitDefaultValue=false)]
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -79,10 +83,46 @@ namespace OpenBots.Service.API.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or Sets FileName
+        /// Gets or Sets Type
         /// </summary>
-        [DataMember(Name="FileName", EmitDefaultValue=false)]
-        public string FileName { get; set; }
+        [DataMember(Name="Type", EmitDefaultValue=false)]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or Sets TextValue
+        /// </summary>
+        [DataMember(Name="TextValue", EmitDefaultValue=false)]
+        public string TextValue { get; set; }
+
+        /// <summary>
+        /// Gets or Sets NumberValue
+        /// </summary>
+        [DataMember(Name="NumberValue", EmitDefaultValue=false)]
+        public double? NumberValue { get; set; }
+
+        /// <summary>
+        /// Gets or Sets JsonValue
+        /// </summary>
+        [DataMember(Name="JsonValue", EmitDefaultValue=false)]
+        public string JsonValue { get; set; }
+
+        /// <summary>
+        /// Gets or Sets BinaryObjectID
+        /// </summary>
+        [DataMember(Name="BinaryObjectID", EmitDefaultValue=false)]
+        public Guid? BinaryObjectID { get; set; }
+
+        /// <summary>
+        /// Gets or Sets File
+        /// </summary>
+        [DataMember(Name="file", EmitDefaultValue=false)]
+        public byte[] File { get; set; }
+
+        /// <summary>
+        /// Gets or Sets OrganizationId
+        /// </summary>
+        [DataMember(Name="OrganizationId", EmitDefaultValue=false)]
+        public Guid? OrganizationId { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -92,12 +132,15 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class Body1 {\n");
-            sb.Append("  ContentType: ").Append(ContentType).Append("\n");
-            sb.Append("  ContentDisposition: ").Append(ContentDisposition).Append("\n");
-            sb.Append("  Headers: ").Append(Headers).Append("\n");
-            sb.Append("  Length: ").Append(Length).Append("\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  FileName: ").Append(FileName).Append("\n");
+            sb.Append("  Type: ").Append(Type).Append("\n");
+            sb.Append("  TextValue: ").Append(TextValue).Append("\n");
+            sb.Append("  NumberValue: ").Append(NumberValue).Append("\n");
+            sb.Append("  JsonValue: ").Append(JsonValue).Append("\n");
+            sb.Append("  BinaryObjectID: ").Append(BinaryObjectID).Append("\n");
+            sb.Append("  File: ").Append(File).Append("\n");
+            sb.Append("  OrganizationId: ").Append(OrganizationId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -133,25 +176,9 @@ namespace OpenBots.Service.API.Model
 
             return 
                 (
-                    this.ContentType == input.ContentType ||
-                    (this.ContentType != null &&
-                    this.ContentType.Equals(input.ContentType))
-                ) && 
-                (
-                    this.ContentDisposition == input.ContentDisposition ||
-                    (this.ContentDisposition != null &&
-                    this.ContentDisposition.Equals(input.ContentDisposition))
-                ) && 
-                (
-                    this.Headers == input.Headers ||
-                    this.Headers != null &&
-                    input.Headers != null &&
-                    this.Headers.SequenceEqual(input.Headers)
-                ) && 
-                (
-                    this.Length == input.Length ||
-                    (this.Length != null &&
-                    this.Length.Equals(input.Length))
+                    this.Id == input.Id ||
+                    (this.Id != null &&
+                    this.Id.Equals(input.Id))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -159,9 +186,39 @@ namespace OpenBots.Service.API.Model
                     this.Name.Equals(input.Name))
                 ) && 
                 (
-                    this.FileName == input.FileName ||
-                    (this.FileName != null &&
-                    this.FileName.Equals(input.FileName))
+                    this.Type == input.Type ||
+                    (this.Type != null &&
+                    this.Type.Equals(input.Type))
+                ) && 
+                (
+                    this.TextValue == input.TextValue ||
+                    (this.TextValue != null &&
+                    this.TextValue.Equals(input.TextValue))
+                ) && 
+                (
+                    this.NumberValue == input.NumberValue ||
+                    (this.NumberValue != null &&
+                    this.NumberValue.Equals(input.NumberValue))
+                ) && 
+                (
+                    this.JsonValue == input.JsonValue ||
+                    (this.JsonValue != null &&
+                    this.JsonValue.Equals(input.JsonValue))
+                ) && 
+                (
+                    this.BinaryObjectID == input.BinaryObjectID ||
+                    (this.BinaryObjectID != null &&
+                    this.BinaryObjectID.Equals(input.BinaryObjectID))
+                ) && 
+                (
+                    this.File == input.File ||
+                    (this.File != null &&
+                    this.File.Equals(input.File))
+                ) && 
+                (
+                    this.OrganizationId == input.OrganizationId ||
+                    (this.OrganizationId != null &&
+                    this.OrganizationId.Equals(input.OrganizationId))
                 );
         }
 
@@ -174,18 +231,24 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.ContentType != null)
-                    hashCode = hashCode * 59 + this.ContentType.GetHashCode();
-                if (this.ContentDisposition != null)
-                    hashCode = hashCode * 59 + this.ContentDisposition.GetHashCode();
-                if (this.Headers != null)
-                    hashCode = hashCode * 59 + this.Headers.GetHashCode();
-                if (this.Length != null)
-                    hashCode = hashCode * 59 + this.Length.GetHashCode();
+                if (this.Id != null)
+                    hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
-                if (this.FileName != null)
-                    hashCode = hashCode * 59 + this.FileName.GetHashCode();
+                if (this.Type != null)
+                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                if (this.TextValue != null)
+                    hashCode = hashCode * 59 + this.TextValue.GetHashCode();
+                if (this.NumberValue != null)
+                    hashCode = hashCode * 59 + this.NumberValue.GetHashCode();
+                if (this.JsonValue != null)
+                    hashCode = hashCode * 59 + this.JsonValue.GetHashCode();
+                if (this.BinaryObjectID != null)
+                    hashCode = hashCode * 59 + this.BinaryObjectID.GetHashCode();
+                if (this.File != null)
+                    hashCode = hashCode * 59 + this.File.GetHashCode();
+                if (this.OrganizationId != null)
+                    hashCode = hashCode * 59 + this.OrganizationId.GetHashCode();
                 return hashCode;
             }
         }

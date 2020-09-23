@@ -12,460 +12,467 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using RestSharp;
-using OpenBots.Service.API.Client;
-using OpenBots.Service.API.Model;
-using System.IO;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
 
-namespace OpenBots.Service.API.Api
+namespace IO.Swagger.Api
 {
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-        public interface IAssetsApi : IApiAccessor
+        public interface IProcessExecutionLogApi : IApiAccessor
     {
         #region Synchronous Operations
         /// <summary>
-        /// Provides a Count of Assets
+        /// Provides a Count of ProcessExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
-        int? ApiV1AssetsCountGet (string filter = null);
+        int? ApiV1ProcessExecutionLogCountGet (string filter = null);
 
         /// <summary>
-        /// Provides a Count of Assets
+        /// Provides a Count of ProcessExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
-        ApiResponse<int?> ApiV1AssetsCountGetWithHttpInfo (string filter = null);
+        ApiResponse<int?> ApiV1ProcessExecutionLogCountGetWithHttpInfo (string filter = null);
         /// <summary>
-        /// Provides a list of all Assets
+        /// Provides a list of all ProcessExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AssetPaginatedList</returns>
-        AssetPaginatedList ApiV1AssetsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ProcessExecutionLogPaginatedList</returns>
+        ProcessExecutionLogPaginatedList ApiV1ProcessExecutionLogGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of all Assets
+        /// Provides a list of all ProcessExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AssetPaginatedList</returns>
-        ApiResponse<AssetPaginatedList> ApiV1AssetsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ApiResponse of ProcessExecutionLogPaginatedList</returns>
+        ApiResponse<ProcessExecutionLogPaginatedList> ApiV1ProcessExecutionLogGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Deletes an Asset with a specified id from the Asset.
+        /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1AssetsIdDelete (string id);
+        IActionResult ApiV1ProcessExecutionLogIdDelete (string id);
 
         /// <summary>
-        /// Deletes an Asset with a specified id from the Asset.
+        /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AssetsIdDeleteWithHttpInfo (string id);
+        ApiResponse<IActionResult> ApiV1ProcessExecutionLogIdDeleteWithHttpInfo (string id);
         /// <summary>
-        /// Updates partial details of Asset.
+        /// Agent is able to update a ProcessExecutionLog End status
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
+        /// </remarks>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
+        /// <returns>IActionResult</returns>
+        IActionResult ApiV1ProcessExecutionLogIdEndProcessPut (string id, ProcessExecutionLog body = null);
+
+        /// <summary>
+        /// Agent is able to update a ProcessExecutionLog End status
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
+        /// </remarks>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        ApiResponse<IActionResult> ApiV1ProcessExecutionLogIdEndProcessPutWithHttpInfo (string id, ProcessExecutionLog body = null);
+        /// <summary>
+        /// Updates partial details of ProcessExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset identifier</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1AssetsIdPatch (string id, List<Operation> body = null);
+        IActionResult ApiV1ProcessExecutionLogIdPatch (string id, List<Operation> body = null);
 
         /// <summary>
-        /// Updates partial details of Asset.
+        /// Updates partial details of ProcessExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset identifier</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AssetsIdPatchWithHttpInfo (string id, List<Operation> body = null);
+        ApiResponse<IActionResult> ApiV1ProcessExecutionLogIdPatchWithHttpInfo (string id, List<Operation> body = null);
         /// <summary>
-        /// Updates an Asset
+        /// Updates a ProcessExecutionLog
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Asset, when Asset id and the new details of Asset are given
+        /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1AssetsIdPut (string id, Asset body = null);
+        IActionResult ApiV1ProcessExecutionLogIdPut (string id, ProcessExecutionLog body = null);
 
         /// <summary>
-        /// Updates an Asset
+        /// Updates a ProcessExecutionLog
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Asset, when Asset id and the new details of Asset are given
+        /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        ApiResponse<IActionResult> ApiV1ProcessExecutionLogIdPutWithHttpInfo (string id, ProcessExecutionLog body = null);
+        /// <summary>
+        /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs
+        /// </summary>
+        /// <remarks>
+        /// Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
+        /// </remarks>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AssetsIdPutWithHttpInfo (string id, Asset body = null);
-        /// <summary>
-        /// Updates an Asset with file
-        /// </summary>
-        /// <remarks>
-        /// Provides an action to update an Asset with file, when Asset id and the new details of Asset are given
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id, produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <returns>IActionResult</returns>
-        IActionResult ApiV1AssetsIdUploadPut (string id);
+        /// <returns>ProcessExecutionLog</returns>
+        ProcessExecutionLog ApiV1ProcessExecutionLogPost (ProcessExecutionLog body = null);
 
         /// <summary>
-        /// Updates an Asset with file
+        /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Asset with file, when Asset id and the new details of Asset are given
+        /// Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id, produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AssetsIdUploadPutWithHttpInfo (string id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of ProcessExecutionLog</returns>
+        ApiResponse<ProcessExecutionLog> ApiV1ProcessExecutionLogPostWithHttpInfo (ProcessExecutionLog body = null);
         /// <summary>
-        /// Adds a new Asset to the existing Assets
+        /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs
         /// </summary>
         /// <remarks>
-        /// Adds the Asset with unique Asset Id to the existing Assets
+        /// Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Asset</returns>
-        Asset ApiV1AssetsUploadPost ();
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ProcessExecutionLog</returns>
+        ProcessExecutionLog ApiV1ProcessExecutionLogStartprocessPost (ProcessExecutionLog body = null);
 
         /// <summary>
-        /// Adds a new Asset to the existing Assets
+        /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs
         /// </summary>
         /// <remarks>
-        /// Adds the Asset with unique Asset Id to the existing Assets
+        /// Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>ApiResponse of Asset</returns>
-        ApiResponse<Asset> ApiV1AssetsUploadPostWithHttpInfo ();
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of ProcessExecutionLog</returns>
+        ApiResponse<ProcessExecutionLog> ApiV1ProcessExecutionLogStartprocessPostWithHttpInfo (ProcessExecutionLog body = null);
         /// <summary>
-        /// Export/download an Asset file
+        /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>MemoryStream</returns>
-        MemoryStream ExportAsset (string id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog id</param>
+        /// <returns>ProcessExecutionLogPaginatedList</returns>
+        ProcessExecutionLogPaginatedList GetProcessExecutionLog (string id);
 
         /// <summary>
-        /// Export/download an Asset file
+        /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>ApiResponse of MemoryStream</returns>
-        ApiResponse<MemoryStream> ExportAssetWithHttpInfo (string id);
-        /// <summary>
-        /// Provides an Asset&#x27;s details for a particular Asset Id.
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset id</param>
-        /// <returns>AssetPaginatedList</returns>
-        AssetPaginatedList GetAsset (string id);
-
-        /// <summary>
-        /// Provides an Asset&#x27;s details for a particular Asset Id.
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset id</param>
-        /// <returns>ApiResponse of AssetPaginatedList</returns>
-        ApiResponse<AssetPaginatedList> GetAssetWithHttpInfo (string id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog id</param>
+        /// <returns>ApiResponse of ProcessExecutionLogPaginatedList</returns>
+        ApiResponse<ProcessExecutionLogPaginatedList> GetProcessExecutionLogWithHttpInfo (string id);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
-        /// Provides a Count of Assets
+        /// Provides a Count of ProcessExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
-        System.Threading.Tasks.Task<int?> ApiV1AssetsCountGetAsync (string filter = null);
+        System.Threading.Tasks.Task<int?> ApiV1ProcessExecutionLogCountGetAsync (string filter = null);
 
         /// <summary>
-        /// Provides a Count of Assets
+        /// Provides a Count of ProcessExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
-        System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1AssetsCountGetAsyncWithHttpInfo (string filter = null);
+        System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1ProcessExecutionLogCountGetAsyncWithHttpInfo (string filter = null);
         /// <summary>
-        /// Provides a list of all Assets
+        /// Provides a list of all ProcessExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AssetPaginatedList</returns>
-        System.Threading.Tasks.Task<AssetPaginatedList> ApiV1AssetsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ProcessExecutionLogPaginatedList</returns>
+        System.Threading.Tasks.Task<ProcessExecutionLogPaginatedList> ApiV1ProcessExecutionLogGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of all Assets
+        /// Provides a list of all ProcessExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AssetPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AssetPaginatedList>> ApiV1AssetsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ApiResponse (ProcessExecutionLogPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLogPaginatedList>> ApiV1ProcessExecutionLogGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Deletes an Asset with a specified id from the Asset.
+        /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1AssetsIdDeleteAsync (string id);
+        System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdDeleteAsync (string id);
 
         /// <summary>
-        /// Deletes an Asset with a specified id from the Asset.
+        /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AssetsIdDeleteAsyncWithHttpInfo (string id);
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdDeleteAsyncWithHttpInfo (string id);
         /// <summary>
-        /// Updates partial details of Asset.
+        /// Agent is able to update a ProcessExecutionLog End status
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
+        /// </remarks>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of IActionResult</returns>
+        System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdEndProcessPutAsync (string id, ProcessExecutionLog body = null);
+
+        /// <summary>
+        /// Agent is able to update a ProcessExecutionLog End status
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
+        /// </remarks>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdEndProcessPutAsyncWithHttpInfo (string id, ProcessExecutionLog body = null);
+        /// <summary>
+        /// Updates partial details of ProcessExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset identifier</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1AssetsIdPatchAsync (string id, List<Operation> body = null);
+        System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdPatchAsync (string id, List<Operation> body = null);
 
         /// <summary>
-        /// Updates partial details of Asset.
+        /// Updates partial details of ProcessExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset identifier</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AssetsIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null);
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null);
         /// <summary>
-        /// Updates an Asset
+        /// Updates a ProcessExecutionLog
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Asset, when Asset id and the new details of Asset are given
+        /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1AssetsIdPutAsync (string id, Asset body = null);
+        System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdPutAsync (string id, ProcessExecutionLog body = null);
 
         /// <summary>
-        /// Updates an Asset
+        /// Updates a ProcessExecutionLog
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Asset, when Asset id and the new details of Asset are given
+        /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdPutAsyncWithHttpInfo (string id, ProcessExecutionLog body = null);
+        /// <summary>
+        /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs
+        /// </summary>
+        /// <remarks>
+        /// Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
+        /// </remarks>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AssetsIdPutAsyncWithHttpInfo (string id, Asset body = null);
-        /// <summary>
-        /// Updates an Asset with file
-        /// </summary>
-        /// <remarks>
-        /// Provides an action to update an Asset with file, when Asset id and the new details of Asset are given
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id, produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1AssetsIdUploadPutAsync (string id);
+        /// <returns>Task of ProcessExecutionLog</returns>
+        System.Threading.Tasks.Task<ProcessExecutionLog> ApiV1ProcessExecutionLogPostAsync (ProcessExecutionLog body = null);
 
         /// <summary>
-        /// Updates an Asset with file
+        /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Asset with file, when Asset id and the new details of Asset are given
+        /// Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id, produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AssetsIdUploadPutAsyncWithHttpInfo (string id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (ProcessExecutionLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLog>> ApiV1ProcessExecutionLogPostAsyncWithHttpInfo (ProcessExecutionLog body = null);
         /// <summary>
-        /// Adds a new Asset to the existing Assets
+        /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs
         /// </summary>
         /// <remarks>
-        /// Adds the Asset with unique Asset Id to the existing Assets
+        /// Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of Asset</returns>
-        System.Threading.Tasks.Task<Asset> ApiV1AssetsUploadPostAsync ();
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ProcessExecutionLog</returns>
+        System.Threading.Tasks.Task<ProcessExecutionLog> ApiV1ProcessExecutionLogStartprocessPostAsync (ProcessExecutionLog body = null);
 
         /// <summary>
-        /// Adds a new Asset to the existing Assets
+        /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs
         /// </summary>
         /// <remarks>
-        /// Adds the Asset with unique Asset Id to the existing Assets
+        /// Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of ApiResponse (Asset)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Asset>> ApiV1AssetsUploadPostAsyncWithHttpInfo ();
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (ProcessExecutionLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLog>> ApiV1ProcessExecutionLogStartprocessPostAsyncWithHttpInfo (ProcessExecutionLog body = null);
         /// <summary>
-        /// Export/download an Asset file
+        /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>Task of MemoryStream</returns>
-        System.Threading.Tasks.Task<MemoryStream> ExportAssetAsync (string id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog id</param>
+        /// <returns>Task of ProcessExecutionLogPaginatedList</returns>
+        System.Threading.Tasks.Task<ProcessExecutionLogPaginatedList> GetProcessExecutionLogAsync (string id);
 
         /// <summary>
-        /// Export/download an Asset file
+        /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>Task of ApiResponse (MemoryStream)</returns>
-        System.Threading.Tasks.Task<ApiResponse<MemoryStream>> ExportAssetAsyncWithHttpInfo (string id);
-        /// <summary>
-        /// Provides an Asset&#x27;s details for a particular Asset Id.
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset id</param>
-        /// <returns>Task of AssetPaginatedList</returns>
-        System.Threading.Tasks.Task<AssetPaginatedList> GetAssetAsync (string id);
-
-        /// <summary>
-        /// Provides an Asset&#x27;s details for a particular Asset Id.
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset id</param>
-        /// <returns>Task of ApiResponse (AssetPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AssetPaginatedList>> GetAssetAsyncWithHttpInfo (string id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog id</param>
+        /// <returns>Task of ApiResponse (ProcessExecutionLogPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLogPaginatedList>> GetProcessExecutionLogAsyncWithHttpInfo (string id);
         #endregion Asynchronous Operations
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-        public partial class AssetsApi : IAssetsApi
+        public partial class ProcessExecutionLogApi : IProcessExecutionLogApi
     {
-        private OpenBots.Service.API.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
+        private IO.Swagger.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssetsApi"/> class.
+        /// Initializes a new instance of the <see cref="ProcessExecutionLogApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public AssetsApi(String basePath)
+        public ProcessExecutionLogApi(String basePath)
         {
-            this.Configuration = new OpenBots.Service.API.Client.Configuration { BasePath = basePath };
+            this.Configuration = new IO.Swagger.Client.Configuration { BasePath = basePath };
 
-            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssetsApi"/> class
+        /// Initializes a new instance of the <see cref="ProcessExecutionLogApi"/> class
         /// </summary>
         /// <returns></returns>
-        public AssetsApi()
+        public ProcessExecutionLogApi()
         {
-            this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
+            this.Configuration = IO.Swagger.Client.Configuration.Default;
 
-            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssetsApi"/> class
+        /// Initializes a new instance of the <see cref="ProcessExecutionLogApi"/> class
         /// using Configuration object
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public AssetsApi(OpenBots.Service.API.Client.Configuration configuration = null)
+        public ProcessExecutionLogApi(IO.Swagger.Client.Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
-                this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
+                this.Configuration = IO.Swagger.Client.Configuration.Default;
             else
                 this.Configuration = configuration;
 
-            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -491,12 +498,12 @@ namespace OpenBots.Service.API.Api
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
-        public OpenBots.Service.API.Client.Configuration Configuration {get; set;}
+        public IO.Swagger.Client.Configuration Configuration {get; set;}
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
         /// </summary>
-        public OpenBots.Service.API.Client.ExceptionFactory ExceptionFactory
+        public IO.Swagger.Client.ExceptionFactory ExceptionFactory
         {
             get
             {
@@ -532,27 +539,27 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides a Count of Assets 
+        /// Provides a Count of ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
-        public int? ApiV1AssetsCountGet (string filter = null)
+        public int? ApiV1ProcessExecutionLogCountGet (string filter = null)
         {
-             ApiResponse<int?> localVarResponse = ApiV1AssetsCountGetWithHttpInfo(filter);
+             ApiResponse<int?> localVarResponse = ApiV1ProcessExecutionLogCountGetWithHttpInfo(filter);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Provides a Count of Assets 
+        /// Provides a Count of ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
-        public ApiResponse< int? > ApiV1AssetsCountGetWithHttpInfo (string filter = null)
+        public ApiResponse< int? > ApiV1ProcessExecutionLogCountGetWithHttpInfo (string filter = null)
         {
 
-            var localVarPath = "/api/v1/Assets/Count";
+            var localVarPath = "/api/v1/ProcessExecutionLog/Count";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -584,7 +591,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsCountGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogCountGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -594,28 +601,28 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides a Count of Assets 
+        /// Provides a Count of ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
-        public async System.Threading.Tasks.Task<int?> ApiV1AssetsCountGetAsync (string filter = null)
+        public async System.Threading.Tasks.Task<int?> ApiV1ProcessExecutionLogCountGetAsync (string filter = null)
         {
-             ApiResponse<int?> localVarResponse = await ApiV1AssetsCountGetAsyncWithHttpInfo(filter);
+             ApiResponse<int?> localVarResponse = await ApiV1ProcessExecutionLogCountGetAsyncWithHttpInfo(filter);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides a Count of Assets 
+        /// Provides a Count of ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1AssetsCountGetAsyncWithHttpInfo (string filter = null)
+        public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1ProcessExecutionLogCountGetAsyncWithHttpInfo (string filter = null)
         {
 
-            var localVarPath = "/api/v1/Assets/Count";
+            var localVarPath = "/api/v1/ProcessExecutionLog/Count";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -647,7 +654,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsCountGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogCountGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -657,33 +664,33 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides a list of all Assets 
+        /// Provides a list of all ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AssetPaginatedList</returns>
-        public AssetPaginatedList ApiV1AssetsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ProcessExecutionLogPaginatedList</returns>
+        public ProcessExecutionLogPaginatedList ApiV1ProcessExecutionLogGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<AssetPaginatedList> localVarResponse = ApiV1AssetsGetWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<ProcessExecutionLogPaginatedList> localVarResponse = ApiV1ProcessExecutionLogGetWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Provides a list of all Assets 
+        /// Provides a list of all ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AssetPaginatedList</returns>
-        public ApiResponse< AssetPaginatedList > ApiV1AssetsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ApiResponse of ProcessExecutionLogPaginatedList</returns>
+        public ApiResponse< ProcessExecutionLogPaginatedList > ApiV1ProcessExecutionLogGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
-            var localVarPath = "/api/v1/Assets";
+            var localVarPath = "/api/v1/ProcessExecutionLog";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -718,44 +725,44 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AssetPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessExecutionLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AssetPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AssetPaginatedList)));
+                (ProcessExecutionLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessExecutionLogPaginatedList)));
         }
 
         /// <summary>
-        /// Provides a list of all Assets 
+        /// Provides a list of all ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AssetPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AssetPaginatedList> ApiV1AssetsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ProcessExecutionLogPaginatedList</returns>
+        public async System.Threading.Tasks.Task<ProcessExecutionLogPaginatedList> ApiV1ProcessExecutionLogGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<AssetPaginatedList> localVarResponse = await ApiV1AssetsGetAsyncWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<ProcessExecutionLogPaginatedList> localVarResponse = await ApiV1ProcessExecutionLogGetAsyncWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides a list of all Assets 
+        /// Provides a list of all ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AssetPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AssetPaginatedList>> ApiV1AssetsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ApiResponse (ProcessExecutionLogPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLogPaginatedList>> ApiV1ProcessExecutionLogGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
-            var localVarPath = "/api/v1/Assets";
+            var localVarPath = "/api/v1/ProcessExecutionLog";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -790,40 +797,40 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AssetPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessExecutionLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AssetPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AssetPaginatedList)));
+                (ProcessExecutionLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessExecutionLogPaginatedList)));
         }
 
         /// <summary>
-        /// Deletes an Asset with a specified id from the Asset. 
+        /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AssetsIdDelete (string id)
+        public IActionResult ApiV1ProcessExecutionLogIdDelete (string id)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1AssetsIdDeleteWithHttpInfo(id);
+             ApiResponse<IActionResult> localVarResponse = ApiV1ProcessExecutionLogIdDeleteWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Deletes an Asset with a specified id from the Asset. 
+        /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1AssetsIdDeleteWithHttpInfo (string id)
+        public ApiResponse< IActionResult > ApiV1ProcessExecutionLogIdDeleteWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ApiV1AssetsIdDelete");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->ApiV1ProcessExecutionLogIdDelete");
 
-            var localVarPath = "/api/v1/Assets/{id}";
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -855,7 +862,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsIdDelete", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogIdDelete", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -865,31 +872,31 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Deletes an Asset with a specified id from the Asset. 
+        /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1AssetsIdDeleteAsync (string id)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdDeleteAsync (string id)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1AssetsIdDeleteAsyncWithHttpInfo(id);
+             ApiResponse<IActionResult> localVarResponse = await ApiV1ProcessExecutionLogIdDeleteAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Deletes an Asset with a specified id from the Asset. 
+        /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AssetsIdDeleteAsyncWithHttpInfo (string id)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdDeleteAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ApiV1AssetsIdDelete");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->ApiV1ProcessExecutionLogIdDelete");
 
-            var localVarPath = "/api/v1/Assets/{id}";
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -921,7 +928,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsIdDelete", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogIdDelete", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -931,32 +938,191 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates partial details of Asset. 
+        /// Agent is able to update a ProcessExecutionLog End status Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AssetsIdPatch (string id, List<Operation> body = null)
+        public IActionResult ApiV1ProcessExecutionLogIdEndProcessPut (string id, ProcessExecutionLog body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1AssetsIdPatchWithHttpInfo(id, body);
+             ApiResponse<IActionResult> localVarResponse = ApiV1ProcessExecutionLogIdEndProcessPutWithHttpInfo(id, body);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Updates partial details of Asset. 
+        /// Agent is able to update a ProcessExecutionLog End status Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1AssetsIdPatchWithHttpInfo (string id, List<Operation> body = null)
+        public ApiResponse< IActionResult > ApiV1ProcessExecutionLogIdEndProcessPutWithHttpInfo (string id, ProcessExecutionLog body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ApiV1AssetsIdPatch");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->ApiV1ProcessExecutionLogIdEndProcessPut");
 
-            var localVarPath = "/api/v1/Assets/{id}";
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}/EndProcess";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogIdEndProcessPut", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<IActionResult>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+        }
+
+        /// <summary>
+        /// Agent is able to update a ProcessExecutionLog End status Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of IActionResult</returns>
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdEndProcessPutAsync (string id, ProcessExecutionLog body = null)
+        {
+             ApiResponse<IActionResult> localVarResponse = await ApiV1ProcessExecutionLogIdEndProcessPutAsyncWithHttpInfo(id, body);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Agent is able to update a ProcessExecutionLog End status Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdEndProcessPutAsyncWithHttpInfo (string id, ProcessExecutionLog body = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->ApiV1ProcessExecutionLogIdEndProcessPut");
+
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}/EndProcess";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogIdEndProcessPut", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<IActionResult>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+        }
+
+        /// <summary>
+        /// Updates partial details of ProcessExecutionLog. 
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog identifier</param>
+        /// <param name="body"> (optional)</param>
+        /// <returns>IActionResult</returns>
+        public IActionResult ApiV1ProcessExecutionLogIdPatch (string id, List<Operation> body = null)
+        {
+             ApiResponse<IActionResult> localVarResponse = ApiV1ProcessExecutionLogIdPatchWithHttpInfo(id, body);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Updates partial details of ProcessExecutionLog. 
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog identifier</param>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        public ApiResponse< IActionResult > ApiV1ProcessExecutionLogIdPatchWithHttpInfo (string id, List<Operation> body = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->ApiV1ProcessExecutionLogIdPatch");
+
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1000,7 +1166,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsIdPatch", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogIdPatch", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1010,33 +1176,33 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates partial details of Asset. 
+        /// Updates partial details of ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset identifier</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1AssetsIdPatchAsync (string id, List<Operation> body = null)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdPatchAsync (string id, List<Operation> body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1AssetsIdPatchAsyncWithHttpInfo(id, body);
+             ApiResponse<IActionResult> localVarResponse = await ApiV1ProcessExecutionLogIdPatchAsyncWithHttpInfo(id, body);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Updates partial details of Asset. 
+        /// Updates partial details of ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset identifier</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AssetsIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ApiV1AssetsIdPatch");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->ApiV1ProcessExecutionLogIdPatch");
 
-            var localVarPath = "/api/v1/Assets/{id}";
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1080,7 +1246,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsIdPatch", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogIdPatch", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1090,32 +1256,32 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Asset Provides an action to update an Asset, when Asset id and the new details of Asset are given
+        /// Updates a ProcessExecutionLog Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AssetsIdPut (string id, Asset body = null)
+        public IActionResult ApiV1ProcessExecutionLogIdPut (string id, ProcessExecutionLog body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1AssetsIdPutWithHttpInfo(id, body);
+             ApiResponse<IActionResult> localVarResponse = ApiV1ProcessExecutionLogIdPutWithHttpInfo(id, body);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Updates an Asset Provides an action to update an Asset, when Asset id and the new details of Asset are given
+        /// Updates a ProcessExecutionLog Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1AssetsIdPutWithHttpInfo (string id, Asset body = null)
+        public ApiResponse< IActionResult > ApiV1ProcessExecutionLogIdPutWithHttpInfo (string id, ProcessExecutionLog body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ApiV1AssetsIdPut");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->ApiV1ProcessExecutionLogIdPut");
 
-            var localVarPath = "/api/v1/Assets/{id}";
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1159,7 +1325,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsIdPut", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogIdPut", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1169,33 +1335,33 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Asset Provides an action to update an Asset, when Asset id and the new details of Asset are given
+        /// Updates a ProcessExecutionLog Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1AssetsIdPutAsync (string id, Asset body = null)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdPutAsync (string id, ProcessExecutionLog body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1AssetsIdPutAsyncWithHttpInfo(id, body);
+             ApiResponse<IActionResult> localVarResponse = await ApiV1ProcessExecutionLogIdPutAsyncWithHttpInfo(id, body);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Updates an Asset Provides an action to update an Asset, when Asset id and the new details of Asset are given
+        /// Updates a ProcessExecutionLog Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AssetsIdPutAsyncWithHttpInfo (string id, Asset body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdPutAsyncWithHttpInfo (string id, ProcessExecutionLog body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ApiV1AssetsIdPut");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->ApiV1ProcessExecutionLogIdPut");
 
-            var localVarPath = "/api/v1/Assets/{id}";
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1239,7 +1405,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsIdPut", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogIdPut", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1249,30 +1415,27 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Asset with file Provides an action to update an Asset with file, when Asset id and the new details of Asset are given
+        /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id, produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AssetsIdUploadPut (string id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ProcessExecutionLog</returns>
+        public ProcessExecutionLog ApiV1ProcessExecutionLogPost (ProcessExecutionLog body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1AssetsIdUploadPutWithHttpInfo(id);
+             ApiResponse<ProcessExecutionLog> localVarResponse = ApiV1ProcessExecutionLogPostWithHttpInfo(body);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Updates an Asset with file Provides an action to update an Asset with file, when Asset id and the new details of Asset are given
+        /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id, produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1AssetsIdUploadPutWithHttpInfo (string id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of ProcessExecutionLog</returns>
+        public ApiResponse< ProcessExecutionLog > ApiV1ProcessExecutionLogPostWithHttpInfo (ProcessExecutionLog body = null)
         {
-            // verify the required parameter 'id' is set
-            if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ApiV1AssetsIdUploadPut");
 
-            var localVarPath = "/api/v1/Assets/{id}/Upload";
+            var localVarPath = "/api/v1/ProcessExecutionLog";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1282,7 +1445,10 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "multipart/form-data"
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
@@ -1294,161 +1460,14 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            //////if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
-            //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
-            //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
-            //////if (type != null) localVarFormParams.Add("Type", this.Configuration.ApiClient.ParameterToString(type)); // form parameter
-            //////if (textValue != null) localVarFormParams.Add("TextValue", this.Configuration.ApiClient.ParameterToString(textValue)); // form parameter
-            //////if (numberValue != null) localVarFormParams.Add("NumberValue", this.Configuration.ApiClient.ParameterToString(numberValue)); // form parameter
-            //////if (jsonValue != null) localVarFormParams.Add("JsonValue", this.Configuration.ApiClient.ParameterToString(jsonValue)); // form parameter
-            //////if (binaryObjectID != null) localVarFormParams.Add("BinaryObjectID", this.Configuration.ApiClient.ParameterToString(binaryObjectID)); // form parameter
-            //////if (_file != null) localVarFileParams.Add("file", this.Configuration.ApiClient.ParameterToFile("file", _file));
-            //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            if (body != null && body.GetType() != typeof(byte[]))
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsIdUploadPut", localVarResponse);
-                if (exception != null) throw exception;
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
             }
-
-            return new ApiResponse<IActionResult>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
-        }
-
-        /// <summary>
-        /// Updates an Asset with file Provides an action to update an Asset with file, when Asset id and the new details of Asset are given
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id, produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1AssetsIdUploadPutAsync (string id)
-        {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1AssetsIdUploadPutAsyncWithHttpInfo(id);
-             return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Updates an Asset with file Provides an action to update an Asset with file, when Asset id and the new details of Asset are given
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset Id, produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AssetsIdUploadPutAsyncWithHttpInfo (string id)
-        {
-            // verify the required parameter 'id' is set
-            if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ApiV1AssetsIdUploadPut");
-
-            var localVarPath = "/api/v1/Assets/{id}/Upload";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "multipart/form-data"
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            //////if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
-            //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
-            //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
-            //////if (type != null) localVarFormParams.Add("Type", this.Configuration.ApiClient.ParameterToString(type)); // form parameter
-            //////if (textValue != null) localVarFormParams.Add("TextValue", this.Configuration.ApiClient.ParameterToString(textValue)); // form parameter
-            //////if (numberValue != null) localVarFormParams.Add("NumberValue", this.Configuration.ApiClient.ParameterToString(numberValue)); // form parameter
-            //////if (jsonValue != null) localVarFormParams.Add("JsonValue", this.Configuration.ApiClient.ParameterToString(jsonValue)); // form parameter
-            //////if (binaryObjectID != null) localVarFormParams.Add("BinaryObjectID", this.Configuration.ApiClient.ParameterToString(binaryObjectID)); // form parameter
-            //////if (_file != null) localVarFileParams.Add("file", this.Configuration.ApiClient.ParameterToFile("file", _file));
-            //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
+            else
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsIdUploadPut", localVarResponse);
-                if (exception != null) throw exception;
+                localVarPostBody = body; // byte array
             }
-
-            return new ApiResponse<IActionResult>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
-        }
-
-        /// <summary>
-        /// Adds a new Asset to the existing Assets Adds the Asset with unique Asset Id to the existing Assets
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Asset</returns>
-        public Asset ApiV1AssetsUploadPost ()
-        {
-             ApiResponse<Asset> localVarResponse = ApiV1AssetsUploadPostWithHttpInfo();
-             return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Adds a new Asset to the existing Assets Adds the Asset with unique Asset Id to the existing Assets
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>ApiResponse of Asset</returns>
-        public ApiResponse< Asset > ApiV1AssetsUploadPostWithHttpInfo ()
-        {
-
-            var localVarPath = "/api/v1/Assets/Upload";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "multipart/form-data"
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
-            //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
-            //////if (type != null) localVarFormParams.Add("Type", this.Configuration.ApiClient.ParameterToString(type)); // form parameter
-            //////if (textValue != null) localVarFormParams.Add("TextValue", this.Configuration.ApiClient.ParameterToString(textValue)); // form parameter
-            //////if (numberValue != null) localVarFormParams.Add("NumberValue", this.Configuration.ApiClient.ParameterToString(numberValue)); // form parameter
-            //////if (jsonValue != null) localVarFormParams.Add("JsonValue", this.Configuration.ApiClient.ParameterToString(jsonValue)); // form parameter
-            //////if (binaryObjectID != null) localVarFormParams.Add("BinaryObjectID", this.Configuration.ApiClient.ParameterToString(binaryObjectID)); // form parameter
-            //////if (_file != null) localVarFileParams.Add("file", this.Configuration.ApiClient.ParameterToFile("file", _file));
-            //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
@@ -1459,36 +1478,38 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsUploadPost", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogPost", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<Asset>(localVarStatusCode,
+            return new ApiResponse<ProcessExecutionLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (Asset) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Asset)));
+                (ProcessExecutionLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessExecutionLog)));
         }
 
         /// <summary>
-        /// Adds a new Asset to the existing Assets Adds the Asset with unique Asset Id to the existing Assets
+        /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of Asset</returns>
-        public async System.Threading.Tasks.Task<Asset> ApiV1AssetsUploadPostAsync ()
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ProcessExecutionLog</returns>
+        public async System.Threading.Tasks.Task<ProcessExecutionLog> ApiV1ProcessExecutionLogPostAsync (ProcessExecutionLog body = null)
         {
-             ApiResponse<Asset> localVarResponse = await ApiV1AssetsUploadPostAsyncWithHttpInfo();
+             ApiResponse<ProcessExecutionLog> localVarResponse = await ApiV1ProcessExecutionLogPostAsyncWithHttpInfo(body);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Adds a new Asset to the existing Assets Adds the Asset with unique Asset Id to the existing Assets
+        /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of ApiResponse (Asset)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Asset>> ApiV1AssetsUploadPostAsyncWithHttpInfo ()
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (ProcessExecutionLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLog>> ApiV1ProcessExecutionLogPostAsyncWithHttpInfo (ProcessExecutionLog body = null)
         {
 
-            var localVarPath = "/api/v1/Assets/Upload";
+            var localVarPath = "/api/v1/ProcessExecutionLog";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1498,7 +1519,10 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "multipart/form-data"
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
@@ -1510,15 +1534,14 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
-            //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
-            //////if (type != null) localVarFormParams.Add("Type", this.Configuration.ApiClient.ParameterToString(type)); // form parameter
-            //////if (textValue != null) localVarFormParams.Add("TextValue", this.Configuration.ApiClient.ParameterToString(textValue)); // form parameter
-            //////if (numberValue != null) localVarFormParams.Add("NumberValue", this.Configuration.ApiClient.ParameterToString(numberValue)); // form parameter
-            //////if (jsonValue != null) localVarFormParams.Add("JsonValue", this.Configuration.ApiClient.ParameterToString(jsonValue)); // form parameter
-            //////if (binaryObjectID != null) localVarFormParams.Add("BinaryObjectID", this.Configuration.ApiClient.ParameterToString(binaryObjectID)); // form parameter
-            //////if (_file != null) localVarFileParams.Add("file", this.Configuration.ApiClient.ParameterToFile("file", _file));
-            //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
@@ -1529,40 +1552,187 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AssetsUploadPost", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogPost", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<Asset>(localVarStatusCode,
+            return new ApiResponse<ProcessExecutionLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (Asset) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Asset)));
+                (ProcessExecutionLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessExecutionLog)));
         }
 
         /// <summary>
-        /// Export/download an Asset file 
+        /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>MemoryStream</returns>
-        public MemoryStream ExportAsset (string id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ProcessExecutionLog</returns>
+        public ProcessExecutionLog ApiV1ProcessExecutionLogStartprocessPost (ProcessExecutionLog body = null)
         {
-             ApiResponse<MemoryStream> localVarResponse = ExportAssetWithHttpInfo(id);
+             ApiResponse<ProcessExecutionLog> localVarResponse = ApiV1ProcessExecutionLogStartprocessPostWithHttpInfo(body);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Export/download an Asset file 
+        /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>ApiResponse of MemoryStream</returns>
-        public ApiResponse< MemoryStream > ExportAssetWithHttpInfo (string id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of ProcessExecutionLog</returns>
+        public ApiResponse< ProcessExecutionLog > ApiV1ProcessExecutionLogStartprocessPostWithHttpInfo (ProcessExecutionLog body = null)
+        {
+
+            var localVarPath = "/api/v1/ProcessExecutionLog/startprocess";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogStartprocessPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<ProcessExecutionLog>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (ProcessExecutionLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessExecutionLog)));
+        }
+
+        /// <summary>
+        /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs Agent is able to Add the ProcessExecutionLog if the Agent is Connected
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ProcessExecutionLog</returns>
+        public async System.Threading.Tasks.Task<ProcessExecutionLog> ApiV1ProcessExecutionLogStartprocessPostAsync (ProcessExecutionLog body = null)
+        {
+             ApiResponse<ProcessExecutionLog> localVarResponse = await ApiV1ProcessExecutionLogStartprocessPostAsyncWithHttpInfo(body);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs Agent is able to Add the ProcessExecutionLog if the Agent is Connected
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (ProcessExecutionLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLog>> ApiV1ProcessExecutionLogStartprocessPostAsyncWithHttpInfo (ProcessExecutionLog body = null)
+        {
+
+            var localVarPath = "/api/v1/ProcessExecutionLog/startprocess";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1ProcessExecutionLogStartprocessPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<ProcessExecutionLog>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (ProcessExecutionLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessExecutionLog)));
+        }
+
+        /// <summary>
+        /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id. 
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog id</param>
+        /// <returns>ProcessExecutionLogPaginatedList</returns>
+        public ProcessExecutionLogPaginatedList GetProcessExecutionLog (string id)
+        {
+             ApiResponse<ProcessExecutionLogPaginatedList> localVarResponse = GetProcessExecutionLogWithHttpInfo(id);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id. 
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog id</param>
+        /// <returns>ApiResponse of ProcessExecutionLogPaginatedList</returns>
+        public ApiResponse< ProcessExecutionLogPaginatedList > GetProcessExecutionLogWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ExportAsset");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->GetProcessExecutionLog");
 
-            var localVarPath = "/api/v1/Assets/{id}/Export";
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1594,41 +1764,41 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ExportAsset", localVarResponse);
+                Exception exception = ExceptionFactory("GetProcessExecutionLog", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<MemoryStream>(localVarStatusCode,
+            return new ApiResponse<ProcessExecutionLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(MemoryStream)));
+                (ProcessExecutionLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessExecutionLogPaginatedList)));
         }
 
         /// <summary>
-        /// Export/download an Asset file 
+        /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>Task of MemoryStream</returns>
-        public async System.Threading.Tasks.Task<MemoryStream> ExportAssetAsync (string id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog id</param>
+        /// <returns>Task of ProcessExecutionLogPaginatedList</returns>
+        public async System.Threading.Tasks.Task<ProcessExecutionLogPaginatedList> GetProcessExecutionLogAsync (string id)
         {
-             ApiResponse<MemoryStream> localVarResponse = await ExportAssetAsyncWithHttpInfo(id);
+             ApiResponse<ProcessExecutionLogPaginatedList> localVarResponse = await GetProcessExecutionLogAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Export/download an Asset file 
+        /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>Task of ApiResponse (MemoryStream)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<MemoryStream>> ExportAssetAsyncWithHttpInfo (string id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessExecutionLog id</param>
+        /// <returns>Task of ApiResponse (ProcessExecutionLogPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLogPaginatedList>> GetProcessExecutionLogAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->ExportAsset");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessExecutionLogApi->GetProcessExecutionLog");
 
-            var localVarPath = "/api/v1/Assets/{id}/Export";
+            var localVarPath = "/api/v1/ProcessExecutionLog/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1660,144 +1830,13 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ExportAsset", localVarResponse);
+                Exception exception = ExceptionFactory("GetProcessExecutionLog", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<MemoryStream>(localVarStatusCode,
+            return new ApiResponse<ProcessExecutionLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(MemoryStream)));
-        }
-
-        /// <summary>
-        /// Provides an Asset&#x27;s details for a particular Asset Id. 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset id</param>
-        /// <returns>AssetPaginatedList</returns>
-        public AssetPaginatedList GetAsset (string id)
-        {
-             ApiResponse<AssetPaginatedList> localVarResponse = GetAssetWithHttpInfo(id);
-             return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Provides an Asset&#x27;s details for a particular Asset Id. 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset id</param>
-        /// <returns>ApiResponse of AssetPaginatedList</returns>
-        public ApiResponse< AssetPaginatedList > GetAssetWithHttpInfo (string id)
-        {
-            // verify the required parameter 'id' is set
-            if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->GetAsset");
-
-            var localVarPath = "/api/v1/Assets/{id}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("GetAsset", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<AssetPaginatedList>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AssetPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AssetPaginatedList)));
-        }
-
-        /// <summary>
-        /// Provides an Asset&#x27;s details for a particular Asset Id. 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset id</param>
-        /// <returns>Task of AssetPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AssetPaginatedList> GetAssetAsync (string id)
-        {
-             ApiResponse<AssetPaginatedList> localVarResponse = await GetAssetAsyncWithHttpInfo(id);
-             return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Provides an Asset&#x27;s details for a particular Asset Id. 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Asset id</param>
-        /// <returns>Task of ApiResponse (AssetPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AssetPaginatedList>> GetAssetAsyncWithHttpInfo (string id)
-        {
-            // verify the required parameter 'id' is set
-            if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AssetsApi->GetAsset");
-
-            var localVarPath = "/api/v1/Assets/{id}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("GetAsset", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<AssetPaginatedList>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AssetPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AssetPaginatedList)));
+                (ProcessExecutionLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessExecutionLogPaginatedList)));
         }
 
     }

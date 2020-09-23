@@ -32,46 +32,60 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Body2" /> class.
         /// </summary>
-        /// <param name="contentType">contentType.</param>
-        /// <param name="contentDisposition">contentDisposition.</param>
-        /// <param name="headers">headers.</param>
-        /// <param name="length">length.</param>
-        /// <param name="name">name.</param>
-        /// <param name="fileName">fileName.</param>
-        public Body2(string contentType = default(string), string contentDisposition = default(string), Dictionary<string, List<string>> headers = default(Dictionary<string, List<string>>), long? length = default(long?), string name = default(string), string fileName = default(string))
+        /// <param name="name">name (required).</param>
+        /// <param name="organization">organization.</param>
+        /// <param name="department">department.</param>
+        /// <param name="email">email (required).</param>
+        /// <param name="password">password (required).</param>
+        /// <param name="createNewOrganization">createNewOrganization.</param>
+        /// <param name="utmSource">utmSource.</param>
+        /// <param name="utmMedium">utmMedium.</param>
+        /// <param name="utmCampaign">utmCampaign.</param>
+        /// <param name="utmTerm">utmTerm.</param>
+        /// <param name="utmContent">utmContent.</param>
+        /// <param name="plan">plan.</param>
+        /// <param name="apiKey">apiKey.</param>
+        public Body2(string name = default(string), string organization = default(string), string department = default(string), string email = default(string), string password = default(string), bool? createNewOrganization = default(bool?), string utmSource = default(string), string utmMedium = default(string), string utmCampaign = default(string), string utmTerm = default(string), string utmContent = default(string), string plan = default(string), Guid? apiKey = default(Guid?))
         {
-            this.ContentType = contentType;
-            this.ContentDisposition = contentDisposition;
-            this.Headers = headers;
-            this.Length = length;
-            this.Name = name;
-            this.FileName = fileName;
+            // to ensure "name" is required (not null)
+            if (name == null)
+            {
+                throw new InvalidDataException("name is a required property for Body2 and cannot be null");
+            }
+            else
+            {
+                this.Name = name;
+            }
+            // to ensure "email" is required (not null)
+            if (email == null)
+            {
+                throw new InvalidDataException("email is a required property for Body2 and cannot be null");
+            }
+            else
+            {
+                this.Email = email;
+            }
+            // to ensure "password" is required (not null)
+            if (password == null)
+            {
+                throw new InvalidDataException("password is a required property for Body2 and cannot be null");
+            }
+            else
+            {
+                this.Password = password;
+            }
+            this.Organization = organization;
+            this.Department = department;
+            this.CreateNewOrganization = createNewOrganization;
+            this.UtmSource = utmSource;
+            this.UtmMedium = utmMedium;
+            this.UtmCampaign = utmCampaign;
+            this.UtmTerm = utmTerm;
+            this.UtmContent = utmContent;
+            this.Plan = plan;
+            this.ApiKey = apiKey;
         }
         
-        /// <summary>
-        /// Gets or Sets ContentType
-        /// </summary>
-        [DataMember(Name="ContentType", EmitDefaultValue=false)]
-        public string ContentType { get; set; }
-
-        /// <summary>
-        /// Gets or Sets ContentDisposition
-        /// </summary>
-        [DataMember(Name="ContentDisposition", EmitDefaultValue=false)]
-        public string ContentDisposition { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Headers
-        /// </summary>
-        [DataMember(Name="Headers", EmitDefaultValue=false)]
-        public Dictionary<string, List<string>> Headers { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Length
-        /// </summary>
-        [DataMember(Name="Length", EmitDefaultValue=false)]
-        public long? Length { get; set; }
-
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
@@ -79,10 +93,76 @@ namespace OpenBots.Service.API.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or Sets FileName
+        /// Gets or Sets Organization
         /// </summary>
-        [DataMember(Name="FileName", EmitDefaultValue=false)]
-        public string FileName { get; set; }
+        [DataMember(Name="Organization", EmitDefaultValue=false)]
+        public string Organization { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Department
+        /// </summary>
+        [DataMember(Name="Department", EmitDefaultValue=false)]
+        public string Department { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Email
+        /// </summary>
+        [DataMember(Name="Email", EmitDefaultValue=false)]
+        public string Email { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Password
+        /// </summary>
+        [DataMember(Name="Password", EmitDefaultValue=false)]
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Gets or Sets CreateNewOrganization
+        /// </summary>
+        [DataMember(Name="CreateNewOrganization", EmitDefaultValue=false)]
+        public bool? CreateNewOrganization { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UtmSource
+        /// </summary>
+        [DataMember(Name="Utm_Source", EmitDefaultValue=false)]
+        public string UtmSource { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UtmMedium
+        /// </summary>
+        [DataMember(Name="Utm_Medium", EmitDefaultValue=false)]
+        public string UtmMedium { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UtmCampaign
+        /// </summary>
+        [DataMember(Name="Utm_Campaign", EmitDefaultValue=false)]
+        public string UtmCampaign { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UtmTerm
+        /// </summary>
+        [DataMember(Name="Utm_Term", EmitDefaultValue=false)]
+        public string UtmTerm { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UtmContent
+        /// </summary>
+        [DataMember(Name="Utm_Content", EmitDefaultValue=false)]
+        public string UtmContent { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Plan
+        /// </summary>
+        [DataMember(Name="Plan", EmitDefaultValue=false)]
+        public string Plan { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ApiKey
+        /// </summary>
+        [DataMember(Name="ApiKey", EmitDefaultValue=false)]
+        public Guid? ApiKey { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -92,12 +172,19 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class Body2 {\n");
-            sb.Append("  ContentType: ").Append(ContentType).Append("\n");
-            sb.Append("  ContentDisposition: ").Append(ContentDisposition).Append("\n");
-            sb.Append("  Headers: ").Append(Headers).Append("\n");
-            sb.Append("  Length: ").Append(Length).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  FileName: ").Append(FileName).Append("\n");
+            sb.Append("  Organization: ").Append(Organization).Append("\n");
+            sb.Append("  Department: ").Append(Department).Append("\n");
+            sb.Append("  Email: ").Append(Email).Append("\n");
+            sb.Append("  Password: ").Append(Password).Append("\n");
+            sb.Append("  CreateNewOrganization: ").Append(CreateNewOrganization).Append("\n");
+            sb.Append("  UtmSource: ").Append(UtmSource).Append("\n");
+            sb.Append("  UtmMedium: ").Append(UtmMedium).Append("\n");
+            sb.Append("  UtmCampaign: ").Append(UtmCampaign).Append("\n");
+            sb.Append("  UtmTerm: ").Append(UtmTerm).Append("\n");
+            sb.Append("  UtmContent: ").Append(UtmContent).Append("\n");
+            sb.Append("  Plan: ").Append(Plan).Append("\n");
+            sb.Append("  ApiKey: ").Append(ApiKey).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -133,35 +220,69 @@ namespace OpenBots.Service.API.Model
 
             return 
                 (
-                    this.ContentType == input.ContentType ||
-                    (this.ContentType != null &&
-                    this.ContentType.Equals(input.ContentType))
-                ) && 
-                (
-                    this.ContentDisposition == input.ContentDisposition ||
-                    (this.ContentDisposition != null &&
-                    this.ContentDisposition.Equals(input.ContentDisposition))
-                ) && 
-                (
-                    this.Headers == input.Headers ||
-                    this.Headers != null &&
-                    input.Headers != null &&
-                    this.Headers.SequenceEqual(input.Headers)
-                ) && 
-                (
-                    this.Length == input.Length ||
-                    (this.Length != null &&
-                    this.Length.Equals(input.Length))
-                ) && 
-                (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
                 ) && 
                 (
-                    this.FileName == input.FileName ||
-                    (this.FileName != null &&
-                    this.FileName.Equals(input.FileName))
+                    this.Organization == input.Organization ||
+                    (this.Organization != null &&
+                    this.Organization.Equals(input.Organization))
+                ) && 
+                (
+                    this.Department == input.Department ||
+                    (this.Department != null &&
+                    this.Department.Equals(input.Department))
+                ) && 
+                (
+                    this.Email == input.Email ||
+                    (this.Email != null &&
+                    this.Email.Equals(input.Email))
+                ) && 
+                (
+                    this.Password == input.Password ||
+                    (this.Password != null &&
+                    this.Password.Equals(input.Password))
+                ) && 
+                (
+                    this.CreateNewOrganization == input.CreateNewOrganization ||
+                    (this.CreateNewOrganization != null &&
+                    this.CreateNewOrganization.Equals(input.CreateNewOrganization))
+                ) && 
+                (
+                    this.UtmSource == input.UtmSource ||
+                    (this.UtmSource != null &&
+                    this.UtmSource.Equals(input.UtmSource))
+                ) && 
+                (
+                    this.UtmMedium == input.UtmMedium ||
+                    (this.UtmMedium != null &&
+                    this.UtmMedium.Equals(input.UtmMedium))
+                ) && 
+                (
+                    this.UtmCampaign == input.UtmCampaign ||
+                    (this.UtmCampaign != null &&
+                    this.UtmCampaign.Equals(input.UtmCampaign))
+                ) && 
+                (
+                    this.UtmTerm == input.UtmTerm ||
+                    (this.UtmTerm != null &&
+                    this.UtmTerm.Equals(input.UtmTerm))
+                ) && 
+                (
+                    this.UtmContent == input.UtmContent ||
+                    (this.UtmContent != null &&
+                    this.UtmContent.Equals(input.UtmContent))
+                ) && 
+                (
+                    this.Plan == input.Plan ||
+                    (this.Plan != null &&
+                    this.Plan.Equals(input.Plan))
+                ) && 
+                (
+                    this.ApiKey == input.ApiKey ||
+                    (this.ApiKey != null &&
+                    this.ApiKey.Equals(input.ApiKey))
                 );
         }
 
@@ -174,18 +295,32 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.ContentType != null)
-                    hashCode = hashCode * 59 + this.ContentType.GetHashCode();
-                if (this.ContentDisposition != null)
-                    hashCode = hashCode * 59 + this.ContentDisposition.GetHashCode();
-                if (this.Headers != null)
-                    hashCode = hashCode * 59 + this.Headers.GetHashCode();
-                if (this.Length != null)
-                    hashCode = hashCode * 59 + this.Length.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
-                if (this.FileName != null)
-                    hashCode = hashCode * 59 + this.FileName.GetHashCode();
+                if (this.Organization != null)
+                    hashCode = hashCode * 59 + this.Organization.GetHashCode();
+                if (this.Department != null)
+                    hashCode = hashCode * 59 + this.Department.GetHashCode();
+                if (this.Email != null)
+                    hashCode = hashCode * 59 + this.Email.GetHashCode();
+                if (this.Password != null)
+                    hashCode = hashCode * 59 + this.Password.GetHashCode();
+                if (this.CreateNewOrganization != null)
+                    hashCode = hashCode * 59 + this.CreateNewOrganization.GetHashCode();
+                if (this.UtmSource != null)
+                    hashCode = hashCode * 59 + this.UtmSource.GetHashCode();
+                if (this.UtmMedium != null)
+                    hashCode = hashCode * 59 + this.UtmMedium.GetHashCode();
+                if (this.UtmCampaign != null)
+                    hashCode = hashCode * 59 + this.UtmCampaign.GetHashCode();
+                if (this.UtmTerm != null)
+                    hashCode = hashCode * 59 + this.UtmTerm.GetHashCode();
+                if (this.UtmContent != null)
+                    hashCode = hashCode * 59 + this.UtmContent.GetHashCode();
+                if (this.Plan != null)
+                    hashCode = hashCode * 59 + this.Plan.GetHashCode();
+                if (this.ApiKey != null)
+                    hashCode = hashCode * 59 + this.ApiKey.GetHashCode();
                 return hashCode;
             }
         }

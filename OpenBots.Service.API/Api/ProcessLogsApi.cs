@@ -12,353 +12,303 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using RestSharp;
-using OpenBots.Service.API.Client;
-using OpenBots.Service.API.Model;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
 
-namespace OpenBots.Service.API.Api
+namespace IO.Swagger.Api
 {
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-        public interface IAuditLogsApi : IApiAccessor
+        public interface IProcessLogsApi : IApiAccessor
     {
         #region Synchronous Operations
         /// <summary>
-        /// Provides a list of all audit logs name
+        /// Provides a Count of ProcessLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>List&lt;AuditLogsLookupViewModel&gt;</returns>
-        List<AuditLogsLookupViewModel> ApiV1AuditLogsAuditLogsLookupGet ();
-
-        /// <summary>
-        /// Provides a list of all audit logs name
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>ApiResponse of List&lt;AuditLogsLookupViewModel&gt;</returns>
-        ApiResponse<List<AuditLogsLookupViewModel>> ApiV1AuditLogsAuditLogsLookupGetWithHttpInfo ();
-        /// <summary>
-        /// Gets count of AuditLogs in database
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
-        int? ApiV1AuditLogsCountGet (string filter = null);
+        int? ApiV1ProcessLogsCountGet (string filter = null);
 
         /// <summary>
-        /// Gets count of AuditLogs in database
+        /// Provides a Count of ProcessLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
-        ApiResponse<int?> ApiV1AuditLogsCountGetWithHttpInfo (string filter = null);
+        ApiResponse<int?> ApiV1ProcessLogsCountGetWithHttpInfo (string filter = null);
         /// <summary>
-        /// Exports audit logs into a downloadable file
+        /// Exports process logs into a downloadable file
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="fileType">Specifies the file type to be downloaded. Csv, Zip or Json</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
         /// <returns>Object</returns>
-        Object ApiV1AuditLogsExportFiletypeGet (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null);
+        Object ApiV1ProcessLogsExportFiletypeGet (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Exports audit logs into a downloadable file
+        /// Exports process logs into a downloadable file
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="fileType">Specifies the file type to be downloaded. Csv, Zip or Json</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
         /// <returns>ApiResponse of Object</returns>
-        ApiResponse<Object> ApiV1AuditLogsExportFiletypeGetWithHttpInfo (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null);
+        ApiResponse<Object> ApiV1ProcessLogsExportFiletypeGetWithHttpInfo (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Provides a list of all audit logs
+        /// Provides a list of all ProcessLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
+        /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AuditLogPaginatedList</returns>
-        AuditLogPaginatedList ApiV1AuditLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ProcessLogPaginatedList</returns>
+        ProcessLogPaginatedList ApiV1ProcessLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of all audit logs
+        /// Provides a list of all ProcessLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
+        /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AuditLogPaginatedList</returns>
-        ApiResponse<AuditLogPaginatedList> ApiV1AuditLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ApiResponse of ProcessLogPaginatedList</returns>
+        ApiResponse<ProcessLogPaginatedList> ApiV1ProcessLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Provides additional details on a specific Audit Log
+        /// Adds a new ProcessLog to the existing ProcessLogs
         /// </summary>
         /// <remarks>
-        /// 
+        /// Adds the ProcessLog with unique ProcessLog Id to the existing ProcessLogs
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Audit Log Id</param>
-        /// <returns>AuditLogPaginatedList</returns>
-        AuditLogPaginatedList ApiV1AuditLogsIdGet (Guid? id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ProcessLog</returns>
+        ProcessLog ApiV1ProcessLogsPost (ProcessLog body = null);
 
         /// <summary>
-        /// Provides additional details on a specific Audit Log
+        /// Adds a new ProcessLog to the existing ProcessLogs
         /// </summary>
         /// <remarks>
-        /// 
+        /// Adds the ProcessLog with unique ProcessLog Id to the existing ProcessLogs
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Audit Log Id</param>
-        /// <returns>ApiResponse of AuditLogPaginatedList</returns>
-        ApiResponse<AuditLogPaginatedList> ApiV1AuditLogsIdGetWithHttpInfo (Guid? id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of ProcessLog</returns>
+        ApiResponse<ProcessLog> ApiV1ProcessLogsPostWithHttpInfo (ProcessLog body = null);
         /// <summary>
-        /// Provides a list of audit logs filtered by updated by (person id), service name, method name, or timestamp
+        /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AuditLogPaginatedList</returns>
-        AuditLogPaginatedList ApiV1AuditLogsResultsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessLog id</param>
+        /// <returns>ProcessLogPaginatedList</returns>
+        ProcessLogPaginatedList GetProcessLog (string id);
 
         /// <summary>
-        /// Provides a list of audit logs filtered by updated by (person id), service name, method name, or timestamp
+        /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AuditLogPaginatedList</returns>
-        ApiResponse<AuditLogPaginatedList> ApiV1AuditLogsResultsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessLog id</param>
+        /// <returns>ApiResponse of ProcessLogPaginatedList</returns>
+        ApiResponse<ProcessLogPaginatedList> GetProcessLogWithHttpInfo (string id);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
-        /// Provides a list of all audit logs name
+        /// Provides a Count of ProcessLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of List&lt;AuditLogsLookupViewModel&gt;</returns>
-        System.Threading.Tasks.Task<List<AuditLogsLookupViewModel>> ApiV1AuditLogsAuditLogsLookupGetAsync ();
-
-        /// <summary>
-        /// Provides a list of all audit logs name
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of ApiResponse (List&lt;AuditLogsLookupViewModel&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<List<AuditLogsLookupViewModel>>> ApiV1AuditLogsAuditLogsLookupGetAsyncWithHttpInfo ();
-        /// <summary>
-        /// Gets count of AuditLogs in database
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
-        System.Threading.Tasks.Task<int?> ApiV1AuditLogsCountGetAsync (string filter = null);
+        System.Threading.Tasks.Task<int?> ApiV1ProcessLogsCountGetAsync (string filter = null);
 
         /// <summary>
-        /// Gets count of AuditLogs in database
+        /// Provides a Count of ProcessLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
-        System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1AuditLogsCountGetAsyncWithHttpInfo (string filter = null);
+        System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1ProcessLogsCountGetAsyncWithHttpInfo (string filter = null);
         /// <summary>
-        /// Exports audit logs into a downloadable file
+        /// Exports process logs into a downloadable file
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="fileType">Specifies the file type to be downloaded. Csv, Zip or Json</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
         /// <returns>Task of Object</returns>
-        System.Threading.Tasks.Task<Object> ApiV1AuditLogsExportFiletypeGetAsync (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null);
+        System.Threading.Tasks.Task<Object> ApiV1ProcessLogsExportFiletypeGetAsync (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Exports audit logs into a downloadable file
+        /// Exports process logs into a downloadable file
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="fileType">Specifies the file type to be downloaded. Csv, Zip or Json</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
         /// <returns>Task of ApiResponse (Object)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuditLogsExportFiletypeGetAsyncWithHttpInfo (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1ProcessLogsExportFiletypeGetAsyncWithHttpInfo (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Provides a list of all audit logs
+        /// Provides a list of all ProcessLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
+        /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AuditLogPaginatedList</returns>
-        System.Threading.Tasks.Task<AuditLogPaginatedList> ApiV1AuditLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ProcessLogPaginatedList</returns>
+        System.Threading.Tasks.Task<ProcessLogPaginatedList> ApiV1ProcessLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of all audit logs
+        /// Provides a list of all ProcessLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
+        /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AuditLogPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AuditLogPaginatedList>> ApiV1AuditLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ApiResponse (ProcessLogPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessLogPaginatedList>> ApiV1ProcessLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Provides additional details on a specific Audit Log
+        /// Adds a new ProcessLog to the existing ProcessLogs
         /// </summary>
         /// <remarks>
-        /// 
+        /// Adds the ProcessLog with unique ProcessLog Id to the existing ProcessLogs
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Audit Log Id</param>
-        /// <returns>Task of AuditLogPaginatedList</returns>
-        System.Threading.Tasks.Task<AuditLogPaginatedList> ApiV1AuditLogsIdGetAsync (Guid? id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ProcessLog</returns>
+        System.Threading.Tasks.Task<ProcessLog> ApiV1ProcessLogsPostAsync (ProcessLog body = null);
 
         /// <summary>
-        /// Provides additional details on a specific Audit Log
+        /// Adds a new ProcessLog to the existing ProcessLogs
         /// </summary>
         /// <remarks>
-        /// 
+        /// Adds the ProcessLog with unique ProcessLog Id to the existing ProcessLogs
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Audit Log Id</param>
-        /// <returns>Task of ApiResponse (AuditLogPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AuditLogPaginatedList>> ApiV1AuditLogsIdGetAsyncWithHttpInfo (Guid? id);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (ProcessLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessLog>> ApiV1ProcessLogsPostAsyncWithHttpInfo (ProcessLog body = null);
         /// <summary>
-        /// Provides a list of audit logs filtered by updated by (person id), service name, method name, or timestamp
+        /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AuditLogPaginatedList</returns>
-        System.Threading.Tasks.Task<AuditLogPaginatedList> ApiV1AuditLogsResultsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessLog id</param>
+        /// <returns>Task of ProcessLogPaginatedList</returns>
+        System.Threading.Tasks.Task<ProcessLogPaginatedList> GetProcessLogAsync (string id);
 
         /// <summary>
-        /// Provides a list of audit logs filtered by updated by (person id), service name, method name, or timestamp
+        /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AuditLogPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AuditLogPaginatedList>> ApiV1AuditLogsResultsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessLog id</param>
+        /// <returns>Task of ApiResponse (ProcessLogPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessLogPaginatedList>> GetProcessLogAsyncWithHttpInfo (string id);
         #endregion Asynchronous Operations
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-        public partial class AuditLogsApi : IAuditLogsApi
+        public partial class ProcessLogsApi : IProcessLogsApi
     {
-        private OpenBots.Service.API.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
+        private IO.Swagger.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuditLogsApi"/> class.
+        /// Initializes a new instance of the <see cref="ProcessLogsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public AuditLogsApi(String basePath)
+        public ProcessLogsApi(String basePath)
         {
-            this.Configuration = new OpenBots.Service.API.Client.Configuration { BasePath = basePath };
+            this.Configuration = new IO.Swagger.Client.Configuration { BasePath = basePath };
 
-            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuditLogsApi"/> class
+        /// Initializes a new instance of the <see cref="ProcessLogsApi"/> class
         /// </summary>
         /// <returns></returns>
-        public AuditLogsApi()
+        public ProcessLogsApi()
         {
-            this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
+            this.Configuration = IO.Swagger.Client.Configuration.Default;
 
-            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuditLogsApi"/> class
+        /// Initializes a new instance of the <see cref="ProcessLogsApi"/> class
         /// using Configuration object
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public AuditLogsApi(OpenBots.Service.API.Client.Configuration configuration = null)
+        public ProcessLogsApi(IO.Swagger.Client.Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
-                this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
+                this.Configuration = IO.Swagger.Client.Configuration.Default;
             else
                 this.Configuration = configuration;
 
-            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -384,12 +334,12 @@ namespace OpenBots.Service.API.Api
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
-        public OpenBots.Service.API.Client.Configuration Configuration {get; set;}
+        public IO.Swagger.Client.Configuration Configuration {get; set;}
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
         /// </summary>
-        public OpenBots.Service.API.Client.ExceptionFactory ExceptionFactory
+        public IO.Swagger.Client.ExceptionFactory ExceptionFactory
         {
             get
             {
@@ -425,146 +375,27 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides a list of all audit logs name 
+        /// Provides a Count of ProcessLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>List&lt;AuditLogsLookupViewModel&gt;</returns>
-        public List<AuditLogsLookupViewModel> ApiV1AuditLogsAuditLogsLookupGet ()
-        {
-             ApiResponse<List<AuditLogsLookupViewModel>> localVarResponse = ApiV1AuditLogsAuditLogsLookupGetWithHttpInfo();
-             return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Provides a list of all audit logs name 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>ApiResponse of List&lt;AuditLogsLookupViewModel&gt;</returns>
-        public ApiResponse< List<AuditLogsLookupViewModel> > ApiV1AuditLogsAuditLogsLookupGetWithHttpInfo ()
-        {
-
-            var localVarPath = "/api/v1/AuditLogs/AuditLogsLookup";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsAuditLogsLookupGet", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<List<AuditLogsLookupViewModel>>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (List<AuditLogsLookupViewModel>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<AuditLogsLookupViewModel>)));
-        }
-
-        /// <summary>
-        /// Provides a list of all audit logs name 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of List&lt;AuditLogsLookupViewModel&gt;</returns>
-        public async System.Threading.Tasks.Task<List<AuditLogsLookupViewModel>> ApiV1AuditLogsAuditLogsLookupGetAsync ()
-        {
-             ApiResponse<List<AuditLogsLookupViewModel>> localVarResponse = await ApiV1AuditLogsAuditLogsLookupGetAsyncWithHttpInfo();
-             return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Provides a list of all audit logs name 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of ApiResponse (List&lt;AuditLogsLookupViewModel&gt;)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<List<AuditLogsLookupViewModel>>> ApiV1AuditLogsAuditLogsLookupGetAsyncWithHttpInfo ()
-        {
-
-            var localVarPath = "/api/v1/AuditLogs/AuditLogsLookup";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsAuditLogsLookupGet", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<List<AuditLogsLookupViewModel>>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (List<AuditLogsLookupViewModel>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<AuditLogsLookupViewModel>)));
-        }
-
-        /// <summary>
-        /// Gets count of AuditLogs in database 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
-        public int? ApiV1AuditLogsCountGet (string filter = null)
+        public int? ApiV1ProcessLogsCountGet (string filter = null)
         {
-             ApiResponse<int?> localVarResponse = ApiV1AuditLogsCountGetWithHttpInfo(filter);
+             ApiResponse<int?> localVarResponse = ApiV1ProcessLogsCountGetWithHttpInfo(filter);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Gets count of AuditLogs in database 
+        /// Provides a Count of ProcessLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
-        public ApiResponse< int? > ApiV1AuditLogsCountGetWithHttpInfo (string filter = null)
+        public ApiResponse< int? > ApiV1ProcessLogsCountGetWithHttpInfo (string filter = null)
         {
 
-            var localVarPath = "/api/v1/AuditLogs/count";
+            var localVarPath = "/api/v1/ProcessLogs/Count";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -596,7 +427,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsCountGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessLogsCountGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -606,28 +437,28 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Gets count of AuditLogs in database 
+        /// Provides a Count of ProcessLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
-        public async System.Threading.Tasks.Task<int?> ApiV1AuditLogsCountGetAsync (string filter = null)
+        public async System.Threading.Tasks.Task<int?> ApiV1ProcessLogsCountGetAsync (string filter = null)
         {
-             ApiResponse<int?> localVarResponse = await ApiV1AuditLogsCountGetAsyncWithHttpInfo(filter);
+             ApiResponse<int?> localVarResponse = await ApiV1ProcessLogsCountGetAsyncWithHttpInfo(filter);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Gets count of AuditLogs in database 
+        /// Provides a Count of ProcessLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1AuditLogsCountGetAsyncWithHttpInfo (string filter = null)
+        public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1ProcessLogsCountGetAsyncWithHttpInfo (string filter = null)
         {
 
-            var localVarPath = "/api/v1/AuditLogs/count";
+            var localVarPath = "/api/v1/ProcessLogs/Count";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -659,7 +490,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsCountGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessLogsCountGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -669,38 +500,38 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Exports audit logs into a downloadable file 
+        /// Exports process logs into a downloadable file 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="fileType">Specifies the file type to be downloaded. Csv, Zip or Json</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
         /// <returns>Object</returns>
-        public Object ApiV1AuditLogsExportFiletypeGet (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null)
+        public Object ApiV1ProcessLogsExportFiletypeGet (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<Object> localVarResponse = ApiV1AuditLogsExportFiletypeGetWithHttpInfo(fileType, filter, orderby, top, skip);
+             ApiResponse<Object> localVarResponse = ApiV1ProcessLogsExportFiletypeGetWithHttpInfo(fileType, filter, orderby, top, skip);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Exports audit logs into a downloadable file 
+        /// Exports process logs into a downloadable file 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="fileType">Specifies the file type to be downloaded. Csv, Zip or Json</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
         /// <returns>ApiResponse of Object</returns>
-        public ApiResponse< Object > ApiV1AuditLogsExportFiletypeGetWithHttpInfo (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null)
+        public ApiResponse< Object > ApiV1ProcessLogsExportFiletypeGetWithHttpInfo (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
             // verify the required parameter 'fileType' is set
             if (fileType == null)
-                throw new ApiException(400, "Missing required parameter 'fileType' when calling AuditLogsApi->ApiV1AuditLogsExportFiletypeGet");
+                throw new ApiException(400, "Missing required parameter 'fileType' when calling ProcessLogsApi->ApiV1ProcessLogsExportFiletypeGet");
 
-            var localVarPath = "/api/v1/AuditLogs/export/{filetype}";
+            var localVarPath = "/api/v1/ProcessLogs/export/{filetype}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -738,7 +569,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsExportFiletypeGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessLogsExportFiletypeGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -748,39 +579,39 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Exports audit logs into a downloadable file 
+        /// Exports process logs into a downloadable file 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="fileType">Specifies the file type to be downloaded. Csv, Zip or Json</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
         /// <returns>Task of Object</returns>
-        public async System.Threading.Tasks.Task<Object> ApiV1AuditLogsExportFiletypeGetAsync (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null)
+        public async System.Threading.Tasks.Task<Object> ApiV1ProcessLogsExportFiletypeGetAsync (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<Object> localVarResponse = await ApiV1AuditLogsExportFiletypeGetAsyncWithHttpInfo(fileType, filter, orderby, top, skip);
+             ApiResponse<Object> localVarResponse = await ApiV1ProcessLogsExportFiletypeGetAsyncWithHttpInfo(fileType, filter, orderby, top, skip);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Exports audit logs into a downloadable file 
+        /// Exports process logs into a downloadable file 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="fileType">Specifies the file type to be downloaded. Csv, Zip or Json</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
         /// <returns>Task of ApiResponse (Object)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuditLogsExportFiletypeGetAsyncWithHttpInfo (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1ProcessLogsExportFiletypeGetAsyncWithHttpInfo (string fileType, string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
             // verify the required parameter 'fileType' is set
             if (fileType == null)
-                throw new ApiException(400, "Missing required parameter 'fileType' when calling AuditLogsApi->ApiV1AuditLogsExportFiletypeGet");
+                throw new ApiException(400, "Missing required parameter 'fileType' when calling ProcessLogsApi->ApiV1ProcessLogsExportFiletypeGet");
 
-            var localVarPath = "/api/v1/AuditLogs/export/{filetype}";
+            var localVarPath = "/api/v1/ProcessLogs/export/{filetype}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -818,7 +649,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsExportFiletypeGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessLogsExportFiletypeGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -828,33 +659,33 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides a list of all audit logs 
+        /// Provides a list of all ProcessLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
+        /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AuditLogPaginatedList</returns>
-        public AuditLogPaginatedList ApiV1AuditLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ProcessLogPaginatedList</returns>
+        public ProcessLogPaginatedList ApiV1ProcessLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<AuditLogPaginatedList> localVarResponse = ApiV1AuditLogsGetWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<ProcessLogPaginatedList> localVarResponse = ApiV1ProcessLogsGetWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Provides a list of all audit logs 
+        /// Provides a list of all ProcessLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
+        /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AuditLogPaginatedList</returns>
-        public ApiResponse< AuditLogPaginatedList > ApiV1AuditLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ApiResponse of ProcessLogPaginatedList</returns>
+        public ApiResponse< ProcessLogPaginatedList > ApiV1ProcessLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
-            var localVarPath = "/api/v1/AuditLogs";
+            var localVarPath = "/api/v1/ProcessLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -889,44 +720,44 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessLogsGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AuditLogPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AuditLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogPaginatedList)));
+                (ProcessLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLogPaginatedList)));
         }
 
         /// <summary>
-        /// Provides a list of all audit logs 
+        /// Provides a list of all ProcessLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
+        /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AuditLogPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AuditLogPaginatedList> ApiV1AuditLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ProcessLogPaginatedList</returns>
+        public async System.Threading.Tasks.Task<ProcessLogPaginatedList> ApiV1ProcessLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<AuditLogPaginatedList> localVarResponse = await ApiV1AuditLogsGetAsyncWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<ProcessLogPaginatedList> localVarResponse = await ApiV1ProcessLogsGetAsyncWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides a list of all audit logs 
+        /// Provides a list of all ProcessLogs 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
+        /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AuditLogPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AuditLogPaginatedList>> ApiV1AuditLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ApiResponse (ProcessLogPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessLogPaginatedList>> ApiV1ProcessLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
-            var localVarPath = "/api/v1/AuditLogs";
+            var localVarPath = "/api/v1/ProcessLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -961,40 +792,187 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessLogsGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AuditLogPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AuditLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogPaginatedList)));
+                (ProcessLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLogPaginatedList)));
         }
 
         /// <summary>
-        /// Provides additional details on a specific Audit Log 
+        /// Adds a new ProcessLog to the existing ProcessLogs Adds the ProcessLog with unique ProcessLog Id to the existing ProcessLogs
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Audit Log Id</param>
-        /// <returns>AuditLogPaginatedList</returns>
-        public AuditLogPaginatedList ApiV1AuditLogsIdGet (Guid? id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ProcessLog</returns>
+        public ProcessLog ApiV1ProcessLogsPost (ProcessLog body = null)
         {
-             ApiResponse<AuditLogPaginatedList> localVarResponse = ApiV1AuditLogsIdGetWithHttpInfo(id);
+             ApiResponse<ProcessLog> localVarResponse = ApiV1ProcessLogsPostWithHttpInfo(body);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Provides additional details on a specific Audit Log 
+        /// Adds a new ProcessLog to the existing ProcessLogs Adds the ProcessLog with unique ProcessLog Id to the existing ProcessLogs
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Audit Log Id</param>
-        /// <returns>ApiResponse of AuditLogPaginatedList</returns>
-        public ApiResponse< AuditLogPaginatedList > ApiV1AuditLogsIdGetWithHttpInfo (Guid? id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of ProcessLog</returns>
+        public ApiResponse< ProcessLog > ApiV1ProcessLogsPostWithHttpInfo (ProcessLog body = null)
+        {
+
+            var localVarPath = "/api/v1/ProcessLogs";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1ProcessLogsPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<ProcessLog>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (ProcessLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLog)));
+        }
+
+        /// <summary>
+        /// Adds a new ProcessLog to the existing ProcessLogs Adds the ProcessLog with unique ProcessLog Id to the existing ProcessLogs
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ProcessLog</returns>
+        public async System.Threading.Tasks.Task<ProcessLog> ApiV1ProcessLogsPostAsync (ProcessLog body = null)
+        {
+             ApiResponse<ProcessLog> localVarResponse = await ApiV1ProcessLogsPostAsyncWithHttpInfo(body);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Adds a new ProcessLog to the existing ProcessLogs Adds the ProcessLog with unique ProcessLog Id to the existing ProcessLogs
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (ProcessLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessLog>> ApiV1ProcessLogsPostAsyncWithHttpInfo (ProcessLog body = null)
+        {
+
+            var localVarPath = "/api/v1/ProcessLogs";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1ProcessLogsPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<ProcessLog>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (ProcessLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLog)));
+        }
+
+        /// <summary>
+        /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id. 
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessLog id</param>
+        /// <returns>ProcessLogPaginatedList</returns>
+        public ProcessLogPaginatedList GetProcessLog (string id)
+        {
+             ApiResponse<ProcessLogPaginatedList> localVarResponse = GetProcessLogWithHttpInfo(id);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id. 
+        /// </summary>
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessLog id</param>
+        /// <returns>ApiResponse of ProcessLogPaginatedList</returns>
+        public ApiResponse< ProcessLogPaginatedList > GetProcessLogWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AuditLogsApi->ApiV1AuditLogsIdGet");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessLogsApi->GetProcessLog");
 
-            var localVarPath = "/api/v1/AuditLogs/{id}";
+            var localVarPath = "/api/v1/ProcessLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1026,41 +1004,41 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsIdGet", localVarResponse);
+                Exception exception = ExceptionFactory("GetProcessLog", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AuditLogPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AuditLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogPaginatedList)));
+                (ProcessLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLogPaginatedList)));
         }
 
         /// <summary>
-        /// Provides additional details on a specific Audit Log 
+        /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Audit Log Id</param>
-        /// <returns>Task of AuditLogPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AuditLogPaginatedList> ApiV1AuditLogsIdGetAsync (Guid? id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessLog id</param>
+        /// <returns>Task of ProcessLogPaginatedList</returns>
+        public async System.Threading.Tasks.Task<ProcessLogPaginatedList> GetProcessLogAsync (string id)
         {
-             ApiResponse<AuditLogPaginatedList> localVarResponse = await ApiV1AuditLogsIdGetAsyncWithHttpInfo(id);
+             ApiResponse<ProcessLogPaginatedList> localVarResponse = await GetProcessLogAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides additional details on a specific Audit Log 
+        /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id. 
         /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Audit Log Id</param>
-        /// <returns>Task of ApiResponse (AuditLogPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AuditLogPaginatedList>> ApiV1AuditLogsIdGetAsyncWithHttpInfo (Guid? id)
+        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">ProcessLog id</param>
+        /// <returns>Task of ApiResponse (ProcessLogPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessLogPaginatedList>> GetProcessLogAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AuditLogsApi->ApiV1AuditLogsIdGet");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessLogsApi->GetProcessLog");
 
-            var localVarPath = "/api/v1/AuditLogs/{id}";
+            var localVarPath = "/api/v1/ProcessLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1092,156 +1070,13 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsIdGet", localVarResponse);
+                Exception exception = ExceptionFactory("GetProcessLog", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AuditLogPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AuditLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogPaginatedList)));
-        }
-
-        /// <summary>
-        /// Provides a list of audit logs filtered by updated by (person id), service name, method name, or timestamp 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AuditLogPaginatedList</returns>
-        public AuditLogPaginatedList ApiV1AuditLogsResultsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
-        {
-             ApiResponse<AuditLogPaginatedList> localVarResponse = ApiV1AuditLogsResultsGetWithHttpInfo(filter, orderby, top, skip);
-             return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Provides a list of audit logs filtered by updated by (person id), service name, method name, or timestamp 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AuditLogPaginatedList</returns>
-        public ApiResponse< AuditLogPaginatedList > ApiV1AuditLogsResultsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
-        {
-
-            var localVarPath = "/api/v1/AuditLogs/results";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$filter", filter)); // query parameter
-            if (orderby != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$orderby", orderby)); // query parameter
-            if (top != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$top", top)); // query parameter
-            if (skip != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$skip", skip)); // query parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsResultsGet", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<AuditLogPaginatedList>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AuditLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogPaginatedList)));
-        }
-
-        /// <summary>
-        /// Provides a list of audit logs filtered by updated by (person id), service name, method name, or timestamp 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AuditLogPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AuditLogPaginatedList> ApiV1AuditLogsResultsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
-        {
-             ApiResponse<AuditLogPaginatedList> localVarResponse = await ApiV1AuditLogsResultsGetAsyncWithHttpInfo(filter, orderby, top, skip);
-             return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Provides a list of audit logs filtered by updated by (person id), service name, method name, or timestamp 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AuditLogPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AuditLogPaginatedList>> ApiV1AuditLogsResultsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
-        {
-
-            var localVarPath = "/api/v1/AuditLogs/results";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$filter", filter)); // query parameter
-            if (orderby != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$orderby", orderby)); // query parameter
-            if (top != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$top", top)); // query parameter
-            if (skip != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$skip", skip)); // query parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AuditLogsResultsGet", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<AuditLogPaginatedList>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AuditLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogPaginatedList)));
+                (ProcessLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLogPaginatedList)));
         }
 
     }

@@ -434,7 +434,7 @@ namespace OpenBots.Service.API.Client
         /// </summary>
         public static String ToDebugReport()
         {
-            String report = "C# SDK (OpenBots.Service.API) Debug Report:\n";
+            String report = "C# SDK (IO.Swagger) Debug Report:\n";
             report += "    OS: " + System.Environment.OSVersion + "\n";
             report += "    .NET Framework Version: " + System.Environment.Version  + "\n";
             report += "    Version of the API: v1\n";

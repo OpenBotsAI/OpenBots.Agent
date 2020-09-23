@@ -19,98 +19,60 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
-using SwaggerDateConverter = OpenBots.Service.API.Client.SwaggerDateConverter;
+using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
 
-namespace OpenBots.Service.API.Model
+namespace IO.Swagger.Model
 {
     /// <summary>
-    /// Body
+    /// ProcessViewModel
     /// </summary>
     [DataContract]
-        public partial class Body :  IEquatable<Body>, IValidatableObject
+        public partial class ProcessViewModel :  IEquatable<ProcessViewModel>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Body" /> class.
+        /// Initializes a new instance of the <see cref="ProcessViewModel" /> class.
         /// </summary>
         /// <param name="id">id.</param>
         /// <param name="name">name (required).</param>
-        /// <param name="type">type (required).</param>
-        /// <param name="textValue">textValue.</param>
-        /// <param name="numberValue">numberValue.</param>
-        /// <param name="jsonValue">jsonValue.</param>
-        /// <param name="binaryObjectID">binaryObjectID.</param>
+        /// <param name="status">status.</param>
         /// <param name="_file">_file.</param>
+        /// <param name="binaryObjectId">binaryObjectId.</param>
         /// <param name="organizationId">organizationId.</param>
-        public Body(Guid? id = default(Guid?), string name = default(string), string type = default(string), string textValue = default(string), double? numberValue = default(double?), string jsonValue = default(string), Guid? binaryObjectID = default(Guid?), byte[] _file = default(byte[]), Guid? organizationId = default(Guid?))
+        public ProcessViewModel(Guid? id = default(Guid?), string name = default(string), string status = default(string), byte[] _file = default(byte[]), Guid? binaryObjectId = default(Guid?), Guid? organizationId = default(Guid?))
         {
             // to ensure "name" is required (not null)
             if (name == null)
             {
-                throw new InvalidDataException("name is a required property for Body and cannot be null");
+                throw new InvalidDataException("name is a required property for ProcessViewModel and cannot be null");
             }
             else
             {
                 this.Name = name;
             }
-            // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for Body and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
             this.Id = id;
-            this.TextValue = textValue;
-            this.NumberValue = numberValue;
-            this.JsonValue = jsonValue;
-            this.BinaryObjectID = binaryObjectID;
+            this.Status = status;
             this.File = _file;
+            this.BinaryObjectId = binaryObjectId;
             this.OrganizationId = organizationId;
         }
         
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name="Id", EmitDefaultValue=false)]
+        [DataMember(Name="id", EmitDefaultValue=false)]
         public Guid? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
-        [DataMember(Name="Name", EmitDefaultValue=false)]
+        [DataMember(Name="name", EmitDefaultValue=false)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or Sets Type
+        /// Gets or Sets Status
         /// </summary>
-        [DataMember(Name="Type", EmitDefaultValue=false)]
-        public string Type { get; set; }
-
-        /// <summary>
-        /// Gets or Sets TextValue
-        /// </summary>
-        [DataMember(Name="TextValue", EmitDefaultValue=false)]
-        public string TextValue { get; set; }
-
-        /// <summary>
-        /// Gets or Sets NumberValue
-        /// </summary>
-        [DataMember(Name="NumberValue", EmitDefaultValue=false)]
-        public double? NumberValue { get; set; }
-
-        /// <summary>
-        /// Gets or Sets JsonValue
-        /// </summary>
-        [DataMember(Name="JsonValue", EmitDefaultValue=false)]
-        public string JsonValue { get; set; }
-
-        /// <summary>
-        /// Gets or Sets BinaryObjectID
-        /// </summary>
-        [DataMember(Name="BinaryObjectID", EmitDefaultValue=false)]
-        public Guid? BinaryObjectID { get; set; }
+        [DataMember(Name="status", EmitDefaultValue=false)]
+        public string Status { get; set; }
 
         /// <summary>
         /// Gets or Sets File
@@ -119,9 +81,15 @@ namespace OpenBots.Service.API.Model
         public byte[] File { get; set; }
 
         /// <summary>
+        /// Gets or Sets BinaryObjectId
+        /// </summary>
+        [DataMember(Name="binaryObjectId", EmitDefaultValue=false)]
+        public Guid? BinaryObjectId { get; set; }
+
+        /// <summary>
         /// Gets or Sets OrganizationId
         /// </summary>
-        [DataMember(Name="OrganizationId", EmitDefaultValue=false)]
+        [DataMember(Name="organizationId", EmitDefaultValue=false)]
         public Guid? OrganizationId { get; set; }
 
         /// <summary>
@@ -131,15 +99,12 @@ namespace OpenBots.Service.API.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Body {\n");
+            sb.Append("class ProcessViewModel {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Type: ").Append(Type).Append("\n");
-            sb.Append("  TextValue: ").Append(TextValue).Append("\n");
-            sb.Append("  NumberValue: ").Append(NumberValue).Append("\n");
-            sb.Append("  JsonValue: ").Append(JsonValue).Append("\n");
-            sb.Append("  BinaryObjectID: ").Append(BinaryObjectID).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  File: ").Append(File).Append("\n");
+            sb.Append("  BinaryObjectId: ").Append(BinaryObjectId).Append("\n");
             sb.Append("  OrganizationId: ").Append(OrganizationId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -161,15 +126,15 @@ namespace OpenBots.Service.API.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as Body);
+            return this.Equals(input as ProcessViewModel);
         }
 
         /// <summary>
-        /// Returns true if Body instances are equal
+        /// Returns true if ProcessViewModel instances are equal
         /// </summary>
-        /// <param name="input">Instance of Body to be compared</param>
+        /// <param name="input">Instance of ProcessViewModel to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Body input)
+        public bool Equals(ProcessViewModel input)
         {
             if (input == null)
                 return false;
@@ -186,34 +151,19 @@ namespace OpenBots.Service.API.Model
                     this.Name.Equals(input.Name))
                 ) && 
                 (
-                    this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
-                ) && 
-                (
-                    this.TextValue == input.TextValue ||
-                    (this.TextValue != null &&
-                    this.TextValue.Equals(input.TextValue))
-                ) && 
-                (
-                    this.NumberValue == input.NumberValue ||
-                    (this.NumberValue != null &&
-                    this.NumberValue.Equals(input.NumberValue))
-                ) && 
-                (
-                    this.JsonValue == input.JsonValue ||
-                    (this.JsonValue != null &&
-                    this.JsonValue.Equals(input.JsonValue))
-                ) && 
-                (
-                    this.BinaryObjectID == input.BinaryObjectID ||
-                    (this.BinaryObjectID != null &&
-                    this.BinaryObjectID.Equals(input.BinaryObjectID))
+                    this.Status == input.Status ||
+                    (this.Status != null &&
+                    this.Status.Equals(input.Status))
                 ) && 
                 (
                     this.File == input.File ||
                     (this.File != null &&
                     this.File.Equals(input.File))
+                ) && 
+                (
+                    this.BinaryObjectId == input.BinaryObjectId ||
+                    (this.BinaryObjectId != null &&
+                    this.BinaryObjectId.Equals(input.BinaryObjectId))
                 ) && 
                 (
                     this.OrganizationId == input.OrganizationId ||
@@ -235,18 +185,12 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
-                if (this.TextValue != null)
-                    hashCode = hashCode * 59 + this.TextValue.GetHashCode();
-                if (this.NumberValue != null)
-                    hashCode = hashCode * 59 + this.NumberValue.GetHashCode();
-                if (this.JsonValue != null)
-                    hashCode = hashCode * 59 + this.JsonValue.GetHashCode();
-                if (this.BinaryObjectID != null)
-                    hashCode = hashCode * 59 + this.BinaryObjectID.GetHashCode();
+                if (this.Status != null)
+                    hashCode = hashCode * 59 + this.Status.GetHashCode();
                 if (this.File != null)
                     hashCode = hashCode * 59 + this.File.GetHashCode();
+                if (this.BinaryObjectId != null)
+                    hashCode = hashCode * 59 + this.BinaryObjectId.GetHashCode();
                 if (this.OrganizationId != null)
                     hashCode = hashCode * 59 + this.OrganizationId.GetHashCode();
                 return hashCode;

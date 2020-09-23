@@ -32,6 +32,7 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Schedule" /> class.
         /// </summary>
+        /// <param name="agentId">agentId.</param>
         /// <param name="agentName">agentName.</param>
         /// <param name="cronExpression">cronExpression.</param>
         /// <param name="lastExecution">lastExecution.</param>
@@ -50,6 +51,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="status">status.</param>
         /// <param name="expiryDate">expiryDate.</param>
         /// <param name="startDate">startDate.</param>
+        /// <param name="processId">processId.</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -60,7 +62,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public Schedule(string agentName = default(string), string cronExpression = default(string), DateTime? lastExecution = default(DateTime?), DateTime? nextExecution = default(DateTime?), bool? isDisabled = default(bool?), Guid? projectId = default(Guid?), string triggerName = default(string), bool? recurrence = default(bool?), string startingType = default(string), DateTime? startJobOn = default(DateTime?), DateTime? recurrenceUnit = default(DateTime?), DateTime? jobRecurEveryUnit = default(DateTime?), DateTime? endJobOn = default(DateTime?), DateTime? endJobAtOccurence = default(DateTime?), DateTime? noJobEndDate = default(DateTime?), string status = default(string), DateTime? expiryDate = default(DateTime?), DateTime? startDate = default(DateTime?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public Schedule(Guid? agentId = default(Guid?), string agentName = default(string), string cronExpression = default(string), DateTime? lastExecution = default(DateTime?), DateTime? nextExecution = default(DateTime?), bool? isDisabled = default(bool?), Guid? projectId = default(Guid?), string triggerName = default(string), bool? recurrence = default(bool?), string startingType = default(string), DateTime? startJobOn = default(DateTime?), DateTime? recurrenceUnit = default(DateTime?), DateTime? jobRecurEveryUnit = default(DateTime?), DateTime? endJobOn = default(DateTime?), DateTime? endJobAtOccurence = default(DateTime?), DateTime? noJobEndDate = default(DateTime?), string status = default(string), DateTime? expiryDate = default(DateTime?), DateTime? startDate = default(DateTime?), Guid? processId = default(Guid?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -71,6 +73,7 @@ namespace OpenBots.Service.API.Model
             {
                 this.Name = name;
             }
+            this.AgentId = agentId;
             this.AgentName = agentName;
             this.CronExpression = cronExpression;
             this.LastExecution = lastExecution;
@@ -89,6 +92,7 @@ namespace OpenBots.Service.API.Model
             this.Status = status;
             this.ExpiryDate = expiryDate;
             this.StartDate = startDate;
+            this.ProcessId = processId;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -108,6 +112,12 @@ namespace OpenBots.Service.API.Model
             this.UpdatedBy = updatedBy;
         }
         
+        /// <summary>
+        /// Gets or Sets AgentId
+        /// </summary>
+        [DataMember(Name="agentId", EmitDefaultValue=false)]
+        public Guid? AgentId { get; set; }
+
         /// <summary>
         /// Gets or Sets AgentName
         /// </summary>
@@ -217,6 +227,12 @@ namespace OpenBots.Service.API.Model
         public DateTime? StartDate { get; set; }
 
         /// <summary>
+        /// Gets or Sets ProcessId
+        /// </summary>
+        [DataMember(Name="processId", EmitDefaultValue=false)]
+        public Guid? ProcessId { get; set; }
+
+        /// <summary>
         /// Gets or Sets Name
         /// </summary>
         [DataMember(Name="name", EmitDefaultValue=false)]
@@ -284,6 +300,7 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class Schedule {\n");
+            sb.Append("  AgentId: ").Append(AgentId).Append("\n");
             sb.Append("  AgentName: ").Append(AgentName).Append("\n");
             sb.Append("  CronExpression: ").Append(CronExpression).Append("\n");
             sb.Append("  LastExecution: ").Append(LastExecution).Append("\n");
@@ -302,6 +319,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  ExpiryDate: ").Append(ExpiryDate).Append("\n");
             sb.Append("  StartDate: ").Append(StartDate).Append("\n");
+            sb.Append("  ProcessId: ").Append(ProcessId).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -346,6 +364,11 @@ namespace OpenBots.Service.API.Model
                 return false;
 
             return 
+                (
+                    this.AgentId == input.AgentId ||
+                    (this.AgentId != null &&
+                    this.AgentId.Equals(input.AgentId))
+                ) && 
                 (
                     this.AgentName == input.AgentName ||
                     (this.AgentName != null &&
@@ -437,6 +460,11 @@ namespace OpenBots.Service.API.Model
                     this.StartDate.Equals(input.StartDate))
                 ) && 
                 (
+                    this.ProcessId == input.ProcessId ||
+                    (this.ProcessId != null &&
+                    this.ProcessId.Equals(input.ProcessId))
+                ) && 
+                (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
@@ -497,6 +525,8 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
+                if (this.AgentId != null)
+                    hashCode = hashCode * 59 + this.AgentId.GetHashCode();
                 if (this.AgentName != null)
                     hashCode = hashCode * 59 + this.AgentName.GetHashCode();
                 if (this.CronExpression != null)
@@ -533,6 +563,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.ExpiryDate.GetHashCode();
                 if (this.StartDate != null)
                     hashCode = hashCode * 59 + this.StartDate.GetHashCode();
+                if (this.ProcessId != null)
+                    hashCode = hashCode * 59 + this.ProcessId.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)
