@@ -24,7 +24,7 @@ namespace OpenBots.Service.API.Api
     {
         #region Synchronous Operations
         /// <summary>
-        /// Provides an Agent id if the provided machine matches an Agent and updates the isConnected field
+        /// Provides an Agent id and Name if the provided machine matches an Agent and updates the isConnected field
         /// </summary>
         /// <remarks>
         /// 
@@ -36,7 +36,7 @@ namespace OpenBots.Service.API.Api
         ConnectAgentResponseModel ApiV1AgentsConnectPatch (string machineName, string macAddresses);
 
         /// <summary>
-        /// Provides an Agent id if the provided machine matches an Agent and updates the isConnected field
+        /// Provides an Agent id and Name if the provided machine matches an Agent and updates the isConnected field
         /// </summary>
         /// <remarks>
         /// 
@@ -273,7 +273,7 @@ namespace OpenBots.Service.API.Api
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
-        /// Provides an Agent id if the provided machine matches an Agent and updates the isConnected field
+        /// Provides an Agent id and Name if the provided machine matches an Agent and updates the isConnected field
         /// </summary>
         /// <remarks>
         /// 
@@ -285,7 +285,7 @@ namespace OpenBots.Service.API.Api
         System.Threading.Tasks.Task<IActionResult> ApiV1AgentsConnectPatchAsync (string machineName, string macAddresses);
 
         /// <summary>
-        /// Provides an Agent id if the provided machine matches an Agent and updates the isConnected field
+        /// Provides an Agent id and Name if the provided machine matches an Agent and updates the isConnected field
         /// </summary>
         /// <remarks>
         /// 
@@ -631,7 +631,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides an Agent id if the provided machine matches an Agent and updates the isConnected field 
+        /// Provides an Agent id and Name if the provided machine matches an Agent and updates the isConnected field 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="machineName"></param>
@@ -644,7 +644,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides an Agent id if the provided machine matches an Agent and updates the isConnected field 
+        /// Provides an Agent id and Name if the provided machine matches an Agent and updates the isConnected field 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="machineName"></param>
@@ -702,7 +702,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides an Agent id if the provided machine matches an Agent and updates the isConnected field 
+        /// Provides an Agent id and Name if the provided machine matches an Agent and updates the isConnected field 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="machineName"></param>
@@ -716,7 +716,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides an Agent id if the provided machine matches an Agent and updates the isConnected field 
+        /// Provides an Agent id and Name if the provided machine matches an Agent and updates the isConnected field 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="machineName"></param>

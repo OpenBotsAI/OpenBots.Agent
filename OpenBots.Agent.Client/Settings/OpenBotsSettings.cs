@@ -10,5 +10,6 @@
         public string LoggingValue4 { get; set; }
         public string OpenBotsServerUrl { get; set; }
         public string AgentId { get; set; }
+        public string AgentName { get; set; }
     }
 }

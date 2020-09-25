@@ -23,18 +23,26 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectAgentResponseModel" /> class.
         /// </summary>
-        /// <param name="id">id.</param>
+        /// <param name="agentId">agentId.</param>
+        /// <param name="agentName">agentName.</param>
 
-        public ConnectAgentResponseModel(Guid? id = default(Guid?))
+        public ConnectAgentResponseModel(Guid? agentId = default(Guid?), string agentName = default(string))
         {
-            this.Id = id;
+            this.AgentId = agentId;
+            this.AgentName = agentName;
         }
 
         /// <summary>
-        /// Gets or Sets Id
+        /// Gets or Sets agentId
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false)]
-        public Guid? Id { get; set; }
+        [DataMember(Name = "agentId", EmitDefaultValue = false)]
+        public Guid? AgentId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets agentName
+        /// </summary>
+        [DataMember(Name = "agentName", EmitDefaultValue = false)]
+        public string AgentName { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -44,7 +52,8 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class ConnectViewModel {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Id: ").Append(AgentId).Append("\n");
+            sb.Append("  Name: ").Append(AgentName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -80,9 +89,14 @@ namespace OpenBots.Service.API.Model
 
             return
                 (
-                    this.Id == input.Id ||
-                    (this.Id != null &&
-                    this.Id.Equals(input.Id))
+                    this.AgentId == input.AgentId ||
+                    (this.AgentId != null &&
+                    this.AgentId.Equals(input.AgentId))
+                ) &&
+                (
+                    this.AgentName == input.AgentName ||
+                    (this.AgentName != null &&
+                    this.AgentName.Equals(input.AgentName))
                 );
         }
 

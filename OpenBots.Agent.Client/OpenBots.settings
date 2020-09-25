@@ -6,5 +6,6 @@
   "LoggingValue3": "",
   "LoggingValue4": "",
   "OpenBotsServerUrl": "",
-  "AgentId": ""
+  "AgentId": "",
+  "AgentName": ""
 }

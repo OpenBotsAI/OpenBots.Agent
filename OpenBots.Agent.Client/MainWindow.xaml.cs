@@ -274,7 +274,8 @@ namespace OpenBots.Agent.Client
                 if (serverResponse.Data != null)
                 {
                     _agentSettings.OpenBotsServerUrl = _connectionSettings.ServerURL;
-                    _agentSettings.AgentId = serverResponse.Data.ToString();
+                    _agentSettings.AgentId = ((ServerConnectionSettings)serverResponse.Data).AgentId.ToString();
+                    //_agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
 
                     UpdateUIOnConnect();
 
@@ -297,6 +298,7 @@ namespace OpenBots.Agent.Client
                 {
                     _agentSettings.OpenBotsServerUrl = "";
                     _agentSettings.AgentId = string.Empty;
+                    _agentSettings.AgentName = string.Empty;
 
                     UpdateUIOnDisconnect();
 

@@ -11,7 +11,6 @@ namespace OpenBots.Service.Client
     public partial class OpenBotsSvc : ServiceBase
     {
         //Timer _heartbeatTimer = new Timer();
-        //string processFilePath = @"D:\Projects\RPA\Taskt\Git\Development\taskt\taskt.Studio\bin\Debug\taskt.Agent.Client.exe";
         string scriptPath = @"C:\Users\HP\Documents\taskt\My Scripts\test scripts\ServiceTest\Main.json";
         public OpenBotsSvc()
         {

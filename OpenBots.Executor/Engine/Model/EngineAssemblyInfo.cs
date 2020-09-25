@@ -5,12 +5,12 @@
         /// <summary>
         /// Gets Assembly File Name
         /// </summary>
-        public string FileName { get; } = "taskt.Engine.dll";
+        public string FileName { get; } = "OpenBots.Engine.dll";
 
         /// <summary>
         /// Gets Class Name as Type
         /// </summary>
-        public string ClassName { get; } = "taskt.Engine.AutomationEngineInstance";
+        public string ClassName { get; } = "OpenBots.Engine.AutomationEngineInstance";
 
         /// <summary>
         /// Gets Method Name to Execute Script

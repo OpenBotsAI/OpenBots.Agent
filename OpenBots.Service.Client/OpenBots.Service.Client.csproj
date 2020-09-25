@@ -47,7 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Executor\ExecutionManager.cs" />
+    <Compile Include="Executor\JobsQueueManager.cs" />
     <Compile Include="Executor\ProcessLauncher.cs" />
+    <Compile Include="Manager\AgentsAPIManager.cs" />
+    <Compile Include="Manager\AuthAPIManager.cs" />
+    <Compile Include="Manager\JobsAPIManager.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

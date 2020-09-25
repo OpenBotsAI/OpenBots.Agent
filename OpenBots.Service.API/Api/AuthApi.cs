@@ -24,6 +24,27 @@ namespace OpenBots.Service.API.Api
     {
         #region Synchronous Operations
         /// <summary>
+        /// Authenticate using Agent details
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body">Input model (optional)</param>
+        /// <returns></returns>
+        void ApiV1AuthAgentTokenPost (VerifyAgentModel body = null);
+
+        /// <summary>
+        /// Authenticate using Agent details
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body">Input model (optional)</param>
+        /// <returns>ApiResponse of Object(void)</returns>
+        ApiResponse<RefreshModel> ApiV1AuthAgentTokenPostWithHttpInfo (VerifyAgentModel body = null);
+        /// <summary>
         /// Change / Reset with new password
         /// </summary>
         /// <remarks>
@@ -300,6 +321,27 @@ namespace OpenBots.Service.API.Api
         ApiResponse<Object> ApiV1AuthWpRegisterPostWithHttpInfo ();
         #endregion Synchronous Operations
         #region Asynchronous Operations
+        /// <summary>
+        /// Authenticate using Agent details
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body">Input model (optional)</param>
+        /// <returns>Task of void</returns>
+        System.Threading.Tasks.Task ApiV1AuthAgentTokenPostAsync (VerifyAgentModel body = null);
+
+        /// <summary>
+        /// Authenticate using Agent details
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body">Input model (optional)</param>
+        /// <returns>Task of ApiResponse</returns>
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthAgentTokenPostAsyncWithHttpInfo (VerifyAgentModel body = null);
         /// <summary>
         /// Change / Reset with new password
         /// </summary>
@@ -684,6 +726,149 @@ namespace OpenBots.Service.API.Api
         public void AddDefaultHeader(string key, string value)
         {
             this.Configuration.AddDefaultHeader(key, value);
+        }
+
+        /// <summary>
+        /// Authenticate using Agent details 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body">Input model (optional)</param>
+        /// <returns></returns>
+        public void ApiV1AuthAgentTokenPost (VerifyAgentModel body = null)
+        {
+             ApiV1AuthAgentTokenPostWithHttpInfo(body);
+        }
+
+        /// <summary>
+        /// Authenticate using Agent details 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body">Input model (optional)</param>
+        /// <returns>ApiResponse of Object(void)</returns>
+        public ApiResponse<RefreshModel> ApiV1AuthAgentTokenPostWithHttpInfo (VerifyAgentModel body = null)
+        {
+
+            var localVarPath = "/api/v1/Auth/agentToken";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AuthAgentTokenPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<RefreshModel>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (RefreshModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(RefreshModel)));
+        }
+
+        /// <summary>
+        /// Authenticate using Agent details 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body">Input model (optional)</param>
+        /// <returns>Task of void</returns>
+        public async System.Threading.Tasks.Task ApiV1AuthAgentTokenPostAsync (VerifyAgentModel body = null)
+        {
+             await ApiV1AuthAgentTokenPostAsyncWithHttpInfo(body);
+
+        }
+
+        /// <summary>
+        /// Authenticate using Agent details 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body">Input model (optional)</param>
+        /// <returns>Task of ApiResponse</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthAgentTokenPostAsyncWithHttpInfo (VerifyAgentModel body = null)
+        {
+
+            var localVarPath = "/api/v1/Auth/agentToken";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AuthAgentTokenPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<Object>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                null);
         }
 
         /// <summary>
