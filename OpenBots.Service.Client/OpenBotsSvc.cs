@@ -20,7 +20,7 @@ namespace OpenBots.Service.Client
         protected override void OnStart(string[] args)
         {
             _heartbeatTimer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            _heartbeatTimer.Interval = 60000; //number in miliseconds  
+            _heartbeatTimer.Interval = 10000; //number in miliseconds  
             _heartbeatTimer.Enabled = true;
 
             ////HttpServerClient.Instance.Initialize();
@@ -38,6 +38,9 @@ namespace OpenBots.Service.Client
 
         private void OnElapsedTime(object source, ElapsedEventArgs e)
         {
+            _heartbeatTimer.Elapsed -= new ElapsedEventHandler(OnElapsedTime);
+            _heartbeatTimer.Enabled = false;
+
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{scriptPath}\"";
             // launch the application
