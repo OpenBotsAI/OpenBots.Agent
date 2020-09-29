@@ -14,6 +14,8 @@ namespace OpenBots.Agent.Core.Model
         [DataMember]
         public string AgentId { get; set; }
         [DataMember]
+        public string AgentName { get; set; }
+        [DataMember]
         public string MACAddress { get; set; }
         [DataMember]
         public string TracingLevel { get; set; }

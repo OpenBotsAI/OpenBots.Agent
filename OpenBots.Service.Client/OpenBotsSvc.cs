@@ -10,8 +10,8 @@ namespace OpenBots.Service.Client
 {
     public partial class OpenBotsSvc : ServiceBase
     {
-        //Timer _heartbeatTimer = new Timer();
-        string scriptPath = @"C:\Users\HP\Documents\taskt\My Scripts\test scripts\ServiceTest\Main.json";
+        Timer _heartbeatTimer = new Timer();
+        string scriptPath = @"C:\Users\HP\Documents\OpenBotsStudio\My Scripts\NewProj1\Main.json";
         public OpenBotsSvc()
         {
             InitializeComponent();
@@ -19,18 +19,21 @@ namespace OpenBots.Service.Client
 
         protected override void OnStart(string[] args)
         {
-            //_heartbeatTimer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            //_heartbeatTimer.Interval = 60000; //number in miliseconds  
-            //_heartbeatTimer.Enabled = true;
+            _heartbeatTimer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
+            _heartbeatTimer.Interval = 60000; //number in miliseconds  
+            _heartbeatTimer.Enabled = true;
 
-            HttpServerClient.Instance.Initialize();
-            ServiceController.Instance.ServiceStart();
+            ////HttpServerClient.Instance.Initialize();
+            ////ServiceController.Instance.ServiceStart();
         }
 
         protected override void OnStop()
         {
-            ServiceController.Instance.ServiceStop();
-            HttpServerClient.Instance.UnInitialize();
+            ////ServiceController.Instance.ServiceStop();
+            ////HttpServerClient.Instance.UnInitialize();
+            ///
+            _heartbeatTimer.Elapsed -= new ElapsedEventHandler(OnElapsedTime);
+            _heartbeatTimer.Enabled = false;
         }
 
         private void OnElapsedTime(object source, ElapsedEventArgs e)

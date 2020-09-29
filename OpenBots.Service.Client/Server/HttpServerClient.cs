@@ -84,34 +84,40 @@ namespace OpenBots.Service.Client.Server
             }
         }
 
-        private void StartJobTimer()
+        private void StartJobsFetchTimer()
         {
             if (ServerSettings.ServerConnectionEnabled)
             {
                 //handle for reinitialization
                 if (_jobsFetchTimer != null)
                 {
-                    _jobsFetchTimer.Elapsed -= JobsTimer_Elapsed;
+                    _jobsFetchTimer.Elapsed -= JobsFetchTimer_Elapsed;
                 }
 
                 //setup heartbeat to the server
                 _jobsFetchTimer = new Timer();
-                _jobsFetchTimer.Interval = 5000;
-                _jobsFetchTimer.Elapsed += JobsTimer_Elapsed;
+                _jobsFetchTimer.Interval = 30000;
+                _jobsFetchTimer.Elapsed += JobsFetchTimer_Elapsed;
                 _jobsFetchTimer.Enabled = true;
+
+                // Start Execution Manager to Run Jobs
+                ExecutionManager.Instance.StartNewJobsCheckTimer();
             }
         }
 
-        private void StopJobTimer()
+        private void StopJobsFetchTimer()
         {
             if (_jobsFetchTimer != null)
             {
                 _jobsFetchTimer.Enabled = false;
-                _jobsFetchTimer.Elapsed -= JobsTimer_Elapsed;
+                _jobsFetchTimer.Elapsed -= JobsFetchTimer_Elapsed;
+
+                // Stop Execution Manager
+                ExecutionManager.Instance.StopNewJobsCheckTimer();
             }
         }
 
-        private void JobsTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void JobsFetchTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             try
             {
@@ -120,7 +126,7 @@ namespace OpenBots.Service.Client.Server
                     //Retrieve New Jobs for this Agent
                     var apiResponse = JobsAPIManager.GetJobs(
                         AuthAPIManager.Instance,
-                        $"$filter=agentId eq guid'{ServerSettings.AgentId}' and jobStatus eq 'New'");
+                        $"agentId eq guid'{ServerSettings.AgentId}' and jobStatus eq 'New'");
 
                     if (apiResponse.Data.Items.Count != 0)
                         foreach (var job in apiResponse.Data.Items)
@@ -134,8 +140,8 @@ namespace OpenBots.Service.Client.Server
 
         public void UnInitialize()
         {
-            //StopHeartBeatTimer();
-            //StopJobTimer();
+            StopHeartBeatTimer();
+            StopJobsFetchTimer();
         }
 
         public Boolean IsConnected()
@@ -158,23 +164,24 @@ namespace OpenBots.Service.Client.Server
                 // Update Server Settings
                 ServerSettings.ServerConnectionEnabled = true;
                 ServerSettings.AgentId = apiResponse.Data.AgentId.ToString();
-                //ServerSettings.AgentName = apiResponse.Data.AgentName.ToString();
+                ServerSettings.AgentName = apiResponse.Data.AgentName.ToString();
 
                 // Initialize AuthAPIManager
-                //AuthAPIManager.Instance.Initialize(ServerSettings);
+                AuthAPIManager.Instance.Initialize(ServerSettings);
+
+                // On Successful Connection with Server
+                StartHeartBeatTimer();
+                StartJobsFetchTimer();
 
                 // Send Response to Agent
                 return new ServerResponse(ServerSettings, apiResponse.StatusCode.ToString());
-
-                // On Successful Connection with Server
-                ////StartHeartBeatTimer();
             }
             catch (Exception ex)
             {
                 // Update Server Settings
                 ServerSettings.ServerConnectionEnabled = false;
                 ServerSettings.AgentId = string.Empty;
-                //ServerSettings.AgentName = string.Empty;
+                ServerSettings.AgentName = string.Empty;
 
                 // Send Response to Agent
                 return new ServerResponse(null,
@@ -199,10 +206,11 @@ namespace OpenBots.Service.Client.Server
                 //ServerSettings = connectionSettings;
                 ServerSettings.ServerConnectionEnabled = false;
                 ServerSettings.AgentId = string.Empty;
-                //ServerSettings.AgentName = string.Empty;
+                ServerSettings.AgentName = string.Empty;
 
                 // After Disconnecting from Server
-                ////StopHeartBeatTimer();
+                StopHeartBeatTimer();
+                StopJobsFetchTimer();
 
                 // Form Server Response
                 return new ServerResponse(ServerSettings, apiResponse.StatusCode.ToString());

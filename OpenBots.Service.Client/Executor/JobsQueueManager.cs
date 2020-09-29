@@ -1,5 +1,6 @@
 ﻿using OpenBots.Service.API.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenBots.Service.Client.Executor
 {
@@ -26,7 +27,8 @@ namespace OpenBots.Service.Client.Executor
 
         public void EnqueueJob(Job job)
         {
-            _jobsQueue.Enqueue(job);
+            if (_jobsQueue.ToList().Where(j => j.Id == job.Id).Count() == 0)
+                _jobsQueue.Enqueue(job);
         }
 
         public Job DequeueJob()

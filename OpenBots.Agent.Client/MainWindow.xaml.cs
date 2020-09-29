@@ -275,7 +275,7 @@ namespace OpenBots.Agent.Client
                 {
                     _agentSettings.OpenBotsServerUrl = _connectionSettings.ServerURL;
                     _agentSettings.AgentId = ((ServerConnectionSettings)serverResponse.Data).AgentId.ToString();
-                    //_agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
+                    _agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
 
                     UpdateUIOnConnect();
 

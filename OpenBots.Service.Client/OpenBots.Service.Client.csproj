@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
@@ -50,9 +53,11 @@
     <Compile Include="Executor\ExecutionManager.cs" />
     <Compile Include="Executor\JobsQueueManager.cs" />
     <Compile Include="Executor\ProcessLauncher.cs" />
+    <Compile Include="Executor\ProcessManager.cs" />
     <Compile Include="Manager\AgentsAPIManager.cs" />
     <Compile Include="Manager\AuthAPIManager.cs" />
     <Compile Include="Manager\JobsAPIManager.cs" />
+    <Compile Include="Manager\ProcessesAPIManager.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -74,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectInstaller.resx">

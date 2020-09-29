@@ -15,6 +15,6 @@
         /// <summary>
         /// Gets Method Name to Execute Script
         /// </summary>
-        public string MethodName { get; } = "ExecuteScriptSync";
+        public string MethodName { get; } = "ExecuteScriptAsync";
     }
 }

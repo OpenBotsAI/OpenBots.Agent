@@ -7,9 +7,11 @@ namespace OpenBots.Agent.Core.Infrastructure
     public interface IWindowsServiceEndPoint
     {
         [OperationContract]
+        [ServiceKnownType(typeof(ServerConnectionSettings))]
         ServerResponse ConnectToServer(ServerConnectionSettings settings);
 
         [OperationContract]
+        [ServiceKnownType(typeof(ServerConnectionSettings))]
         ServerResponse DisconnectFromServer(ServerConnectionSettings settings);
 
         [OperationContract]

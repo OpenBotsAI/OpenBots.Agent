@@ -1,5 +1,8 @@
 ﻿
+using OpenBots.Service.Client.Manager;
 using System;
+using System.IO;
+using System.Linq;
 using System.Timers;
 
 namespace OpenBots.Service.Client.Executor
@@ -56,7 +59,7 @@ namespace OpenBots.Service.Client.Executor
                 if(!JobsQueueManager.Instance.IsQueueEmpty())
                 {
                     SetEngineStatus(true);
-                    RunJob();
+                    StartAutomation();
                 }
             }
             catch (Exception ex)
@@ -68,11 +71,15 @@ namespace OpenBots.Service.Client.Executor
             }
         }
 
-        private void RunJob()
+        private void StartAutomation()
         {
             // Dequeue Job
             var job = JobsQueueManager.Instance.DequeueJob();
 
+            // Download Process and Extract Files
+            var processConfigPath = ProcessManager.DownloadAndExtractProcess(job.ProcessId.ToString());
+
+            RunJob(processConfigPath);
         }
 
         private void SetEngineStatus(bool isBusy)
@@ -82,6 +89,15 @@ namespace OpenBots.Service.Client.Executor
                 StopNewJobsCheckTimer();
             else
                 StartNewJobsCheckTimer();
+        }
+
+        private void RunJob(string mainFilePath)
+        {
+            var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
+            var cmdLine = $"\"{executorPath}\" \"{mainFilePath}\"";
+            // launch the application
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, out procInfo);
         }
     }
 }

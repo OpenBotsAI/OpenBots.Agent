@@ -315,6 +315,11 @@ namespace OpenBots.Service.API.Client
                 return ConvertType(response.Content, type);
             }
 
+            if (type == typeof(MemoryStream))
+            {
+                return new MemoryStream(response.RawBytes, true);
+            }
+
             // at this point, it must be a model (json)
             try
             {
