@@ -11,7 +11,7 @@ namespace OpenBots.Service.Client
     public partial class OpenBotsSvc : ServiceBase
     {
         Timer _heartbeatTimer = new Timer();
-        string scriptPath = @"C:\Users\HP\Documents\OpenBotsStudio\My Scripts\NewProj1\Main.json";
+        string scriptPath = @"C:\Users\HP\Documents\OpenBotsStudio\My Scripts\RunJobTest\Main.json";
         public OpenBotsSvc()
         {
             InitializeComponent();

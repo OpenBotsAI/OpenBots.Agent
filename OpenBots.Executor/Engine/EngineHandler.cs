@@ -19,7 +19,7 @@ namespace OpenBots.Executor
 
         private void LoadEngineAssembly()
         {
-            var engineAssemblyFilePath = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"lib"), _assemblyInfo.FileName).FirstOrDefault();
+            var engineAssemblyFilePath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, _assemblyInfo.FileName).FirstOrDefault();
             if (engineAssemblyFilePath != null)
                 _engineAssembly = Assembly.LoadFrom(engineAssemblyFilePath);
             else
@@ -32,7 +32,7 @@ namespace OpenBots.Executor
             string logFile = Path.Combine(projectDirectory, "logs", "OpenBots-Logs.txt");
             Type t = _engineAssembly.GetType(_assemblyInfo.ClassName);
 
-            var methodInfo = t.GetMethod(_assemblyInfo.MethodName, new Type[] { typeof(string) });
+            var methodInfo = t.GetMethod(_assemblyInfo.MethodName, new Type[] { typeof(string), typeof(string) });
             if (methodInfo == null)
             {
                 throw new Exception($"No method exists with name {_assemblyInfo.MethodName} within Type {_assemblyInfo.ClassName}");
