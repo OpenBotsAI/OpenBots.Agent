@@ -14,6 +14,7 @@ using System.Linq;
 using RestSharp;
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
+using System.IO;
 
 namespace OpenBots.Service.API.Api
 {
@@ -100,8 +101,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <returns>BinaryObjectPaginatedList</returns>
-        BinaryObjectPaginatedList ApiV1BinaryObjectsIdDownloadGet (string id);
+        /// <returns>MemoryStream</returns>
+        MemoryStream ApiV1BinaryObjectsIdDownloadGet (string id);
 
         /// <summary>
         /// Export/Download a binary object
@@ -111,8 +112,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <returns>ApiResponse of BinaryObjectPaginatedList</returns>
-        ApiResponse<BinaryObjectPaginatedList> ApiV1BinaryObjectsIdDownloadGetWithHttpInfo (string id);
+        /// <returns>ApiResponse of MemoryStream</returns>
+        ApiResponse<MemoryStream> ApiV1BinaryObjectsIdDownloadGetWithHttpInfo (string id);
         /// <summary>
         /// Updates partial details of BinaryObject.
         /// </summary>
@@ -137,7 +138,7 @@ namespace OpenBots.Service.API.Api
         /// <returns>ApiResponse of IActionResult</returns>
         ApiResponse<IActionResult> ApiV1BinaryObjectsIdPatchWithHttpInfo (string id, List<Operation> body = null);
         /// <summary>
-        /// Updates an Binary Object
+        /// Updates a Binary Object
         /// </summary>
         /// <remarks>
         /// Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
@@ -149,7 +150,7 @@ namespace OpenBots.Service.API.Api
         IActionResult ApiV1BinaryObjectsIdPut (string id, BinaryObject body = null);
 
         /// <summary>
-        /// Updates an Binary Object
+        /// Updates a Binary Object
         /// </summary>
         /// <remarks>
         /// Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
@@ -160,21 +161,28 @@ namespace OpenBots.Service.API.Api
         /// <returns>ApiResponse of IActionResult</returns>
         ApiResponse<IActionResult> ApiV1BinaryObjectsIdPutWithHttpInfo (string id, BinaryObject body = null);
         /// <summary>
-        /// 
+        /// Updates a Binary Object with file
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="apiComponent"> (optional)</param>
-        /// <param name="binaryObjectId"> (optional)</param>
-        /// <param name="organizationId"> (optional)</param>
-        /// <param name="name"> (optional)</param>
+        /// <param name="id"></param>
         /// <returns>BinaryObject</returns>
-        BinaryObject ApiV1BinaryObjectsSavePost (string apiComponent = null, string binaryObjectId = null, string organizationId = null, string name = null);
+        BinaryObject ApiV1BinaryObjectsIdUploadPost (string id);
 
         /// <summary>
+        /// Updates a Binary Object with file
+        /// </summary>
+        /// <remarks>
         /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <returns>ApiResponse of BinaryObject</returns>
+        ApiResponse<BinaryObject> ApiV1BinaryObjectsIdUploadPostWithHttpInfo (string id);
+        /// <summary>
+        /// Saves Binary Object properties in database
         /// </summary>
         /// <remarks>
         /// 
@@ -183,9 +191,21 @@ namespace OpenBots.Service.API.Api
         /// <param name="apiComponent"> (optional)</param>
         /// <param name="binaryObjectId"> (optional)</param>
         /// <param name="organizationId"> (optional)</param>
-        /// <param name="name"> (optional)</param>
+        /// <returns>BinaryObject</returns>
+        BinaryObject ApiV1BinaryObjectsSavePost (string apiComponent = null, string binaryObjectId = null, string organizationId = null);
+
+        /// <summary>
+        /// Saves Binary Object properties in database
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="apiComponent"> (optional)</param>
+        /// <param name="binaryObjectId"> (optional)</param>
+        /// <param name="organizationId"> (optional)</param>
         /// <returns>ApiResponse of BinaryObject</returns>
-        ApiResponse<BinaryObject> ApiV1BinaryObjectsSavePostWithHttpInfo (string apiComponent = null, string binaryObjectId = null, string organizationId = null, string name = null);
+        ApiResponse<BinaryObject> ApiV1BinaryObjectsSavePostWithHttpInfo (string apiComponent = null, string binaryObjectId = null, string organizationId = null);
         /// <summary>
         /// Uploads/Adds a Binary Object
         /// </summary>
@@ -309,8 +329,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <returns>Task of BinaryObjectPaginatedList</returns>
-        System.Threading.Tasks.Task<BinaryObjectPaginatedList> ApiV1BinaryObjectsIdDownloadGetAsync (string id);
+        /// <returns>Task of MemoryStream</returns>
+        System.Threading.Tasks.Task<MemoryStream> ApiV1BinaryObjectsIdDownloadGetAsync (string id);
 
         /// <summary>
         /// Export/Download a binary object
@@ -320,8 +340,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <returns>Task of ApiResponse (BinaryObjectPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<BinaryObjectPaginatedList>> ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo (string id);
+        /// <returns>Task of ApiResponse (MemoryStream)</returns>
+        System.Threading.Tasks.Task<ApiResponse<MemoryStream>> ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo (string id);
         /// <summary>
         /// Updates partial details of BinaryObject.
         /// </summary>
@@ -346,7 +366,7 @@ namespace OpenBots.Service.API.Api
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1BinaryObjectsIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null);
         /// <summary>
-        /// Updates an Binary Object
+        /// Updates a Binary Object
         /// </summary>
         /// <remarks>
         /// Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
@@ -358,7 +378,7 @@ namespace OpenBots.Service.API.Api
         System.Threading.Tasks.Task<IActionResult> ApiV1BinaryObjectsIdPutAsync (string id, BinaryObject body = null);
 
         /// <summary>
-        /// Updates an Binary Object
+        /// Updates a Binary Object
         /// </summary>
         /// <remarks>
         /// Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
@@ -369,21 +389,28 @@ namespace OpenBots.Service.API.Api
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1BinaryObjectsIdPutAsyncWithHttpInfo (string id, BinaryObject body = null);
         /// <summary>
-        /// 
+        /// Updates a Binary Object with file
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="apiComponent"> (optional)</param>
-        /// <param name="binaryObjectId"> (optional)</param>
-        /// <param name="organizationId"> (optional)</param>
-        /// <param name="name"> (optional)</param>
+        /// <param name="id"></param>
         /// <returns>Task of BinaryObject</returns>
-        System.Threading.Tasks.Task<BinaryObject> ApiV1BinaryObjectsSavePostAsync (string apiComponent = null, string binaryObjectId = null, string organizationId = null, string name = null);
+        System.Threading.Tasks.Task<BinaryObject> ApiV1BinaryObjectsIdUploadPostAsync (string id);
 
         /// <summary>
+        /// Updates a Binary Object with file
+        /// </summary>
+        /// <remarks>
         /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <returns>Task of ApiResponse (BinaryObject)</returns>
+        System.Threading.Tasks.Task<ApiResponse<BinaryObject>> ApiV1BinaryObjectsIdUploadPostAsyncWithHttpInfo (string id);
+        /// <summary>
+        /// Saves Binary Object properties in database
         /// </summary>
         /// <remarks>
         /// 
@@ -392,9 +419,21 @@ namespace OpenBots.Service.API.Api
         /// <param name="apiComponent"> (optional)</param>
         /// <param name="binaryObjectId"> (optional)</param>
         /// <param name="organizationId"> (optional)</param>
-        /// <param name="name"> (optional)</param>
+        /// <returns>Task of BinaryObject</returns>
+        System.Threading.Tasks.Task<BinaryObject> ApiV1BinaryObjectsSavePostAsync (string apiComponent = null, string binaryObjectId = null, string organizationId = null);
+
+        /// <summary>
+        /// Saves Binary Object properties in database
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="apiComponent"> (optional)</param>
+        /// <param name="binaryObjectId"> (optional)</param>
+        /// <param name="organizationId"> (optional)</param>
         /// <returns>Task of ApiResponse (BinaryObject)</returns>
-        System.Threading.Tasks.Task<ApiResponse<BinaryObject>> ApiV1BinaryObjectsSavePostAsyncWithHttpInfo (string apiComponent = null, string binaryObjectId = null, string organizationId = null, string name = null);
+        System.Threading.Tasks.Task<ApiResponse<BinaryObject>> ApiV1BinaryObjectsSavePostAsyncWithHttpInfo (string apiComponent = null, string binaryObjectId = null, string organizationId = null);
         /// <summary>
         /// Uploads/Adds a Binary Object
         /// </summary>
@@ -954,10 +993,10 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <returns>BinaryObjectPaginatedList</returns>
-        public BinaryObjectPaginatedList ApiV1BinaryObjectsIdDownloadGet (string id)
+        /// <returns>MemoryStream</returns>
+        public MemoryStream ApiV1BinaryObjectsIdDownloadGet (string id)
         {
-             ApiResponse<BinaryObjectPaginatedList> localVarResponse = ApiV1BinaryObjectsIdDownloadGetWithHttpInfo(id);
+             ApiResponse<MemoryStream> localVarResponse = ApiV1BinaryObjectsIdDownloadGetWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -966,8 +1005,8 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <returns>ApiResponse of BinaryObjectPaginatedList</returns>
-        public ApiResponse< BinaryObjectPaginatedList > ApiV1BinaryObjectsIdDownloadGetWithHttpInfo (string id)
+        /// <returns>ApiResponse of MemoryStream</returns>
+        public ApiResponse< MemoryStream > ApiV1BinaryObjectsIdDownloadGetWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -988,9 +1027,7 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Accept header
             String[] localVarHttpHeaderAccepts = new String[] {
-                "text/plain",
-                "application/json",
-                "text/json"
+                "application/json"
             };
             String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
             if (localVarHttpHeaderAccept != null)
@@ -1011,9 +1048,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<BinaryObjectPaginatedList>(localVarStatusCode,
+            return new ApiResponse<MemoryStream>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (BinaryObjectPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(BinaryObjectPaginatedList)));
+                (MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(MemoryStream)));
         }
 
         /// <summary>
@@ -1021,10 +1058,10 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <returns>Task of BinaryObjectPaginatedList</returns>
-        public async System.Threading.Tasks.Task<BinaryObjectPaginatedList> ApiV1BinaryObjectsIdDownloadGetAsync (string id)
+        /// <returns>Task of MemoryStream</returns>
+        public async System.Threading.Tasks.Task<MemoryStream> ApiV1BinaryObjectsIdDownloadGetAsync (string id)
         {
-             ApiResponse<BinaryObjectPaginatedList> localVarResponse = await ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo(id);
+             ApiResponse<MemoryStream> localVarResponse = await ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -1034,8 +1071,8 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
-        /// <returns>Task of ApiResponse (BinaryObjectPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<BinaryObjectPaginatedList>> ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo (string id)
+        /// <returns>Task of ApiResponse (MemoryStream)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<MemoryStream>> ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1056,9 +1093,7 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Accept header
             String[] localVarHttpHeaderAccepts = new String[] {
-                "text/plain",
-                "application/json",
-                "text/json"
+                "application/json"
             };
             String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
             if (localVarHttpHeaderAccept != null)
@@ -1079,9 +1114,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<BinaryObjectPaginatedList>(localVarStatusCode,
+            return new ApiResponse<MemoryStream>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (BinaryObjectPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(BinaryObjectPaginatedList)));
+                (MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(MemoryStream)));
         }
 
         /// <summary>
@@ -1244,7 +1279,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Binary Object Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
+        /// Updates a Binary Object Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Binary Object Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
@@ -1257,7 +1292,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Binary Object Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
+        /// Updates a Binary Object Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Binary Object Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
@@ -1323,7 +1358,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Binary Object Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
+        /// Updates a Binary Object Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Binary Object Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
@@ -1337,7 +1372,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Binary Object Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
+        /// Updates a Binary Object Provides an action to update an Binary Object, when Binary Object id and the new details of Binary Object are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Binary Object Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
@@ -1403,30 +1438,183 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        ///  
+        /// Updates a Binary Object with file 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="apiComponent"> (optional)</param>
-        /// <param name="binaryObjectId"> (optional)</param>
-        /// <param name="organizationId"> (optional)</param>
-        /// <param name="name"> (optional)</param>
+        /// <param name="id"></param>
         /// <returns>BinaryObject</returns>
-        public BinaryObject ApiV1BinaryObjectsSavePost (string apiComponent = null, string binaryObjectId = null, string organizationId = null, string name = null)
+        public BinaryObject ApiV1BinaryObjectsIdUploadPost (string id)
         {
-             ApiResponse<BinaryObject> localVarResponse = ApiV1BinaryObjectsSavePostWithHttpInfo(apiComponent, binaryObjectId, organizationId, name);
+             ApiResponse<BinaryObject> localVarResponse = ApiV1BinaryObjectsIdUploadPostWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        ///  
+        /// Updates a Binary Object with file 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <returns>ApiResponse of BinaryObject</returns>
+        public ApiResponse< BinaryObject > ApiV1BinaryObjectsIdUploadPostWithHttpInfo (string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling BinaryObjectsApi->ApiV1BinaryObjectsIdUploadPost");
+
+            var localVarPath = "/api/v1/BinaryObjects/{id}/Upload";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "multipart/form-data"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            //////if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
+            //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
+            //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
+            //////if (contentType != null) localVarFormParams.Add("ContentType", this.Configuration.ApiClient.ParameterToString(contentType)); // form parameter
+            //////if (correlationEntityId != null) localVarFormParams.Add("CorrelationEntityId", this.Configuration.ApiClient.ParameterToString(correlationEntityId)); // form parameter
+            //////if (correlationEntity != null) localVarFormParams.Add("CorrelationEntity", this.Configuration.ApiClient.ParameterToString(correlationEntity)); // form parameter
+            //////if (storagePath != null) localVarFormParams.Add("StoragePath", this.Configuration.ApiClient.ParameterToString(storagePath)); // form parameter
+            //////if (storageProvider != null) localVarFormParams.Add("StorageProvider", this.Configuration.ApiClient.ParameterToString(storageProvider)); // form parameter
+            //////if (sizeInBytes != null) localVarFormParams.Add("SizeInBytes", this.Configuration.ApiClient.ParameterToString(sizeInBytes)); // form parameter
+            //////if (hashCode != null) localVarFormParams.Add("HashCode", this.Configuration.ApiClient.ParameterToString(hashCode)); // form parameter
+            //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1BinaryObjectsIdUploadPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<BinaryObject>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (BinaryObject) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(BinaryObject)));
+        }
+
+        /// <summary>
+        /// Updates a Binary Object with file 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <returns>Task of BinaryObject</returns>
+        public async System.Threading.Tasks.Task<BinaryObject> ApiV1BinaryObjectsIdUploadPostAsync (string id)
+        {
+             ApiResponse<BinaryObject> localVarResponse = await ApiV1BinaryObjectsIdUploadPostAsyncWithHttpInfo(id);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Updates a Binary Object with file 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <returns>Task of ApiResponse (BinaryObject)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<BinaryObject>> ApiV1BinaryObjectsIdUploadPostAsyncWithHttpInfo (string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling BinaryObjectsApi->ApiV1BinaryObjectsIdUploadPost");
+
+            var localVarPath = "/api/v1/BinaryObjects/{id}/Upload";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "multipart/form-data"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            //////if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
+            //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
+            //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
+            //////if (contentType != null) localVarFormParams.Add("ContentType", this.Configuration.ApiClient.ParameterToString(contentType)); // form parameter
+            //////if (correlationEntityId != null) localVarFormParams.Add("CorrelationEntityId", this.Configuration.ApiClient.ParameterToString(correlationEntityId)); // form parameter
+            //////if (correlationEntity != null) localVarFormParams.Add("CorrelationEntity", this.Configuration.ApiClient.ParameterToString(correlationEntity)); // form parameter
+            //////if (storagePath != null) localVarFormParams.Add("StoragePath", this.Configuration.ApiClient.ParameterToString(storagePath)); // form parameter
+            //////if (storageProvider != null) localVarFormParams.Add("StorageProvider", this.Configuration.ApiClient.ParameterToString(storageProvider)); // form parameter
+            //////if (sizeInBytes != null) localVarFormParams.Add("SizeInBytes", this.Configuration.ApiClient.ParameterToString(sizeInBytes)); // form parameter
+            //////if (hashCode != null) localVarFormParams.Add("HashCode", this.Configuration.ApiClient.ParameterToString(hashCode)); // form parameter
+            //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1BinaryObjectsIdUploadPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<BinaryObject>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (BinaryObject) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(BinaryObject)));
+        }
+
+        /// <summary>
+        /// Saves Binary Object properties in database 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="apiComponent"> (optional)</param>
         /// <param name="binaryObjectId"> (optional)</param>
         /// <param name="organizationId"> (optional)</param>
-        /// <param name="name"> (optional)</param>
+        /// <returns>BinaryObject</returns>
+        public BinaryObject ApiV1BinaryObjectsSavePost (string apiComponent = null, string binaryObjectId = null, string organizationId = null)
+        {
+             ApiResponse<BinaryObject> localVarResponse = ApiV1BinaryObjectsSavePostWithHttpInfo(apiComponent, binaryObjectId, organizationId);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Saves Binary Object properties in database 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="apiComponent"> (optional)</param>
+        /// <param name="binaryObjectId"> (optional)</param>
+        /// <param name="organizationId"> (optional)</param>
         /// <returns>ApiResponse of BinaryObject</returns>
-        public ApiResponse< BinaryObject > ApiV1BinaryObjectsSavePostWithHttpInfo (string apiComponent = null, string binaryObjectId = null, string organizationId = null, string name = null)
+        public ApiResponse< BinaryObject > ApiV1BinaryObjectsSavePostWithHttpInfo (string apiComponent = null, string binaryObjectId = null, string organizationId = null)
         {
 
             var localVarPath = "/api/v1/BinaryObjects/save";
@@ -1454,7 +1642,6 @@ namespace OpenBots.Service.API.Api
             //////if (apiComponent != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "apiComponent", apiComponent)); // query parameter
             //////if (binaryObjectId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "binaryObjectId", binaryObjectId)); // query parameter
             //////if (organizationId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "organizationId", organizationId)); // query parameter
-            //////if (name != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "name", name)); // query parameter
             //////if (contentType != null) localVarFormParams.Add("ContentType", this.Configuration.ApiClient.ParameterToString(contentType)); // form parameter
             //////if (contentDisposition != null) localVarFormParams.Add("ContentDisposition", this.Configuration.ApiClient.ParameterToString(contentDisposition)); // form parameter
             //////if (headers != null) localVarFormParams.Add("Headers", this.Configuration.ApiClient.ParameterToString(headers)); // form parameter
@@ -1481,31 +1668,29 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        ///  
+        /// Saves Binary Object properties in database 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="apiComponent"> (optional)</param>
         /// <param name="binaryObjectId"> (optional)</param>
         /// <param name="organizationId"> (optional)</param>
-        /// <param name="name"> (optional)</param>
         /// <returns>Task of BinaryObject</returns>
-        public async System.Threading.Tasks.Task<BinaryObject> ApiV1BinaryObjectsSavePostAsync (string apiComponent = null, string binaryObjectId = null, string organizationId = null, string name = null)
+        public async System.Threading.Tasks.Task<BinaryObject> ApiV1BinaryObjectsSavePostAsync (string apiComponent = null, string binaryObjectId = null, string organizationId = null)
         {
-             ApiResponse<BinaryObject> localVarResponse = await ApiV1BinaryObjectsSavePostAsyncWithHttpInfo(apiComponent, binaryObjectId, organizationId, name);
+             ApiResponse<BinaryObject> localVarResponse = await ApiV1BinaryObjectsSavePostAsyncWithHttpInfo(apiComponent, binaryObjectId, organizationId);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        ///  
+        /// Saves Binary Object properties in database 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="apiComponent"> (optional)</param>
         /// <param name="binaryObjectId"> (optional)</param>
         /// <param name="organizationId"> (optional)</param>
-        /// <param name="name"> (optional)</param>
         /// <returns>Task of ApiResponse (BinaryObject)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<BinaryObject>> ApiV1BinaryObjectsSavePostAsyncWithHttpInfo (string apiComponent = null, string binaryObjectId = null, string organizationId = null, string name = null)
+        public async System.Threading.Tasks.Task<ApiResponse<BinaryObject>> ApiV1BinaryObjectsSavePostAsyncWithHttpInfo (string apiComponent = null, string binaryObjectId = null, string organizationId = null)
         {
 
             var localVarPath = "/api/v1/BinaryObjects/save";
@@ -1533,7 +1718,6 @@ namespace OpenBots.Service.API.Api
             //////if (apiComponent != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "apiComponent", apiComponent)); // query parameter
             //////if (binaryObjectId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "binaryObjectId", binaryObjectId)); // query parameter
             //////if (organizationId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "organizationId", organizationId)); // query parameter
-            //////if (name != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "name", name)); // query parameter
             //////if (contentType != null) localVarFormParams.Add("ContentType", this.Configuration.ApiClient.ParameterToString(contentType)); // form parameter
             //////if (contentDisposition != null) localVarFormParams.Add("ContentDisposition", this.Configuration.ApiClient.ParameterToString(contentDisposition)); // form parameter
             //////if (headers != null) localVarFormParams.Add("Headers", this.Configuration.ApiClient.ParameterToString(headers)); // form parameter

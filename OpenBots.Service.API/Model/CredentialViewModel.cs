@@ -32,58 +32,40 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="CredentialViewModel" /> class.
         /// </summary>
+        /// <param name="id">id.</param>
+        /// <param name="name">name.</param>
         /// <param name="provider">provider.</param>
         /// <param name="startDate">startDate.</param>
         /// <param name="endDate">endDate.</param>
         /// <param name="domain">domain.</param>
         /// <param name="userName">userName.</param>
+        /// <param name="passwordHash">passwordHash.</param>
         /// <param name="certificate">certificate.</param>
-        /// <param name="name">name (required).</param>
-        /// <param name="id">id.</param>
-        /// <param name="isDeleted">isDeleted (default to false).</param>
-        /// <param name="createdBy">createdBy.</param>
-        /// <param name="createdOn">createdOn.</param>
-        /// <param name="deletedBy">deletedBy.</param>
-        /// <param name="deleteOn">deleteOn.</param>
-        /// <param name="timestamp">timestamp.</param>
-        /// <param name="updatedOn">updatedOn.</param>
-        /// <param name="updatedBy">updatedBy.</param>
-        public CredentialViewModel(string provider = default(string), DateTime? startDate = default(DateTime?), DateTime? endDate = default(DateTime?), string domain = default(string), string userName = default(string), string certificate = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public CredentialViewModel(Guid? id = default(Guid?), string name = default(string), string provider = default(string), DateTime? startDate = default(DateTime?), DateTime? endDate = default(DateTime?), string domain = default(string), string userName = default(string), string passwordHash = default(string), string certificate = default(string))
         {
-            // to ensure "name" is required (not null)
-            if (name == null)
-            {
-                throw new InvalidDataException("name is a required property for CredentialViewModel and cannot be null");
-            }
-            else
-            {
-                this.Name = name;
-            }
+            this.Id = id;
+            this.Name = name;
             this.Provider = provider;
             this.StartDate = startDate;
             this.EndDate = endDate;
             this.Domain = domain;
             this.UserName = userName;
+            this.PasswordHash = passwordHash;
             this.Certificate = certificate;
-            this.Id = id;
-            // use default value if no "isDeleted" provided
-            if (isDeleted == null)
-            {
-                this.IsDeleted = false;
-            }
-            else
-            {
-                this.IsDeleted = isDeleted;
-            }
-            this.CreatedBy = createdBy;
-            this.CreatedOn = createdOn;
-            this.DeletedBy = deletedBy;
-            this.DeleteOn = deleteOn;
-            this.Timestamp = timestamp;
-            this.UpdatedOn = updatedOn;
-            this.UpdatedBy = updatedBy;
         }
         
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [DataMember(Name="id", EmitDefaultValue=false)]
+        public Guid? Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Name
+        /// </summary>
+        [DataMember(Name="name", EmitDefaultValue=false)]
+        public string Name { get; set; }
+
         /// <summary>
         /// Gets or Sets Provider
         /// </summary>
@@ -115,70 +97,16 @@ namespace OpenBots.Service.API.Model
         public string UserName { get; set; }
 
         /// <summary>
+        /// Gets or Sets PasswordHash
+        /// </summary>
+        [DataMember(Name="passwordHash", EmitDefaultValue=false)]
+        public string PasswordHash { get; set; }
+
+        /// <summary>
         /// Gets or Sets Certificate
         /// </summary>
         [DataMember(Name="certificate", EmitDefaultValue=false)]
         public string Certificate { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Name
-        /// </summary>
-        [DataMember(Name="name", EmitDefaultValue=false)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Id
-        /// </summary>
-        [DataMember(Name="id", EmitDefaultValue=false)]
-        public Guid? Id { get; set; }
-
-        /// <summary>
-        /// Gets or Sets IsDeleted
-        /// </summary>
-        [DataMember(Name="isDeleted", EmitDefaultValue=false)]
-        public bool? IsDeleted { get; set; }
-
-        /// <summary>
-        /// Gets or Sets CreatedBy
-        /// </summary>
-        [DataMember(Name="createdBy", EmitDefaultValue=false)]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// Gets or Sets CreatedOn
-        /// </summary>
-        [DataMember(Name="createdOn", EmitDefaultValue=false)]
-        public DateTime? CreatedOn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets DeletedBy
-        /// </summary>
-        [DataMember(Name="deletedBy", EmitDefaultValue=false)]
-        public string DeletedBy { get; set; }
-
-        /// <summary>
-        /// Gets or Sets DeleteOn
-        /// </summary>
-        [DataMember(Name="deleteOn", EmitDefaultValue=false)]
-        public DateTime? DeleteOn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Timestamp
-        /// </summary>
-        [DataMember(Name="timestamp", EmitDefaultValue=false)]
-        public byte[] Timestamp { get; set; }
-
-        /// <summary>
-        /// Gets or Sets UpdatedOn
-        /// </summary>
-        [DataMember(Name="updatedOn", EmitDefaultValue=false)]
-        public DateTime? UpdatedOn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets UpdatedBy
-        /// </summary>
-        [DataMember(Name="updatedBy", EmitDefaultValue=false)]
-        public string UpdatedBy { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -188,22 +116,15 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class CredentialViewModel {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Provider: ").Append(Provider).Append("\n");
             sb.Append("  StartDate: ").Append(StartDate).Append("\n");
             sb.Append("  EndDate: ").Append(EndDate).Append("\n");
             sb.Append("  Domain: ").Append(Domain).Append("\n");
             sb.Append("  UserName: ").Append(UserName).Append("\n");
+            sb.Append("  PasswordHash: ").Append(PasswordHash).Append("\n");
             sb.Append("  Certificate: ").Append(Certificate).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
-            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
-            sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
-            sb.Append("  DeletedBy: ").Append(DeletedBy).Append("\n");
-            sb.Append("  DeleteOn: ").Append(DeleteOn).Append("\n");
-            sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
-            sb.Append("  UpdatedOn: ").Append(UpdatedOn).Append("\n");
-            sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -239,6 +160,16 @@ namespace OpenBots.Service.API.Model
 
             return 
                 (
+                    this.Id == input.Id ||
+                    (this.Id != null &&
+                    this.Id.Equals(input.Id))
+                ) && 
+                (
+                    this.Name == input.Name ||
+                    (this.Name != null &&
+                    this.Name.Equals(input.Name))
+                ) && 
+                (
                     this.Provider == input.Provider ||
                     (this.Provider != null &&
                     this.Provider.Equals(input.Provider))
@@ -264,59 +195,14 @@ namespace OpenBots.Service.API.Model
                     this.UserName.Equals(input.UserName))
                 ) && 
                 (
+                    this.PasswordHash == input.PasswordHash ||
+                    (this.PasswordHash != null &&
+                    this.PasswordHash.Equals(input.PasswordHash))
+                ) && 
+                (
                     this.Certificate == input.Certificate ||
                     (this.Certificate != null &&
                     this.Certificate.Equals(input.Certificate))
-                ) && 
-                (
-                    this.Name == input.Name ||
-                    (this.Name != null &&
-                    this.Name.Equals(input.Name))
-                ) && 
-                (
-                    this.Id == input.Id ||
-                    (this.Id != null &&
-                    this.Id.Equals(input.Id))
-                ) && 
-                (
-                    this.IsDeleted == input.IsDeleted ||
-                    (this.IsDeleted != null &&
-                    this.IsDeleted.Equals(input.IsDeleted))
-                ) && 
-                (
-                    this.CreatedBy == input.CreatedBy ||
-                    (this.CreatedBy != null &&
-                    this.CreatedBy.Equals(input.CreatedBy))
-                ) && 
-                (
-                    this.CreatedOn == input.CreatedOn ||
-                    (this.CreatedOn != null &&
-                    this.CreatedOn.Equals(input.CreatedOn))
-                ) && 
-                (
-                    this.DeletedBy == input.DeletedBy ||
-                    (this.DeletedBy != null &&
-                    this.DeletedBy.Equals(input.DeletedBy))
-                ) && 
-                (
-                    this.DeleteOn == input.DeleteOn ||
-                    (this.DeleteOn != null &&
-                    this.DeleteOn.Equals(input.DeleteOn))
-                ) && 
-                (
-                    this.Timestamp == input.Timestamp ||
-                    (this.Timestamp != null &&
-                    this.Timestamp.Equals(input.Timestamp))
-                ) && 
-                (
-                    this.UpdatedOn == input.UpdatedOn ||
-                    (this.UpdatedOn != null &&
-                    this.UpdatedOn.Equals(input.UpdatedOn))
-                ) && 
-                (
-                    this.UpdatedBy == input.UpdatedBy ||
-                    (this.UpdatedBy != null &&
-                    this.UpdatedBy.Equals(input.UpdatedBy))
                 );
         }
 
@@ -329,6 +215,10 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
+                if (this.Id != null)
+                    hashCode = hashCode * 59 + this.Id.GetHashCode();
+                if (this.Name != null)
+                    hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Provider != null)
                     hashCode = hashCode * 59 + this.Provider.GetHashCode();
                 if (this.StartDate != null)
@@ -339,28 +229,10 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Domain.GetHashCode();
                 if (this.UserName != null)
                     hashCode = hashCode * 59 + this.UserName.GetHashCode();
+                if (this.PasswordHash != null)
+                    hashCode = hashCode * 59 + this.PasswordHash.GetHashCode();
                 if (this.Certificate != null)
                     hashCode = hashCode * 59 + this.Certificate.GetHashCode();
-                if (this.Name != null)
-                    hashCode = hashCode * 59 + this.Name.GetHashCode();
-                if (this.Id != null)
-                    hashCode = hashCode * 59 + this.Id.GetHashCode();
-                if (this.IsDeleted != null)
-                    hashCode = hashCode * 59 + this.IsDeleted.GetHashCode();
-                if (this.CreatedBy != null)
-                    hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
-                if (this.CreatedOn != null)
-                    hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
-                if (this.DeletedBy != null)
-                    hashCode = hashCode * 59 + this.DeletedBy.GetHashCode();
-                if (this.DeleteOn != null)
-                    hashCode = hashCode * 59 + this.DeleteOn.GetHashCode();
-                if (this.Timestamp != null)
-                    hashCode = hashCode * 59 + this.Timestamp.GetHashCode();
-                if (this.UpdatedOn != null)
-                    hashCode = hashCode * 59 + this.UpdatedOn.GetHashCode();
-                if (this.UpdatedBy != null)
-                    hashCode = hashCode * 59 + this.UpdatedBy.GetHashCode();
                 return hashCode;
             }
         }

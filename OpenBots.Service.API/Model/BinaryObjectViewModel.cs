@@ -24,13 +24,13 @@ using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
 namespace IO.Swagger.Model
 {
     /// <summary>
-    /// Body5
+    /// BinaryObjectViewModel
     /// </summary>
     [DataContract]
-        public partial class Body5 :  IEquatable<Body5>, IValidatableObject
+        public partial class BinaryObjectViewModel :  IEquatable<BinaryObjectViewModel>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Body5" /> class.
+        /// Initializes a new instance of the <see cref="BinaryObjectViewModel" /> class.
         /// </summary>
         /// <param name="id">id.</param>
         /// <param name="name">name.</param>
@@ -43,7 +43,7 @@ namespace IO.Swagger.Model
         /// <param name="sizeInBytes">sizeInBytes.</param>
         /// <param name="hashCode">hashCode.</param>
         /// <param name="_file">_file.</param>
-        public Body5(Guid? id = default(Guid?), string name = default(string), Guid? organizationId = default(Guid?), string contentType = default(string), Guid? correlationEntityId = default(Guid?), string correlationEntity = default(string), string storagePath = default(string), string storageProvider = default(string), long? sizeInBytes = default(long?), string hashCode = default(string), byte[] _file = default(byte[]))
+        public BinaryObjectViewModel(Guid? id = default(Guid?), string name = default(string), Guid? organizationId = default(Guid?), string contentType = default(string), Guid? correlationEntityId = default(Guid?), string correlationEntity = default(string), string storagePath = default(string), string storageProvider = default(string), long? sizeInBytes = default(long?), string hashCode = default(string), byte[] _file = default(byte[]))
         {
             this.Id = id;
             this.Name = name;
@@ -61,67 +61,67 @@ namespace IO.Swagger.Model
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name="Id", EmitDefaultValue=false)]
+        [DataMember(Name="id", EmitDefaultValue=false)]
         public Guid? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
-        [DataMember(Name="Name", EmitDefaultValue=false)]
+        [DataMember(Name="name", EmitDefaultValue=false)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or Sets OrganizationId
         /// </summary>
-        [DataMember(Name="OrganizationId", EmitDefaultValue=false)]
+        [DataMember(Name="organizationId", EmitDefaultValue=false)]
         public Guid? OrganizationId { get; set; }
 
         /// <summary>
         /// Gets or Sets ContentType
         /// </summary>
-        [DataMember(Name="ContentType", EmitDefaultValue=false)]
+        [DataMember(Name="contentType", EmitDefaultValue=false)]
         public string ContentType { get; set; }
 
         /// <summary>
         /// Gets or Sets CorrelationEntityId
         /// </summary>
-        [DataMember(Name="CorrelationEntityId", EmitDefaultValue=false)]
+        [DataMember(Name="correlationEntityId", EmitDefaultValue=false)]
         public Guid? CorrelationEntityId { get; set; }
 
         /// <summary>
         /// Gets or Sets CorrelationEntity
         /// </summary>
-        [DataMember(Name="CorrelationEntity", EmitDefaultValue=false)]
+        [DataMember(Name="correlationEntity", EmitDefaultValue=false)]
         public string CorrelationEntity { get; set; }
 
         /// <summary>
         /// Gets or Sets StoragePath
         /// </summary>
-        [DataMember(Name="StoragePath", EmitDefaultValue=false)]
+        [DataMember(Name="storagePath", EmitDefaultValue=false)]
         public string StoragePath { get; set; }
 
         /// <summary>
         /// Gets or Sets StorageProvider
         /// </summary>
-        [DataMember(Name="StorageProvider", EmitDefaultValue=false)]
+        [DataMember(Name="storageProvider", EmitDefaultValue=false)]
         public string StorageProvider { get; set; }
 
         /// <summary>
         /// Gets or Sets SizeInBytes
         /// </summary>
-        [DataMember(Name="SizeInBytes", EmitDefaultValue=false)]
+        [DataMember(Name="sizeInBytes", EmitDefaultValue=false)]
         public long? SizeInBytes { get; set; }
 
         /// <summary>
         /// Gets or Sets HashCode
         /// </summary>
-        [DataMember(Name="HashCode", EmitDefaultValue=false)]
+        [DataMember(Name="hashCode", EmitDefaultValue=false)]
         public string HashCode { get; set; }
 
         /// <summary>
         /// Gets or Sets File
         /// </summary>
-        [DataMember(Name="File", EmitDefaultValue=false)]
+        [DataMember(Name="file", EmitDefaultValue=false)]
         public byte[] File { get; set; }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace IO.Swagger.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Body5 {\n");
+            sb.Append("class BinaryObjectViewModel {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  OrganizationId: ").Append(OrganizationId).Append("\n");
@@ -163,15 +163,15 @@ namespace IO.Swagger.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as Body5);
+            return this.Equals(input as BinaryObjectViewModel);
         }
 
         /// <summary>
-        /// Returns true if Body5 instances are equal
+        /// Returns true if BinaryObjectViewModel instances are equal
         /// </summary>
-        /// <param name="input">Instance of Body5 to be compared</param>
+        /// <param name="input">Instance of BinaryObjectViewModel to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Body5 input)
+        public bool Equals(BinaryObjectViewModel input)
         {
             if (input == null)
                 return false;

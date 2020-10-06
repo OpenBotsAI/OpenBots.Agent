@@ -129,8 +129,8 @@ namespace IO.Swagger.Api
         /// </remarks>
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessLog id</param>
-        /// <returns>ProcessLogPaginatedList</returns>
-        ProcessLogPaginatedList GetProcessLog (string id);
+        /// <returns>ProcessLog</returns>
+        ProcessLog GetProcessLog (string id);
 
         /// <summary>
         /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id.
@@ -140,8 +140,8 @@ namespace IO.Swagger.Api
         /// </remarks>
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessLog id</param>
-        /// <returns>ApiResponse of ProcessLogPaginatedList</returns>
-        ApiResponse<ProcessLogPaginatedList> GetProcessLogWithHttpInfo (string id);
+        /// <returns>ApiResponse of ProcessLog</returns>
+        ApiResponse<ProcessLog> GetProcessLogWithHttpInfo (string id);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
@@ -250,8 +250,8 @@ namespace IO.Swagger.Api
         /// </remarks>
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessLog id</param>
-        /// <returns>Task of ProcessLogPaginatedList</returns>
-        System.Threading.Tasks.Task<ProcessLogPaginatedList> GetProcessLogAsync (string id);
+        /// <returns>Task of ProcessLog</returns>
+        System.Threading.Tasks.Task<ProcessLog> GetProcessLogAsync (string id);
 
         /// <summary>
         /// Provides a ProcessLog&#x27;s details for a particular ProcessLog Id.
@@ -261,8 +261,8 @@ namespace IO.Swagger.Api
         /// </remarks>
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessLog id</param>
-        /// <returns>Task of ApiResponse (ProcessLogPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ProcessLogPaginatedList>> GetProcessLogAsyncWithHttpInfo (string id);
+        /// <returns>Task of ApiResponse (ProcessLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessLog>> GetProcessLogAsyncWithHttpInfo (string id);
         #endregion Asynchronous Operations
     }
 
@@ -953,10 +953,10 @@ namespace IO.Swagger.Api
         /// </summary>
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessLog id</param>
-        /// <returns>ProcessLogPaginatedList</returns>
-        public ProcessLogPaginatedList GetProcessLog (string id)
+        /// <returns>ProcessLog</returns>
+        public ProcessLog GetProcessLog (string id)
         {
-             ApiResponse<ProcessLogPaginatedList> localVarResponse = GetProcessLogWithHttpInfo(id);
+             ApiResponse<ProcessLog> localVarResponse = GetProcessLogWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -965,8 +965,8 @@ namespace IO.Swagger.Api
         /// </summary>
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessLog id</param>
-        /// <returns>ApiResponse of ProcessLogPaginatedList</returns>
-        public ApiResponse< ProcessLogPaginatedList > GetProcessLogWithHttpInfo (string id)
+        /// <returns>ApiResponse of ProcessLog</returns>
+        public ApiResponse< ProcessLog > GetProcessLogWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1008,9 +1008,9 @@ namespace IO.Swagger.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<ProcessLogPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ProcessLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLogPaginatedList)));
+                (ProcessLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLog)));
         }
 
         /// <summary>
@@ -1018,10 +1018,10 @@ namespace IO.Swagger.Api
         /// </summary>
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessLog id</param>
-        /// <returns>Task of ProcessLogPaginatedList</returns>
-        public async System.Threading.Tasks.Task<ProcessLogPaginatedList> GetProcessLogAsync (string id)
+        /// <returns>Task of ProcessLog</returns>
+        public async System.Threading.Tasks.Task<ProcessLog> GetProcessLogAsync (string id)
         {
-             ApiResponse<ProcessLogPaginatedList> localVarResponse = await GetProcessLogAsyncWithHttpInfo(id);
+             ApiResponse<ProcessLog> localVarResponse = await GetProcessLogAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -1031,8 +1031,8 @@ namespace IO.Swagger.Api
         /// </summary>
         /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessLog id</param>
-        /// <returns>Task of ApiResponse (ProcessLogPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ProcessLogPaginatedList>> GetProcessLogAsyncWithHttpInfo (string id)
+        /// <returns>Task of ApiResponse (ProcessLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessLog>> GetProcessLogAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1074,9 +1074,9 @@ namespace IO.Swagger.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<ProcessLogPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ProcessLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLogPaginatedList)));
+                (ProcessLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessLog)));
         }
 
     }

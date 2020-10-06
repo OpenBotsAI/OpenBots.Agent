@@ -72,7 +72,7 @@ namespace OpenBots.Service.API.Api
         /// <returns>ApiResponse of QueuePaginatedList</returns>
         ApiResponse<QueuePaginatedList> ApiV1QueuesGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Deletes an Queue with a specified id from the Queues.
+        /// Deletes a Queue with a specified id from the Queues.
         /// </summary>
         /// <remarks>
         /// 
@@ -83,7 +83,7 @@ namespace OpenBots.Service.API.Api
         IActionResult ApiV1QueuesIdDelete (string id);
 
         /// <summary>
-        /// Deletes an Queue with a specified id from the Queues.
+        /// Deletes a Queue with a specified id from the Queues.
         /// </summary>
         /// <remarks>
         /// 
@@ -116,7 +116,7 @@ namespace OpenBots.Service.API.Api
         /// <returns>ApiResponse of IActionResult</returns>
         ApiResponse<IActionResult> ApiV1QueuesIdPatchWithHttpInfo (string id, List<Operation> body = null);
         /// <summary>
-        /// Updates an Queue
+        /// Updates a Queue
         /// </summary>
         /// <remarks>
         /// Provides an action to update an Queue, when Queue id and the new details of Queue are given
@@ -128,7 +128,7 @@ namespace OpenBots.Service.API.Api
         IActionResult ApiV1QueuesIdPut (string id, QueueViewModel body = null);
 
         /// <summary>
-        /// Updates an Queue
+        /// Updates a Queue
         /// </summary>
         /// <remarks>
         /// Provides an action to update an Queue, when Queue id and the new details of Queue are given
@@ -231,7 +231,7 @@ namespace OpenBots.Service.API.Api
         /// <returns>Task of ApiResponse (QueuePaginatedList)</returns>
         System.Threading.Tasks.Task<ApiResponse<QueuePaginatedList>> ApiV1QueuesGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Deletes an Queue with a specified id from the Queues.
+        /// Deletes a Queue with a specified id from the Queues.
         /// </summary>
         /// <remarks>
         /// 
@@ -242,7 +242,7 @@ namespace OpenBots.Service.API.Api
         System.Threading.Tasks.Task<IActionResult> ApiV1QueuesIdDeleteAsync (string id);
 
         /// <summary>
-        /// Deletes an Queue with a specified id from the Queues.
+        /// Deletes a Queue with a specified id from the Queues.
         /// </summary>
         /// <remarks>
         /// 
@@ -275,7 +275,7 @@ namespace OpenBots.Service.API.Api
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueuesIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null);
         /// <summary>
-        /// Updates an Queue
+        /// Updates a Queue
         /// </summary>
         /// <remarks>
         /// Provides an action to update an Queue, when Queue id and the new details of Queue are given
@@ -287,7 +287,7 @@ namespace OpenBots.Service.API.Api
         System.Threading.Tasks.Task<IActionResult> ApiV1QueuesIdPutAsync (string id, QueueViewModel body = null);
 
         /// <summary>
-        /// Updates an Queue
+        /// Updates a Queue
         /// </summary>
         /// <remarks>
         /// Provides an action to update an Queue, when Queue id and the new details of Queue are given
@@ -719,7 +719,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Deletes an Queue with a specified id from the Queues. 
+        /// Deletes a Queue with a specified id from the Queues. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Queue ID to be deleted- throws BadRequest if null or empty Guid/</param>
@@ -731,7 +731,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Deletes an Queue with a specified id from the Queues. 
+        /// Deletes a Queue with a specified id from the Queues. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Queue ID to be deleted- throws BadRequest if null or empty Guid/</param>
@@ -784,7 +784,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Deletes an Queue with a specified id from the Queues. 
+        /// Deletes a Queue with a specified id from the Queues. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Queue ID to be deleted- throws BadRequest if null or empty Guid/</param>
@@ -797,7 +797,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Deletes an Queue with a specified id from the Queues. 
+        /// Deletes a Queue with a specified id from the Queues. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Queue ID to be deleted- throws BadRequest if null or empty Guid/</param>
@@ -1009,7 +1009,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Queue Provides an action to update an Queue, when Queue id and the new details of Queue are given
+        /// Updates a Queue Provides an action to update an Queue, when Queue id and the new details of Queue are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Queue Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
@@ -1022,7 +1022,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Queue Provides an action to update an Queue, when Queue id and the new details of Queue are given
+        /// Updates a Queue Provides an action to update an Queue, when Queue id and the new details of Queue are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Queue Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
@@ -1088,7 +1088,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Queue Provides an action to update an Queue, when Queue id and the new details of Queue are given
+        /// Updates a Queue Provides an action to update an Queue, when Queue id and the new details of Queue are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Queue Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
@@ -1102,7 +1102,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Queue Provides an action to update an Queue, when Queue id and the new details of Queue are given
+        /// Updates a Queue Provides an action to update an Queue, when Queue id and the new details of Queue are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Queue Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>

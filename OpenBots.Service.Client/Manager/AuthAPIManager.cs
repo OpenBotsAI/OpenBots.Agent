@@ -30,19 +30,23 @@ namespace OpenBots.Service.Client.Manager
         {
             ServerSettings = serverSettings;
             Configuration.BasePath = ServerSettings.ServerURL;
-            GetNewToken();
         }
 
-        public string GetNewToken()
+        public string GetToken()
         {
             AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
-            //var token = authAPI.ApiV1AuthTokenPostWithHttpInfo(new LoginModel() 
-            //{ 
-            //    Email = ServerSettings.AgentName, 
-            //    Password = ServerSettings.AgentId 
-            //});
-            var apiResponse = authAPI.ApiV1AuthAgentTokenPostWithHttpInfo(new VerifyAgentModel(ServerSettings.AgentId, ServerSettings.DNSHost, ServerSettings.MACAddress));
+            var apiResponse = authAPI.ApiV1AuthTokenPostWithHttpInfo(new LoginModel(ServerSettings.AgentUsername, ServerSettings.AgentPassword));
+            
             return (Configuration.AccessToken = apiResponse.Data.Token.ToString());
+        }
+
+        public void RegisterAgentUser()
+        {
+            AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
+            var signupModel = new SignUpViewModel(ServerSettings.AgentUsername,null, null, null, ServerSettings.AgentUsername, 
+                ServerSettings.AgentPassword, true, false, null, null, null, null, null, null, null);
+            
+            var apiResponse = authAPI.ApiV1AuthRegisterPostWithHttpInfo(signupModel);
         }
     }
 }

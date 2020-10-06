@@ -65,7 +65,7 @@ namespace OpenBots.Service.Client.Server
             try
             {
                 int statusCode = AgentsAPIManager.SendAgentHeartBeat(
-                    ServerSettings.ServerURL,
+                    AuthAPIManager.Instance,
                     ServerSettings.AgentId,
                     new List<Operation>()
                     {
@@ -141,7 +141,7 @@ namespace OpenBots.Service.Client.Server
         public void UnInitialize()
         {
             StopHeartBeatTimer();
-            StopJobsFetchTimer();
+            //StopJobsFetchTimer();
         }
 
         public Boolean IsConnected()
@@ -152,29 +152,28 @@ namespace OpenBots.Service.Client.Server
         public ServerResponse Connect(ServerConnectionSettings connectionSettings)
         {
             ServerSettings = connectionSettings;
+
+            // Initialize AuthAPIManager
+            AuthAPIManager.Instance.Initialize(ServerSettings);
             try
             {
+                // Authenticate Agent
+                AuthenticateAgent();
+
                 // API Call to Connect
-                var apiResponse = AgentsAPIManager.ConnectAgent(
-                    ServerSettings.ServerURL,
-                    ServerSettings.DNSHost,
-                    ServerSettings.MACAddress
-                    );
+                var connectAPIResponse = AgentsAPIManager.ConnectAgent(AuthAPIManager.Instance, ServerSettings);
 
                 // Update Server Settings
                 ServerSettings.ServerConnectionEnabled = true;
-                ServerSettings.AgentId = apiResponse.Data.AgentId.ToString();
-                ServerSettings.AgentName = apiResponse.Data.AgentName.ToString();
-
-                // Initialize AuthAPIManager
-                AuthAPIManager.Instance.Initialize(ServerSettings);
+                ServerSettings.AgentId = connectAPIResponse.Data.AgentId.ToString();
+                ServerSettings.AgentName = connectAPIResponse.Data.AgentName.ToString();
 
                 // On Successful Connection with Server
                 StartHeartBeatTimer();
-                StartJobsFetchTimer();
+                //////StartJobsFetchTimer();
 
                 // Send Response to Agent
-                return new ServerResponse(ServerSettings, apiResponse.StatusCode.ToString());
+                return new ServerResponse(ServerSettings, connectAPIResponse.StatusCode.ToString());
             }
             catch (Exception ex)
             {
@@ -183,10 +182,12 @@ namespace OpenBots.Service.Client.Server
                 ServerSettings.AgentId = string.Empty;
                 ServerSettings.AgentName = string.Empty;
 
+                var errorMessage = ex.GetType().GetProperty("ErrorContent").GetValue(ex, null)?.ToString();
+                errorMessage = errorMessage ?? ex.GetType().GetProperty("Message").GetValue(ex, null)?.ToString();
                 // Send Response to Agent
                 return new ServerResponse(null,
                     ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString(),
-                    ex.GetType().GetProperty("ErrorContent").GetValue(ex, null).ToString());
+                    errorMessage);
             }
         }
 
@@ -195,12 +196,7 @@ namespace OpenBots.Service.Client.Server
             try
             {
                 // API Call to Disconnect
-                var apiResponse = AgentsAPIManager.DisconnectAgent(
-                        ServerSettings.ServerURL,
-                        ServerSettings.DNSHost,
-                        ServerSettings.MACAddress,
-                        ServerSettings.AgentId
-                        );
+                var apiResponse = AgentsAPIManager.DisconnectAgent(AuthAPIManager.Instance, ServerSettings);
 
                 // Update settings
                 //ServerSettings = connectionSettings;
@@ -210,7 +206,7 @@ namespace OpenBots.Service.Client.Server
 
                 // After Disconnecting from Server
                 StopHeartBeatTimer();
-                StopJobsFetchTimer();
+                //////StopJobsFetchTimer();
 
                 // Form Server Response
                 return new ServerResponse(ServerSettings, apiResponse.StatusCode.ToString());
@@ -221,6 +217,41 @@ namespace OpenBots.Service.Client.Server
                 return new ServerResponse(null,
                     ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString(),
                     ex.GetType().GetProperty("ErrorContent").GetValue(ex, null).ToString());
+            }
+        }
+
+        private void AuthenticateAgent()
+        {
+            // API Call to Get Token (Login)
+            try
+            {
+                AuthAPIManager.Instance.GetToken();
+            }
+            catch (Exception ex)
+            {
+                // If Unauthorized Request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Create Agent User
+                    AuthAPIManager.Instance.RegisterAgentUser();
+
+                    // Get Token after successful SignUp
+                    AuthAPIManager.Instance.GetToken();
+
+                }
+                else
+                    throw ex;
+            }
+
+            // Create Agent if doesn't exist
+            try
+            {
+                if (!AgentsAPIManager.FindAgent(AuthAPIManager.Instance, $"name eq '{ServerSettings.AgentUsername}'"))
+                    AgentsAPIManager.CreateAgent(AuthAPIManager.Instance, ServerSettings);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

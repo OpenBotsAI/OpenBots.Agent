@@ -30,11 +30,6 @@ namespace OpenBots.Service.API.Model
         public partial class Operation :  IEquatable<Operation>, IValidatableObject
     {
         /// <summary>
-        /// Gets or Sets OperationType
-        /// </summary>
-        [DataMember(Name="operationType", EmitDefaultValue=false)]
-        public OperationType? OperationType { get; set; }
-        /// <summary>
         /// Initializes a new instance of the <see cref="Operation" /> class.
         /// </summary>
         /// <param name="value">value.</param>
@@ -42,7 +37,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="path">path.</param>
         /// <param name="op">op.</param>
         /// <param name="from">from.</param>
-        public Operation(Object value = default(Object), OperationType? operationType = default(OperationType?), string path = default(string), string op = default(string), string from = default(string))
+        public Operation(Object value = default(Object), OperationType operationType = default(OperationType), string path = default(string), string op = default(string), string from = default(string))
         {
             this.Value = value;
             this.OperationType = operationType;
@@ -57,6 +52,11 @@ namespace OpenBots.Service.API.Model
         [DataMember(Name="value", EmitDefaultValue=false)]
         public Object Value { get; set; }
 
+        /// <summary>
+        /// Gets or Sets OperationType
+        /// </summary>
+        [DataMember(Name="operationType", EmitDefaultValue=false)]
+        public OperationType OperationType { get; set; }
 
         /// <summary>
         /// Gets or Sets Path

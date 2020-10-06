@@ -32,10 +32,11 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="AgentModel" /> class.
         /// </summary>
+        /// <param name="name">name (required).</param>
         /// <param name="machineCredentials">machineCredentials.</param>
         /// <param name="machineName">machineName (required).</param>
-        /// <param name="macAddresses">macAddresses (required).</param>
-        /// <param name="ipAddresses">ipAddresses (required).</param>
+        /// <param name="macAddresses">macAddresses.</param>
+        /// <param name="ipAddresses">ipAddresses.</param>
         /// <param name="isEnabled">isEnabled (required).</param>
         /// <param name="lastReportedOn">lastReportedOn.</param>
         /// <param name="lastReportedStatus">lastReportedStatus.</param>
@@ -44,7 +45,6 @@ namespace OpenBots.Service.API.Model
         /// <param name="isHealthy">isHealthy.</param>
         /// <param name="isConnected">isConnected (required).</param>
         /// <param name="credentialId">credentialId.</param>
-        /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
         /// <param name="createdBy">createdBy.</param>
@@ -54,8 +54,17 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public AgentModel(Guid? machineCredentials = default(Guid?), string machineName = default(string), string macAddresses = default(string), string ipAddresses = default(string), bool? isEnabled = default(bool?), DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?), bool? isConnected = default(bool?), Guid? credentialId = default(Guid?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public AgentModel(string name = default(string), Guid? machineCredentials = default(Guid?), string machineName = default(string), string macAddresses = default(string), string ipAddresses = default(string), bool? isEnabled = default(bool?), DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?), bool? isConnected = default(bool?), Guid? credentialId = default(Guid?), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
+            // to ensure "name" is required (not null)
+            if (name == null)
+            {
+                throw new InvalidDataException("name is a required property for AgentModel and cannot be null");
+            }
+            else
+            {
+                this.Name = name;
+            }
             // to ensure "machineName" is required (not null)
             if (machineName == null)
             {
@@ -64,24 +73,6 @@ namespace OpenBots.Service.API.Model
             else
             {
                 this.MachineName = machineName;
-            }
-            // to ensure "macAddresses" is required (not null)
-            if (macAddresses == null)
-            {
-                throw new InvalidDataException("macAddresses is a required property for AgentModel and cannot be null");
-            }
-            else
-            {
-                this.MacAddresses = macAddresses;
-            }
-            // to ensure "ipAddresses" is required (not null)
-            if (ipAddresses == null)
-            {
-                throw new InvalidDataException("ipAddresses is a required property for AgentModel and cannot be null");
-            }
-            else
-            {
-                this.IpAddresses = ipAddresses;
             }
             // to ensure "isEnabled" is required (not null)
             if (isEnabled == null)
@@ -101,16 +92,9 @@ namespace OpenBots.Service.API.Model
             {
                 this.IsConnected = isConnected;
             }
-            // to ensure "name" is required (not null)
-            if (name == null)
-            {
-                throw new InvalidDataException("name is a required property for AgentModel and cannot be null");
-            }
-            else
-            {
-                this.Name = name;
-            }
             this.MachineCredentials = machineCredentials;
+            this.MacAddresses = macAddresses;
+            this.IpAddresses = ipAddresses;
             this.LastReportedOn = lastReportedOn;
             this.LastReportedStatus = lastReportedStatus;
             this.LastReportedWork = lastReportedWork;
@@ -136,6 +120,12 @@ namespace OpenBots.Service.API.Model
             this.UpdatedBy = updatedBy;
         }
         
+        /// <summary>
+        /// Gets or Sets Name
+        /// </summary>
+        [DataMember(Name="name", EmitDefaultValue=false)]
+        public string Name { get; set; }
+
         /// <summary>
         /// Gets or Sets MachineCredentials
         /// </summary>
@@ -209,12 +199,6 @@ namespace OpenBots.Service.API.Model
         public Guid? CredentialId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Name
-        /// </summary>
-        [DataMember(Name="name", EmitDefaultValue=false)]
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets or Sets Id
         /// </summary>
         [DataMember(Name="id", EmitDefaultValue=false)]
@@ -276,6 +260,7 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class AgentModel {\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  MachineCredentials: ").Append(MachineCredentials).Append("\n");
             sb.Append("  MachineName: ").Append(MachineName).Append("\n");
             sb.Append("  MacAddresses: ").Append(MacAddresses).Append("\n");
@@ -288,7 +273,6 @@ namespace OpenBots.Service.API.Model
             sb.Append("  IsHealthy: ").Append(IsHealthy).Append("\n");
             sb.Append("  IsConnected: ").Append(IsConnected).Append("\n");
             sb.Append("  CredentialId: ").Append(CredentialId).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
@@ -332,6 +316,11 @@ namespace OpenBots.Service.API.Model
                 return false;
 
             return 
+                (
+                    this.Name == input.Name ||
+                    (this.Name != null &&
+                    this.Name.Equals(input.Name))
+                ) && 
                 (
                     this.MachineCredentials == input.MachineCredentials ||
                     (this.MachineCredentials != null &&
@@ -393,11 +382,6 @@ namespace OpenBots.Service.API.Model
                     this.CredentialId.Equals(input.CredentialId))
                 ) && 
                 (
-                    this.Name == input.Name ||
-                    (this.Name != null &&
-                    this.Name.Equals(input.Name))
-                ) && 
-                (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
@@ -453,6 +437,8 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
+                if (this.Name != null)
+                    hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.MachineCredentials != null)
                     hashCode = hashCode * 59 + this.MachineCredentials.GetHashCode();
                 if (this.MachineName != null)
@@ -477,8 +463,6 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.IsConnected.GetHashCode();
                 if (this.CredentialId != null)
                     hashCode = hashCode * 59 + this.CredentialId.GetHashCode();
-                if (this.Name != null)
-                    hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.IsDeleted != null)

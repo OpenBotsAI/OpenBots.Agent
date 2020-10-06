@@ -24,14 +24,17 @@ using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
 namespace IO.Swagger.Model
 {
     /// <summary>
-    /// ProcessExecutionLog
+    /// ProcessExecutionViewModel
     /// </summary>
     [DataContract]
-        public partial class ProcessExecutionLog :  IEquatable<ProcessExecutionLog>, IValidatableObject
+        public partial class ProcessExecutionViewModel :  IEquatable<ProcessExecutionViewModel>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProcessExecutionLog" /> class.
+        /// Initializes a new instance of the <see cref="ProcessExecutionViewModel" /> class.
         /// </summary>
+        /// <param name="id">id.</param>
+        /// <param name="agentName">agentName.</param>
+        /// <param name="processName">processName.</param>
         /// <param name="jobID">jobID.</param>
         /// <param name="processID">processID.</param>
         /// <param name="agentID">agentID.</param>
@@ -43,17 +46,11 @@ namespace IO.Swagger.Model
         /// <param name="hasErrors">hasErrors.</param>
         /// <param name="errorMessage">errorMessage.</param>
         /// <param name="errorDetails">errorDetails.</param>
-        /// <param name="id">id.</param>
-        /// <param name="isDeleted">isDeleted (default to false).</param>
-        /// <param name="createdBy">createdBy.</param>
-        /// <param name="createdOn">createdOn.</param>
-        /// <param name="deletedBy">deletedBy.</param>
-        /// <param name="deleteOn">deleteOn.</param>
-        /// <param name="timestamp">timestamp.</param>
-        /// <param name="updatedOn">updatedOn.</param>
-        /// <param name="updatedBy">updatedBy.</param>
-        public ProcessExecutionLog(Guid? jobID = default(Guid?), Guid? processID = default(Guid?), Guid? agentID = default(Guid?), DateTime? startedOn = default(DateTime?), DateTime? completedOn = default(DateTime?), string trigger = default(string), string triggerDetails = default(string), string status = default(string), bool? hasErrors = default(bool?), string errorMessage = default(string), string errorDetails = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public ProcessExecutionViewModel(Guid? id = default(Guid?), string agentName = default(string), string processName = default(string), Guid? jobID = default(Guid?), Guid? processID = default(Guid?), Guid? agentID = default(Guid?), DateTime? startedOn = default(DateTime?), DateTime? completedOn = default(DateTime?), string trigger = default(string), string triggerDetails = default(string), string status = default(string), bool? hasErrors = default(bool?), string errorMessage = default(string), string errorDetails = default(string))
         {
+            this.Id = id;
+            this.AgentName = agentName;
+            this.ProcessName = processName;
             this.JobID = jobID;
             this.ProcessID = processID;
             this.AgentID = agentID;
@@ -65,25 +62,26 @@ namespace IO.Swagger.Model
             this.HasErrors = hasErrors;
             this.ErrorMessage = errorMessage;
             this.ErrorDetails = errorDetails;
-            this.Id = id;
-            // use default value if no "isDeleted" provided
-            if (isDeleted == null)
-            {
-                this.IsDeleted = false;
-            }
-            else
-            {
-                this.IsDeleted = isDeleted;
-            }
-            this.CreatedBy = createdBy;
-            this.CreatedOn = createdOn;
-            this.DeletedBy = deletedBy;
-            this.DeleteOn = deleteOn;
-            this.Timestamp = timestamp;
-            this.UpdatedOn = updatedOn;
-            this.UpdatedBy = updatedBy;
         }
         
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [DataMember(Name="id", EmitDefaultValue=false)]
+        public Guid? Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AgentName
+        /// </summary>
+        [DataMember(Name="agentName", EmitDefaultValue=false)]
+        public string AgentName { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ProcessName
+        /// </summary>
+        [DataMember(Name="processName", EmitDefaultValue=false)]
+        public string ProcessName { get; set; }
+
         /// <summary>
         /// Gets or Sets JobID
         /// </summary>
@@ -151,67 +149,16 @@ namespace IO.Swagger.Model
         public string ErrorDetails { get; set; }
 
         /// <summary>
-        /// Gets or Sets Id
-        /// </summary>
-        [DataMember(Name="id", EmitDefaultValue=false)]
-        public Guid? Id { get; set; }
-
-        /// <summary>
-        /// Gets or Sets IsDeleted
-        /// </summary>
-        [DataMember(Name="isDeleted", EmitDefaultValue=false)]
-        public bool? IsDeleted { get; set; }
-
-        /// <summary>
-        /// Gets or Sets CreatedBy
-        /// </summary>
-        [DataMember(Name="createdBy", EmitDefaultValue=false)]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// Gets or Sets CreatedOn
-        /// </summary>
-        [DataMember(Name="createdOn", EmitDefaultValue=false)]
-        public DateTime? CreatedOn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets DeletedBy
-        /// </summary>
-        [DataMember(Name="deletedBy", EmitDefaultValue=false)]
-        public string DeletedBy { get; set; }
-
-        /// <summary>
-        /// Gets or Sets DeleteOn
-        /// </summary>
-        [DataMember(Name="deleteOn", EmitDefaultValue=false)]
-        public DateTime? DeleteOn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Timestamp
-        /// </summary>
-        [DataMember(Name="timestamp", EmitDefaultValue=false)]
-        public byte[] Timestamp { get; set; }
-
-        /// <summary>
-        /// Gets or Sets UpdatedOn
-        /// </summary>
-        [DataMember(Name="updatedOn", EmitDefaultValue=false)]
-        public DateTime? UpdatedOn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets UpdatedBy
-        /// </summary>
-        [DataMember(Name="updatedBy", EmitDefaultValue=false)]
-        public string UpdatedBy { get; set; }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ProcessExecutionLog {\n");
+            sb.Append("class ProcessExecutionViewModel {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  AgentName: ").Append(AgentName).Append("\n");
+            sb.Append("  ProcessName: ").Append(ProcessName).Append("\n");
             sb.Append("  JobID: ").Append(JobID).Append("\n");
             sb.Append("  ProcessID: ").Append(ProcessID).Append("\n");
             sb.Append("  AgentID: ").Append(AgentID).Append("\n");
@@ -223,15 +170,6 @@ namespace IO.Swagger.Model
             sb.Append("  HasErrors: ").Append(HasErrors).Append("\n");
             sb.Append("  ErrorMessage: ").Append(ErrorMessage).Append("\n");
             sb.Append("  ErrorDetails: ").Append(ErrorDetails).Append("\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
-            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
-            sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
-            sb.Append("  DeletedBy: ").Append(DeletedBy).Append("\n");
-            sb.Append("  DeleteOn: ").Append(DeleteOn).Append("\n");
-            sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
-            sb.Append("  UpdatedOn: ").Append(UpdatedOn).Append("\n");
-            sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -252,20 +190,35 @@ namespace IO.Swagger.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as ProcessExecutionLog);
+            return this.Equals(input as ProcessExecutionViewModel);
         }
 
         /// <summary>
-        /// Returns true if ProcessExecutionLog instances are equal
+        /// Returns true if ProcessExecutionViewModel instances are equal
         /// </summary>
-        /// <param name="input">Instance of ProcessExecutionLog to be compared</param>
+        /// <param name="input">Instance of ProcessExecutionViewModel to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ProcessExecutionLog input)
+        public bool Equals(ProcessExecutionViewModel input)
         {
             if (input == null)
                 return false;
 
             return 
+                (
+                    this.Id == input.Id ||
+                    (this.Id != null &&
+                    this.Id.Equals(input.Id))
+                ) && 
+                (
+                    this.AgentName == input.AgentName ||
+                    (this.AgentName != null &&
+                    this.AgentName.Equals(input.AgentName))
+                ) && 
+                (
+                    this.ProcessName == input.ProcessName ||
+                    (this.ProcessName != null &&
+                    this.ProcessName.Equals(input.ProcessName))
+                ) && 
                 (
                     this.JobID == input.JobID ||
                     (this.JobID != null &&
@@ -320,51 +273,6 @@ namespace IO.Swagger.Model
                     this.ErrorDetails == input.ErrorDetails ||
                     (this.ErrorDetails != null &&
                     this.ErrorDetails.Equals(input.ErrorDetails))
-                ) && 
-                (
-                    this.Id == input.Id ||
-                    (this.Id != null &&
-                    this.Id.Equals(input.Id))
-                ) && 
-                (
-                    this.IsDeleted == input.IsDeleted ||
-                    (this.IsDeleted != null &&
-                    this.IsDeleted.Equals(input.IsDeleted))
-                ) && 
-                (
-                    this.CreatedBy == input.CreatedBy ||
-                    (this.CreatedBy != null &&
-                    this.CreatedBy.Equals(input.CreatedBy))
-                ) && 
-                (
-                    this.CreatedOn == input.CreatedOn ||
-                    (this.CreatedOn != null &&
-                    this.CreatedOn.Equals(input.CreatedOn))
-                ) && 
-                (
-                    this.DeletedBy == input.DeletedBy ||
-                    (this.DeletedBy != null &&
-                    this.DeletedBy.Equals(input.DeletedBy))
-                ) && 
-                (
-                    this.DeleteOn == input.DeleteOn ||
-                    (this.DeleteOn != null &&
-                    this.DeleteOn.Equals(input.DeleteOn))
-                ) && 
-                (
-                    this.Timestamp == input.Timestamp ||
-                    (this.Timestamp != null &&
-                    this.Timestamp.Equals(input.Timestamp))
-                ) && 
-                (
-                    this.UpdatedOn == input.UpdatedOn ||
-                    (this.UpdatedOn != null &&
-                    this.UpdatedOn.Equals(input.UpdatedOn))
-                ) && 
-                (
-                    this.UpdatedBy == input.UpdatedBy ||
-                    (this.UpdatedBy != null &&
-                    this.UpdatedBy.Equals(input.UpdatedBy))
                 );
         }
 
@@ -377,6 +285,12 @@ namespace IO.Swagger.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
+                if (this.Id != null)
+                    hashCode = hashCode * 59 + this.Id.GetHashCode();
+                if (this.AgentName != null)
+                    hashCode = hashCode * 59 + this.AgentName.GetHashCode();
+                if (this.ProcessName != null)
+                    hashCode = hashCode * 59 + this.ProcessName.GetHashCode();
                 if (this.JobID != null)
                     hashCode = hashCode * 59 + this.JobID.GetHashCode();
                 if (this.ProcessID != null)
@@ -399,24 +313,6 @@ namespace IO.Swagger.Model
                     hashCode = hashCode * 59 + this.ErrorMessage.GetHashCode();
                 if (this.ErrorDetails != null)
                     hashCode = hashCode * 59 + this.ErrorDetails.GetHashCode();
-                if (this.Id != null)
-                    hashCode = hashCode * 59 + this.Id.GetHashCode();
-                if (this.IsDeleted != null)
-                    hashCode = hashCode * 59 + this.IsDeleted.GetHashCode();
-                if (this.CreatedBy != null)
-                    hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
-                if (this.CreatedOn != null)
-                    hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
-                if (this.DeletedBy != null)
-                    hashCode = hashCode * 59 + this.DeletedBy.GetHashCode();
-                if (this.DeleteOn != null)
-                    hashCode = hashCode * 59 + this.DeleteOn.GetHashCode();
-                if (this.Timestamp != null)
-                    hashCode = hashCode * 59 + this.Timestamp.GetHashCode();
-                if (this.UpdatedOn != null)
-                    hashCode = hashCode * 59 + this.UpdatedOn.GetHashCode();
-                if (this.UpdatedBy != null)
-                    hashCode = hashCode * 59 + this.UpdatedBy.GetHashCode();
                 return hashCode;
             }
         }

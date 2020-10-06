@@ -31,7 +31,7 @@ namespace OpenBots.Service.Client
             }
         }
 
-        public void ServiceStop()
+        public void StopService()
         {
             if (IsServiceAlive)
             {
@@ -43,9 +43,9 @@ namespace OpenBots.Service.Client
                 serviceHost = null;
             }
         }
-        public void ServiceStart()
+        public void StartService()
         {
-            ServiceStop();
+            StopService();
             serviceHost = new ServiceHost(typeof(WindowsServiceEndPoint));
             serviceHost.Open();
         }

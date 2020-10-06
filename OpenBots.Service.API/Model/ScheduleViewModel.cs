@@ -32,6 +32,7 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="ScheduleViewModel" /> class.
         /// </summary>
+        /// <param name="id">id.</param>
         /// <param name="name">name.</param>
         /// <param name="agentId">agentId.</param>
         /// <param name="agentName">agentName.</param>
@@ -41,20 +42,17 @@ namespace OpenBots.Service.API.Model
         /// <param name="isDisabled">isDisabled.</param>
         /// <param name="projectId">projectId.</param>
         /// <param name="processId">processId.</param>
+        /// <param name="processName">processName.</param>
         /// <param name="triggerName">triggerName.</param>
-        /// <param name="recurrence">recurrence.</param>
         /// <param name="startingType">startingType.</param>
-        /// <param name="startJobOn">startJobOn.</param>
-        /// <param name="recurrenceUnit">recurrenceUnit.</param>
-        /// <param name="jobRecurEveryUnit">jobRecurEveryUnit.</param>
-        /// <param name="endJobOn">endJobOn.</param>
-        /// <param name="endJobAtOccurence">endJobAtOccurence.</param>
-        /// <param name="noJobEndDate">noJobEndDate.</param>
         /// <param name="status">status.</param>
         /// <param name="expiryDate">expiryDate.</param>
         /// <param name="startDate">startDate.</param>
-        public ScheduleViewModel(string name = default(string), Guid? agentId = default(Guid?), string agentName = default(string), string cronExpression = default(string), DateTime? lastExecution = default(DateTime?), DateTime? nextExecution = default(DateTime?), bool? isDisabled = default(bool?), Guid? projectId = default(Guid?), Guid? processId = default(Guid?), string triggerName = default(string), bool? recurrence = default(bool?), string startingType = default(string), DateTime? startJobOn = default(DateTime?), DateTime? recurrenceUnit = default(DateTime?), DateTime? jobRecurEveryUnit = default(DateTime?), DateTime? endJobOn = default(DateTime?), DateTime? endJobAtOccurence = default(DateTime?), DateTime? noJobEndDate = default(DateTime?), string status = default(string), DateTime? expiryDate = default(DateTime?), DateTime? startDate = default(DateTime?))
+        /// <param name="createdOn">createdOn.</param>
+        /// <param name="createdBy">createdBy.</param>
+        public ScheduleViewModel(Guid? id = default(Guid?), string name = default(string), Guid? agentId = default(Guid?), string agentName = default(string), string cronExpression = default(string), DateTime? lastExecution = default(DateTime?), DateTime? nextExecution = default(DateTime?), bool? isDisabled = default(bool?), Guid? projectId = default(Guid?), Guid? processId = default(Guid?), string processName = default(string), string triggerName = default(string), string startingType = default(string), string status = default(string), DateTime? expiryDate = default(DateTime?), DateTime? startDate = default(DateTime?), DateTime? createdOn = default(DateTime?), string createdBy = default(string))
         {
+            this.Id = id;
             this.Name = name;
             this.AgentId = agentId;
             this.AgentName = agentName;
@@ -64,20 +62,22 @@ namespace OpenBots.Service.API.Model
             this.IsDisabled = isDisabled;
             this.ProjectId = projectId;
             this.ProcessId = processId;
+            this.ProcessName = processName;
             this.TriggerName = triggerName;
-            this.Recurrence = recurrence;
             this.StartingType = startingType;
-            this.StartJobOn = startJobOn;
-            this.RecurrenceUnit = recurrenceUnit;
-            this.JobRecurEveryUnit = jobRecurEveryUnit;
-            this.EndJobOn = endJobOn;
-            this.EndJobAtOccurence = endJobAtOccurence;
-            this.NoJobEndDate = noJobEndDate;
             this.Status = status;
             this.ExpiryDate = expiryDate;
             this.StartDate = startDate;
+            this.CreatedOn = createdOn;
+            this.CreatedBy = createdBy;
         }
         
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [DataMember(Name="id", EmitDefaultValue=false)]
+        public Guid? Id { get; set; }
+
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
@@ -133,58 +133,22 @@ namespace OpenBots.Service.API.Model
         public Guid? ProcessId { get; set; }
 
         /// <summary>
+        /// Gets or Sets ProcessName
+        /// </summary>
+        [DataMember(Name="processName", EmitDefaultValue=false)]
+        public string ProcessName { get; set; }
+
+        /// <summary>
         /// Gets or Sets TriggerName
         /// </summary>
         [DataMember(Name="triggerName", EmitDefaultValue=false)]
         public string TriggerName { get; set; }
 
         /// <summary>
-        /// Gets or Sets Recurrence
-        /// </summary>
-        [DataMember(Name="recurrence", EmitDefaultValue=false)]
-        public bool? Recurrence { get; set; }
-
-        /// <summary>
         /// Gets or Sets StartingType
         /// </summary>
         [DataMember(Name="startingType", EmitDefaultValue=false)]
         public string StartingType { get; set; }
-
-        /// <summary>
-        /// Gets or Sets StartJobOn
-        /// </summary>
-        [DataMember(Name="startJobOn", EmitDefaultValue=false)]
-        public DateTime? StartJobOn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets RecurrenceUnit
-        /// </summary>
-        [DataMember(Name="recurrenceUnit", EmitDefaultValue=false)]
-        public DateTime? RecurrenceUnit { get; set; }
-
-        /// <summary>
-        /// Gets or Sets JobRecurEveryUnit
-        /// </summary>
-        [DataMember(Name="jobRecurEveryUnit", EmitDefaultValue=false)]
-        public DateTime? JobRecurEveryUnit { get; set; }
-
-        /// <summary>
-        /// Gets or Sets EndJobOn
-        /// </summary>
-        [DataMember(Name="endJobOn", EmitDefaultValue=false)]
-        public DateTime? EndJobOn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets EndJobAtOccurence
-        /// </summary>
-        [DataMember(Name="endJobAtOccurence", EmitDefaultValue=false)]
-        public DateTime? EndJobAtOccurence { get; set; }
-
-        /// <summary>
-        /// Gets or Sets NoJobEndDate
-        /// </summary>
-        [DataMember(Name="noJobEndDate", EmitDefaultValue=false)]
-        public DateTime? NoJobEndDate { get; set; }
 
         /// <summary>
         /// Gets or Sets Status
@@ -205,6 +169,18 @@ namespace OpenBots.Service.API.Model
         public DateTime? StartDate { get; set; }
 
         /// <summary>
+        /// Gets or Sets CreatedOn
+        /// </summary>
+        [DataMember(Name="createdOn", EmitDefaultValue=false)]
+        public DateTime? CreatedOn { get; set; }
+
+        /// <summary>
+        /// Gets or Sets CreatedBy
+        /// </summary>
+        [DataMember(Name="createdBy", EmitDefaultValue=false)]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -212,6 +188,7 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class ScheduleViewModel {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  AgentId: ").Append(AgentId).Append("\n");
             sb.Append("  AgentName: ").Append(AgentName).Append("\n");
@@ -221,18 +198,14 @@ namespace OpenBots.Service.API.Model
             sb.Append("  IsDisabled: ").Append(IsDisabled).Append("\n");
             sb.Append("  ProjectId: ").Append(ProjectId).Append("\n");
             sb.Append("  ProcessId: ").Append(ProcessId).Append("\n");
+            sb.Append("  ProcessName: ").Append(ProcessName).Append("\n");
             sb.Append("  TriggerName: ").Append(TriggerName).Append("\n");
-            sb.Append("  Recurrence: ").Append(Recurrence).Append("\n");
             sb.Append("  StartingType: ").Append(StartingType).Append("\n");
-            sb.Append("  StartJobOn: ").Append(StartJobOn).Append("\n");
-            sb.Append("  RecurrenceUnit: ").Append(RecurrenceUnit).Append("\n");
-            sb.Append("  JobRecurEveryUnit: ").Append(JobRecurEveryUnit).Append("\n");
-            sb.Append("  EndJobOn: ").Append(EndJobOn).Append("\n");
-            sb.Append("  EndJobAtOccurence: ").Append(EndJobAtOccurence).Append("\n");
-            sb.Append("  NoJobEndDate: ").Append(NoJobEndDate).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  ExpiryDate: ").Append(ExpiryDate).Append("\n");
             sb.Append("  StartDate: ").Append(StartDate).Append("\n");
+            sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
+            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -267,6 +240,11 @@ namespace OpenBots.Service.API.Model
                 return false;
 
             return 
+                (
+                    this.Id == input.Id ||
+                    (this.Id != null &&
+                    this.Id.Equals(input.Id))
+                ) && 
                 (
                     this.Name == input.Name ||
                     (this.Name != null &&
@@ -313,49 +291,19 @@ namespace OpenBots.Service.API.Model
                     this.ProcessId.Equals(input.ProcessId))
                 ) && 
                 (
+                    this.ProcessName == input.ProcessName ||
+                    (this.ProcessName != null &&
+                    this.ProcessName.Equals(input.ProcessName))
+                ) && 
+                (
                     this.TriggerName == input.TriggerName ||
                     (this.TriggerName != null &&
                     this.TriggerName.Equals(input.TriggerName))
                 ) && 
                 (
-                    this.Recurrence == input.Recurrence ||
-                    (this.Recurrence != null &&
-                    this.Recurrence.Equals(input.Recurrence))
-                ) && 
-                (
                     this.StartingType == input.StartingType ||
                     (this.StartingType != null &&
                     this.StartingType.Equals(input.StartingType))
-                ) && 
-                (
-                    this.StartJobOn == input.StartJobOn ||
-                    (this.StartJobOn != null &&
-                    this.StartJobOn.Equals(input.StartJobOn))
-                ) && 
-                (
-                    this.RecurrenceUnit == input.RecurrenceUnit ||
-                    (this.RecurrenceUnit != null &&
-                    this.RecurrenceUnit.Equals(input.RecurrenceUnit))
-                ) && 
-                (
-                    this.JobRecurEveryUnit == input.JobRecurEveryUnit ||
-                    (this.JobRecurEveryUnit != null &&
-                    this.JobRecurEveryUnit.Equals(input.JobRecurEveryUnit))
-                ) && 
-                (
-                    this.EndJobOn == input.EndJobOn ||
-                    (this.EndJobOn != null &&
-                    this.EndJobOn.Equals(input.EndJobOn))
-                ) && 
-                (
-                    this.EndJobAtOccurence == input.EndJobAtOccurence ||
-                    (this.EndJobAtOccurence != null &&
-                    this.EndJobAtOccurence.Equals(input.EndJobAtOccurence))
-                ) && 
-                (
-                    this.NoJobEndDate == input.NoJobEndDate ||
-                    (this.NoJobEndDate != null &&
-                    this.NoJobEndDate.Equals(input.NoJobEndDate))
                 ) && 
                 (
                     this.Status == input.Status ||
@@ -371,6 +319,16 @@ namespace OpenBots.Service.API.Model
                     this.StartDate == input.StartDate ||
                     (this.StartDate != null &&
                     this.StartDate.Equals(input.StartDate))
+                ) && 
+                (
+                    this.CreatedOn == input.CreatedOn ||
+                    (this.CreatedOn != null &&
+                    this.CreatedOn.Equals(input.CreatedOn))
+                ) && 
+                (
+                    this.CreatedBy == input.CreatedBy ||
+                    (this.CreatedBy != null &&
+                    this.CreatedBy.Equals(input.CreatedBy))
                 );
         }
 
@@ -383,6 +341,8 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
+                if (this.Id != null)
+                    hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.AgentId != null)
@@ -401,30 +361,22 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.ProjectId.GetHashCode();
                 if (this.ProcessId != null)
                     hashCode = hashCode * 59 + this.ProcessId.GetHashCode();
+                if (this.ProcessName != null)
+                    hashCode = hashCode * 59 + this.ProcessName.GetHashCode();
                 if (this.TriggerName != null)
                     hashCode = hashCode * 59 + this.TriggerName.GetHashCode();
-                if (this.Recurrence != null)
-                    hashCode = hashCode * 59 + this.Recurrence.GetHashCode();
                 if (this.StartingType != null)
                     hashCode = hashCode * 59 + this.StartingType.GetHashCode();
-                if (this.StartJobOn != null)
-                    hashCode = hashCode * 59 + this.StartJobOn.GetHashCode();
-                if (this.RecurrenceUnit != null)
-                    hashCode = hashCode * 59 + this.RecurrenceUnit.GetHashCode();
-                if (this.JobRecurEveryUnit != null)
-                    hashCode = hashCode * 59 + this.JobRecurEveryUnit.GetHashCode();
-                if (this.EndJobOn != null)
-                    hashCode = hashCode * 59 + this.EndJobOn.GetHashCode();
-                if (this.EndJobAtOccurence != null)
-                    hashCode = hashCode * 59 + this.EndJobAtOccurence.GetHashCode();
-                if (this.NoJobEndDate != null)
-                    hashCode = hashCode * 59 + this.NoJobEndDate.GetHashCode();
                 if (this.Status != null)
                     hashCode = hashCode * 59 + this.Status.GetHashCode();
                 if (this.ExpiryDate != null)
                     hashCode = hashCode * 59 + this.ExpiryDate.GetHashCode();
                 if (this.StartDate != null)
                     hashCode = hashCode * 59 + this.StartDate.GetHashCode();
+                if (this.CreatedOn != null)
+                    hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
+                if (this.CreatedBy != null)
+                    hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
                 return hashCode;
             }
         }

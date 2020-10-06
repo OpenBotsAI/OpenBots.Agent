@@ -112,6 +112,7 @@
     <Compile Include="Model\JobViewModel.cs" />
     <Compile Include="Model\JobViewModelPaginatedList.cs" />
     <Compile Include="Model\LoginModel.cs" />
+    <Compile Include="Model\LoginResponseModel.cs" />
     <Compile Include="Model\LookupValue.cs" />
     <Compile Include="Model\LookupValuePaginatedList.cs" />
     <Compile Include="Model\Operation.cs" />

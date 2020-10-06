@@ -24,7 +24,7 @@ using SwaggerDateConverter = OpenBots.Service.API.Client.SwaggerDateConverter;
 namespace OpenBots.Service.API.Model
 {
     /// <summary>
-    /// Queue
+    /// Queue Model
     /// </summary>
     [DataContract]
         public partial class Queue :  IEquatable<Queue>, IValidatableObject
@@ -32,7 +32,8 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Queue" /> class.
         /// </summary>
-        /// <param name="description">description.</param>
+        /// <param name="description">Describes the Queue.</param>
+        /// <param name="maxRetryCount">Maximum number of QueueItem retries.</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -43,7 +44,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public Queue(string description = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public Queue(string description = default(string), int? maxRetryCount = default(int?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -55,6 +56,7 @@ namespace OpenBots.Service.API.Model
                 this.Name = name;
             }
             this.Description = description;
+            this.MaxRetryCount = maxRetryCount;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -75,10 +77,18 @@ namespace OpenBots.Service.API.Model
         }
         
         /// <summary>
-        /// Gets or Sets Description
+        /// Describes the Queue
         /// </summary>
+        /// <value>Describes the Queue</value>
         [DataMember(Name="description", EmitDefaultValue=false)]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Maximum number of QueueItem retries
+        /// </summary>
+        /// <value>Maximum number of QueueItem retries</value>
+        [DataMember(Name="maxRetryCount", EmitDefaultValue=false)]
+        public int? MaxRetryCount { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -149,6 +159,7 @@ namespace OpenBots.Service.API.Model
             var sb = new StringBuilder();
             sb.Append("class Queue {\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
+            sb.Append("  MaxRetryCount: ").Append(MaxRetryCount).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -197,6 +208,11 @@ namespace OpenBots.Service.API.Model
                     this.Description == input.Description ||
                     (this.Description != null &&
                     this.Description.Equals(input.Description))
+                ) && 
+                (
+                    this.MaxRetryCount == input.MaxRetryCount ||
+                    (this.MaxRetryCount != null &&
+                    this.MaxRetryCount.Equals(input.MaxRetryCount))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -261,6 +277,8 @@ namespace OpenBots.Service.API.Model
                 int hashCode = 41;
                 if (this.Description != null)
                     hashCode = hashCode * 59 + this.Description.GetHashCode();
+                if (this.MaxRetryCount != null)
+                    hashCode = hashCode * 59 + this.MaxRetryCount.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)

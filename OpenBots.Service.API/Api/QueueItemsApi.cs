@@ -73,8 +73,9 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
+        /// <param name="queueId"> (optional)</param>
         /// <returns>Guid?</returns>
-        Guid? ApiV1QueueItemsDequeuePut (string agentId = null);
+        Guid? ApiV1QueueItemsDequeueGet (string agentId = null, string queueId = null);
 
         /// <summary>
         /// Dequeue QueueItem.
@@ -84,8 +85,9 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
+        /// <param name="queueId"> (optional)</param>
         /// <returns>ApiResponse of Guid?</returns>
-        ApiResponse<Guid?> ApiV1QueueItemsDequeuePutWithHttpInfo (string agentId = null);
+        ApiResponse<Guid?> ApiV1QueueItemsDequeueGetWithHttpInfo (string agentId = null, string queueId = null);
         /// <summary>
         /// Enqueue QueueItem.
         /// </summary>
@@ -207,11 +209,9 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="retryCount">Number of times QueueItem has been run (optional)</param>
-        /// <param name="retryLimit">Limit to how many retries a QueueItem can have (optional)</param>
         /// <param name="error"> (optional)</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, int? retryCount = null, int? retryLimit = null, string error = null);
+        IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string error = null);
 
         /// <summary>
         /// Rollback QueueItem.
@@ -221,11 +221,9 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="retryCount">Number of times QueueItem has been run (optional)</param>
-        /// <param name="retryLimit">Limit to how many retries a QueueItem can have (optional)</param>
         /// <param name="error"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, int? retryCount = null, int? retryLimit = null, string error = null);
+        ApiResponse<IActionResult> ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string error = null);
         /// <summary>
         /// Provides QueueItem details for a particular QueueItem Id.
         /// </summary>
@@ -299,8 +297,9 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
+        /// <param name="queueId"> (optional)</param>
         /// <returns>Task of Guid?</returns>
-        System.Threading.Tasks.Task<Guid?> ApiV1QueueItemsDequeuePutAsync (string agentId = null);
+        System.Threading.Tasks.Task<Guid?> ApiV1QueueItemsDequeueGetAsync (string agentId = null, string queueId = null);
 
         /// <summary>
         /// Dequeue QueueItem.
@@ -310,8 +309,9 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
+        /// <param name="queueId"> (optional)</param>
         /// <returns>Task of ApiResponse (Guid?)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Guid?>> ApiV1QueueItemsDequeuePutAsyncWithHttpInfo (string agentId = null);
+        System.Threading.Tasks.Task<ApiResponse<Guid?>> ApiV1QueueItemsDequeueGetAsyncWithHttpInfo (string agentId = null, string queueId = null);
         /// <summary>
         /// Enqueue QueueItem.
         /// </summary>
@@ -433,11 +433,9 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="retryCount">Number of times QueueItem has been run (optional)</param>
-        /// <param name="retryLimit">Limit to how many retries a QueueItem can have (optional)</param>
         /// <param name="error"> (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, int? retryCount = null, int? retryLimit = null, string error = null);
+        System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string error = null);
 
         /// <summary>
         /// Rollback QueueItem.
@@ -447,11 +445,9 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="retryCount">Number of times QueueItem has been run (optional)</param>
-        /// <param name="retryLimit">Limit to how many retries a QueueItem can have (optional)</param>
         /// <param name="error"> (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, int? retryCount = null, int? retryLimit = null, string error = null);
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string error = null);
         /// <summary>
         /// Provides QueueItem details for a particular QueueItem Id.
         /// </summary>
@@ -839,10 +835,11 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
+        /// <param name="queueId"> (optional)</param>
         /// <returns>Guid?</returns>
-        public Guid? ApiV1QueueItemsDequeuePut (string agentId = null)
+        public Guid? ApiV1QueueItemsDequeueGet (string agentId = null, string queueId = null)
         {
-             ApiResponse<Guid?> localVarResponse = ApiV1QueueItemsDequeuePutWithHttpInfo(agentId);
+             ApiResponse<Guid?> localVarResponse = ApiV1QueueItemsDequeueGetWithHttpInfo(agentId, queueId);
              return localVarResponse.Data;
         }
 
@@ -851,8 +848,9 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
+        /// <param name="queueId"> (optional)</param>
         /// <returns>ApiResponse of Guid?</returns>
-        public ApiResponse< Guid? > ApiV1QueueItemsDequeuePutWithHttpInfo (string agentId = null)
+        public ApiResponse< Guid? > ApiV1QueueItemsDequeueGetWithHttpInfo (string agentId = null, string queueId = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Dequeue";
@@ -877,17 +875,18 @@ namespace OpenBots.Service.API.Api
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
             if (agentId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "agentId", agentId)); // query parameter
+            if (queueId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "queueId", queueId)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1QueueItemsDequeuePut", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1QueueItemsDequeueGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -901,10 +900,11 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
+        /// <param name="queueId"> (optional)</param>
         /// <returns>Task of Guid?</returns>
-        public async System.Threading.Tasks.Task<Guid?> ApiV1QueueItemsDequeuePutAsync (string agentId = null)
+        public async System.Threading.Tasks.Task<Guid?> ApiV1QueueItemsDequeueGetAsync (string agentId = null, string queueId = null)
         {
-             ApiResponse<Guid?> localVarResponse = await ApiV1QueueItemsDequeuePutAsyncWithHttpInfo(agentId);
+             ApiResponse<Guid?> localVarResponse = await ApiV1QueueItemsDequeueGetAsyncWithHttpInfo(agentId, queueId);
              return localVarResponse.Data;
 
         }
@@ -914,8 +914,9 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
+        /// <param name="queueId"> (optional)</param>
         /// <returns>Task of ApiResponse (Guid?)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Guid?>> ApiV1QueueItemsDequeuePutAsyncWithHttpInfo (string agentId = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Guid?>> ApiV1QueueItemsDequeueGetAsyncWithHttpInfo (string agentId = null, string queueId = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Dequeue";
@@ -940,17 +941,18 @@ namespace OpenBots.Service.API.Api
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
             if (agentId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "agentId", agentId)); // query parameter
+            if (queueId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "queueId", queueId)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1QueueItemsDequeuePut", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1QueueItemsDequeueGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1669,13 +1671,11 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="retryCount">Number of times QueueItem has been run (optional)</param>
-        /// <param name="retryLimit">Limit to how many retries a QueueItem can have (optional)</param>
         /// <param name="error"> (optional)</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, int? retryCount = null, int? retryLimit = null, string error = null)
+        public IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string error = null)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1QueueItemsRollbackPutWithHttpInfo(transactionKey, retryCount, retryLimit, error);
+             ApiResponse<IActionResult> localVarResponse = ApiV1QueueItemsRollbackPutWithHttpInfo(transactionKey, error);
              return localVarResponse.Data;
         }
 
@@ -1684,11 +1684,9 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="retryCount">Number of times QueueItem has been run (optional)</param>
-        /// <param name="retryLimit">Limit to how many retries a QueueItem can have (optional)</param>
         /// <param name="error"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, int? retryCount = null, int? retryLimit = null, string error = null)
+        public ApiResponse< IActionResult > ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string error = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Rollback";
@@ -1713,8 +1711,6 @@ namespace OpenBots.Service.API.Api
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
             if (transactionKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "transactionKey", transactionKey)); // query parameter
-            if (retryCount != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "retryCount", retryCount)); // query parameter
-            if (retryLimit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "retryLimit", retryLimit)); // query parameter
             if (error != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "error", error)); // query parameter
 
             // make the HTTP request
@@ -1740,13 +1736,11 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="retryCount">Number of times QueueItem has been run (optional)</param>
-        /// <param name="retryLimit">Limit to how many retries a QueueItem can have (optional)</param>
         /// <param name="error"> (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, int? retryCount = null, int? retryLimit = null, string error = null)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string error = null)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1QueueItemsRollbackPutAsyncWithHttpInfo(transactionKey, retryCount, retryLimit, error);
+             ApiResponse<IActionResult> localVarResponse = await ApiV1QueueItemsRollbackPutAsyncWithHttpInfo(transactionKey, error);
              return localVarResponse.Data;
 
         }
@@ -1756,11 +1750,9 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="retryCount">Number of times QueueItem has been run (optional)</param>
-        /// <param name="retryLimit">Limit to how many retries a QueueItem can have (optional)</param>
         /// <param name="error"> (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, int? retryCount = null, int? retryLimit = null, string error = null)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string error = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Rollback";
@@ -1785,8 +1777,6 @@ namespace OpenBots.Service.API.Api
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
             if (transactionKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "transactionKey", transactionKey)); // query parameter
-            if (retryCount != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "retryCount", retryCount)); // query parameter
-            if (retryLimit != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "retryLimit", retryLimit)); // query parameter
             if (error != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "error", error)); // query parameter
 
             // make the HTTP request

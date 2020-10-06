@@ -34,10 +34,12 @@ namespace OpenBots.Service.API.Model
         /// </summary>
         /// <param name="name">name.</param>
         /// <param name="description">description.</param>
-        public QueueViewModel(string name = default(string), string description = default(string))
+        /// <param name="maxRetryCount">maxRetryCount.</param>
+        public QueueViewModel(string name = default(string), string description = default(string), int? maxRetryCount = default(int?))
         {
             this.Name = name;
             this.Description = description;
+            this.MaxRetryCount = maxRetryCount;
         }
         
         /// <summary>
@@ -53,6 +55,12 @@ namespace OpenBots.Service.API.Model
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or Sets MaxRetryCount
+        /// </summary>
+        [DataMember(Name="maxRetryCount", EmitDefaultValue=false)]
+        public int? MaxRetryCount { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -62,6 +70,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("class QueueViewModel {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
+            sb.Append("  MaxRetryCount: ").Append(MaxRetryCount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -105,6 +114,11 @@ namespace OpenBots.Service.API.Model
                     this.Description == input.Description ||
                     (this.Description != null &&
                     this.Description.Equals(input.Description))
+                ) && 
+                (
+                    this.MaxRetryCount == input.MaxRetryCount ||
+                    (this.MaxRetryCount != null &&
+                    this.MaxRetryCount.Equals(input.MaxRetryCount))
                 );
         }
 
@@ -121,6 +135,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Description != null)
                     hashCode = hashCode * 59 + this.Description.GetHashCode();
+                if (this.MaxRetryCount != null)
+                    hashCode = hashCode * 59 + this.MaxRetryCount.GetHashCode();
                 return hashCode;
             }
         }

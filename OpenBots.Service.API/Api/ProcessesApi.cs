@@ -159,6 +159,27 @@ namespace OpenBots.Service.API.Api
         /// <returns>ApiResponse of IActionResult</returns>
         ApiResponse<IActionResult> ApiV1ProcessesIdPutWithHttpInfo (string id, Process body = null);
         /// <summary>
+        /// Update Process file
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a process, when process id and the new details of process are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <returns>Process</returns>
+        Process ApiV1ProcessesIdUploadPost (string id);
+
+        /// <summary>
+        /// Update Process file
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a process, when process id and the new details of process are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <returns>ApiResponse of Process</returns>
+        ApiResponse<Process> ApiV1ProcessesIdUploadPostWithHttpInfo (string id);
+        /// <summary>
         /// Uploads a process
         /// </summary>
         /// <remarks>
@@ -355,6 +376,27 @@ namespace OpenBots.Service.API.Api
         /// <param name="body">Process details to be updated (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessesIdPutAsyncWithHttpInfo (string id, Process body = null);
+        /// <summary>
+        /// Update Process file
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a process, when process id and the new details of process are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <returns>Task of Process</returns>
+        System.Threading.Tasks.Task<Process> ApiV1ProcessesIdUploadPostAsync (string id);
+
+        /// <summary>
+        /// Update Process file
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a process, when process id and the new details of process are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <returns>Task of ApiResponse (Process)</returns>
+        System.Threading.Tasks.Task<ApiResponse<Process>> ApiV1ProcessesIdUploadPostAsyncWithHttpInfo (string id);
         /// <summary>
         /// Uploads a process
         /// </summary>
@@ -1364,6 +1406,159 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
+        /// Update Process file Provides an action to update a process, when process id and the new details of process are given
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <returns>Process</returns>
+        public Process ApiV1ProcessesIdUploadPost (string id)
+        {
+             ApiResponse<Process> localVarResponse = ApiV1ProcessesIdUploadPostWithHttpInfo(id);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Update Process file Provides an action to update a process, when process id and the new details of process are given
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <returns>ApiResponse of Process</returns>
+        public ApiResponse< Process > ApiV1ProcessesIdUploadPostWithHttpInfo (string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessesApi->ApiV1ProcessesIdUploadPost");
+
+            var localVarPath = "/api/v1/Processes/{id}/upload";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "multipart/form-data"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            //////if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
+            //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
+            //////if (version != null) localVarFormParams.Add("Version", this.Configuration.ApiClient.ParameterToString(version)); // form parameter
+            //////if (versionId != null) localVarFormParams.Add("VersionId", this.Configuration.ApiClient.ParameterToString(versionId)); // form parameter
+            //////if (createdOn != null) localVarFormParams.Add("CreatedOn", this.Configuration.ApiClient.ParameterToString(createdOn)); // form parameter
+            //////if (createdBy != null) localVarFormParams.Add("CreatedBy", this.Configuration.ApiClient.ParameterToString(createdBy)); // form parameter
+            //////if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
+            //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
+            //////if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
+            //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1ProcessesIdUploadPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<Process>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (Process) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Process)));
+        }
+
+        /// <summary>
+        /// Update Process file Provides an action to update a process, when process id and the new details of process are given
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <returns>Task of Process</returns>
+        public async System.Threading.Tasks.Task<Process> ApiV1ProcessesIdUploadPostAsync (string id)
+        {
+             ApiResponse<Process> localVarResponse = await ApiV1ProcessesIdUploadPostAsyncWithHttpInfo(id);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Update Process file Provides an action to update a process, when process id and the new details of process are given
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <returns>Task of ApiResponse (Process)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<Process>> ApiV1ProcessesIdUploadPostAsyncWithHttpInfo (string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessesApi->ApiV1ProcessesIdUploadPost");
+
+            var localVarPath = "/api/v1/Processes/{id}/upload";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "multipart/form-data"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            //////if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
+            //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
+            //////if (version != null) localVarFormParams.Add("Version", this.Configuration.ApiClient.ParameterToString(version)); // form parameter
+            //////if (versionId != null) localVarFormParams.Add("VersionId", this.Configuration.ApiClient.ParameterToString(versionId)); // form parameter
+            //////if (createdOn != null) localVarFormParams.Add("CreatedOn", this.Configuration.ApiClient.ParameterToString(createdOn)); // form parameter
+            //////if (createdBy != null) localVarFormParams.Add("CreatedBy", this.Configuration.ApiClient.ParameterToString(createdBy)); // form parameter
+            //////if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
+            //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
+            //////if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
+            //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1ProcessesIdUploadPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<Process>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (Process) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Process)));
+        }
+
+        /// <summary>
         /// Uploads a process 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
@@ -1406,8 +1601,12 @@ namespace OpenBots.Service.API.Api
 
             //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
             //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
+            //////if (version != null) localVarFormParams.Add("Version", this.Configuration.ApiClient.ParameterToString(version)); // form parameter
+            //////if (versionId != null) localVarFormParams.Add("VersionId", this.Configuration.ApiClient.ParameterToString(versionId)); // form parameter
+            //////if (createdOn != null) localVarFormParams.Add("CreatedOn", this.Configuration.ApiClient.ParameterToString(createdOn)); // form parameter
+            //////if (createdBy != null) localVarFormParams.Add("CreatedBy", this.Configuration.ApiClient.ParameterToString(createdBy)); // form parameter
             //////if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
-            //////if (_file != null) localVarFileParams.Add("file", this.Configuration.ApiClient.ParameterToFile("file", _file));
+            //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
             //////if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
             //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
 
@@ -1473,8 +1672,12 @@ namespace OpenBots.Service.API.Api
 
             //////if (id != null) localVarFormParams.Add("Id", this.Configuration.ApiClient.ParameterToString(id)); // form parameter
             //////if (name != null) localVarFormParams.Add("Name", this.Configuration.ApiClient.ParameterToString(name)); // form parameter
+            //////if (version != null) localVarFormParams.Add("Version", this.Configuration.ApiClient.ParameterToString(version)); // form parameter
+            //////if (versionId != null) localVarFormParams.Add("VersionId", this.Configuration.ApiClient.ParameterToString(versionId)); // form parameter
+            //////if (createdOn != null) localVarFormParams.Add("CreatedOn", this.Configuration.ApiClient.ParameterToString(createdOn)); // form parameter
+            //////if (createdBy != null) localVarFormParams.Add("CreatedBy", this.Configuration.ApiClient.ParameterToString(createdBy)); // form parameter
             //////if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
-            //////if (_file != null) localVarFileParams.Add("file", this.Configuration.ApiClient.ParameterToFile("file", _file));
+            //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
             //////if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
             //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
 

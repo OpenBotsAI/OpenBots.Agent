@@ -18,7 +18,7 @@ namespace OpenBots.Service.Client.Manager
             catch (Exception ex)
             {
                 // Refresh Token and Call API
-                processesApi.Configuration.AccessToken = apiManager.GetNewToken();
+                processesApi.Configuration.AccessToken = apiManager.GetToken();
                 return processesApi.ExportProcessWithHttpInfo(processID);
             }
         }

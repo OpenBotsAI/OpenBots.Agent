@@ -208,8 +208,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Asset id</param>
-        /// <returns>AssetPaginatedList</returns>
-        AssetPaginatedList GetAsset (string id);
+        /// <returns>Asset</returns>
+        Asset GetAsset (string id);
 
         /// <summary>
         /// Provides an Asset&#x27;s details for a particular Asset Id.
@@ -219,8 +219,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Asset id</param>
-        /// <returns>ApiResponse of AssetPaginatedList</returns>
-        ApiResponse<AssetPaginatedList> GetAssetWithHttpInfo (string id);
+        /// <returns>ApiResponse of Asset</returns>
+        ApiResponse<Asset> GetAssetWithHttpInfo (string id);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
@@ -407,8 +407,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Asset id</param>
-        /// <returns>Task of AssetPaginatedList</returns>
-        System.Threading.Tasks.Task<AssetPaginatedList> GetAssetAsync (string id);
+        /// <returns>Task of Asset</returns>
+        System.Threading.Tasks.Task<Asset> GetAssetAsync (string id);
 
         /// <summary>
         /// Provides an Asset&#x27;s details for a particular Asset Id.
@@ -418,8 +418,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Asset id</param>
-        /// <returns>Task of ApiResponse (AssetPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AssetPaginatedList>> GetAssetAsyncWithHttpInfo (string id);
+        /// <returns>Task of ApiResponse (Asset)</returns>
+        System.Threading.Tasks.Task<ApiResponse<Asset>> GetAssetAsyncWithHttpInfo (string id);
         #endregion Asynchronous Operations
     }
 
@@ -1674,10 +1674,10 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Asset id</param>
-        /// <returns>AssetPaginatedList</returns>
-        public AssetPaginatedList GetAsset (string id)
+        /// <returns>Asset</returns>
+        public Asset GetAsset (string id)
         {
-             ApiResponse<AssetPaginatedList> localVarResponse = GetAssetWithHttpInfo(id);
+             ApiResponse<Asset> localVarResponse = GetAssetWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -1686,8 +1686,8 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Asset id</param>
-        /// <returns>ApiResponse of AssetPaginatedList</returns>
-        public ApiResponse< AssetPaginatedList > GetAssetWithHttpInfo (string id)
+        /// <returns>ApiResponse of Asset</returns>
+        public ApiResponse< Asset > GetAssetWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1729,9 +1729,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AssetPaginatedList>(localVarStatusCode,
+            return new ApiResponse<Asset>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AssetPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AssetPaginatedList)));
+                (Asset) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Asset)));
         }
 
         /// <summary>
@@ -1739,10 +1739,10 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Asset id</param>
-        /// <returns>Task of AssetPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AssetPaginatedList> GetAssetAsync (string id)
+        /// <returns>Task of Asset</returns>
+        public async System.Threading.Tasks.Task<Asset> GetAssetAsync (string id)
         {
-             ApiResponse<AssetPaginatedList> localVarResponse = await GetAssetAsyncWithHttpInfo(id);
+             ApiResponse<Asset> localVarResponse = await GetAssetAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -1752,8 +1752,8 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Asset id</param>
-        /// <returns>Task of ApiResponse (AssetPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AssetPaginatedList>> GetAssetAsyncWithHttpInfo (string id)
+        /// <returns>Task of ApiResponse (Asset)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<Asset>> GetAssetAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1795,9 +1795,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AssetPaginatedList>(localVarStatusCode,
+            return new ApiResponse<Asset>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AssetPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AssetPaginatedList)));
+                (Asset) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Asset)));
         }
 
     }

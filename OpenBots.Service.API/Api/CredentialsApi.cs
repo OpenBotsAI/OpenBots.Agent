@@ -78,8 +78,8 @@ namespace OpenBots.Service.API.Api
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>List&lt;CredentialsLookup&gt;</returns>
-        //////List<CredentialsLookup> ApiV1CredentialsGetLookupGet ();
+        /// <returns>List&lt;CredentialPaginatedList&gt;</returns>
+        List<CredentialPaginatedList> ApiV1CredentialsGetLookupGet ();
 
         /// <summary>
         /// Lookup list of all Active Directory credentials
@@ -88,8 +88,8 @@ namespace OpenBots.Service.API.Api
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>ApiResponse of List&lt;CredentialsLookup&gt;</returns>
-        //////ApiResponse<List<CredentialsLookup>> ApiV1CredentialsGetLookupGetWithHttpInfo ();
+        /// <returns>ApiResponse of List&lt;CredentialPaginatedList&gt;</returns>
+        ApiResponse<List<CredentialPaginatedList>> ApiV1CredentialsGetLookupGetWithHttpInfo ();
         /// <summary>
         /// Deletes a Credential with a specified id from the Credential.
         /// </summary>
@@ -158,6 +158,27 @@ namespace OpenBots.Service.API.Api
         /// <returns>ApiResponse of IActionResult</returns>
         ApiResponse<IActionResult> ApiV1CredentialsIdPutWithHttpInfo (string id, Credential body = null);
         /// <summary>
+        /// Provides a Credential&#x27;s password string for a particular Credential Id.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Credential id</param>
+        /// <returns>string</returns>
+        string ApiV1CredentialsPasswordIdGet (string id);
+
+        /// <summary>
+        /// Provides a Credential&#x27;s password string for a particular Credential Id.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Credential id</param>
+        /// <returns>ApiResponse of string</returns>
+        ApiResponse<string> ApiV1CredentialsPasswordIdGetWithHttpInfo (string id);
+        /// <summary>
         /// Adds a new Credential to the existing Credentials
         /// </summary>
         /// <remarks>
@@ -186,8 +207,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>CredentialViewModelPaginatedList</returns>
-        CredentialViewModelPaginatedList ApiV1CredentialsViewIdGet (string id);
+        /// <returns>CredentialViewModel</returns>
+        CredentialViewModel ApiV1CredentialsViewIdGet (string id);
 
         /// <summary>
         /// Provides a Credential&#x27;s View details  for a particular Credential Id.
@@ -197,8 +218,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>ApiResponse of CredentialViewModelPaginatedList</returns>
-        ApiResponse<CredentialViewModelPaginatedList> ApiV1CredentialsViewIdGetWithHttpInfo (string id);
+        /// <returns>ApiResponse of CredentialViewModel</returns>
+        ApiResponse<CredentialViewModel> ApiV1CredentialsViewIdGetWithHttpInfo (string id);
         /// <summary>
         /// Provides a Credential&#x27;s details for a particular Credential Id.
         /// </summary>
@@ -207,8 +228,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>CredentialPaginatedList</returns>
-        CredentialPaginatedList GetCredential (string id);
+        /// <returns>Credential</returns>
+        Credential GetCredential (string id);
 
         /// <summary>
         /// Provides a Credential&#x27;s details for a particular Credential Id.
@@ -218,8 +239,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>ApiResponse of CredentialPaginatedList</returns>
-        ApiResponse<CredentialPaginatedList> GetCredentialWithHttpInfo (string id);
+        /// <returns>ApiResponse of Credential</returns>
+        ApiResponse<Credential> GetCredentialWithHttpInfo (string id);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
@@ -277,8 +298,8 @@ namespace OpenBots.Service.API.Api
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of List&lt;CredentialsLookup&gt;</returns>
-        //////System.Threading.Tasks.Task<List<CredentialsLookup>> ApiV1CredentialsGetLookupGetAsync ();
+        /// <returns>Task of List&lt;CredentialPaginatedList&gt;</returns>
+        System.Threading.Tasks.Task<List<CredentialPaginatedList>> ApiV1CredentialsGetLookupGetAsync ();
 
         /// <summary>
         /// Lookup list of all Active Directory credentials
@@ -287,8 +308,8 @@ namespace OpenBots.Service.API.Api
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of ApiResponse (List&lt;CredentialsLookup&gt;)</returns>
-        //////System.Threading.Tasks.Task<ApiResponse<List<CredentialsLookup>>> ApiV1CredentialsGetLookupGetAsyncWithHttpInfo ();
+        /// <returns>Task of ApiResponse (List&lt;CredentialPaginatedList&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<CredentialPaginatedList>>> ApiV1CredentialsGetLookupGetAsyncWithHttpInfo ();
         /// <summary>
         /// Deletes a Credential with a specified id from the Credential.
         /// </summary>
@@ -357,6 +378,27 @@ namespace OpenBots.Service.API.Api
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1CredentialsIdPutAsyncWithHttpInfo (string id, Credential body = null);
         /// <summary>
+        /// Provides a Credential&#x27;s password string for a particular Credential Id.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Credential id</param>
+        /// <returns>Task of string</returns>
+        System.Threading.Tasks.Task<string> ApiV1CredentialsPasswordIdGetAsync (string id);
+
+        /// <summary>
+        /// Provides a Credential&#x27;s password string for a particular Credential Id.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Credential id</param>
+        /// <returns>Task of ApiResponse (string)</returns>
+        System.Threading.Tasks.Task<ApiResponse<string>> ApiV1CredentialsPasswordIdGetAsyncWithHttpInfo (string id);
+        /// <summary>
         /// Adds a new Credential to the existing Credentials
         /// </summary>
         /// <remarks>
@@ -385,8 +427,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>Task of CredentialViewModelPaginatedList</returns>
-        System.Threading.Tasks.Task<CredentialViewModelPaginatedList> ApiV1CredentialsViewIdGetAsync (string id);
+        /// <returns>Task of CredentialViewModel</returns>
+        System.Threading.Tasks.Task<CredentialViewModel> ApiV1CredentialsViewIdGetAsync (string id);
 
         /// <summary>
         /// Provides a Credential&#x27;s View details  for a particular Credential Id.
@@ -396,8 +438,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>Task of ApiResponse (CredentialViewModelPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<CredentialViewModelPaginatedList>> ApiV1CredentialsViewIdGetAsyncWithHttpInfo (string id);
+        /// <returns>Task of ApiResponse (CredentialViewModel)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CredentialViewModel>> ApiV1CredentialsViewIdGetAsyncWithHttpInfo (string id);
         /// <summary>
         /// Provides a Credential&#x27;s details for a particular Credential Id.
         /// </summary>
@@ -406,8 +448,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>Task of CredentialPaginatedList</returns>
-        System.Threading.Tasks.Task<CredentialPaginatedList> GetCredentialAsync (string id);
+        /// <returns>Task of Credential</returns>
+        System.Threading.Tasks.Task<Credential> GetCredentialAsync (string id);
 
         /// <summary>
         /// Provides a Credential&#x27;s details for a particular Credential Id.
@@ -417,8 +459,8 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>Task of ApiResponse (CredentialPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<CredentialPaginatedList>> GetCredentialAsyncWithHttpInfo (string id);
+        /// <returns>Task of ApiResponse (Credential)</returns>
+        System.Threading.Tasks.Task<ApiResponse<Credential>> GetCredentialAsyncWithHttpInfo (string id);
         #endregion Asynchronous Operations
     }
 
@@ -802,120 +844,120 @@ namespace OpenBots.Service.API.Api
         /// Lookup list of all Active Directory credentials 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>List&lt;CredentialsLookup&gt;</returns>
-        //////public List<CredentialsLookup> ApiV1CredentialsGetLookupGet ()
-        //////{
-        //////     ApiResponse<List<CredentialsLookup>> localVarResponse = ApiV1CredentialsGetLookupGetWithHttpInfo();
-        //////     return localVarResponse.Data;
-        //////}
+        /// <returns>List&lt;CredentialPaginatedList&gt;</returns>
+        public List<CredentialPaginatedList> ApiV1CredentialsGetLookupGet ()
+        {
+             ApiResponse<List<CredentialPaginatedList>> localVarResponse = ApiV1CredentialsGetLookupGetWithHttpInfo();
+             return localVarResponse.Data;
+        }
 
-        ///////// <summary>
-        ///////// Lookup list of all Active Directory credentials 
-        ///////// </summary>
-        ///////// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        ///////// <returns>ApiResponse of List&lt;CredentialsLookup&gt;</returns>
-        //////public ApiResponse< List<CredentialsLookup> > ApiV1CredentialsGetLookupGetWithHttpInfo ()
-        //////{
+        /// <summary>
+        /// Lookup list of all Active Directory credentials 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>ApiResponse of List&lt;CredentialPaginatedList&gt;</returns>
+        public ApiResponse< List<CredentialPaginatedList> > ApiV1CredentialsGetLookupGetWithHttpInfo ()
+        {
 
-        //////    var localVarPath = "/api/v1/Credentials/GetLookup";
-        //////    var localVarPathParams = new Dictionary<String, String>();
-        //////    var localVarQueryParams = new List<KeyValuePair<String, String>>();
-        //////    var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-        //////    var localVarFormParams = new Dictionary<String, String>();
-        //////    var localVarFileParams = new Dictionary<String, FileParameter>();
-        //////    Object localVarPostBody = null;
+            var localVarPath = "/api/v1/Credentials/GetLookup";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
 
-        //////    // to determine the Content-Type header
-        //////    String[] localVarHttpContentTypes = new String[] {
-        //////    };
-        //////    String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
 
-        //////    // to determine the Accept header
-        //////    String[] localVarHttpHeaderAccepts = new String[] {
-        //////        "application/json"
-        //////    };
-        //////    String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-        //////    if (localVarHttpHeaderAccept != null)
-        //////        localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-
-        //////    // make the HTTP request
-        //////    IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-        //////        Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-        //////        localVarPathParams, localVarHttpContentType);
-
-        //////    int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-        //////    if (ExceptionFactory != null)
-        //////    {
-        //////        Exception exception = ExceptionFactory("ApiV1CredentialsGetLookupGet", localVarResponse);
-        //////        if (exception != null) throw exception;
-        //////    }
-
-        //////    return new ApiResponse<List<CredentialsLookup>>(localVarStatusCode,
-        //////        localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-        //////        (List<CredentialsLookup>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<CredentialsLookup>)));
-        //////}
-
-        ///////// <summary>
-        ///////// Lookup list of all Active Directory credentials 
-        ///////// </summary>
-        ///////// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        ///////// <returns>Task of List&lt;CredentialsLookup&gt;</returns>
-        //////public async System.Threading.Tasks.Task<List<CredentialsLookup>> ApiV1CredentialsGetLookupGetAsync ()
-        //////{
-        //////     ApiResponse<List<CredentialsLookup>> localVarResponse = await ApiV1CredentialsGetLookupGetAsyncWithHttpInfo();
-        //////     return localVarResponse.Data;
-
-        //////}
-
-        ///////// <summary>
-        ///////// Lookup list of all Active Directory credentials 
-        ///////// </summary>
-        ///////// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        ///////// <returns>Task of ApiResponse (List&lt;CredentialsLookup&gt;)</returns>
-        //////public async System.Threading.Tasks.Task<ApiResponse<List<CredentialsLookup>>> ApiV1CredentialsGetLookupGetAsyncWithHttpInfo ()
-        //////{
-
-        //////    var localVarPath = "/api/v1/Credentials/GetLookup";
-        //////    var localVarPathParams = new Dictionary<String, String>();
-        //////    var localVarQueryParams = new List<KeyValuePair<String, String>>();
-        //////    var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-        //////    var localVarFormParams = new Dictionary<String, String>();
-        //////    var localVarFileParams = new Dictionary<String, FileParameter>();
-        //////    Object localVarPostBody = null;
-
-        //////    // to determine the Content-Type header
-        //////    String[] localVarHttpContentTypes = new String[] {
-        //////    };
-        //////    String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-        //////    // to determine the Accept header
-        //////    String[] localVarHttpHeaderAccepts = new String[] {
-        //////        "application/json"
-        //////    };
-        //////    String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-        //////    if (localVarHttpHeaderAccept != null)
-        //////        localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
 
-        //////    // make the HTTP request
-        //////    IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-        //////        Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-        //////        localVarPathParams, localVarHttpContentType);
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
 
-        //////    int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
 
-        //////    if (ExceptionFactory != null)
-        //////    {
-        //////        Exception exception = ExceptionFactory("ApiV1CredentialsGetLookupGet", localVarResponse);
-        //////        if (exception != null) throw exception;
-        //////    }
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1CredentialsGetLookupGet", localVarResponse);
+                if (exception != null) throw exception;
+            }
 
-        //////    return new ApiResponse<List<CredentialsLookup>>(localVarStatusCode,
-        //////        localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-        //////        (List<CredentialsLookup>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<CredentialsLookup>)));
-        //////}
+            return new ApiResponse<List<CredentialPaginatedList>>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (List<CredentialPaginatedList>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<CredentialPaginatedList>)));
+        }
+
+        /// <summary>
+        /// Lookup list of all Active Directory credentials 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of List&lt;CredentialPaginatedList&gt;</returns>
+        public async System.Threading.Tasks.Task<List<CredentialPaginatedList>> ApiV1CredentialsGetLookupGetAsync ()
+        {
+             ApiResponse<List<CredentialPaginatedList>> localVarResponse = await ApiV1CredentialsGetLookupGetAsyncWithHttpInfo();
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Lookup list of all Active Directory credentials 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of ApiResponse (List&lt;CredentialPaginatedList&gt;)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<List<CredentialPaginatedList>>> ApiV1CredentialsGetLookupGetAsyncWithHttpInfo ()
+        {
+
+            var localVarPath = "/api/v1/Credentials/GetLookup";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1CredentialsGetLookupGet", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<List<CredentialPaginatedList>>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (List<CredentialPaginatedList>) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<CredentialPaginatedList>)));
+        }
 
         /// <summary>
         /// Deletes a Credential with a specified id from the Credential. 
@@ -1367,6 +1409,137 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
+        /// Provides a Credential&#x27;s password string for a particular Credential Id. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Credential id</param>
+        /// <returns>string</returns>
+        public string ApiV1CredentialsPasswordIdGet (string id)
+        {
+             ApiResponse<string> localVarResponse = ApiV1CredentialsPasswordIdGetWithHttpInfo(id);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Provides a Credential&#x27;s password string for a particular Credential Id. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Credential id</param>
+        /// <returns>ApiResponse of string</returns>
+        public ApiResponse< string > ApiV1CredentialsPasswordIdGetWithHttpInfo (string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling CredentialsApi->ApiV1CredentialsPasswordIdGet");
+
+            var localVarPath = "/api/v1/Credentials/password/{id}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1CredentialsPasswordIdGet", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<string>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (string) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(string)));
+        }
+
+        /// <summary>
+        /// Provides a Credential&#x27;s password string for a particular Credential Id. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Credential id</param>
+        /// <returns>Task of string</returns>
+        public async System.Threading.Tasks.Task<string> ApiV1CredentialsPasswordIdGetAsync (string id)
+        {
+             ApiResponse<string> localVarResponse = await ApiV1CredentialsPasswordIdGetAsyncWithHttpInfo(id);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Provides a Credential&#x27;s password string for a particular Credential Id. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">Credential id</param>
+        /// <returns>Task of ApiResponse (string)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<string>> ApiV1CredentialsPasswordIdGetAsyncWithHttpInfo (string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling CredentialsApi->ApiV1CredentialsPasswordIdGet");
+
+            var localVarPath = "/api/v1/Credentials/password/{id}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1CredentialsPasswordIdGet", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<string>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (string) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(string)));
+        }
+
+        /// <summary>
         /// Adds a new Credential to the existing Credentials Adds the Credential with unique Id to the existing Credentials
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
@@ -1518,10 +1691,10 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>CredentialViewModelPaginatedList</returns>
-        public CredentialViewModelPaginatedList ApiV1CredentialsViewIdGet (string id)
+        /// <returns>CredentialViewModel</returns>
+        public CredentialViewModel ApiV1CredentialsViewIdGet (string id)
         {
-             ApiResponse<CredentialViewModelPaginatedList> localVarResponse = ApiV1CredentialsViewIdGetWithHttpInfo(id);
+             ApiResponse<CredentialViewModel> localVarResponse = ApiV1CredentialsViewIdGetWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -1530,8 +1703,8 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>ApiResponse of CredentialViewModelPaginatedList</returns>
-        public ApiResponse< CredentialViewModelPaginatedList > ApiV1CredentialsViewIdGetWithHttpInfo (string id)
+        /// <returns>ApiResponse of CredentialViewModel</returns>
+        public ApiResponse< CredentialViewModel > ApiV1CredentialsViewIdGetWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1573,9 +1746,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<CredentialViewModelPaginatedList>(localVarStatusCode,
+            return new ApiResponse<CredentialViewModel>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (CredentialViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(CredentialViewModelPaginatedList)));
+                (CredentialViewModel) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(CredentialViewModel)));
         }
 
         /// <summary>
@@ -1583,10 +1756,10 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>Task of CredentialViewModelPaginatedList</returns>
-        public async System.Threading.Tasks.Task<CredentialViewModelPaginatedList> ApiV1CredentialsViewIdGetAsync (string id)
+        /// <returns>Task of CredentialViewModel</returns>
+        public async System.Threading.Tasks.Task<CredentialViewModel> ApiV1CredentialsViewIdGetAsync (string id)
         {
-             ApiResponse<CredentialViewModelPaginatedList> localVarResponse = await ApiV1CredentialsViewIdGetAsyncWithHttpInfo(id);
+             ApiResponse<CredentialViewModel> localVarResponse = await ApiV1CredentialsViewIdGetAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -1596,8 +1769,8 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>Task of ApiResponse (CredentialViewModelPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<CredentialViewModelPaginatedList>> ApiV1CredentialsViewIdGetAsyncWithHttpInfo (string id)
+        /// <returns>Task of ApiResponse (CredentialViewModel)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<CredentialViewModel>> ApiV1CredentialsViewIdGetAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1639,9 +1812,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<CredentialViewModelPaginatedList>(localVarStatusCode,
+            return new ApiResponse<CredentialViewModel>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (CredentialViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(CredentialViewModelPaginatedList)));
+                (CredentialViewModel) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(CredentialViewModel)));
         }
 
         /// <summary>
@@ -1649,10 +1822,10 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>CredentialPaginatedList</returns>
-        public CredentialPaginatedList GetCredential (string id)
+        /// <returns>Credential</returns>
+        public Credential GetCredential (string id)
         {
-             ApiResponse<CredentialPaginatedList> localVarResponse = GetCredentialWithHttpInfo(id);
+             ApiResponse<Credential> localVarResponse = GetCredentialWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -1661,8 +1834,8 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>ApiResponse of CredentialPaginatedList</returns>
-        public ApiResponse< CredentialPaginatedList > GetCredentialWithHttpInfo (string id)
+        /// <returns>ApiResponse of Credential</returns>
+        public ApiResponse< Credential > GetCredentialWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1704,9 +1877,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<CredentialPaginatedList>(localVarStatusCode,
+            return new ApiResponse<Credential>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (CredentialPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(CredentialPaginatedList)));
+                (Credential) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Credential)));
         }
 
         /// <summary>
@@ -1714,10 +1887,10 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>Task of CredentialPaginatedList</returns>
-        public async System.Threading.Tasks.Task<CredentialPaginatedList> GetCredentialAsync (string id)
+        /// <returns>Task of Credential</returns>
+        public async System.Threading.Tasks.Task<Credential> GetCredentialAsync (string id)
         {
-             ApiResponse<CredentialPaginatedList> localVarResponse = await GetCredentialAsyncWithHttpInfo(id);
+             ApiResponse<Credential> localVarResponse = await GetCredentialAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -1727,8 +1900,8 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Credential id</param>
-        /// <returns>Task of ApiResponse (CredentialPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<CredentialPaginatedList>> GetCredentialAsyncWithHttpInfo (string id)
+        /// <returns>Task of ApiResponse (Credential)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<Credential>> GetCredentialAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1770,9 +1943,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<CredentialPaginatedList>(localVarStatusCode,
+            return new ApiResponse<Credential>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (CredentialPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(CredentialPaginatedList)));
+                (Credential) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Credential)));
         }
 
     }

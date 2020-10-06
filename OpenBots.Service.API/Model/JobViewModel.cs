@@ -44,9 +44,9 @@ namespace OpenBots.Service.API.Model
         /// <param name="jobStatus">jobStatus.</param>
         /// <param name="message">message.</param>
         /// <param name="isSuccessful">isSuccessful.</param>
-        /// <param name="createdBy">createdBy.</param>
         /// <param name="createdOn">createdOn.</param>
-        public JobViewModel(Guid? id = default(Guid?), string agentName = default(string), string processName = default(string), Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), string jobStatus = default(string), string message = default(string), bool? isSuccessful = default(bool?), string createdBy = default(string), DateTime? createdOn = default(DateTime?))
+        /// <param name="createdBy">createdBy.</param>
+        public JobViewModel(Guid? id = default(Guid?), string agentName = default(string), string processName = default(string), Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), string jobStatus = default(string), string message = default(string), bool? isSuccessful = default(bool?), DateTime? createdOn = default(DateTime?), string createdBy = default(string))
         {
             this.Id = id;
             this.AgentName = agentName;
@@ -60,8 +60,8 @@ namespace OpenBots.Service.API.Model
             this.JobStatus = jobStatus;
             this.Message = message;
             this.IsSuccessful = isSuccessful;
-            this.CreatedBy = createdBy;
             this.CreatedOn = createdOn;
+            this.CreatedBy = createdBy;
         }
         
         /// <summary>
@@ -137,16 +137,16 @@ namespace OpenBots.Service.API.Model
         public bool? IsSuccessful { get; set; }
 
         /// <summary>
-        /// Gets or Sets CreatedBy
-        /// </summary>
-        [DataMember(Name="createdBy", EmitDefaultValue=false)]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
         /// Gets or Sets CreatedOn
         /// </summary>
         [DataMember(Name="createdOn", EmitDefaultValue=false)]
         public DateTime? CreatedOn { get; set; }
+
+        /// <summary>
+        /// Gets or Sets CreatedBy
+        /// </summary>
+        [DataMember(Name="createdBy", EmitDefaultValue=false)]
+        public string CreatedBy { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -168,8 +168,8 @@ namespace OpenBots.Service.API.Model
             sb.Append("  JobStatus: ").Append(JobStatus).Append("\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
             sb.Append("  IsSuccessful: ").Append(IsSuccessful).Append("\n");
-            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
+            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -265,14 +265,14 @@ namespace OpenBots.Service.API.Model
                     this.IsSuccessful.Equals(input.IsSuccessful))
                 ) && 
                 (
-                    this.CreatedBy == input.CreatedBy ||
-                    (this.CreatedBy != null &&
-                    this.CreatedBy.Equals(input.CreatedBy))
-                ) && 
-                (
                     this.CreatedOn == input.CreatedOn ||
                     (this.CreatedOn != null &&
                     this.CreatedOn.Equals(input.CreatedOn))
+                ) && 
+                (
+                    this.CreatedBy == input.CreatedBy ||
+                    (this.CreatedBy != null &&
+                    this.CreatedBy.Equals(input.CreatedBy))
                 );
         }
 
@@ -309,10 +309,10 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Message.GetHashCode();
                 if (this.IsSuccessful != null)
                     hashCode = hashCode * 59 + this.IsSuccessful.GetHashCode();
-                if (this.CreatedBy != null)
-                    hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
                 if (this.CreatedOn != null)
                     hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
+                if (this.CreatedBy != null)
+                    hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
                 return hashCode;
             }
         }

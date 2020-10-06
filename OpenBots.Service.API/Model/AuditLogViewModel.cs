@@ -34,16 +34,18 @@ namespace IO.Swagger.Model
         /// </summary>
         /// <param name="serviceName">serviceName.</param>
         /// <param name="methodName">methodName.</param>
-        /// <param name="updatedBy">updatedBy.</param>
-        /// <param name="updatedOn">updatedOn.</param>
+        /// <param name="createdBy">createdBy.</param>
+        /// <param name="createdOn">createdOn.</param>
         /// <param name="objectId">objectId.</param>
-        public AuditLogViewModel(string serviceName = default(string), string methodName = default(string), string updatedBy = default(string), DateTime? updatedOn = default(DateTime?), Guid? objectId = default(Guid?))
+        /// <param name="id">id.</param>
+        public AuditLogViewModel(string serviceName = default(string), string methodName = default(string), string createdBy = default(string), DateTime? createdOn = default(DateTime?), Guid? objectId = default(Guid?), Guid? id = default(Guid?))
         {
             this.ServiceName = serviceName;
             this.MethodName = methodName;
-            this.UpdatedBy = updatedBy;
-            this.UpdatedOn = updatedOn;
+            this.CreatedBy = createdBy;
+            this.CreatedOn = createdOn;
             this.ObjectId = objectId;
+            this.Id = id;
         }
         
         /// <summary>
@@ -59,22 +61,28 @@ namespace IO.Swagger.Model
         public string MethodName { get; set; }
 
         /// <summary>
-        /// Gets or Sets UpdatedBy
+        /// Gets or Sets CreatedBy
         /// </summary>
-        [DataMember(Name="updatedBy", EmitDefaultValue=false)]
-        public string UpdatedBy { get; set; }
+        [DataMember(Name="createdBy", EmitDefaultValue=false)]
+        public string CreatedBy { get; set; }
 
         /// <summary>
-        /// Gets or Sets UpdatedOn
+        /// Gets or Sets CreatedOn
         /// </summary>
-        [DataMember(Name="updatedOn", EmitDefaultValue=false)]
-        public DateTime? UpdatedOn { get; set; }
+        [DataMember(Name="createdOn", EmitDefaultValue=false)]
+        public DateTime? CreatedOn { get; set; }
 
         /// <summary>
         /// Gets or Sets ObjectId
         /// </summary>
         [DataMember(Name="objectId", EmitDefaultValue=false)]
         public Guid? ObjectId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [DataMember(Name="id", EmitDefaultValue=false)]
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -86,9 +94,10 @@ namespace IO.Swagger.Model
             sb.Append("class AuditLogViewModel {\n");
             sb.Append("  ServiceName: ").Append(ServiceName).Append("\n");
             sb.Append("  MethodName: ").Append(MethodName).Append("\n");
-            sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
-            sb.Append("  UpdatedOn: ").Append(UpdatedOn).Append("\n");
+            sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
+            sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
             sb.Append("  ObjectId: ").Append(ObjectId).Append("\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -134,19 +143,24 @@ namespace IO.Swagger.Model
                     this.MethodName.Equals(input.MethodName))
                 ) && 
                 (
-                    this.UpdatedBy == input.UpdatedBy ||
-                    (this.UpdatedBy != null &&
-                    this.UpdatedBy.Equals(input.UpdatedBy))
+                    this.CreatedBy == input.CreatedBy ||
+                    (this.CreatedBy != null &&
+                    this.CreatedBy.Equals(input.CreatedBy))
                 ) && 
                 (
-                    this.UpdatedOn == input.UpdatedOn ||
-                    (this.UpdatedOn != null &&
-                    this.UpdatedOn.Equals(input.UpdatedOn))
+                    this.CreatedOn == input.CreatedOn ||
+                    (this.CreatedOn != null &&
+                    this.CreatedOn.Equals(input.CreatedOn))
                 ) && 
                 (
                     this.ObjectId == input.ObjectId ||
                     (this.ObjectId != null &&
                     this.ObjectId.Equals(input.ObjectId))
+                ) && 
+                (
+                    this.Id == input.Id ||
+                    (this.Id != null &&
+                    this.Id.Equals(input.Id))
                 );
         }
 
@@ -163,12 +177,14 @@ namespace IO.Swagger.Model
                     hashCode = hashCode * 59 + this.ServiceName.GetHashCode();
                 if (this.MethodName != null)
                     hashCode = hashCode * 59 + this.MethodName.GetHashCode();
-                if (this.UpdatedBy != null)
-                    hashCode = hashCode * 59 + this.UpdatedBy.GetHashCode();
-                if (this.UpdatedOn != null)
-                    hashCode = hashCode * 59 + this.UpdatedOn.GetHashCode();
+                if (this.CreatedBy != null)
+                    hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
+                if (this.CreatedOn != null)
+                    hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
                 if (this.ObjectId != null)
                     hashCode = hashCode * 59 + this.ObjectId.GetHashCode();
+                if (this.Id != null)
+                    hashCode = hashCode * 59 + this.Id.GetHashCode();
                 return hashCode;
             }
         }

@@ -18,7 +18,7 @@ namespace OpenBots.Service.Client.Manager
             catch (Exception ex)
             {
                 // Refresh Token and Call API
-                jobsApi.Configuration.AccessToken = apiManager.GetNewToken();
+                jobsApi.Configuration.AccessToken = apiManager.GetToken();
                 return jobsApi.ApiV1JobsGetWithHttpInfo(filter);
             }
         }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Client.Utilities;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.UserRegistry;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace OpenBots.Agent.Client
         private ServerConnectionSettings _connectionSettings;
         private OpenBotsSettings _agentSettings;
         private Timer _serviceHeartBeat;
+        private RegistryManager _registryManager;
 
         private Forms.NotifyIcon _notifyIcon = null;
         private Dictionary<string, Drawing.Icon> _iconHandles = null;
@@ -45,12 +47,15 @@ namespace OpenBots.Agent.Client
         #region Window Events / Helper Methods
         private void OnInitialized(object sender, EventArgs e)
         {
+            // Initialize Registry Manager
+            _registryManager = new RegistryManager();
+
+            // Create ContextMenu
             _contextMenuTrayIcon = new Forms.ContextMenu();
             _menuItemExit = new Forms.MenuItem();
-
-            // Initialize contextMenu1
-            _contextMenuTrayIcon.MenuItems.AddRange(
-                        new Forms.MenuItem[] { _menuItemExit });
+            
+            // Initialize contextMenu
+            _contextMenuTrayIcon.MenuItems.AddRange(new Forms.MenuItem[] { _menuItemExit });
 
             // Initialize menuItem1
             _menuItemExit.Index = 0;
@@ -126,6 +131,7 @@ namespace OpenBots.Agent.Client
         }
         private void LoadConnectionSettings()
         {
+            // Load settings from "OpenBots.Settings" (Config File)
             _agentSettings = SettingsManager.ReadSettings();
             bool isServerAlive = false;
 
@@ -143,23 +149,29 @@ namespace OpenBots.Agent.Client
                 {
                     ServerConnectionEnabled = false,
                     ServerURL = string.Empty,
+                    AgentUsername = _registryManager.AgentUsername ?? string.Empty,  // Load Username from User Registry
+                    AgentPassword = _registryManager.AgentPassword ?? string.Empty,  // Load Password from User Registry
                     SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? Enums.SinkType.File.ToString() : _agentSettings.SinkType,
                     TracingLevel = string.IsNullOrEmpty(_agentSettings.TracingLevel) ? LogEventLevel.Information.ToString() : _agentSettings.TracingLevel,
                     DNSHost = Dns.GetHostName(),
                     MachineName = Environment.MachineName,
                     AgentId = string.Empty,
                     MACAddress = AgentHelper.GetMacAddress(),
+                    IPAddress = new WebClient().DownloadString("http://icanhazip.com").Trim()
                 };
             }
 
             // Loading settings in UI
-            txt_MachineName.Text = _connectionSettings.MachineName;
+            txt_Username.Text = _connectionSettings.AgentUsername;
+            txt_Password.Password = _connectionSettings.AgentPassword;
             txt_ServerURL.Text = _connectionSettings.ServerURL;
-            txt_AgentId.Text = _connectionSettings.AgentId;
             cmb_LogLevel.ItemsSource = Enum.GetValues(typeof(LogEventLevel));
             cmb_LogLevel.SelectedIndex = Array.IndexOf((Array)cmb_LogLevel.ItemsSource, Enum.Parse(typeof(LogEventLevel), _connectionSettings.TracingLevel));
             cmb_SinkType.ItemsSource = Enum.GetValues(typeof(Enums.SinkType));
             cmb_SinkType.SelectedIndex = Array.IndexOf((Array)cmb_SinkType.ItemsSource, Enum.Parse(typeof(Enums.SinkType), _connectionSettings.SinkType));
+            
+            // Update UI Controls after loading settings
+            OnSetRegistryKeys();
             OnSinkSelectionChange();
 
             if (isServerAlive)
@@ -255,12 +267,22 @@ namespace OpenBots.Agent.Client
         {
             UpdateConnectButtonState();
         }
+        private void OnTextChange_AgentUsername(object sender, TextChangedEventArgs e)
+        {
+            UpdateConnectButtonState();
+        }
+        private void OnPasswordChange_AgentPassword(object sender, RoutedEventArgs e)
+        {
+            UpdateConnectButtonState();
+        }
         private void OnClick_ConnectBtn(object sender, RoutedEventArgs e)
         {
             if (btn_Connect.Content.ToString() == "Connect")
             {
                 // Server Configuration
                 _connectionSettings.ServerURL = txt_ServerURL.Text;
+                _connectionSettings.AgentUsername = txt_Username.Text;
+                _connectionSettings.AgentPassword = txt_Password.Password;
 
                 // Logging
                 _connectionSettings.TracingLevel = cmb_LogLevel.Text;
@@ -278,6 +300,15 @@ namespace OpenBots.Agent.Client
                     _agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
 
                     UpdateUIOnConnect();
+
+                    //Set Registry Keys if NOT already Set
+                    if(string.IsNullOrEmpty(_registryManager.AgentUsername) || string.IsNullOrEmpty(_registryManager.AgentPassword))
+                    {
+                        _registryManager.AgentUsername = _connectionSettings.AgentUsername;
+                        _registryManager.AgentPassword = _connectionSettings.AgentPassword;
+
+                        OnSetRegistryKeys();
+                    }
 
                     // Update OpenBots.settings file
                     SettingsManager.UpdateSettings(_agentSettings);
@@ -388,9 +419,6 @@ namespace OpenBots.Agent.Client
             lbl_StatusValue.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF4FE823"));
             lbl_StatusValue.FontWeight = FontWeights.Bold;
 
-            // Update Agent Id
-            txt_AgentId.Text = _agentSettings.AgentId;
-
             // Disable Input Controls
             txt_ServerURL.IsEnabled = false;
 
@@ -408,9 +436,6 @@ namespace OpenBots.Agent.Client
             lbl_StatusValue.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFBBB5B5"));
             lbl_StatusValue.FontWeight = FontWeights.Normal;
 
-            // Update Agent Id
-            txt_AgentId.Text = _agentSettings.AgentId;
-
             // Enable Input Controls
             txt_ServerURL.IsEnabled = true;
 
@@ -423,7 +448,9 @@ namespace OpenBots.Agent.Client
         }
         private void UpdateConnectButtonState()
         {
-            if (lbl_StatusValue.Content.ToString() != "Not Connected" && !string.IsNullOrEmpty(txt_ServerURL.Text) && !btn_Save.IsEnabled)
+            if (lbl_StatusValue.Content.ToString() != "Not Connected" && !string.IsNullOrEmpty(txt_ServerURL.Text) 
+                && !string.IsNullOrEmpty(txt_Username.Text) && !string.IsNullOrEmpty(txt_Password.Password) 
+                && !btn_Save.IsEnabled)
                 btn_Connect.IsEnabled = true;
             else
                 btn_Connect.IsEnabled = false;
@@ -540,7 +567,22 @@ namespace OpenBots.Agent.Client
                     break;
             }
         }
-
+        private void OnSetRegistryKeys()
+        {
+            // If Agent's Credentials (Username, Password) exist in the Registry
+            if(!string.IsNullOrEmpty(txt_Username.Text) && !string.IsNullOrEmpty(txt_Password.Password))
+            {
+                // Disable Credentials Controls
+                txt_Username.IsEnabled = false;
+                txt_Password.IsEnabled = false;
+            }
+            else
+            {
+                // Enable Credentials Controls
+                txt_Username.IsEnabled = true;
+                txt_Password.IsEnabled = true;
+            }
+        }
         #endregion
     }
 }

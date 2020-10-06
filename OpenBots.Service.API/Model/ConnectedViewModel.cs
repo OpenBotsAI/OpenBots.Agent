@@ -19,54 +19,38 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
-using SwaggerDateConverter = OpenBots.Service.API.Client.SwaggerDateConverter;
+using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
 
-namespace OpenBots.Service.API.Model
+namespace IO.Swagger.Model
 {
     /// <summary>
-    /// LoginModel
+    /// ConnectedViewModel
     /// </summary>
     [DataContract]
-        public partial class LoginModel :  IEquatable<LoginModel>, IValidatableObject
+        public partial class ConnectedViewModel :  IEquatable<ConnectedViewModel>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoginModel" /> class.
+        /// Initializes a new instance of the <see cref="ConnectedViewModel" /> class.
         /// </summary>
-        /// <param name="userName">userName (required).</param>
-        /// <param name="password">password (required).</param>
-        public LoginModel(string userName = default(string), string password = default(string))
+        /// <param name="agentId">agentId.</param>
+        /// <param name="agentName">agentName.</param>
+        public ConnectedViewModel(string agentId = default(string), string agentName = default(string))
         {
-            // to ensure "userName" is required (not null)
-            if (userName == null)
-            {
-                throw new InvalidDataException("userName is a required property for LoginModel and cannot be null");
-            }
-            else
-            {
-                this.UserName = userName;
-            }
-            // to ensure "password" is required (not null)
-            if (password == null)
-            {
-                throw new InvalidDataException("password is a required property for LoginModel and cannot be null");
-            }
-            else
-            {
-                this.Password = password;
-            }
+            this.AgentId = agentId;
+            this.AgentName = agentName;
         }
         
         /// <summary>
-        /// Gets or Sets UserName
+        /// Gets or Sets AgentId
         /// </summary>
-        [DataMember(Name="userName", EmitDefaultValue=false)]
-        public string UserName { get; set; }
+        [DataMember(Name="agentId", EmitDefaultValue=false)]
+        public string AgentId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Password
+        /// Gets or Sets AgentName
         /// </summary>
-        [DataMember(Name="password", EmitDefaultValue=false)]
-        public string Password { get; set; }
+        [DataMember(Name="agentName", EmitDefaultValue=false)]
+        public string AgentName { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -75,9 +59,9 @@ namespace OpenBots.Service.API.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class LoginModel {\n");
-            sb.Append("  UserName: ").Append(UserName).Append("\n");
-            sb.Append("  Password: ").Append(Password).Append("\n");
+            sb.Append("class ConnectedViewModel {\n");
+            sb.Append("  AgentId: ").Append(AgentId).Append("\n");
+            sb.Append("  AgentName: ").Append(AgentName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -98,29 +82,29 @@ namespace OpenBots.Service.API.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as LoginModel);
+            return this.Equals(input as ConnectedViewModel);
         }
 
         /// <summary>
-        /// Returns true if LoginModel instances are equal
+        /// Returns true if ConnectedViewModel instances are equal
         /// </summary>
-        /// <param name="input">Instance of LoginModel to be compared</param>
+        /// <param name="input">Instance of ConnectedViewModel to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(LoginModel input)
+        public bool Equals(ConnectedViewModel input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.UserName == input.UserName ||
-                    (this.UserName != null &&
-                    this.UserName.Equals(input.UserName))
+                    this.AgentId == input.AgentId ||
+                    (this.AgentId != null &&
+                    this.AgentId.Equals(input.AgentId))
                 ) && 
                 (
-                    this.Password == input.Password ||
-                    (this.Password != null &&
-                    this.Password.Equals(input.Password))
+                    this.AgentName == input.AgentName ||
+                    (this.AgentName != null &&
+                    this.AgentName.Equals(input.AgentName))
                 );
         }
 
@@ -133,10 +117,10 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.UserName != null)
-                    hashCode = hashCode * 59 + this.UserName.GetHashCode();
-                if (this.Password != null)
-                    hashCode = hashCode * 59 + this.Password.GetHashCode();
+                if (this.AgentId != null)
+                    hashCode = hashCode * 59 + this.AgentId.GetHashCode();
+                if (this.AgentName != null)
+                    hashCode = hashCode * 59 + this.AgentName.GetHashCode();
                 return hashCode;
             }
         }

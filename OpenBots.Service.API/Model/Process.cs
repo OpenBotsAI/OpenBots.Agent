@@ -35,6 +35,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="version">Version of Process.</param>
         /// <param name="status">Status of Process.</param>
         /// <param name="binaryObjectId">Id linked to Binary Object data table.</param>
+        /// <param name="versionId">Id to match other versions of the same process.</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -45,7 +46,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public Process(int? version = default(int?), string status = default(string), Guid? binaryObjectId = default(Guid?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public Process(int? version = default(int?), string status = default(string), Guid? binaryObjectId = default(Guid?), Guid? versionId = default(Guid?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -59,6 +60,7 @@ namespace OpenBots.Service.API.Model
             this.Version = version;
             this.Status = status;
             this.BinaryObjectId = binaryObjectId;
+            this.VersionId = versionId;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -98,6 +100,13 @@ namespace OpenBots.Service.API.Model
         /// <value>Id linked to Binary Object data table</value>
         [DataMember(Name="binaryObjectId", EmitDefaultValue=false)]
         public Guid? BinaryObjectId { get; set; }
+
+        /// <summary>
+        /// Id to match other versions of the same process
+        /// </summary>
+        /// <value>Id to match other versions of the same process</value>
+        [DataMember(Name="versionId", EmitDefaultValue=false)]
+        public Guid? VersionId { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -170,6 +179,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  BinaryObjectId: ").Append(BinaryObjectId).Append("\n");
+            sb.Append("  VersionId: ").Append(VersionId).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -228,6 +238,11 @@ namespace OpenBots.Service.API.Model
                     this.BinaryObjectId == input.BinaryObjectId ||
                     (this.BinaryObjectId != null &&
                     this.BinaryObjectId.Equals(input.BinaryObjectId))
+                ) && 
+                (
+                    this.VersionId == input.VersionId ||
+                    (this.VersionId != null &&
+                    this.VersionId.Equals(input.VersionId))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -296,6 +311,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Status.GetHashCode();
                 if (this.BinaryObjectId != null)
                     hashCode = hashCode * 59 + this.BinaryObjectId.GetHashCode();
+                if (this.VersionId != null)
+                    hashCode = hashCode * 59 + this.VersionId.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)

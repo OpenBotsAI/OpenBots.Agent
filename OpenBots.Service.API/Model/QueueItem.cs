@@ -37,11 +37,15 @@ namespace OpenBots.Service.API.Model
         /// <param name="lockedUntil">When to lock QueueItem if still being executed.</param>
         /// <param name="lockedBy">Which Agent locked the QueueItem.</param>
         /// <param name="queueId">Which Queue the QueueItem belongs to.</param>
+        /// <param name="type">Format of Data.</param>
+        /// <param name="jsonType">Describes the type of item the queue is dealing with.</param>
         /// <param name="dataJson">Data in JSON or Text format.</param>
         /// <param name="state">Failed, Expired, Successful, New.</param>
         /// <param name="stateMessage">Message given to user after state of QueueItem was changed.</param>
         /// <param name="lockTransactionKey">Guid generated when item is dequeued.</param>
         /// <param name="lockedEndTime">Tells when QueueItem has been executed and when IsLocked as been turned back to false.</param>
+        /// <param name="retryCount">Number of time a QueueItem has been retried.</param>
+        /// <param name="priority">Priority of when queue item should be dequeued.</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -52,7 +56,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public QueueItem(bool? isLocked = default(bool?), DateTime? lockedOn = default(DateTime?), DateTime? lockedUntil = default(DateTime?), Guid? lockedBy = default(Guid?), Guid? queueId = default(Guid?), string dataJson = default(string), string state = default(string), string stateMessage = default(string), Guid? lockTransactionKey = default(Guid?), DateTime? lockedEndTime = default(DateTime?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public QueueItem(bool? isLocked = default(bool?), DateTime? lockedOn = default(DateTime?), DateTime? lockedUntil = default(DateTime?), Guid? lockedBy = default(Guid?), Guid? queueId = default(Guid?), string type = default(string), string jsonType = default(string), string dataJson = default(string), string state = default(string), string stateMessage = default(string), Guid? lockTransactionKey = default(Guid?), DateTime? lockedEndTime = default(DateTime?), int? retryCount = default(int?), int? priority = default(int?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -68,11 +72,15 @@ namespace OpenBots.Service.API.Model
             this.LockedUntil = lockedUntil;
             this.LockedBy = lockedBy;
             this.QueueId = queueId;
+            this.Type = type;
+            this.JsonType = jsonType;
             this.DataJson = dataJson;
             this.State = state;
             this.StateMessage = stateMessage;
             this.LockTransactionKey = lockTransactionKey;
             this.LockedEndTime = lockedEndTime;
+            this.RetryCount = retryCount;
+            this.Priority = priority;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -128,6 +136,20 @@ namespace OpenBots.Service.API.Model
         public Guid? QueueId { get; set; }
 
         /// <summary>
+        /// Format of Data
+        /// </summary>
+        /// <value>Format of Data</value>
+        [DataMember(Name="type", EmitDefaultValue=false)]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Describes the type of item the queue is dealing with
+        /// </summary>
+        /// <value>Describes the type of item the queue is dealing with</value>
+        [DataMember(Name="jsonType", EmitDefaultValue=false)]
+        public string JsonType { get; set; }
+
+        /// <summary>
         /// Data in JSON or Text format
         /// </summary>
         /// <value>Data in JSON or Text format</value>
@@ -161,6 +183,20 @@ namespace OpenBots.Service.API.Model
         /// <value>Tells when QueueItem has been executed and when IsLocked as been turned back to false</value>
         [DataMember(Name="lockedEndTime", EmitDefaultValue=false)]
         public DateTime? LockedEndTime { get; set; }
+
+        /// <summary>
+        /// Number of time a QueueItem has been retried
+        /// </summary>
+        /// <value>Number of time a QueueItem has been retried</value>
+        [DataMember(Name="retryCount", EmitDefaultValue=false)]
+        public int? RetryCount { get; set; }
+
+        /// <summary>
+        /// Priority of when queue item should be dequeued
+        /// </summary>
+        /// <value>Priority of when queue item should be dequeued</value>
+        [DataMember(Name="priority", EmitDefaultValue=false)]
+        public int? Priority { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -235,11 +271,15 @@ namespace OpenBots.Service.API.Model
             sb.Append("  LockedUntil: ").Append(LockedUntil).Append("\n");
             sb.Append("  LockedBy: ").Append(LockedBy).Append("\n");
             sb.Append("  QueueId: ").Append(QueueId).Append("\n");
+            sb.Append("  Type: ").Append(Type).Append("\n");
+            sb.Append("  JsonType: ").Append(JsonType).Append("\n");
             sb.Append("  DataJson: ").Append(DataJson).Append("\n");
             sb.Append("  State: ").Append(State).Append("\n");
             sb.Append("  StateMessage: ").Append(StateMessage).Append("\n");
             sb.Append("  LockTransactionKey: ").Append(LockTransactionKey).Append("\n");
             sb.Append("  LockedEndTime: ").Append(LockedEndTime).Append("\n");
+            sb.Append("  RetryCount: ").Append(RetryCount).Append("\n");
+            sb.Append("  Priority: ").Append(Priority).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -310,6 +350,16 @@ namespace OpenBots.Service.API.Model
                     this.QueueId.Equals(input.QueueId))
                 ) && 
                 (
+                    this.Type == input.Type ||
+                    (this.Type != null &&
+                    this.Type.Equals(input.Type))
+                ) && 
+                (
+                    this.JsonType == input.JsonType ||
+                    (this.JsonType != null &&
+                    this.JsonType.Equals(input.JsonType))
+                ) && 
+                (
                     this.DataJson == input.DataJson ||
                     (this.DataJson != null &&
                     this.DataJson.Equals(input.DataJson))
@@ -333,6 +383,16 @@ namespace OpenBots.Service.API.Model
                     this.LockedEndTime == input.LockedEndTime ||
                     (this.LockedEndTime != null &&
                     this.LockedEndTime.Equals(input.LockedEndTime))
+                ) && 
+                (
+                    this.RetryCount == input.RetryCount ||
+                    (this.RetryCount != null &&
+                    this.RetryCount.Equals(input.RetryCount))
+                ) && 
+                (
+                    this.Priority == input.Priority ||
+                    (this.Priority != null &&
+                    this.Priority.Equals(input.Priority))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -405,6 +465,10 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.LockedBy.GetHashCode();
                 if (this.QueueId != null)
                     hashCode = hashCode * 59 + this.QueueId.GetHashCode();
+                if (this.Type != null)
+                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                if (this.JsonType != null)
+                    hashCode = hashCode * 59 + this.JsonType.GetHashCode();
                 if (this.DataJson != null)
                     hashCode = hashCode * 59 + this.DataJson.GetHashCode();
                 if (this.State != null)
@@ -415,6 +479,10 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.LockTransactionKey.GetHashCode();
                 if (this.LockedEndTime != null)
                     hashCode = hashCode * 59 + this.LockedEndTime.GetHashCode();
+                if (this.RetryCount != null)
+                    hashCode = hashCode * 59 + this.RetryCount.GetHashCode();
+                if (this.Priority != null)
+                    hashCode = hashCode * 59 + this.Priority.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)

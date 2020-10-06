@@ -42,6 +42,7 @@ namespace IO.Swagger.Model
         /// <param name="processId">processId.</param>
         /// <param name="agentId">agentId.</param>
         /// <param name="machineName">machineName.</param>
+        /// <param name="agentName">agentName.</param>
         /// <param name="processName">processName.</param>
         /// <param name="logger">logger.</param>
         /// <param name="id">id.</param>
@@ -53,7 +54,7 @@ namespace IO.Swagger.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public ProcessLog(string message = default(string), string messageTemplate = default(string), string level = default(string), DateTime? processLogTimeStamp = default(DateTime?), string exception = default(string), string properties = default(string), Guid? jobId = default(Guid?), Guid? processId = default(Guid?), Guid? agentId = default(Guid?), string machineName = default(string), string processName = default(string), string logger = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public ProcessLog(string message = default(string), string messageTemplate = default(string), string level = default(string), DateTime? processLogTimeStamp = default(DateTime?), string exception = default(string), string properties = default(string), Guid? jobId = default(Guid?), Guid? processId = default(Guid?), Guid? agentId = default(Guid?), string machineName = default(string), string agentName = default(string), string processName = default(string), string logger = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             this.Message = message;
             this.MessageTemplate = messageTemplate;
@@ -65,6 +66,7 @@ namespace IO.Swagger.Model
             this.ProcessId = processId;
             this.AgentId = agentId;
             this.MachineName = machineName;
+            this.AgentName = agentName;
             this.ProcessName = processName;
             this.Logger = logger;
             this.Id = id;
@@ -145,6 +147,12 @@ namespace IO.Swagger.Model
         /// </summary>
         [DataMember(Name="machineName", EmitDefaultValue=false)]
         public string MachineName { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AgentName
+        /// </summary>
+        [DataMember(Name="agentName", EmitDefaultValue=false)]
+        public string AgentName { get; set; }
 
         /// <summary>
         /// Gets or Sets ProcessName
@@ -230,6 +238,7 @@ namespace IO.Swagger.Model
             sb.Append("  ProcessId: ").Append(ProcessId).Append("\n");
             sb.Append("  AgentId: ").Append(AgentId).Append("\n");
             sb.Append("  MachineName: ").Append(MachineName).Append("\n");
+            sb.Append("  AgentName: ").Append(AgentName).Append("\n");
             sb.Append("  ProcessName: ").Append(ProcessName).Append("\n");
             sb.Append("  Logger: ").Append(Logger).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
@@ -326,6 +335,11 @@ namespace IO.Swagger.Model
                     this.MachineName.Equals(input.MachineName))
                 ) && 
                 (
+                    this.AgentName == input.AgentName ||
+                    (this.AgentName != null &&
+                    this.AgentName.Equals(input.AgentName))
+                ) && 
+                (
                     this.ProcessName == input.ProcessName ||
                     (this.ProcessName != null &&
                     this.ProcessName.Equals(input.ProcessName))
@@ -411,6 +425,8 @@ namespace IO.Swagger.Model
                     hashCode = hashCode * 59 + this.AgentId.GetHashCode();
                 if (this.MachineName != null)
                     hashCode = hashCode * 59 + this.MachineName.GetHashCode();
+                if (this.AgentName != null)
+                    hashCode = hashCode * 59 + this.AgentName.GetHashCode();
                 if (this.ProcessName != null)
                     hashCode = hashCode * 59 + this.ProcessName.GetHashCode();
                 if (this.Logger != null)

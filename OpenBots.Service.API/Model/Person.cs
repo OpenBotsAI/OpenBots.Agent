@@ -34,6 +34,7 @@ namespace OpenBots.Service.API.Model
         /// </summary>
         /// <param name="firstName">First Name of the Person.</param>
         /// <param name="lastName">lastName.</param>
+        /// <param name="isAgent">isAgent (default to false).</param>
         /// <param name="company">company.</param>
         /// <param name="department">department.</param>
         /// <param name="emails">emails.</param>
@@ -52,7 +53,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public Person(string firstName = default(string), string lastName = default(string), string company = default(string), string department = default(string), List<PersonEmail> emails = default(List<PersonEmail>), List<PersonCredential> credentials = default(List<PersonCredential>), List<PersonPhone> phones = default(List<PersonPhone>), List<EmailVerification> emailVerifications = default(List<EmailVerification>), Guid? organizationId = default(Guid?), string orgEmail = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public Person(string firstName = default(string), string lastName = default(string), bool? isAgent = false, string company = default(string), string department = default(string), List<PersonEmail> emails = default(List<PersonEmail>), List<PersonCredential> credentials = default(List<PersonCredential>), List<PersonPhone> phones = default(List<PersonPhone>), List<EmailVerification> emailVerifications = default(List<EmailVerification>), Guid? organizationId = default(Guid?), string orgEmail = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -65,6 +66,15 @@ namespace OpenBots.Service.API.Model
             }
             this.FirstName = firstName;
             this.LastName = lastName;
+            // use default value if no "isAgent" provided
+            if (isAgent == null)
+            {
+                this.IsAgent = false;
+            }
+            else
+            {
+                this.IsAgent = isAgent;
+            }
             this.Company = company;
             this.Department = department;
             this.Emails = emails;
@@ -104,6 +114,12 @@ namespace OpenBots.Service.API.Model
         /// </summary>
         [DataMember(Name="lastName", EmitDefaultValue=false)]
         public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or Sets IsAgent
+        /// </summary>
+        [DataMember(Name="isAgent", EmitDefaultValue=false)]
+        public bool? IsAgent { get; set; }
 
         /// <summary>
         /// Gets or Sets Company
@@ -223,6 +239,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("class Person {\n");
             sb.Append("  FirstName: ").Append(FirstName).Append("\n");
             sb.Append("  LastName: ").Append(LastName).Append("\n");
+            sb.Append("  IsAgent: ").Append(IsAgent).Append("\n");
             sb.Append("  Company: ").Append(Company).Append("\n");
             sb.Append("  Department: ").Append(Department).Append("\n");
             sb.Append("  Emails: ").Append(Emails).Append("\n");
@@ -284,6 +301,11 @@ namespace OpenBots.Service.API.Model
                     this.LastName == input.LastName ||
                     (this.LastName != null &&
                     this.LastName.Equals(input.LastName))
+                ) && 
+                (
+                    this.IsAgent == input.IsAgent ||
+                    (this.IsAgent != null &&
+                    this.IsAgent.Equals(input.IsAgent))
                 ) && 
                 (
                     this.Company == input.Company ||
@@ -394,6 +416,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.FirstName.GetHashCode();
                 if (this.LastName != null)
                     hashCode = hashCode * 59 + this.LastName.GetHashCode();
+                if (this.IsAgent != null)
+                    hashCode = hashCode * 59 + this.IsAgent.GetHashCode();
                 if (this.Company != null)
                     hashCode = hashCode * 59 + this.Company.GetHashCode();
                 if (this.Department != null)

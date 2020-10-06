@@ -24,13 +24,13 @@ using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
 namespace IO.Swagger.Model
 {
     /// <summary>
-    /// ProcessViewModel
+    /// Body6
     /// </summary>
     [DataContract]
-        public partial class ProcessViewModel :  IEquatable<ProcessViewModel>, IValidatableObject
+        public partial class Body6 :  IEquatable<Body6>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProcessViewModel" /> class.
+        /// Initializes a new instance of the <see cref="Body6" /> class.
         /// </summary>
         /// <param name="id">id.</param>
         /// <param name="name">name (required).</param>
@@ -42,12 +42,12 @@ namespace IO.Swagger.Model
         /// <param name="_file">_file.</param>
         /// <param name="binaryObjectId">binaryObjectId.</param>
         /// <param name="organizationId">organizationId.</param>
-        public ProcessViewModel(Guid? id = default(Guid?), string name = default(string), int? version = default(int?), Guid? versionId = default(Guid?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), string status = default(string), byte[] _file = default(byte[]), Guid? binaryObjectId = default(Guid?), Guid? organizationId = default(Guid?))
+        public Body6(Guid? id = default(Guid?), string name = default(string), int? version = default(int?), Guid? versionId = default(Guid?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), string status = default(string), byte[] _file = default(byte[]), Guid? binaryObjectId = default(Guid?), Guid? organizationId = default(Guid?))
         {
             // to ensure "name" is required (not null)
             if (name == null)
             {
-                throw new InvalidDataException("name is a required property for ProcessViewModel and cannot be null");
+                throw new InvalidDataException("name is a required property for Body6 and cannot be null");
             }
             else
             {
@@ -67,61 +67,61 @@ namespace IO.Swagger.Model
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name="id", EmitDefaultValue=false)]
+        [DataMember(Name="Id", EmitDefaultValue=false)]
         public Guid? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
-        [DataMember(Name="name", EmitDefaultValue=false)]
+        [DataMember(Name="Name", EmitDefaultValue=false)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or Sets Version
         /// </summary>
-        [DataMember(Name="version", EmitDefaultValue=false)]
+        [DataMember(Name="Version", EmitDefaultValue=false)]
         public int? Version { get; set; }
 
         /// <summary>
         /// Gets or Sets VersionId
         /// </summary>
-        [DataMember(Name="versionId", EmitDefaultValue=false)]
+        [DataMember(Name="VersionId", EmitDefaultValue=false)]
         public Guid? VersionId { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedOn
         /// </summary>
-        [DataMember(Name="createdOn", EmitDefaultValue=false)]
+        [DataMember(Name="CreatedOn", EmitDefaultValue=false)]
         public DateTime? CreatedOn { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedBy
         /// </summary>
-        [DataMember(Name="createdBy", EmitDefaultValue=false)]
+        [DataMember(Name="CreatedBy", EmitDefaultValue=false)]
         public string CreatedBy { get; set; }
 
         /// <summary>
         /// Gets or Sets Status
         /// </summary>
-        [DataMember(Name="status", EmitDefaultValue=false)]
+        [DataMember(Name="Status", EmitDefaultValue=false)]
         public string Status { get; set; }
 
         /// <summary>
         /// Gets or Sets File
         /// </summary>
-        [DataMember(Name="file", EmitDefaultValue=false)]
+        [DataMember(Name="File", EmitDefaultValue=false)]
         public byte[] File { get; set; }
 
         /// <summary>
         /// Gets or Sets BinaryObjectId
         /// </summary>
-        [DataMember(Name="binaryObjectId", EmitDefaultValue=false)]
+        [DataMember(Name="BinaryObjectId", EmitDefaultValue=false)]
         public Guid? BinaryObjectId { get; set; }
 
         /// <summary>
         /// Gets or Sets OrganizationId
         /// </summary>
-        [DataMember(Name="organizationId", EmitDefaultValue=false)]
+        [DataMember(Name="OrganizationId", EmitDefaultValue=false)]
         public Guid? OrganizationId { get; set; }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace IO.Swagger.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ProcessViewModel {\n");
+            sb.Append("class Body6 {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Version: ").Append(Version).Append("\n");
@@ -162,15 +162,15 @@ namespace IO.Swagger.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as ProcessViewModel);
+            return this.Equals(input as Body6);
         }
 
         /// <summary>
-        /// Returns true if ProcessViewModel instances are equal
+        /// Returns true if Body6 instances are equal
         /// </summary>
-        /// <param name="input">Instance of ProcessViewModel to be compared</param>
+        /// <param name="input">Instance of Body6 to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ProcessViewModel input)
+        public bool Equals(Body6 input)
         {
             if (input == null)
                 return false;

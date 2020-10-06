@@ -34,10 +34,12 @@ namespace OpenBots.Service.API.Model
         /// </summary>
         /// <param name="processId">processId.</param>
         /// <param name="processName">processName.</param>
-        public JobProcessLookup(Guid? processId = default(Guid?), string processName = default(string))
+        /// <param name="processNameWithVersion">processNameWithVersion.</param>
+        public JobProcessLookup(Guid? processId = default(Guid?), string processName = default(string), string processNameWithVersion = default(string))
         {
             this.ProcessId = processId;
             this.ProcessName = processName;
+            this.ProcessNameWithVersion = processNameWithVersion;
         }
         
         /// <summary>
@@ -53,6 +55,12 @@ namespace OpenBots.Service.API.Model
         public string ProcessName { get; set; }
 
         /// <summary>
+        /// Gets or Sets ProcessNameWithVersion
+        /// </summary>
+        [DataMember(Name="processNameWithVersion", EmitDefaultValue=false)]
+        public string ProcessNameWithVersion { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -62,6 +70,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("class JobProcessLookup {\n");
             sb.Append("  ProcessId: ").Append(ProcessId).Append("\n");
             sb.Append("  ProcessName: ").Append(ProcessName).Append("\n");
+            sb.Append("  ProcessNameWithVersion: ").Append(ProcessNameWithVersion).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -105,6 +114,11 @@ namespace OpenBots.Service.API.Model
                     this.ProcessName == input.ProcessName ||
                     (this.ProcessName != null &&
                     this.ProcessName.Equals(input.ProcessName))
+                ) && 
+                (
+                    this.ProcessNameWithVersion == input.ProcessNameWithVersion ||
+                    (this.ProcessNameWithVersion != null &&
+                    this.ProcessNameWithVersion.Equals(input.ProcessNameWithVersion))
                 );
         }
 
@@ -121,6 +135,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.ProcessId.GetHashCode();
                 if (this.ProcessName != null)
                     hashCode = hashCode * 59 + this.ProcessName.GetHashCode();
+                if (this.ProcessNameWithVersion != null)
+                    hashCode = hashCode * 59 + this.ProcessNameWithVersion.GetHashCode();
                 return hashCode;
             }
         }
