@@ -36,6 +36,11 @@ namespace OpenBots.Service.Client.Executor
             return _jobsQueue.Dequeue();
         }
 
+        public Job PeekJob()
+        {
+            return _jobsQueue.Peek();
+        }
+
         public bool IsQueueEmpty()
         {
             return _jobsQueue.Count == 0 ? true : false;

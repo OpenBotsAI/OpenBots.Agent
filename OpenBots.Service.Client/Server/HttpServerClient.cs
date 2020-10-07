@@ -96,7 +96,7 @@ namespace OpenBots.Service.Client.Server
 
                 //setup heartbeat to the server
                 _jobsFetchTimer = new Timer();
-                _jobsFetchTimer.Interval = 30000;
+                _jobsFetchTimer.Interval = 10000;
                 _jobsFetchTimer.Elapsed += JobsFetchTimer_Elapsed;
                 _jobsFetchTimer.Enabled = true;
 
@@ -170,7 +170,7 @@ namespace OpenBots.Service.Client.Server
 
                 // On Successful Connection with Server
                 StartHeartBeatTimer();
-                //////StartJobsFetchTimer();
+                StartJobsFetchTimer();
 
                 // Send Response to Agent
                 return new ServerResponse(ServerSettings, connectAPIResponse.StatusCode.ToString());
@@ -206,17 +206,20 @@ namespace OpenBots.Service.Client.Server
 
                 // After Disconnecting from Server
                 StopHeartBeatTimer();
-                //////StopJobsFetchTimer();
+                StopJobsFetchTimer();
 
                 // Form Server Response
                 return new ServerResponse(ServerSettings, apiResponse.StatusCode.ToString());
             }
             catch (Exception ex)
             {
+                var errorMessage = ex.GetType().GetProperty("ErrorContent").GetValue(ex, null)?.ToString();
+                errorMessage = errorMessage ?? ex.GetType().GetProperty("Message").GetValue(ex, null)?.ToString();
+
                 // Form Server Response
                 return new ServerResponse(null,
                     ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString(),
-                    ex.GetType().GetProperty("ErrorContent").GetValue(ex, null).ToString());
+                    errorMessage);
             }
         }
 

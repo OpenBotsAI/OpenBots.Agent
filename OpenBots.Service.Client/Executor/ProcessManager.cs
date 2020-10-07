@@ -1,5 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json.Linq;
 using OpenBots.Service.Client.Manager;
 using System;
 using System.IO;
@@ -29,7 +30,7 @@ namespace OpenBots.Service.Client.Executor
                 Directory.CreateDirectory(processDirectoryPath);
 
                 // Write Downloaded (.zip) file in the Process Directory
-                var processZipFilePath = Path.Combine(processDirectoryPath, processId, ".zip");
+                var processZipFilePath = Path.Combine(processDirectoryPath, processId + ".zip");
                 File.WriteAllBytes(processZipFilePath, apiResponse.Data.ToArray());
 
                 // Extract Files/Folders from (.zip) file
@@ -39,8 +40,11 @@ namespace OpenBots.Service.Client.Executor
                 File.Delete(processZipFilePath);
             }
 
-            // Return "project.config" path of the OpenBots Project
-            return Directory.GetFiles(processDirectoryPath, "project.config", SearchOption.AllDirectories).First();
+            string configFilePath = Directory.GetFiles(processDirectoryPath, "project.config", SearchOption.AllDirectories).First();
+            string mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
+
+            // Return "Main" Script File Path of the Process
+            return Directory.GetFiles(processDirectoryPath, mainFileName, SearchOption.AllDirectories).First();
         }
 
         private static void DecompressFile(string processZipFilePath, string targetDirectory)

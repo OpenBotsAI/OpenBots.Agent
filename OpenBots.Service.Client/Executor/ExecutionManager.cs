@@ -64,6 +64,10 @@ namespace OpenBots.Service.Client.Executor
             }
             catch (Exception ex)
             {
+                var job = JobsQueueManager.Instance.DequeueJob();
+
+                // Update Job Status (Fail)
+                // ---- API Call to Update Job Status
             }
             finally
             {
@@ -74,12 +78,19 @@ namespace OpenBots.Service.Client.Executor
         private void StartAutomation()
         {
             // Dequeue Job
-            var job = JobsQueueManager.Instance.DequeueJob();
+            var job = JobsQueueManager.Instance.PeekJob();
 
             // Download Process and Extract Files
-            var processConfigPath = ProcessManager.DownloadAndExtractProcess(job.ProcessId.ToString());
+            var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(job.ProcessId.ToString());
 
-            RunJob(processConfigPath);
+            // Run Process
+            RunJob(mainScriptFilePath);
+
+            // Update Job Status (Complete)
+            // ---- API Call to Update Job Status
+
+            // Dequeue the Job
+            JobsQueueManager.Instance.DequeueJob();
         }
 
         private void SetEngineStatus(bool isBusy)
