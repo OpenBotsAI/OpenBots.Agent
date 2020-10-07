@@ -52,7 +52,7 @@ namespace OpenBots.Agent.Core.UserRegistry
             }
             finally
             {
-                registryKey.Close();
+                registryKey?.Close();
             }
 
             return keyValue;
@@ -75,7 +75,7 @@ namespace OpenBots.Agent.Core.UserRegistry
             }
             finally
             {
-                registryKey.Close();
+                registryKey?.Close();
             }
         }
     }
