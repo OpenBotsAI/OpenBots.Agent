@@ -1,6 +1,9 @@
 ﻿
+using OpenBots.Agent.Core.Enums;
+using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Timers;
@@ -67,7 +70,13 @@ namespace OpenBots.Service.Client.Executor
                 var job = JobsQueueManager.Instance.DequeueJob();
 
                 // Update Job Status (Fail)
-                // ---- API Call to Update Job Status
+                JobsAPIManager.UpdateJob(AuthAPIManager.Instance, job.Id.ToString(),
+                    new List<Operation>()
+                    {
+                        new Operation(){ Op = "replace", Path = "/jobStatus", Value = nameof(JobStatus.Fail)},
+                        new Operation(){ Op = "replace", Path = "/message", Value = "Job is failed"},
+                        new Operation(){ Op = "replace", Path = "/isSuccessful", Value = false}
+                    });
             }
             finally
             {
@@ -80,6 +89,14 @@ namespace OpenBots.Service.Client.Executor
             // Dequeue Job
             var job = JobsQueueManager.Instance.PeekJob();
 
+            // Update Job Status (InProgress)
+            JobsAPIManager.UpdateJob(AuthAPIManager.Instance, job.Id.ToString(),
+                new List<Operation>()
+                {
+                    new Operation(){ Op = "replace", Path = "/jobStatus", Value = nameof(JobStatus.InProgress)},
+                    new Operation(){ Op = "replace", Path = "/message", Value = "Job is running"}
+                });
+
             // Download Process and Extract Files
             var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(job.ProcessId.ToString());
 
@@ -87,7 +104,13 @@ namespace OpenBots.Service.Client.Executor
             RunJob(mainScriptFilePath);
 
             // Update Job Status (Complete)
-            // ---- API Call to Update Job Status
+            JobsAPIManager.UpdateJob(AuthAPIManager.Instance, job.Id.ToString(),
+                new List<Operation>()
+                {
+                    new Operation(){ Op = "replace", Path = "/jobStatus", Value = nameof(JobStatus.Complete)},
+                    new Operation(){ Op = "replace", Path = "/message", Value = "Job is completed"},
+                    new Operation(){ Op = "replace", Path = "/isSuccessful", Value = true}
+                });
 
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();
