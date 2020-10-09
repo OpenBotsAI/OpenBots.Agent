@@ -1,20 +1,21 @@
 ﻿
 using OpenBots.Agent.Core.Enums;
 using OpenBots.Service.API.Model;
-using OpenBots.Service.Client.Manager;
+using OpenBots.Service.Client.Manager.API;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Timers;
 
-namespace OpenBots.Service.Client.Executor
+namespace OpenBots.Service.Client.Manager.Execution
 {
     public class ExecutionManager
     {
         public bool IsEngineBusy { get; private set; } = false;
         private Timer _newJobsCheckTimer;
 
+        public event EventHandler JobFinishedEvent;
         public static ExecutionManager Instance
         {
             get
@@ -29,8 +30,6 @@ namespace OpenBots.Service.Client.Executor
 
         private ExecutionManager()
         {
-            _newJobsCheckTimer = new Timer();
-            _newJobsCheckTimer.Interval = 5000;
         }
 
         public void StartNewJobsCheckTimer()
@@ -41,10 +40,11 @@ namespace OpenBots.Service.Client.Executor
                 _newJobsCheckTimer.Elapsed -= NewJobsCheckTimer_Elapsed;
             }
 
+            _newJobsCheckTimer = new Timer();
+            _newJobsCheckTimer.Interval = 3000;
             _newJobsCheckTimer.Elapsed += NewJobsCheckTimer_Elapsed;
             _newJobsCheckTimer.Enabled = true;
         }
-
         public void StopNewJobsCheckTimer()
         {
             if (_newJobsCheckTimer != null)
@@ -54,18 +54,20 @@ namespace OpenBots.Service.Client.Executor
             }
         }
 
+        // To Check if JobQueue has a New Job to be executed
         private void NewJobsCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             try
             {
-                // If Jobs Queue is not Empty
-                if(!JobsQueueManager.Instance.IsQueueEmpty())
+                // If Jobs Queue is not Empty & No Job is being executed
+                if(!JobsQueueManager.Instance.IsQueueEmpty() && !IsEngineBusy)
                 {
                     SetEngineStatus(true);
-                    StartAutomation();
+                    ExecuteJob();
+                    SetEngineStatus(false);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 var job = JobsQueueManager.Instance.DequeueJob();
 
@@ -77,16 +79,14 @@ namespace OpenBots.Service.Client.Executor
                         new Operation(){ Op = "replace", Path = "/message", Value = "Job is failed"},
                         new Operation(){ Op = "replace", Path = "/isSuccessful", Value = false}
                     });
-            }
-            finally
-            {
+
                 SetEngineStatus(false);
             }
         }
 
-        private void StartAutomation()
+        private void ExecuteJob()
         {
-            // Dequeue Job
+            // Peek Job
             var job = JobsQueueManager.Instance.PeekJob();
 
             // Update Job Status (InProgress)
@@ -101,7 +101,7 @@ namespace OpenBots.Service.Client.Executor
             var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(job.ProcessId.ToString());
 
             // Run Process
-            RunJob(mainScriptFilePath);
+            RunProcess(mainScriptFilePath);
 
             // Update Job Status (Complete)
             JobsAPIManager.UpdateJob(AuthAPIManager.Instance, job.Id.ToString(),
@@ -115,23 +115,24 @@ namespace OpenBots.Service.Client.Executor
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();
         }
-
-        private void SetEngineStatus(bool isBusy)
-        {
-            IsEngineBusy = isBusy;
-            if (IsEngineBusy)
-                StopNewJobsCheckTimer();
-            else
-                StartNewJobsCheckTimer();
-        }
-
-        private void RunJob(string mainFilePath)
+        private void RunProcess(string mainFilePath)
         {
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{mainFilePath}\"";
             // launch the application
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, out procInfo);
+        }
+        private void SetEngineStatus(bool isBusy)
+        {
+            IsEngineBusy = isBusy;
+            if (!IsEngineBusy)
+                OnJobFinishedEvent(EventArgs.Empty);
+        }
+
+        protected virtual void OnJobFinishedEvent(EventArgs e)
+        {
+            JobFinishedEvent?.Invoke(this, e);
         }
     }
 }

@@ -3,7 +3,7 @@ using OpenBots.Service.API.Client;
 using System;
 using System.IO;
 
-namespace OpenBots.Service.Client.Manager
+namespace OpenBots.Service.Client.Manager.API
 {
     public static class ProcessesAPIManager
     {

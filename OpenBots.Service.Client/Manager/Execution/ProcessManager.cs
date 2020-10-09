@@ -1,12 +1,12 @@
 ﻿using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
-using OpenBots.Service.Client.Manager;
+using OpenBots.Service.Client.Manager.API;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace OpenBots.Service.Client.Executor
+namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class ProcessManager
     {

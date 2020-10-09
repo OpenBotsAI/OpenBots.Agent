@@ -5,7 +5,7 @@ using OpenBots.Service.API.Model;
 using System;
 using System.Collections.Generic;
 
-namespace OpenBots.Service.Client.Manager
+namespace OpenBots.Service.Client.Manager.API
 {
     public static class AgentsAPIManager
     {

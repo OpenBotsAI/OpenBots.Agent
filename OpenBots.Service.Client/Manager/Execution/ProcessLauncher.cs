@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace OpenBots.Service.Client.Executor
+namespace OpenBots.Service.Client.Manager.Execution
 {
     /// <summary>
     /// Class that allows running applications with full admin rights. In

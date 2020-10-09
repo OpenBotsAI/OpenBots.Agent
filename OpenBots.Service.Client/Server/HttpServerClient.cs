@@ -1,16 +1,18 @@
 ﻿using OpenBots.Agent.Core.Model;
-using OpenBots.Service.Client.Manager;
+using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.API.Model;
 using System;
 using System.Collections.Generic;
 using System.Timers;
-using OpenBots.Service.Client.Executor;
+using OpenBots.Service.Client.Manager.Execution;
 
 namespace OpenBots.Service.Client.Server
 {
     public class HttpServerClient
     {
-        private Timer _heartbeatTimer, _jobsFetchTimer;
+        private Timer _heartbeatTimer;
+        private JobsPolling _jobsPolling;
+
         public ServerConnectionSettings ServerSettings { get; set; }
         public static HttpServerClient Instance
         {
@@ -32,7 +34,18 @@ namespace OpenBots.Service.Client.Server
         {
             ServerSettings = new ServerConnectionSettings();
         }
+        public void UnInitialize()
+        {
+            StopHeartBeatTimer();
+            StopJobPolling();
+        }
 
+        public Boolean IsConnected()
+        {
+            return ServerSettings?.ServerConnectionEnabled ?? false;
+        }
+
+        #region HeartBeat
         private void StartHeartBeatTimer()
         {
             if (ServerSettings.ServerConnectionEnabled)
@@ -83,72 +96,22 @@ namespace OpenBots.Service.Client.Server
             {
             }
         }
+        #endregion HeartBeat
 
-        private void StartJobsFetchTimer()
+        #region JobsPolling
+        private void StartJobPolling()
         {
-            if (ServerSettings.ServerConnectionEnabled)
-            {
-                //handle for reinitialization
-                if (_jobsFetchTimer != null)
-                {
-                    _jobsFetchTimer.Elapsed -= JobsFetchTimer_Elapsed;
-                }
-
-                //setup heartbeat to the server
-                _jobsFetchTimer = new Timer();
-                _jobsFetchTimer.Interval = 10000;
-                _jobsFetchTimer.Elapsed += JobsFetchTimer_Elapsed;
-                _jobsFetchTimer.Enabled = true;
-
-                // Start Execution Manager to Run Jobs
-                ExecutionManager.Instance.StartNewJobsCheckTimer();
-            }
+            _jobsPolling = new JobsPolling(ServerSettings);
+            _jobsPolling.StartJobsPolling();
+        }
+        private void StopJobPolling()
+        {
+            _jobsPolling.StopJobsPolling();
         }
 
-        private void StopJobsFetchTimer()
-        {
-            if (_jobsFetchTimer != null)
-            {
-                _jobsFetchTimer.Enabled = false;
-                _jobsFetchTimer.Elapsed -= JobsFetchTimer_Elapsed;
+        #endregion JobsPolling
 
-                // Stop Execution Manager
-                ExecutionManager.Instance.StopNewJobsCheckTimer();
-            }
-        }
-
-        private void JobsFetchTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                if(ServerSettings.ServerConnectionEnabled)
-                {
-                    //Retrieve New Jobs for this Agent
-                    var apiResponse = JobsAPIManager.GetJobs(
-                        AuthAPIManager.Instance,
-                        $"agentId eq guid'{ServerSettings.AgentId}' and jobStatus eq 'New'");
-
-                    if (apiResponse.Data.Items.Count != 0)
-                        foreach (var job in apiResponse.Data.Items)
-                            JobsQueueManager.Instance.EnqueueJob(job);
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-
-        public void UnInitialize()
-        {
-            StopHeartBeatTimer();
-            //StopJobsFetchTimer();
-        }
-
-        public Boolean IsConnected()
-        {
-            return ServerSettings?.ServerConnectionEnabled ?? false;
-        }
-
+        #region ServerConnection
         public ServerResponse Connect(ServerConnectionSettings connectionSettings)
         {
             ServerSettings = connectionSettings;
@@ -170,7 +133,7 @@ namespace OpenBots.Service.Client.Server
 
                 // On Successful Connection with Server
                 StartHeartBeatTimer();
-                StartJobsFetchTimer();
+                StartJobPolling();
 
                 // Send Response to Agent
                 return new ServerResponse(ServerSettings, connectAPIResponse.StatusCode.ToString());
@@ -190,7 +153,6 @@ namespace OpenBots.Service.Client.Server
                     errorMessage);
             }
         }
-
         public ServerResponse Disconnect(ServerConnectionSettings connectionSettings)
         {
             try
@@ -206,7 +168,7 @@ namespace OpenBots.Service.Client.Server
 
                 // After Disconnecting from Server
                 StopHeartBeatTimer();
-                StopJobsFetchTimer();
+                StopJobPolling();
 
                 // Form Server Response
                 return new ServerResponse(ServerSettings, apiResponse.StatusCode.ToString());
@@ -222,7 +184,6 @@ namespace OpenBots.Service.Client.Server
                     errorMessage);
             }
         }
-
         private void AuthenticateAgent()
         {
             // API Call to Get Token (Login)
@@ -257,5 +218,8 @@ namespace OpenBots.Service.Client.Server
                 throw ex;
             }
         }
+
+        #endregion ServerConnection
+
     }
 }

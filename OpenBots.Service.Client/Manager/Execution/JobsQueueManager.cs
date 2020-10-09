@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenBots.Service.Client.Executor
+namespace OpenBots.Service.Client.Manager.Execution
 {
     public class JobsQueueManager
     {
