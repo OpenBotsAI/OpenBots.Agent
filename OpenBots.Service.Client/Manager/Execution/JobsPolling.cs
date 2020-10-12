@@ -85,11 +85,10 @@ namespace OpenBots.Service.Client.Manager.Execution
                 _jobsHubManager = new HubManager(_serverSettings.ServerURL);
 
             _jobsHubManager.JobNotificationReceived += OnNewJobAddedEvent;
-            _jobsHubManager.NewJobNotificationReceived += OnNewJobCreatedEvent;
             _jobsHubManager.Connect();
         }
 
-        private void OnNewJobCreatedEvent(string obj)
+        private void OnNewJobAddedEvent(string agentId)
         {
             FetchNewJobs();
         }
@@ -101,11 +100,6 @@ namespace OpenBots.Service.Client.Manager.Execution
                 _jobsHubManager.Disconnect();
                 _jobsHubManager.JobNotificationReceived -= OnNewJobAddedEvent;
             }
-        }
-        private void OnNewJobAddedEvent(Tuple<Guid, Guid, Guid> tuple)
-        {
-            if(tuple.Item2.ToString() == _serverSettings.AgentId)
-                FetchNewJobs();
         }
 
         #endregion LongPolling

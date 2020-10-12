@@ -6,15 +6,13 @@ namespace OpenBots.Service.Client.Manager.Hub
     public class HubManager
     {
         private readonly HubConnection _connection;
-        public event Action<Tuple<Guid, Guid, Guid>> JobNotificationReceived;
-        public event Action<string> NewJobNotificationReceived;
+        public event Action<string> JobNotificationReceived;
         public HubManager(string ServerURL)
         {
             _connection = new HubConnectionBuilder()
                 .WithUrl($"{ServerURL}/notification")
                 .Build();
-            _connection.On<Tuple<Guid,Guid,Guid>>("broadcastnewjobs", (tuple) => JobNotificationReceived?.Invoke(tuple));
-            _connection.On<string>("sendjobnotification", (message) => NewJobNotificationReceived?.Invoke(message));
+            _connection.On<string>("sendjobnotification", (message) => JobNotificationReceived?.Invoke(message));
         }
 
         public void Connect()
