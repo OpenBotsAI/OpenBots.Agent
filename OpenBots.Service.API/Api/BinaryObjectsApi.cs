@@ -102,7 +102,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>MemoryStream</returns>
-        MemoryStream ApiV1BinaryObjectsIdDownloadGet (string id);
+        Model.MemoryStream ApiV1BinaryObjectsIdDownloadGet (string id);
 
         /// <summary>
         /// Export/Download a binary object
@@ -113,7 +113,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>ApiResponse of MemoryStream</returns>
-        ApiResponse<MemoryStream> ApiV1BinaryObjectsIdDownloadGetWithHttpInfo (string id);
+        ApiResponse<Model.MemoryStream> ApiV1BinaryObjectsIdDownloadGetWithHttpInfo (string id);
         /// <summary>
         /// Updates partial details of BinaryObject.
         /// </summary>
@@ -330,7 +330,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>Task of MemoryStream</returns>
-        System.Threading.Tasks.Task<MemoryStream> ApiV1BinaryObjectsIdDownloadGetAsync (string id);
+        System.Threading.Tasks.Task<Model.MemoryStream> ApiV1BinaryObjectsIdDownloadGetAsync (string id);
 
         /// <summary>
         /// Export/Download a binary object
@@ -341,7 +341,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>Task of ApiResponse (MemoryStream)</returns>
-        System.Threading.Tasks.Task<ApiResponse<MemoryStream>> ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo (string id);
+        System.Threading.Tasks.Task<ApiResponse<Model.MemoryStream>> ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo (string id);
         /// <summary>
         /// Updates partial details of BinaryObject.
         /// </summary>
@@ -994,9 +994,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>MemoryStream</returns>
-        public MemoryStream ApiV1BinaryObjectsIdDownloadGet (string id)
+        public Model.MemoryStream ApiV1BinaryObjectsIdDownloadGet (string id)
         {
-             ApiResponse<MemoryStream> localVarResponse = ApiV1BinaryObjectsIdDownloadGetWithHttpInfo(id);
+             ApiResponse<Model.MemoryStream> localVarResponse = ApiV1BinaryObjectsIdDownloadGetWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -1006,7 +1006,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>ApiResponse of MemoryStream</returns>
-        public ApiResponse< MemoryStream > ApiV1BinaryObjectsIdDownloadGetWithHttpInfo (string id)
+        public ApiResponse<Model.MemoryStream > ApiV1BinaryObjectsIdDownloadGetWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1048,9 +1048,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<MemoryStream>(localVarStatusCode,
+            return new ApiResponse<Model.MemoryStream>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(MemoryStream)));
+                (Model.MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Model.MemoryStream)));
         }
 
         /// <summary>
@@ -1059,9 +1059,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>Task of MemoryStream</returns>
-        public async System.Threading.Tasks.Task<MemoryStream> ApiV1BinaryObjectsIdDownloadGetAsync (string id)
+        public async System.Threading.Tasks.Task<Model.MemoryStream> ApiV1BinaryObjectsIdDownloadGetAsync (string id)
         {
-             ApiResponse<MemoryStream> localVarResponse = await ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo(id);
+             ApiResponse<Model.MemoryStream> localVarResponse = await ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -1072,7 +1072,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>Task of ApiResponse (MemoryStream)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<MemoryStream>> ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo (string id)
+        public async System.Threading.Tasks.Task<ApiResponse<Model.MemoryStream>> ApiV1BinaryObjectsIdDownloadGetAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1114,9 +1114,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<MemoryStream>(localVarStatusCode,
+            return new ApiResponse<Model.MemoryStream>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(MemoryStream)));
+                (Model.MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Model.MemoryStream)));
         }
 
         /// <summary>

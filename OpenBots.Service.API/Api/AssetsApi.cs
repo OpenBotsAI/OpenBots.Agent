@@ -188,7 +188,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>MemoryStream</returns>
-        MemoryStream ExportAsset (string id);
+        Model.MemoryStream ExportAsset (string id);
 
         /// <summary>
         /// Export/download an Asset file
@@ -199,7 +199,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>ApiResponse of MemoryStream</returns>
-        ApiResponse<MemoryStream> ExportAssetWithHttpInfo (string id);
+        ApiResponse<Model.MemoryStream> ExportAssetWithHttpInfo (string id);
         /// <summary>
         /// Provides an Asset&#x27;s details for a particular Asset Id.
         /// </summary>
@@ -387,7 +387,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>Task of MemoryStream</returns>
-        System.Threading.Tasks.Task<MemoryStream> ExportAssetAsync (string id);
+        System.Threading.Tasks.Task<Model.MemoryStream> ExportAssetAsync (string id);
 
         /// <summary>
         /// Export/download an Asset file
@@ -398,7 +398,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>Task of ApiResponse (MemoryStream)</returns>
-        System.Threading.Tasks.Task<ApiResponse<MemoryStream>> ExportAssetAsyncWithHttpInfo (string id);
+        System.Threading.Tasks.Task<ApiResponse<Model.MemoryStream>> ExportAssetAsyncWithHttpInfo (string id);
         /// <summary>
         /// Provides an Asset&#x27;s details for a particular Asset Id.
         /// </summary>
@@ -1544,9 +1544,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>MemoryStream</returns>
-        public MemoryStream ExportAsset (string id)
+        public Model.MemoryStream ExportAsset (string id)
         {
-             ApiResponse<MemoryStream> localVarResponse = ExportAssetWithHttpInfo(id);
+             ApiResponse<Model.MemoryStream> localVarResponse = ExportAssetWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -1556,7 +1556,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>ApiResponse of MemoryStream</returns>
-        public ApiResponse< MemoryStream > ExportAssetWithHttpInfo (string id)
+        public ApiResponse< Model.MemoryStream > ExportAssetWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1598,9 +1598,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<MemoryStream>(localVarStatusCode,
+            return new ApiResponse<Model.MemoryStream>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(MemoryStream)));
+                (Model.MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Model.MemoryStream)));
         }
 
         /// <summary>
@@ -1609,9 +1609,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>Task of MemoryStream</returns>
-        public async System.Threading.Tasks.Task<MemoryStream> ExportAssetAsync (string id)
+        public async System.Threading.Tasks.Task<Model.MemoryStream> ExportAssetAsync (string id)
         {
-             ApiResponse<MemoryStream> localVarResponse = await ExportAssetAsyncWithHttpInfo(id);
+             ApiResponse<Model.MemoryStream> localVarResponse = await ExportAssetAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -1622,7 +1622,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>Task of ApiResponse (MemoryStream)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<MemoryStream>> ExportAssetAsyncWithHttpInfo (string id)
+        public async System.Threading.Tasks.Task<ApiResponse<Model.MemoryStream>> ExportAssetAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1664,9 +1664,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<MemoryStream>(localVarStatusCode,
+            return new ApiResponse<Model.MemoryStream>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(MemoryStream)));
+                (Model.MemoryStream) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Model.MemoryStream)));
         }
 
         /// <summary>

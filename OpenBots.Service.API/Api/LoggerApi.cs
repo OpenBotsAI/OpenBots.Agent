@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using RestSharp;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
+using OpenBots.Service.API.Client;
+using OpenBots.Service.API.Model;
 
-namespace IO.Swagger.Api
+namespace OpenBots.Service.API.Api
 {
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
@@ -29,7 +29,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="logger"></param>
         /// <param name="body"> (optional)</param>
         /// <returns>IActionResult</returns>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="logger"></param>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
@@ -54,7 +54,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="logger"></param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of IActionResult</returns>
@@ -66,7 +66,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="logger"></param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
@@ -79,7 +79,7 @@ namespace IO.Swagger.Api
     /// </summary>
         public partial class LoggerApi : ILoggerApi
     {
-        private IO.Swagger.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
+        private OpenBots.Service.API.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggerApi"/> class.
@@ -87,9 +87,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public LoggerApi(String basePath)
         {
-            this.Configuration = new IO.Swagger.Client.Configuration { BasePath = basePath };
+            this.Configuration = new OpenBots.Service.API.Client.Configuration { BasePath = basePath };
 
-            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -98,9 +98,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public LoggerApi()
         {
-            this.Configuration = IO.Swagger.Client.Configuration.Default;
+            this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
 
-            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -109,14 +109,14 @@ namespace IO.Swagger.Api
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public LoggerApi(IO.Swagger.Client.Configuration configuration = null)
+        public LoggerApi(OpenBots.Service.API.Client.Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
-                this.Configuration = IO.Swagger.Client.Configuration.Default;
+                this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
             else
                 this.Configuration = configuration;
 
-            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -142,12 +142,12 @@ namespace IO.Swagger.Api
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
-        public IO.Swagger.Client.Configuration Configuration {get; set;}
+        public OpenBots.Service.API.Client.Configuration Configuration {get; set;}
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
         /// </summary>
-        public IO.Swagger.Client.ExceptionFactory ExceptionFactory
+        public OpenBots.Service.API.Client.ExceptionFactory ExceptionFactory
         {
             get
             {
@@ -185,7 +185,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Adds serilog logs from the Agent to the processLogs table 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="logger"></param>
         /// <param name="body"> (optional)</param>
         /// <returns>IActionResult</returns>
@@ -198,7 +198,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Adds serilog logs from the Agent to the processLogs table 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="logger"></param>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
@@ -264,7 +264,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Adds serilog logs from the Agent to the processLogs table 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="logger"></param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of IActionResult</returns>
@@ -278,7 +278,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Adds serilog logs from the Agent to the processLogs table 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="logger"></param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>

@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using RestSharp;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
+using OpenBots.Service.API.Client;
+using OpenBots.Service.API.Model;
 
-namespace IO.Swagger.Api
+namespace OpenBots.Service.API.Api
 {
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
@@ -29,7 +29,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
         int? ApiV1ProcessExecutionLogCountGet (string filter = null);
@@ -40,7 +40,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
         ApiResponse<int?> ApiV1ProcessExecutionLogCountGetWithHttpInfo (string filter = null);
@@ -50,7 +50,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
@@ -64,7 +64,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
@@ -77,7 +77,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>IActionResult</returns>
         IActionResult ApiV1ProcessExecutionLogIdDelete (string id);
@@ -88,7 +88,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>ApiResponse of IActionResult</returns>
         ApiResponse<IActionResult> ApiV1ProcessExecutionLogIdDeleteWithHttpInfo (string id);
@@ -98,7 +98,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
@@ -110,7 +110,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
@@ -121,7 +121,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>IActionResult</returns>
@@ -133,7 +133,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
@@ -144,7 +144,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
@@ -156,7 +156,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
@@ -167,7 +167,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ProcessExecutionLog</returns>
         ProcessExecutionLog ApiV1ProcessExecutionLogPost (ProcessExecutionLog body = null);
@@ -178,7 +178,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of ProcessExecutionLog</returns>
         ApiResponse<ProcessExecutionLog> ApiV1ProcessExecutionLogPostWithHttpInfo (ProcessExecutionLog body = null);
@@ -188,7 +188,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ProcessExecutionLog</returns>
         ProcessExecutionLog ApiV1ProcessExecutionLogStartprocessPost (ProcessExecutionLog body = null);
@@ -199,7 +199,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of ProcessExecutionLog</returns>
         ApiResponse<ProcessExecutionLog> ApiV1ProcessExecutionLogStartprocessPostWithHttpInfo (ProcessExecutionLog body = null);
@@ -209,7 +209,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog id</param>
         /// <returns>ProcessExecutionLogPaginatedList</returns>
         ProcessExecutionLogPaginatedList GetProcessExecutionLog (string id);
@@ -220,7 +220,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog id</param>
         /// <returns>ApiResponse of ProcessExecutionLogPaginatedList</returns>
         ApiResponse<ProcessExecutionLogPaginatedList> GetProcessExecutionLogWithHttpInfo (string id);
@@ -232,7 +232,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
         System.Threading.Tasks.Task<int?> ApiV1ProcessExecutionLogCountGetAsync (string filter = null);
@@ -243,7 +243,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
         System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1ProcessExecutionLogCountGetAsyncWithHttpInfo (string filter = null);
@@ -253,7 +253,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
@@ -267,7 +267,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
@@ -280,7 +280,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of IActionResult</returns>
         System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdDeleteAsync (string id);
@@ -291,7 +291,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdDeleteAsyncWithHttpInfo (string id);
@@ -301,7 +301,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of IActionResult</returns>
@@ -313,7 +313,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
@@ -324,7 +324,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of IActionResult</returns>
@@ -336,7 +336,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
@@ -347,7 +347,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of IActionResult</returns>
@@ -359,7 +359,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
@@ -370,7 +370,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ProcessExecutionLog</returns>
         System.Threading.Tasks.Task<ProcessExecutionLog> ApiV1ProcessExecutionLogPostAsync (ProcessExecutionLog body = null);
@@ -381,7 +381,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (ProcessExecutionLog)</returns>
         System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLog>> ApiV1ProcessExecutionLogPostAsyncWithHttpInfo (ProcessExecutionLog body = null);
@@ -391,7 +391,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ProcessExecutionLog</returns>
         System.Threading.Tasks.Task<ProcessExecutionLog> ApiV1ProcessExecutionLogStartprocessPostAsync (ProcessExecutionLog body = null);
@@ -402,7 +402,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (ProcessExecutionLog)</returns>
         System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLog>> ApiV1ProcessExecutionLogStartprocessPostAsyncWithHttpInfo (ProcessExecutionLog body = null);
@@ -412,7 +412,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog id</param>
         /// <returns>Task of ProcessExecutionLogPaginatedList</returns>
         System.Threading.Tasks.Task<ProcessExecutionLogPaginatedList> GetProcessExecutionLogAsync (string id);
@@ -423,7 +423,7 @@ namespace IO.Swagger.Api
         /// <remarks>
         /// 
         /// </remarks>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog id</param>
         /// <returns>Task of ApiResponse (ProcessExecutionLogPaginatedList)</returns>
         System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLogPaginatedList>> GetProcessExecutionLogAsyncWithHttpInfo (string id);
@@ -435,7 +435,7 @@ namespace IO.Swagger.Api
     /// </summary>
         public partial class ProcessExecutionLogApi : IProcessExecutionLogApi
     {
-        private IO.Swagger.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
+        private OpenBots.Service.API.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessExecutionLogApi"/> class.
@@ -443,9 +443,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public ProcessExecutionLogApi(String basePath)
         {
-            this.Configuration = new IO.Swagger.Client.Configuration { BasePath = basePath };
+            this.Configuration = new OpenBots.Service.API.Client.Configuration { BasePath = basePath };
 
-            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -454,9 +454,9 @@ namespace IO.Swagger.Api
         /// <returns></returns>
         public ProcessExecutionLogApi()
         {
-            this.Configuration = IO.Swagger.Client.Configuration.Default;
+            this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
 
-            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -465,14 +465,14 @@ namespace IO.Swagger.Api
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public ProcessExecutionLogApi(IO.Swagger.Client.Configuration configuration = null)
+        public ProcessExecutionLogApi(OpenBots.Service.API.Client.Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
-                this.Configuration = IO.Swagger.Client.Configuration.Default;
+                this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
             else
                 this.Configuration = configuration;
 
-            ExceptionFactory = IO.Swagger.Client.Configuration.DefaultExceptionFactory;
+            ExceptionFactory = OpenBots.Service.API.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -498,12 +498,12 @@ namespace IO.Swagger.Api
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
-        public IO.Swagger.Client.Configuration Configuration {get; set;}
+        public OpenBots.Service.API.Client.Configuration Configuration {get; set;}
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
         /// </summary>
-        public IO.Swagger.Client.ExceptionFactory ExceptionFactory
+        public OpenBots.Service.API.Client.ExceptionFactory ExceptionFactory
         {
             get
             {
@@ -541,7 +541,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a Count of ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
         public int? ApiV1ProcessExecutionLogCountGet (string filter = null)
@@ -553,7 +553,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a Count of ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
         public ApiResponse< int? > ApiV1ProcessExecutionLogCountGetWithHttpInfo (string filter = null)
@@ -603,7 +603,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a Count of ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
         public async System.Threading.Tasks.Task<int?> ApiV1ProcessExecutionLogCountGetAsync (string filter = null)
@@ -616,7 +616,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a Count of ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1ProcessExecutionLogCountGetAsyncWithHttpInfo (string filter = null)
@@ -666,7 +666,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a list of all ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
@@ -681,7 +681,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a list of all ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
@@ -737,7 +737,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a list of all ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
@@ -753,7 +753,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a list of all ProcessExecutionLogs 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
@@ -809,7 +809,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>IActionResult</returns>
         public IActionResult ApiV1ProcessExecutionLogIdDelete (string id)
@@ -821,7 +821,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>ApiResponse of IActionResult</returns>
         public ApiResponse< IActionResult > ApiV1ProcessExecutionLogIdDeleteWithHttpInfo (string id)
@@ -874,7 +874,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of IActionResult</returns>
         public async System.Threading.Tasks.Task<IActionResult> ApiV1ProcessExecutionLogIdDeleteAsync (string id)
@@ -887,7 +887,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Deletes a ProcessExecutionLog with a specified id from the ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1ProcessExecutionLogIdDeleteAsyncWithHttpInfo (string id)
@@ -940,7 +940,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Agent is able to update a ProcessExecutionLog End status Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
@@ -953,7 +953,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Agent is able to update a ProcessExecutionLog End status Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
@@ -1019,7 +1019,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Agent is able to update a ProcessExecutionLog End status Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of IActionResult</returns>
@@ -1033,7 +1033,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Agent is able to update a ProcessExecutionLog End status Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
@@ -1099,7 +1099,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Updates partial details of ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>IActionResult</returns>
@@ -1112,7 +1112,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Updates partial details of ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
@@ -1178,7 +1178,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Updates partial details of ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of IActionResult</returns>
@@ -1192,7 +1192,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Updates partial details of ProcessExecutionLog. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog identifier</param>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
@@ -1258,7 +1258,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Updates a ProcessExecutionLog Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
@@ -1271,7 +1271,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Updates a ProcessExecutionLog Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
@@ -1337,7 +1337,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Updates a ProcessExecutionLog Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of IActionResult</returns>
@@ -1351,7 +1351,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Updates a ProcessExecutionLog Provides an action to update a ProcessExecutionLog, when ProcessExecutionLog id and the new details of ProcessExecutionLog are given
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="body">ProcessExecutionLog details to be updated (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
@@ -1417,7 +1417,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ProcessExecutionLog</returns>
         public ProcessExecutionLog ApiV1ProcessExecutionLogPost (ProcessExecutionLog body = null)
@@ -1429,7 +1429,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of ProcessExecutionLog</returns>
         public ApiResponse< ProcessExecutionLog > ApiV1ProcessExecutionLogPostWithHttpInfo (ProcessExecutionLog body = null)
@@ -1490,7 +1490,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ProcessExecutionLog</returns>
         public async System.Threading.Tasks.Task<ProcessExecutionLog> ApiV1ProcessExecutionLogPostAsync (ProcessExecutionLog body = null)
@@ -1503,7 +1503,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Adds a new ProcessExecutionLog to the existing ProcessExecutionLogs Adds the ProcessExecutionLog with unique ProcessExecutionLog Id to the existing ProcessExecutionLogs
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (ProcessExecutionLog)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLog>> ApiV1ProcessExecutionLogPostAsyncWithHttpInfo (ProcessExecutionLog body = null)
@@ -1564,7 +1564,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ProcessExecutionLog</returns>
         public ProcessExecutionLog ApiV1ProcessExecutionLogStartprocessPost (ProcessExecutionLog body = null)
@@ -1576,7 +1576,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of ProcessExecutionLog</returns>
         public ApiResponse< ProcessExecutionLog > ApiV1ProcessExecutionLogStartprocessPostWithHttpInfo (ProcessExecutionLog body = null)
@@ -1637,7 +1637,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ProcessExecutionLog</returns>
         public async System.Threading.Tasks.Task<ProcessExecutionLog> ApiV1ProcessExecutionLogStartprocessPostAsync (ProcessExecutionLog body = null)
@@ -1650,7 +1650,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Allows Agent to add a new ProcessExecutionLog to the existing ProcessExecutionLogs Agent is able to Add the ProcessExecutionLog if the Agent is Connected
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (ProcessExecutionLog)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLog>> ApiV1ProcessExecutionLogStartprocessPostAsyncWithHttpInfo (ProcessExecutionLog body = null)
@@ -1711,7 +1711,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog id</param>
         /// <returns>ProcessExecutionLogPaginatedList</returns>
         public ProcessExecutionLogPaginatedList GetProcessExecutionLog (string id)
@@ -1723,7 +1723,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog id</param>
         /// <returns>ApiResponse of ProcessExecutionLogPaginatedList</returns>
         public ApiResponse< ProcessExecutionLogPaginatedList > GetProcessExecutionLogWithHttpInfo (string id)
@@ -1776,7 +1776,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog id</param>
         /// <returns>Task of ProcessExecutionLogPaginatedList</returns>
         public async System.Threading.Tasks.Task<ProcessExecutionLogPaginatedList> GetProcessExecutionLogAsync (string id)
@@ -1789,7 +1789,7 @@ namespace IO.Swagger.Api
         /// <summary>
         /// Provides a ProcessExecutionLog&#x27;s details for a particular ProcessExecutionLog Id. 
         /// </summary>
-        /// <exception cref="IO.Swagger.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">ProcessExecutionLog id</param>
         /// <returns>Task of ApiResponse (ProcessExecutionLogPaginatedList)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<ProcessExecutionLogPaginatedList>> GetProcessExecutionLogAsyncWithHttpInfo (string id)

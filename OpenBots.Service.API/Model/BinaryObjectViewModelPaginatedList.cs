@@ -19,9 +19,9 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
-using SwaggerDateConverter = IO.Swagger.Client.SwaggerDateConverter;
+using SwaggerDateConverter = OpenBots.Service.API.Client.SwaggerDateConverter;
 
-namespace IO.Swagger.Model
+namespace OpenBots.Service.API.Model
 {
     /// <summary>
     /// BinaryObjectViewModelPaginatedList
