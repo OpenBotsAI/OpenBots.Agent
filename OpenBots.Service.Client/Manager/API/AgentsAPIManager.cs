@@ -17,11 +17,16 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return agentsApi.ApiV1AgentsIdHeartbeatPatchWithHttpInfo(agentId, body).StatusCode;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Refresh Token and Call API
-                agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                return agentsApi.ApiV1AgentsIdHeartbeatPatchWithHttpInfo(agentId, body).StatusCode;
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    agentsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return agentsApi.ApiV1AgentsIdHeartbeatPatchWithHttpInfo(agentId, body).StatusCode;
+                }
+                throw ex;
             }
         }
 
@@ -33,11 +38,16 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Refresh Token and Call API
-                agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress);
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    agentsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress);
+                }
+                throw ex;
             }
         }
 
@@ -48,11 +58,16 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress, new Guid(serverSettings.AgentId));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Refresh Token and Call API
-                agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress, new Guid(serverSettings.AgentId));
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    agentsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress, new Guid(serverSettings.AgentId));
+                }
+                throw ex;
             }
         }
 
@@ -66,11 +81,16 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return agentsApi.ApiV1AgentsPostWithHttpInfo(agentModel).Data.Id.ToString();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Refresh Token and Call API
-                agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                return agentsApi.ApiV1AgentsPostWithHttpInfo(agentModel).Data.Id.ToString();
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    agentsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return agentsApi.ApiV1AgentsPostWithHttpInfo(agentModel).Data.Id.ToString();
+                }
+                throw ex;
             }
         }
 
@@ -82,11 +102,16 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return (agentsApi.ApiV1AgentsGetWithHttpInfo(filter).Data.Items.Count == 0) ? false : true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Refresh Token and Call API
-                agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                return (agentsApi.ApiV1AgentsGetWithHttpInfo(filter).Data.Items.Count == 0) ? false : true;
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    agentsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return (agentsApi.ApiV1AgentsGetWithHttpInfo(filter).Data.Items.Count == 0) ? false : true;
+                }
+                throw ex;
             }
         }
     }

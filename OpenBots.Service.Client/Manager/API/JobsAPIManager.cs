@@ -18,9 +18,14 @@ namespace OpenBots.Service.Client.Manager.API
             }
             catch (Exception ex)
             {
-                // Refresh Token and Call API
-                jobsApi.Configuration.AccessToken = apiManager.GetToken();
-                return jobsApi.ApiV1JobsGetWithHttpInfo(filter);
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    jobsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return jobsApi.ApiV1JobsGetWithHttpInfo(filter);
+                }
+                throw ex;
             }
         }
 
@@ -34,9 +39,14 @@ namespace OpenBots.Service.Client.Manager.API
             }
             catch (Exception ex)
             {
-                // Refresh Token and Call API
-                jobsApi.Configuration.AccessToken = apiManager.GetToken();
-                return jobsApi.ApiV1JobsIdPatchWithHttpInfo(jobId, body);
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    jobsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return jobsApi.ApiV1JobsIdPatchWithHttpInfo(jobId, body);
+                }
+                throw ex;
             }
         }
     }

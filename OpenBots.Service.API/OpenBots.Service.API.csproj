@@ -79,6 +79,7 @@
     <Compile Include="Client\IApiAccessor.cs" />
     <Compile Include="Client\IReadableConfiguration.cs" />
     <Compile Include="Client\SwaggerDateConverter.cs" />
+    <Compile Include="Model\MemoryStream.cs" />
     <Compile Include="Model\AccessRequest.cs" />
     <Compile Include="Model\AgentModel.cs" />
     <Compile Include="Model\AgentModelPaginatedList.cs" />
