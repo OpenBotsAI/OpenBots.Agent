@@ -201,6 +201,10 @@
     <Content Include="lib\OpenBots.Commands.API.pdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="lib\OpenBots.Commands.Asset.dll" />
+    <Content Include="lib\OpenBots.Commands.Asset.pdb" />
+    <Content Include="lib\OpenBots.Commands.Credential.dll" />
+    <Content Include="lib\OpenBots.Commands.Credential.pdb" />
     <Content Include="lib\OpenBots.Commands.Data.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -285,6 +289,8 @@
     <Content Include="lib\OpenBots.Commands.Process.pdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="lib\OpenBots.Commands.QueueItem.dll" />
+    <Content Include="lib\OpenBots.Commands.QueueItem.pdb" />
     <Content Include="lib\OpenBots.Commands.RegEx.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -411,6 +417,12 @@
     <Content Include="lib\WindowsInput.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenBots.Agent.Core\OpenBots.Agent.Core.csproj">
+      <Project>{93ebf09a-d073-49a8-a07d-9528f3eaf78f}</Project>
+      <Name>OpenBots.Agent.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

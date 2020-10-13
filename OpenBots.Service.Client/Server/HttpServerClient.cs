@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Timers;
 using OpenBots.Service.Client.Manager.Execution;
+using OpenBots.Service.Client.Manager;
 
 namespace OpenBots.Service.Client.Server
 {
@@ -13,7 +14,7 @@ namespace OpenBots.Service.Client.Server
         private Timer _heartbeatTimer;
         private JobsPolling _jobsPolling;
 
-        public ServerConnectionSettings ServerSettings { get; set; }
+        //public ServerConnectionSettings ServerSettings { get; set; }
         public static HttpServerClient Instance
         {
             get
@@ -32,7 +33,8 @@ namespace OpenBots.Service.Client.Server
 
         public void Initialize()
         {
-            ServerSettings = new ServerConnectionSettings();
+            //Initialize Connection Settings
+            ConnectionSettingsManager.Instance.Initialize();
         }
         public void UnInitialize()
         {
@@ -42,13 +44,13 @@ namespace OpenBots.Service.Client.Server
 
         public Boolean IsConnected()
         {
-            return ServerSettings?.ServerConnectionEnabled ?? false;
+            return ConnectionSettingsManager.Instance.ConnectionSettings?.ServerConnectionEnabled ?? false;
         }
 
         #region HeartBeat
         private void StartHeartBeatTimer()
         {
-            if (ServerSettings.ServerConnectionEnabled)
+            if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
             {
                 //handle for reinitialization
                 if (_heartbeatTimer != null)
@@ -79,7 +81,7 @@ namespace OpenBots.Service.Client.Server
             {
                 int statusCode = AgentsAPIManager.SendAgentHeartBeat(
                     AuthAPIManager.Instance,
-                    ServerSettings.AgentId,
+                    ConnectionSettingsManager.Instance.ConnectionSettings.AgentId,
                     new List<Operation>()
                     {
                             new Operation(){ Op = "replace", Path = "/lastReportedOn", Value = DateTime.Now.ToString("s")},
@@ -90,9 +92,9 @@ namespace OpenBots.Service.Client.Server
                     });
 
                 if (statusCode != 200)
-                    ServerSettings.ServerConnectionEnabled = false;
+                    ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -101,7 +103,7 @@ namespace OpenBots.Service.Client.Server
         #region JobsPolling
         private void StartJobPolling()
         {
-            _jobsPolling = new JobsPolling(ServerSettings);
+            _jobsPolling = new JobsPolling();
             _jobsPolling.StartJobsPolling();
         }
         private void StopJobPolling()
@@ -114,36 +116,36 @@ namespace OpenBots.Service.Client.Server
         #region ServerConnection
         public ServerResponse Connect(ServerConnectionSettings connectionSettings)
         {
-            ServerSettings = connectionSettings;
+            ConnectionSettingsManager.Instance.ConnectionSettings = connectionSettings;
 
             // Initialize AuthAPIManager
-            AuthAPIManager.Instance.Initialize(ServerSettings);
+            AuthAPIManager.Instance.Initialize(ConnectionSettingsManager.Instance.ConnectionSettings);
             try
             {
                 // Authenticate Agent
                 AuthenticateAgent();
 
                 // API Call to Connect
-                var connectAPIResponse = AgentsAPIManager.ConnectAgent(AuthAPIManager.Instance, ServerSettings);
+                var connectAPIResponse = AgentsAPIManager.ConnectAgent(AuthAPIManager.Instance, ConnectionSettingsManager.Instance.ConnectionSettings);
 
                 // Update Server Settings
-                ServerSettings.ServerConnectionEnabled = true;
-                ServerSettings.AgentId = connectAPIResponse.Data.AgentId.ToString();
-                ServerSettings.AgentName = connectAPIResponse.Data.AgentName.ToString();
+                ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = true;
+                ConnectionSettingsManager.Instance.ConnectionSettings.AgentId = connectAPIResponse.Data.AgentId.ToString();
+                ConnectionSettingsManager.Instance.ConnectionSettings.AgentName = connectAPIResponse.Data.AgentName.ToString();
 
                 // On Successful Connection with Server
                 StartHeartBeatTimer();
                 StartJobPolling();
 
                 // Send Response to Agent
-                return new ServerResponse(ServerSettings, connectAPIResponse.StatusCode.ToString());
+                return new ServerResponse(ConnectionSettingsManager.Instance.ConnectionSettings, connectAPIResponse.StatusCode.ToString());
             }
             catch (Exception ex)
             {
                 // Update Server Settings
-                ServerSettings.ServerConnectionEnabled = false;
-                ServerSettings.AgentId = string.Empty;
-                ServerSettings.AgentName = string.Empty;
+                ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;
+                ConnectionSettingsManager.Instance.ConnectionSettings.AgentId = string.Empty;
+                ConnectionSettingsManager.Instance.ConnectionSettings.AgentName = string.Empty;
 
                 var errorMessage = ex.GetType().GetProperty("ErrorContent").GetValue(ex, null)?.ToString();
                 errorMessage = errorMessage ?? ex.GetType().GetProperty("Message").GetValue(ex, null)?.ToString();
@@ -158,20 +160,20 @@ namespace OpenBots.Service.Client.Server
             try
             {
                 // API Call to Disconnect
-                var apiResponse = AgentsAPIManager.DisconnectAgent(AuthAPIManager.Instance, ServerSettings);
+                var apiResponse = AgentsAPIManager.DisconnectAgent(AuthAPIManager.Instance, ConnectionSettingsManager.Instance.ConnectionSettings);
 
                 // Update settings
                 //ServerSettings = connectionSettings;
-                ServerSettings.ServerConnectionEnabled = false;
-                ServerSettings.AgentId = string.Empty;
-                ServerSettings.AgentName = string.Empty;
+                ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;
+                ConnectionSettingsManager.Instance.ConnectionSettings.AgentId = string.Empty;
+                ConnectionSettingsManager.Instance.ConnectionSettings.AgentName = string.Empty;
 
                 // After Disconnecting from Server
                 StopHeartBeatTimer();
                 StopJobPolling();
 
                 // Form Server Response
-                return new ServerResponse(ServerSettings, apiResponse.StatusCode.ToString());
+                return new ServerResponse(ConnectionSettingsManager.Instance.ConnectionSettings, apiResponse.StatusCode.ToString());
             }
             catch (Exception ex)
             {
@@ -210,8 +212,8 @@ namespace OpenBots.Service.Client.Server
             // Create Agent if doesn't exist
             try
             {
-                if (!AgentsAPIManager.FindAgent(AuthAPIManager.Instance, $"name eq '{ServerSettings.AgentUsername}'"))
-                    AgentsAPIManager.CreateAgent(AuthAPIManager.Instance, ServerSettings);
+                if (!AgentsAPIManager.FindAgent(AuthAPIManager.Instance, $"name eq '{ConnectionSettingsManager.Instance.ConnectionSettings.AgentUsername}'"))
+                    AgentsAPIManager.CreateAgent(AuthAPIManager.Instance, ConnectionSettingsManager.Instance.ConnectionSettings);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
 using System;
 using System.IO;
@@ -10,7 +11,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class ProcessManager
     {
-        public static string DownloadAndExtractProcess(string processId)
+        public static string DownloadAndExtractProcess(Process process)
         {
             // Check if (Root) Processes Directory Exists
             var processesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Processes");
@@ -18,19 +19,19 @@ namespace OpenBots.Service.Client.Manager.Execution
                 Directory.CreateDirectory(processesDirectory);
 
             // Process Directory
-            var processDirectoryPath = Path.Combine(processesDirectory, processId);
+            var processDirectoryPath = Path.Combine(processesDirectory, process.Id.ToString());
 
             // Download Process If it's not found
             if (!Directory.Exists(processDirectoryPath))
             {
                 // Download Process by Id
-                var apiResponse = ProcessesAPIManager.ExportProcess(AuthAPIManager.Instance, processId);
+                var apiResponse = ProcessesAPIManager.ExportProcess(AuthAPIManager.Instance, process.Id.ToString());
 
                 // Create Process Directory named as Process Id
                 Directory.CreateDirectory(processDirectoryPath);
 
                 // Write Downloaded (.zip) file in the Process Directory
-                var processZipFilePath = Path.Combine(processDirectoryPath, processId + ".zip");
+                var processZipFilePath = Path.Combine(processDirectoryPath, process.Id.ToString() + ".zip");
                 File.WriteAllBytes(processZipFilePath, apiResponse.Data.ToArray());
 
                 // Extract Files/Folders from (.zip) file

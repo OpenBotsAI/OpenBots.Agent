@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using OpenBots.Service.Client.Server;
 using System;
 
 namespace OpenBots.Service.Client.Manager.Hub
@@ -7,10 +8,10 @@ namespace OpenBots.Service.Client.Manager.Hub
     {
         private readonly HubConnection _connection;
         public event Action<string> JobNotificationReceived;
-        public HubManager(string ServerURL)
+        public HubManager()
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl($"{ServerURL}/notification")
+                .WithUrl($"{ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL}/notification")
                 .Build();
             _connection.On<string>("sendjobnotification", (message) => JobNotificationReceived?.Invoke(message));
         }

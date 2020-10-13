@@ -1,6 +1,7 @@
 ﻿using OpenBots.Agent.Core.Model;
 using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.Hub;
+using OpenBots.Service.Client.Server;
 using System;
 using System.Timers;
 
@@ -14,10 +15,8 @@ namespace OpenBots.Service.Client.Manager.Execution
         // Jobs Hub Manager (for Long Polling)
         private HubManager _jobsHubManager;
 
-        private ServerConnectionSettings _serverSettings;
-        public JobsPolling(ServerConnectionSettings ServerSettings)
+        public JobsPolling()
         {
-            _serverSettings = ServerSettings;
         }
 
         public void StartJobsPolling()
@@ -48,7 +47,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         #region TimedPolling
         private void StartJobsFetchTimer()
         {
-            if (_serverSettings.ServerConnectionEnabled)
+            if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
             {
                 //handle for reinitialization
                 if (_newJobsFetchTimer != null)
@@ -82,7 +81,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         private void StartHubManager()
         {
             if (_jobsHubManager == null)
-                _jobsHubManager = new HubManager(_serverSettings.ServerURL);
+                _jobsHubManager = new HubManager();
 
             _jobsHubManager.JobNotificationReceived += OnNewJobAddedEvent;
             _jobsHubManager.Connect();
@@ -111,7 +110,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 //Retrieve New Jobs for this Agent
                 var apiResponse = JobsAPIManager.GetJobs(
                     AuthAPIManager.Instance,
-                    $"agentId eq guid'{_serverSettings.AgentId}' and jobStatus eq 'New'");
+                    $"agentId eq guid'{ConnectionSettingsManager.Instance.ConnectionSettings.AgentId}' and jobStatus eq 'New'");
 
                 if (apiResponse.Data.Items.Count != 0)
                     foreach (var job in apiResponse.Data.Items)

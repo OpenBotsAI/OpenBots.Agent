@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Client.Utilities;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.UserRegistry;
+using OpenBots.Agent.Core.Enums;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -151,7 +152,7 @@ namespace OpenBots.Agent.Client
                     ServerURL = string.Empty,
                     AgentUsername = _registryManager.AgentUsername ?? string.Empty,  // Load Username from User Registry
                     AgentPassword = _registryManager.AgentPassword ?? string.Empty,  // Load Password from User Registry
-                    SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? Enums.SinkType.File.ToString() : _agentSettings.SinkType,
+                    SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? SinkType.File.ToString() : _agentSettings.SinkType,
                     TracingLevel = string.IsNullOrEmpty(_agentSettings.TracingLevel) ? LogEventLevel.Information.ToString() : _agentSettings.TracingLevel,
                     DNSHost = Dns.GetHostName(),
                     MachineName = Environment.MachineName,
@@ -167,8 +168,8 @@ namespace OpenBots.Agent.Client
             txt_ServerURL.Text = _connectionSettings.ServerURL;
             cmb_LogLevel.ItemsSource = Enum.GetValues(typeof(LogEventLevel));
             cmb_LogLevel.SelectedIndex = Array.IndexOf((Array)cmb_LogLevel.ItemsSource, Enum.Parse(typeof(LogEventLevel), _connectionSettings.TracingLevel));
-            cmb_SinkType.ItemsSource = Enum.GetValues(typeof(Enums.SinkType));
-            cmb_SinkType.SelectedIndex = Array.IndexOf((Array)cmb_SinkType.ItemsSource, Enum.Parse(typeof(Enums.SinkType), _connectionSettings.SinkType));
+            cmb_SinkType.ItemsSource = Enum.GetValues(typeof(SinkType));
+            cmb_SinkType.SelectedIndex = Array.IndexOf((Array)cmb_SinkType.ItemsSource, Enum.Parse(typeof(SinkType), _connectionSettings.SinkType));
             
             // Update UI Controls after loading settings
             OnSetRegistryKeys();

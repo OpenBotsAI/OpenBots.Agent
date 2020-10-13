@@ -228,7 +228,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>ProcessPaginatedList</returns>
-        ProcessPaginatedList GetProcess (string id);
+        Process GetProcess (string id);
 
         /// <summary>
         /// Get process by id
@@ -239,7 +239,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>ApiResponse of ProcessPaginatedList</returns>
-        ApiResponse<ProcessPaginatedList> GetProcessWithHttpInfo (string id);
+        ApiResponse<Process> GetProcessWithHttpInfo (string id);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
@@ -1840,9 +1840,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>ProcessPaginatedList</returns>
-        public ProcessPaginatedList GetProcess (string id)
+        public Process GetProcess (string id)
         {
-             ApiResponse<ProcessPaginatedList> localVarResponse = GetProcessWithHttpInfo(id);
+             ApiResponse<Process> localVarResponse = GetProcessWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -1852,7 +1852,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
         /// <returns>ApiResponse of ProcessPaginatedList</returns>
-        public ApiResponse< ProcessPaginatedList > GetProcessWithHttpInfo (string id)
+        public ApiResponse<Process> GetProcessWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
@@ -1879,6 +1879,10 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
+            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
+            if (localVarHttpHeaderAuthorization != null)
+                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
+
             if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
 
             // make the HTTP request
@@ -1894,9 +1898,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<ProcessPaginatedList>(localVarStatusCode,
+            return new ApiResponse<Process>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ProcessPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessPaginatedList)));
+                (Process) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Process)));
         }
 
         /// <summary>

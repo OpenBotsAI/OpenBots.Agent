@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Infrastructure\IWindowsServiceEndPoint.cs" />
+    <Compile Include="Model\JobExecutionParams.cs" />
     <Compile Include="Model\ServerConnectionSettings.cs" />
     <Compile Include="Model\ServerResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

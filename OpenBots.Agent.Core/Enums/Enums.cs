@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OpenBots.Agent.Core.Enums
+﻿namespace OpenBots.Agent.Core.Enums
 {
     public enum JobStatus
     {
@@ -12,5 +6,13 @@ namespace OpenBots.Agent.Core.Enums
         InProgress,
         Complete,
         Fail
+    }
+
+    // Sink Type for Logging
+    public enum SinkType
+    {
+        File,
+        Http,
+        SignalR
     }
 }

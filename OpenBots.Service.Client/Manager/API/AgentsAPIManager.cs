@@ -17,7 +17,7 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return agentsApi.ApiV1AgentsIdHeartbeatPatchWithHttpInfo(agentId, body).StatusCode;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Refresh Token and Call API
                 agentsApi.Configuration.AccessToken = apiManager.GetToken();
@@ -33,7 +33,7 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Refresh Token and Call API
                 agentsApi.Configuration.AccessToken = apiManager.GetToken();
@@ -48,7 +48,7 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress, new Guid(serverSettings.AgentId));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Refresh Token and Call API
                 agentsApi.Configuration.AccessToken = apiManager.GetToken();
@@ -66,7 +66,7 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return agentsApi.ApiV1AgentsPostWithHttpInfo(agentModel).Data.Id.ToString();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Refresh Token and Call API
                 agentsApi.Configuration.AccessToken = apiManager.GetToken();
@@ -82,7 +82,7 @@ namespace OpenBots.Service.Client.Manager.API
             {
                 return (agentsApi.ApiV1AgentsGetWithHttpInfo(filter).Data.Items.Count == 0) ? false : true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Refresh Token and Call API
                 agentsApi.Configuration.AccessToken = apiManager.GetToken();

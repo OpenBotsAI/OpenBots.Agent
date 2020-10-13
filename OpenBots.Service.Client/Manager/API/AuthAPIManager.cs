@@ -3,7 +3,7 @@ using OpenBots.Service.API.Api;
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
 
-namespace OpenBots.Service.Client.Manager.API
+namespace OpenBots.Service.Client.Manager
 {
     public class AuthAPIManager
     {

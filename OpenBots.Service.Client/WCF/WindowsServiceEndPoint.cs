@@ -8,25 +8,17 @@ namespace OpenBots.Service.Client
     {
         public ServerResponse ConnectToServer(ServerConnectionSettings settings)
         {
-            // HttpServerClient.Instance.Connect() -> APIHandler.Connect()
-            //|-> Update _serverSettings
-            //|-> Return _serverSettings
-
             return HttpServerClient.Instance.Connect(settings);
         }
 
         public ServerResponse DisconnectFromServer(ServerConnectionSettings settings)
         {
-            // HttpServerClient.Instance.Disconnect() -> APIHandler.Disconnect()
-            //|-> Update _serverSettings
-            //|-> Return _serverSettings
-
             return HttpServerClient.Instance.Disconnect(settings);
         }
 
         public ServerConnectionSettings GetConnectionSettings()
         {
-            return HttpServerClient.Instance?.ServerSettings ?? null;
+            return ConnectionSettingsManager.Instance?.ConnectionSettings ?? null;
         }
 
         public bool IsAlive()
@@ -36,7 +28,7 @@ namespace OpenBots.Service.Client
 
         public bool IsConnected()
         {
-            return HttpServerClient.Instance?.ServerSettings?.ServerConnectionEnabled ?? false;
+            return ConnectionSettingsManager.Instance?.ConnectionSettings?.ServerConnectionEnabled ?? false;
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System.Windows.Forms;
+﻿
+using Newtonsoft.Json;
+using OpenBots.Agent.Core.Model;
+using System.Windows.Forms;
+
 
 namespace OpenBots.Executor
 {
@@ -8,8 +12,11 @@ namespace OpenBots.Executor
         {
             if (args.Length > 0)
             {
+                // Get Execution Parameters
+                JobExecutionParams executionParams = JsonConvert.DeserializeObject<JobExecutionParams>(args[0].ToString());
+
                 EngineHandler executor = new EngineHandler();
-                executor.ExecuteScript(args[0].ToString());
+                executor.ExecuteScript(executionParams);
             }
         }
     }

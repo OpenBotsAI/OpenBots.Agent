@@ -1,11 +1,15 @@
 ﻿
+using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Core.Enums;
+using OpenBots.Agent.Core.Model;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
+using OpenBots.Service.Client.Server;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Timers;
 
 namespace OpenBots.Service.Client.Manager.Execution
@@ -97,11 +101,14 @@ namespace OpenBots.Service.Client.Manager.Execution
                     new Operation(){ Op = "replace", Path = "/message", Value = "Job is running"}
                 });
 
+            // Get Process Info
+            var processInfo = ProcessesAPIManager.GetProcess(AuthAPIManager.Instance, job.ProcessId.ToString());
+
             // Download Process and Extract Files
-            var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(job.ProcessId.ToString());
+            var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(processInfo);
 
             // Run Process
-            RunProcess(mainScriptFilePath);
+            RunProcess(processInfo.Name, mainScriptFilePath);
 
             // Update Job Status (Complete)
             JobsAPIManager.UpdateJob(AuthAPIManager.Instance, job.Id.ToString(),
@@ -115,11 +122,13 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();
         }
-        private void RunProcess(string mainFilePath)
+        private void RunProcess(string processName, string mainScriptFilePath)
         {
+            var executionParams = GetExecutionParams(processName, mainScriptFilePath);
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
-            var cmdLine = $"\"{executorPath}\" \"{mainFilePath}\"";
-            // launch the application
+            var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
+            
+            // launch the Executor
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, out procInfo);
         }
@@ -133,6 +142,19 @@ namespace OpenBots.Service.Client.Manager.Execution
         protected virtual void OnJobFinishedEvent(EventArgs e)
         {
             JobFinishedEvent?.Invoke(this, e);
+        }
+
+        private string GetExecutionParams(string processName, string mainScriptFilePath)
+        {
+            var executionParams = new JobExecutionParams()
+            {
+                ProcessName = processName,
+                MainFilePath = mainScriptFilePath,
+                ProjectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath),
+                ServerConnectionSettings = ConnectionSettingsManager.Instance.ConnectionSettings
+            };
+
+            return JsonSerializer.Serialize(executionParams);
         }
     }
 }
