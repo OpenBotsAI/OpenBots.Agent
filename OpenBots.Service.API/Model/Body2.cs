@@ -35,10 +35,8 @@ namespace OpenBots.Service.API.Model
         /// <param name="name">name (required).</param>
         /// <param name="organization">organization.</param>
         /// <param name="department">department.</param>
-        /// <param name="email">email.</param>
-        /// <param name="userName">userName.</param>
+        /// <param name="email">email (required).</param>
         /// <param name="password">password (required).</param>
-        /// <param name="isAgent">isAgent.</param>
         /// <param name="createNewOrganization">createNewOrganization.</param>
         /// <param name="utmSource">utmSource.</param>
         /// <param name="utmMedium">utmMedium.</param>
@@ -47,7 +45,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="utmContent">utmContent.</param>
         /// <param name="plan">plan.</param>
         /// <param name="apiKey">apiKey.</param>
-        public Body2(string name = default(string), string organization = default(string), string department = default(string), string email = default(string), string userName = default(string), string password = default(string), bool? isAgent = default(bool?), bool? createNewOrganization = default(bool?), string utmSource = default(string), string utmMedium = default(string), string utmCampaign = default(string), string utmTerm = default(string), string utmContent = default(string), string plan = default(string), Guid? apiKey = default(Guid?))
+        public Body2(string name = default(string), string organization = default(string), string department = default(string), string email = default(string), string password = default(string), bool? createNewOrganization = default(bool?), string utmSource = default(string), string utmMedium = default(string), string utmCampaign = default(string), string utmTerm = default(string), string utmContent = default(string), string plan = default(string), Guid? apiKey = default(Guid?))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -57,6 +55,15 @@ namespace OpenBots.Service.API.Model
             else
             {
                 this.Name = name;
+            }
+            // to ensure "email" is required (not null)
+            if (email == null)
+            {
+                throw new InvalidDataException("email is a required property for Body2 and cannot be null");
+            }
+            else
+            {
+                this.Email = email;
             }
             // to ensure "password" is required (not null)
             if (password == null)
@@ -69,9 +76,6 @@ namespace OpenBots.Service.API.Model
             }
             this.Organization = organization;
             this.Department = department;
-            this.Email = email;
-            this.UserName = userName;
-            this.IsAgent = isAgent;
             this.CreateNewOrganization = createNewOrganization;
             this.UtmSource = utmSource;
             this.UtmMedium = utmMedium;
@@ -107,22 +111,10 @@ namespace OpenBots.Service.API.Model
         public string Email { get; set; }
 
         /// <summary>
-        /// Gets or Sets UserName
-        /// </summary>
-        [DataMember(Name="UserName", EmitDefaultValue=false)]
-        public string UserName { get; set; }
-
-        /// <summary>
         /// Gets or Sets Password
         /// </summary>
         [DataMember(Name="Password", EmitDefaultValue=false)]
         public string Password { get; set; }
-
-        /// <summary>
-        /// Gets or Sets IsAgent
-        /// </summary>
-        [DataMember(Name="IsAgent", EmitDefaultValue=false)]
-        public bool? IsAgent { get; set; }
 
         /// <summary>
         /// Gets or Sets CreateNewOrganization
@@ -184,9 +176,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  Organization: ").Append(Organization).Append("\n");
             sb.Append("  Department: ").Append(Department).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
-            sb.Append("  UserName: ").Append(UserName).Append("\n");
             sb.Append("  Password: ").Append(Password).Append("\n");
-            sb.Append("  IsAgent: ").Append(IsAgent).Append("\n");
             sb.Append("  CreateNewOrganization: ").Append(CreateNewOrganization).Append("\n");
             sb.Append("  UtmSource: ").Append(UtmSource).Append("\n");
             sb.Append("  UtmMedium: ").Append(UtmMedium).Append("\n");
@@ -250,19 +240,9 @@ namespace OpenBots.Service.API.Model
                     this.Email.Equals(input.Email))
                 ) && 
                 (
-                    this.UserName == input.UserName ||
-                    (this.UserName != null &&
-                    this.UserName.Equals(input.UserName))
-                ) && 
-                (
                     this.Password == input.Password ||
                     (this.Password != null &&
                     this.Password.Equals(input.Password))
-                ) && 
-                (
-                    this.IsAgent == input.IsAgent ||
-                    (this.IsAgent != null &&
-                    this.IsAgent.Equals(input.IsAgent))
                 ) && 
                 (
                     this.CreateNewOrganization == input.CreateNewOrganization ||
@@ -323,12 +303,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Department.GetHashCode();
                 if (this.Email != null)
                     hashCode = hashCode * 59 + this.Email.GetHashCode();
-                if (this.UserName != null)
-                    hashCode = hashCode * 59 + this.UserName.GetHashCode();
                 if (this.Password != null)
                     hashCode = hashCode * 59 + this.Password.GetHashCode();
-                if (this.IsAgent != null)
-                    hashCode = hashCode * 59 + this.IsAgent.GetHashCode();
                 if (this.CreateNewOrganization != null)
                     hashCode = hashCode * 59 + this.CreateNewOrganization.GetHashCode();
                 if (this.UtmSource != null)

@@ -74,8 +74,8 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
         /// <param name="queueId"> (optional)</param>
-        /// <returns>Guid?</returns>
-        Guid? ApiV1QueueItemsDequeueGet (string agentId = null, string queueId = null);
+        /// <returns>QueueItem</returns>
+        QueueItem ApiV1QueueItemsDequeueGet (string agentId = null, string queueId = null);
 
         /// <summary>
         /// Dequeue QueueItem.
@@ -86,8 +86,8 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
         /// <param name="queueId"> (optional)</param>
-        /// <returns>ApiResponse of Guid?</returns>
-        ApiResponse<Guid?> ApiV1QueueItemsDequeueGetWithHttpInfo (string agentId = null, string queueId = null);
+        /// <returns>ApiResponse of QueueItem</returns>
+        ApiResponse<QueueItem> ApiV1QueueItemsDequeueGetWithHttpInfo (string agentId = null, string queueId = null);
         /// <summary>
         /// Enqueue QueueItem.
         /// </summary>
@@ -141,8 +141,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>QueueItemPaginatedList</returns>
-        QueueItemPaginatedList ApiV1QueueItemsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>QueueItemViewModelPaginatedList</returns>
+        QueueItemViewModelPaginatedList ApiV1QueueItemsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
         /// Provides a list of all QueueItems
@@ -155,8 +155,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of QueueItemPaginatedList</returns>
-        ApiResponse<QueueItemPaginatedList> ApiV1QueueItemsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ApiResponse of QueueItemViewModelPaginatedList</returns>
+        ApiResponse<QueueItemViewModelPaginatedList> ApiV1QueueItemsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
         /// Deletes a QueueItem with a specified id from the QueueItems.
         /// </summary>
@@ -210,8 +210,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
         /// <param name="error"> (optional)</param>
+        /// <param name="isFatal"> (optional, default to false)</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string error = null);
+        IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string error = null, bool? isFatal = null);
 
         /// <summary>
         /// Rollback QueueItem.
@@ -222,8 +223,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
         /// <param name="error"> (optional)</param>
+        /// <param name="isFatal"> (optional, default to false)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string error = null);
+        ApiResponse<IActionResult> ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string error = null, bool? isFatal = null);
         /// <summary>
         /// Provides QueueItem details for a particular QueueItem Id.
         /// </summary>
@@ -298,8 +300,8 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
         /// <param name="queueId"> (optional)</param>
-        /// <returns>Task of Guid?</returns>
-        System.Threading.Tasks.Task<Guid?> ApiV1QueueItemsDequeueGetAsync (string agentId = null, string queueId = null);
+        /// <returns>Task of QueueItem</returns>
+        System.Threading.Tasks.Task<QueueItem> ApiV1QueueItemsDequeueGetAsync (string agentId = null, string queueId = null);
 
         /// <summary>
         /// Dequeue QueueItem.
@@ -310,8 +312,8 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
         /// <param name="queueId"> (optional)</param>
-        /// <returns>Task of ApiResponse (Guid?)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Guid?>> ApiV1QueueItemsDequeueGetAsyncWithHttpInfo (string agentId = null, string queueId = null);
+        /// <returns>Task of ApiResponse (QueueItem)</returns>
+        System.Threading.Tasks.Task<ApiResponse<QueueItem>> ApiV1QueueItemsDequeueGetAsyncWithHttpInfo (string agentId = null, string queueId = null);
         /// <summary>
         /// Enqueue QueueItem.
         /// </summary>
@@ -365,8 +367,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of QueueItemPaginatedList</returns>
-        System.Threading.Tasks.Task<QueueItemPaginatedList> ApiV1QueueItemsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of QueueItemViewModelPaginatedList</returns>
+        System.Threading.Tasks.Task<QueueItemViewModelPaginatedList> ApiV1QueueItemsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
         /// Provides a list of all QueueItems
@@ -379,8 +381,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (QueueItemPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<QueueItemPaginatedList>> ApiV1QueueItemsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ApiResponse (QueueItemViewModelPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<QueueItemViewModelPaginatedList>> ApiV1QueueItemsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
         /// Deletes a QueueItem with a specified id from the QueueItems.
         /// </summary>
@@ -434,8 +436,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
         /// <param name="error"> (optional)</param>
+        /// <param name="isFatal"> (optional, default to false)</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string error = null);
+        System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string error = null, bool? isFatal = null);
 
         /// <summary>
         /// Rollback QueueItem.
@@ -446,8 +449,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
         /// <param name="error"> (optional)</param>
+        /// <param name="isFatal"> (optional, default to false)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string error = null);
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string error = null, bool? isFatal = null);
         /// <summary>
         /// Provides QueueItem details for a particular QueueItem Id.
         /// </summary>
@@ -836,10 +840,10 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
         /// <param name="queueId"> (optional)</param>
-        /// <returns>Guid?</returns>
-        public Guid? ApiV1QueueItemsDequeueGet (string agentId = null, string queueId = null)
+        /// <returns>QueueItem</returns>
+        public QueueItem ApiV1QueueItemsDequeueGet (string agentId = null, string queueId = null)
         {
-             ApiResponse<Guid?> localVarResponse = ApiV1QueueItemsDequeueGetWithHttpInfo(agentId, queueId);
+             ApiResponse<QueueItem> localVarResponse = ApiV1QueueItemsDequeueGetWithHttpInfo(agentId, queueId);
              return localVarResponse.Data;
         }
 
@@ -849,8 +853,8 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
         /// <param name="queueId"> (optional)</param>
-        /// <returns>ApiResponse of Guid?</returns>
-        public ApiResponse< Guid? > ApiV1QueueItemsDequeueGetWithHttpInfo (string agentId = null, string queueId = null)
+        /// <returns>ApiResponse of QueueItem</returns>
+        public ApiResponse< QueueItem > ApiV1QueueItemsDequeueGetWithHttpInfo (string agentId = null, string queueId = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Dequeue";
@@ -890,9 +894,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<Guid?>(localVarStatusCode,
+            return new ApiResponse<QueueItem>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (Guid?) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Guid?)));
+                (QueueItem) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(QueueItem)));
         }
 
         /// <summary>
@@ -901,10 +905,10 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
         /// <param name="queueId"> (optional)</param>
-        /// <returns>Task of Guid?</returns>
-        public async System.Threading.Tasks.Task<Guid?> ApiV1QueueItemsDequeueGetAsync (string agentId = null, string queueId = null)
+        /// <returns>Task of QueueItem</returns>
+        public async System.Threading.Tasks.Task<QueueItem> ApiV1QueueItemsDequeueGetAsync (string agentId = null, string queueId = null)
         {
-             ApiResponse<Guid?> localVarResponse = await ApiV1QueueItemsDequeueGetAsyncWithHttpInfo(agentId, queueId);
+             ApiResponse<QueueItem> localVarResponse = await ApiV1QueueItemsDequeueGetAsyncWithHttpInfo(agentId, queueId);
              return localVarResponse.Data;
 
         }
@@ -915,8 +919,8 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="agentId"> (optional)</param>
         /// <param name="queueId"> (optional)</param>
-        /// <returns>Task of ApiResponse (Guid?)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Guid?>> ApiV1QueueItemsDequeueGetAsyncWithHttpInfo (string agentId = null, string queueId = null)
+        /// <returns>Task of ApiResponse (QueueItem)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<QueueItem>> ApiV1QueueItemsDequeueGetAsyncWithHttpInfo (string agentId = null, string queueId = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Dequeue";
@@ -956,9 +960,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<Guid?>(localVarStatusCode,
+            return new ApiResponse<QueueItem>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (Guid?) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Guid?)));
+                (QueueItem) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(QueueItem)));
         }
 
         /// <summary>
@@ -1241,10 +1245,10 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>QueueItemPaginatedList</returns>
-        public QueueItemPaginatedList ApiV1QueueItemsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>QueueItemViewModelPaginatedList</returns>
+        public QueueItemViewModelPaginatedList ApiV1QueueItemsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<QueueItemPaginatedList> localVarResponse = ApiV1QueueItemsGetWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<QueueItemViewModelPaginatedList> localVarResponse = ApiV1QueueItemsGetWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
         }
 
@@ -1256,8 +1260,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of QueueItemPaginatedList</returns>
-        public ApiResponse< QueueItemPaginatedList > ApiV1QueueItemsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ApiResponse of QueueItemViewModelPaginatedList</returns>
+        public ApiResponse< QueueItemViewModelPaginatedList > ApiV1QueueItemsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
             var localVarPath = "/api/v1/QueueItems";
@@ -1299,9 +1303,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<QueueItemPaginatedList>(localVarStatusCode,
+            return new ApiResponse<QueueItemViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (QueueItemPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(QueueItemPaginatedList)));
+                (QueueItemViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(QueueItemViewModelPaginatedList)));
         }
 
         /// <summary>
@@ -1312,10 +1316,10 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of QueueItemPaginatedList</returns>
-        public async System.Threading.Tasks.Task<QueueItemPaginatedList> ApiV1QueueItemsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of QueueItemViewModelPaginatedList</returns>
+        public async System.Threading.Tasks.Task<QueueItemViewModelPaginatedList> ApiV1QueueItemsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<QueueItemPaginatedList> localVarResponse = await ApiV1QueueItemsGetAsyncWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<QueueItemViewModelPaginatedList> localVarResponse = await ApiV1QueueItemsGetAsyncWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
 
         }
@@ -1328,8 +1332,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (QueueItemPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<QueueItemPaginatedList>> ApiV1QueueItemsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ApiResponse (QueueItemViewModelPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<QueueItemViewModelPaginatedList>> ApiV1QueueItemsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
             var localVarPath = "/api/v1/QueueItems";
@@ -1371,9 +1375,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<QueueItemPaginatedList>(localVarStatusCode,
+            return new ApiResponse<QueueItemViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (QueueItemPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(QueueItemPaginatedList)));
+                (QueueItemViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(QueueItemViewModelPaginatedList)));
         }
 
         /// <summary>
@@ -1672,10 +1676,11 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
         /// <param name="error"> (optional)</param>
+        /// <param name="isFatal"> (optional, default to false)</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string error = null)
+        public IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string error = null, bool? isFatal = null)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1QueueItemsRollbackPutWithHttpInfo(transactionKey, error);
+             ApiResponse<IActionResult> localVarResponse = ApiV1QueueItemsRollbackPutWithHttpInfo(transactionKey, error, isFatal);
              return localVarResponse.Data;
         }
 
@@ -1685,8 +1690,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
         /// <param name="error"> (optional)</param>
+        /// <param name="isFatal"> (optional, default to false)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string error = null)
+        public ApiResponse< IActionResult > ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string error = null, bool? isFatal = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Rollback";
@@ -1712,6 +1718,7 @@ namespace OpenBots.Service.API.Api
 
             if (transactionKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "transactionKey", transactionKey)); // query parameter
             if (error != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "error", error)); // query parameter
+            if (isFatal != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "IsFatal", isFatal)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
@@ -1737,10 +1744,11 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
         /// <param name="error"> (optional)</param>
+        /// <param name="isFatal"> (optional, default to false)</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string error = null)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string error = null, bool? isFatal = null)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1QueueItemsRollbackPutAsyncWithHttpInfo(transactionKey, error);
+             ApiResponse<IActionResult> localVarResponse = await ApiV1QueueItemsRollbackPutAsyncWithHttpInfo(transactionKey, error, isFatal);
              return localVarResponse.Data;
 
         }
@@ -1751,8 +1759,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
         /// <param name="error"> (optional)</param>
+        /// <param name="isFatal"> (optional, default to false)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string error = null)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string error = null, bool? isFatal = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Rollback";
@@ -1778,6 +1787,7 @@ namespace OpenBots.Service.API.Api
 
             if (transactionKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "transactionKey", transactionKey)); // query parameter
             if (error != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "error", error)); // query parameter
+            if (isFatal != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "IsFatal", isFatal)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,

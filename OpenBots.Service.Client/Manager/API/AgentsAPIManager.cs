@@ -9,7 +9,7 @@ namespace OpenBots.Service.Client.Manager.API
 {
     public static class AgentsAPIManager
     {
-        public static int SendAgentHeartBeat(AuthAPIManager apiManager, string agentId, List<Operation> body)
+        public static int SendAgentHeartBeat(AuthAPIManager apiManager, string agentId, HeartbeatViewModel body)
         {
             AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
 
@@ -30,7 +30,7 @@ namespace OpenBots.Service.Client.Manager.API
             }
         }
 
-        public static ApiResponse<ConnectAgentResponseModel> ConnectAgent(AuthAPIManager apiManager, ServerConnectionSettings serverSettings)
+        public static ApiResponse<ConnectedViewModel> ConnectAgent(AuthAPIManager apiManager, ServerConnectionSettings serverSettings)
         {
             AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
 
@@ -74,8 +74,9 @@ namespace OpenBots.Service.Client.Manager.API
         public static string CreateAgent(AuthAPIManager apiManager, ServerConnectionSettings serverSettings)
         {
             AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
-            var agentModel = new AgentModel(serverSettings.AgentUsername, null, serverSettings.MachineName, serverSettings.MACAddress,
-                serverSettings.IPAddress, true, null, null, null, null, null, false);
+            var agentModel = new CreateAgentViewModel(null, serverSettings.AgentName, serverSettings.MachineName, serverSettings.MACAddress,
+                serverSettings.IPAddress, true, null, null, null, null, true, false, null, 
+                serverSettings.AgentUsername, serverSettings.AgentPassword);
             
             try
             {

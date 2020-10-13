@@ -50,7 +50,8 @@ namespace OpenBots.Service.API.Model
         /// <param name="startDate">startDate.</param>
         /// <param name="createdOn">createdOn.</param>
         /// <param name="createdBy">createdBy.</param>
-        public ScheduleViewModel(Guid? id = default(Guid?), string name = default(string), Guid? agentId = default(Guid?), string agentName = default(string), string cronExpression = default(string), DateTime? lastExecution = default(DateTime?), DateTime? nextExecution = default(DateTime?), bool? isDisabled = default(bool?), Guid? projectId = default(Guid?), Guid? processId = default(Guid?), string processName = default(string), string triggerName = default(string), string startingType = default(string), string status = default(string), DateTime? expiryDate = default(DateTime?), DateTime? startDate = default(DateTime?), DateTime? createdOn = default(DateTime?), string createdBy = default(string))
+        /// <param name="scheduleNow">scheduleNow.</param>
+        public ScheduleViewModel(Guid? id = default(Guid?), string name = default(string), Guid? agentId = default(Guid?), string agentName = default(string), string cronExpression = default(string), DateTime? lastExecution = default(DateTime?), DateTime? nextExecution = default(DateTime?), bool? isDisabled = default(bool?), Guid? projectId = default(Guid?), Guid? processId = default(Guid?), string processName = default(string), string triggerName = default(string), string startingType = default(string), string status = default(string), DateTime? expiryDate = default(DateTime?), DateTime? startDate = default(DateTime?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), bool? scheduleNow = default(bool?))
         {
             this.Id = id;
             this.Name = name;
@@ -70,6 +71,7 @@ namespace OpenBots.Service.API.Model
             this.StartDate = startDate;
             this.CreatedOn = createdOn;
             this.CreatedBy = createdBy;
+            this.ScheduleNow = scheduleNow;
         }
         
         /// <summary>
@@ -181,6 +183,12 @@ namespace OpenBots.Service.API.Model
         public string CreatedBy { get; set; }
 
         /// <summary>
+        /// Gets or Sets ScheduleNow
+        /// </summary>
+        [DataMember(Name="scheduleNow", EmitDefaultValue=false)]
+        public bool? ScheduleNow { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -206,6 +214,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  StartDate: ").Append(StartDate).Append("\n");
             sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
+            sb.Append("  ScheduleNow: ").Append(ScheduleNow).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -329,6 +338,11 @@ namespace OpenBots.Service.API.Model
                     this.CreatedBy == input.CreatedBy ||
                     (this.CreatedBy != null &&
                     this.CreatedBy.Equals(input.CreatedBy))
+                ) && 
+                (
+                    this.ScheduleNow == input.ScheduleNow ||
+                    (this.ScheduleNow != null &&
+                    this.ScheduleNow.Equals(input.ScheduleNow))
                 );
         }
 
@@ -377,6 +391,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
                 if (this.CreatedBy != null)
                     hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
+                if (this.ScheduleNow != null)
+                    hashCode = hashCode * 59 + this.ScheduleNow.GetHashCode();
                 return hashCode;
             }
         }

@@ -33,8 +33,8 @@ namespace OpenBots.Service.API.Model
         /// Initializes a new instance of the <see cref="Body1" /> class.
         /// </summary>
         /// <param name="id">id.</param>
-        /// <param name="name">name (required).</param>
-        /// <param name="type">type (required).</param>
+        /// <param name="name">name.</param>
+        /// <param name="type">type.</param>
         /// <param name="textValue">textValue.</param>
         /// <param name="numberValue">numberValue.</param>
         /// <param name="jsonValue">jsonValue.</param>
@@ -43,25 +43,9 @@ namespace OpenBots.Service.API.Model
         /// <param name="organizationId">organizationId.</param>
         public Body1(Guid? id = default(Guid?), string name = default(string), string type = default(string), string textValue = default(string), double? numberValue = default(double?), string jsonValue = default(string), Guid? binaryObjectID = default(Guid?), byte[] _file = default(byte[]), Guid? organizationId = default(Guid?))
         {
-            // to ensure "name" is required (not null)
-            if (name == null)
-            {
-                throw new InvalidDataException("name is a required property for Body1 and cannot be null");
-            }
-            else
-            {
-                this.Name = name;
-            }
-            // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for Body1 and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
             this.Id = id;
+            this.Name = name;
+            this.Type = type;
             this.TextValue = textValue;
             this.NumberValue = numberValue;
             this.JsonValue = jsonValue;

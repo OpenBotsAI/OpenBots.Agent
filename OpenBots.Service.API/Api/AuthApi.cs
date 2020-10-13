@@ -2356,9 +2356,7 @@ namespace OpenBots.Service.API.Api
             //////if (organization != null) localVarFormParams.Add("Organization", this.Configuration.ApiClient.ParameterToString(organization)); // form parameter
             //////if (department != null) localVarFormParams.Add("Department", this.Configuration.ApiClient.ParameterToString(department)); // form parameter
             //////if (email != null) localVarFormParams.Add("Email", this.Configuration.ApiClient.ParameterToString(email)); // form parameter
-            //////if (userName != null) localVarFormParams.Add("UserName", this.Configuration.ApiClient.ParameterToString(userName)); // form parameter
             //////if (password != null) localVarFormParams.Add("Password", this.Configuration.ApiClient.ParameterToString(password)); // form parameter
-            //////if (isAgent != null) localVarFormParams.Add("IsAgent", this.Configuration.ApiClient.ParameterToString(isAgent)); // form parameter
             //////if (createNewOrganization != null) localVarFormParams.Add("CreateNewOrganization", this.Configuration.ApiClient.ParameterToString(createNewOrganization)); // form parameter
             //////if (utmSource != null) localVarFormParams.Add("Utm_Source", this.Configuration.ApiClient.ParameterToString(utmSource)); // form parameter
             //////if (utmMedium != null) localVarFormParams.Add("Utm_Medium", this.Configuration.ApiClient.ParameterToString(utmMedium)); // form parameter
@@ -2433,9 +2431,7 @@ namespace OpenBots.Service.API.Api
             //////if (organization != null) localVarFormParams.Add("Organization", this.Configuration.ApiClient.ParameterToString(organization)); // form parameter
             //////if (department != null) localVarFormParams.Add("Department", this.Configuration.ApiClient.ParameterToString(department)); // form parameter
             //////if (email != null) localVarFormParams.Add("Email", this.Configuration.ApiClient.ParameterToString(email)); // form parameter
-            //////if (userName != null) localVarFormParams.Add("UserName", this.Configuration.ApiClient.ParameterToString(userName)); // form parameter
             //////if (password != null) localVarFormParams.Add("Password", this.Configuration.ApiClient.ParameterToString(password)); // form parameter
-            //////if (isAgent != null) localVarFormParams.Add("IsAgent", this.Configuration.ApiClient.ParameterToString(isAgent)); // form parameter
             //////if (createNewOrganization != null) localVarFormParams.Add("CreateNewOrganization", this.Configuration.ApiClient.ParameterToString(createNewOrganization)); // form parameter
             //////if (utmSource != null) localVarFormParams.Add("Utm_Source", this.Configuration.ApiClient.ParameterToString(utmSource)); // form parameter
             //////if (utmMedium != null) localVarFormParams.Add("Utm_Medium", this.Configuration.ApiClient.ParameterToString(utmMedium)); // form parameter

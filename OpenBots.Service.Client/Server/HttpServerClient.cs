@@ -60,7 +60,7 @@ namespace OpenBots.Service.Client.Server
 
                 //setup heartbeat to the server
                 _heartbeatTimer = new Timer();
-                _heartbeatTimer.Interval = 5000;
+                _heartbeatTimer.Interval = 60000;
                 _heartbeatTimer.Elapsed += Heartbeat_Elapsed;
                 _heartbeatTimer.Enabled = true;
             }
@@ -82,14 +82,7 @@ namespace OpenBots.Service.Client.Server
                 int statusCode = AgentsAPIManager.SendAgentHeartBeat(
                     AuthAPIManager.Instance,
                     ConnectionSettingsManager.Instance.ConnectionSettings.AgentId,
-                    new List<Operation>()
-                    {
-                            new Operation(){ Op = "replace", Path = "/lastReportedOn", Value = DateTime.Now.ToString("s")},
-                            new Operation(){ Op = "replace", Path = "/lastReportedStatus", Value = "SomeStatus"},
-                            new Operation(){ Op = "replace", Path = "/lastReportedWork", Value = "SomeWork"},
-                            new Operation(){ Op = "replace", Path = "/lastReportedMessage", Value = "SomeMessage"},
-                            new Operation(){ Op = "replace", Path = "/isHealthy", Value = true}
-                    });
+                    new HeartbeatViewModel(DateTime.Now, "", "", "", true));
 
                 if (statusCode != 200)
                     ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;

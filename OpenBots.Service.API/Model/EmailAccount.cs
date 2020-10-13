@@ -24,25 +24,28 @@ using SwaggerDateConverter = OpenBots.Service.API.Client.SwaggerDateConverter;
 namespace OpenBots.Service.API.Model
 {
     /// <summary>
-    /// AgentModel
+    /// EmailAccount
     /// </summary>
     [DataContract]
-        public partial class AgentModel :  IEquatable<AgentModel>, IValidatableObject
+        public partial class EmailAccount :  IEquatable<EmailAccount>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AgentModel" /> class.
+        /// Initializes a new instance of the <see cref="EmailAccount" /> class.
         /// </summary>
-        /// <param name="machineName">machineName (required).</param>
-        /// <param name="macAddresses">macAddresses.</param>
-        /// <param name="ipAddresses">ipAddresses.</param>
-        /// <param name="isEnabled">isEnabled (required).</param>
-        /// <param name="lastReportedOn">lastReportedOn.</param>
-        /// <param name="lastReportedStatus">lastReportedStatus.</param>
-        /// <param name="lastReportedWork">lastReportedWork.</param>
-        /// <param name="lastReportedMessage">lastReportedMessage.</param>
-        /// <param name="isHealthy">isHealthy.</param>
-        /// <param name="isConnected">isConnected (required).</param>
-        /// <param name="credentialId">credentialId.</param>
+        /// <param name="isDisabled">isDisabled.</param>
+        /// <param name="isDefault">isDefault.</param>
+        /// <param name="provider">provider.</param>
+        /// <param name="isSslEnabled">isSslEnabled.</param>
+        /// <param name="host">host.</param>
+        /// <param name="port">port.</param>
+        /// <param name="username">username.</param>
+        /// <param name="encryptedPassword">encryptedPassword.</param>
+        /// <param name="passwordHash">passwordHash.</param>
+        /// <param name="apiKey">apiKey.</param>
+        /// <param name="fromEmailAddress">fromEmailAddress.</param>
+        /// <param name="fromName">fromName.</param>
+        /// <param name="startOnUTC">startOnUTC.</param>
+        /// <param name="endOnUTC">endOnUTC.</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -53,52 +56,31 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public AgentModel(string machineName = default(string), string macAddresses = default(string), string ipAddresses = default(string), bool? isEnabled = default(bool?), DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?), bool? isConnected = default(bool?), Guid? credentialId = default(Guid?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public EmailAccount(bool? isDisabled = default(bool?), bool? isDefault = default(bool?), string provider = default(string), bool? isSslEnabled = default(bool?), string host = default(string), int? port = default(int?), string username = default(string), string encryptedPassword = default(string), string passwordHash = default(string), string apiKey = default(string), string fromEmailAddress = default(string), string fromName = default(string), DateTime? startOnUTC = default(DateTime?), DateTime? endOnUTC = default(DateTime?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
-            // to ensure "machineName" is required (not null)
-            if (machineName == null)
-            {
-                throw new InvalidDataException("machineName is a required property for AgentModel and cannot be null");
-            }
-            else
-            {
-                this.MachineName = machineName;
-            }
-            // to ensure "isEnabled" is required (not null)
-            if (isEnabled == null)
-            {
-                throw new InvalidDataException("isEnabled is a required property for AgentModel and cannot be null");
-            }
-            else
-            {
-                this.IsEnabled = isEnabled;
-            }
-            // to ensure "isConnected" is required (not null)
-            if (isConnected == null)
-            {
-                throw new InvalidDataException("isConnected is a required property for AgentModel and cannot be null");
-            }
-            else
-            {
-                this.IsConnected = isConnected;
-            }
             // to ensure "name" is required (not null)
             if (name == null)
             {
-                throw new InvalidDataException("name is a required property for AgentModel and cannot be null");
+                throw new InvalidDataException("name is a required property for EmailAccount and cannot be null");
             }
             else
             {
                 this.Name = name;
             }
-            this.MacAddresses = macAddresses;
-            this.IpAddresses = ipAddresses;
-            this.LastReportedOn = lastReportedOn;
-            this.LastReportedStatus = lastReportedStatus;
-            this.LastReportedWork = lastReportedWork;
-            this.LastReportedMessage = lastReportedMessage;
-            this.IsHealthy = isHealthy;
-            this.CredentialId = credentialId;
+            this.IsDisabled = isDisabled;
+            this.IsDefault = isDefault;
+            this.Provider = provider;
+            this.IsSslEnabled = isSslEnabled;
+            this.Host = host;
+            this.Port = port;
+            this.Username = username;
+            this.EncryptedPassword = encryptedPassword;
+            this.PasswordHash = passwordHash;
+            this.ApiKey = apiKey;
+            this.FromEmailAddress = fromEmailAddress;
+            this.FromName = fromName;
+            this.StartOnUTC = startOnUTC;
+            this.EndOnUTC = endOnUTC;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -119,70 +101,88 @@ namespace OpenBots.Service.API.Model
         }
         
         /// <summary>
-        /// Gets or Sets MachineName
+        /// Gets or Sets IsDisabled
         /// </summary>
-        [DataMember(Name="machineName", EmitDefaultValue=false)]
-        public string MachineName { get; set; }
+        [DataMember(Name="isDisabled", EmitDefaultValue=false)]
+        public bool? IsDisabled { get; set; }
 
         /// <summary>
-        /// Gets or Sets MacAddresses
+        /// Gets or Sets IsDefault
         /// </summary>
-        [DataMember(Name="macAddresses", EmitDefaultValue=false)]
-        public string MacAddresses { get; set; }
+        [DataMember(Name="isDefault", EmitDefaultValue=false)]
+        public bool? IsDefault { get; set; }
 
         /// <summary>
-        /// Gets or Sets IpAddresses
+        /// Gets or Sets Provider
         /// </summary>
-        [DataMember(Name="ipAddresses", EmitDefaultValue=false)]
-        public string IpAddresses { get; set; }
+        [DataMember(Name="provider", EmitDefaultValue=false)]
+        public string Provider { get; set; }
 
         /// <summary>
-        /// Gets or Sets IsEnabled
+        /// Gets or Sets IsSslEnabled
         /// </summary>
-        [DataMember(Name="isEnabled", EmitDefaultValue=false)]
-        public bool? IsEnabled { get; set; }
+        [DataMember(Name="isSslEnabled", EmitDefaultValue=false)]
+        public bool? IsSslEnabled { get; set; }
 
         /// <summary>
-        /// Gets or Sets LastReportedOn
+        /// Gets or Sets Host
         /// </summary>
-        [DataMember(Name="lastReportedOn", EmitDefaultValue=false)]
-        public DateTime? LastReportedOn { get; set; }
+        [DataMember(Name="host", EmitDefaultValue=false)]
+        public string Host { get; set; }
 
         /// <summary>
-        /// Gets or Sets LastReportedStatus
+        /// Gets or Sets Port
         /// </summary>
-        [DataMember(Name="lastReportedStatus", EmitDefaultValue=false)]
-        public string LastReportedStatus { get; set; }
+        [DataMember(Name="port", EmitDefaultValue=false)]
+        public int? Port { get; set; }
 
         /// <summary>
-        /// Gets or Sets LastReportedWork
+        /// Gets or Sets Username
         /// </summary>
-        [DataMember(Name="lastReportedWork", EmitDefaultValue=false)]
-        public string LastReportedWork { get; set; }
+        [DataMember(Name="username", EmitDefaultValue=false)]
+        public string Username { get; set; }
 
         /// <summary>
-        /// Gets or Sets LastReportedMessage
+        /// Gets or Sets EncryptedPassword
         /// </summary>
-        [DataMember(Name="lastReportedMessage", EmitDefaultValue=false)]
-        public string LastReportedMessage { get; set; }
+        [DataMember(Name="encryptedPassword", EmitDefaultValue=false)]
+        public string EncryptedPassword { get; set; }
 
         /// <summary>
-        /// Gets or Sets IsHealthy
+        /// Gets or Sets PasswordHash
         /// </summary>
-        [DataMember(Name="isHealthy", EmitDefaultValue=false)]
-        public bool? IsHealthy { get; set; }
+        [DataMember(Name="passwordHash", EmitDefaultValue=false)]
+        public string PasswordHash { get; set; }
 
         /// <summary>
-        /// Gets or Sets IsConnected
+        /// Gets or Sets ApiKey
         /// </summary>
-        [DataMember(Name="isConnected", EmitDefaultValue=false)]
-        public bool? IsConnected { get; set; }
+        [DataMember(Name="apiKey", EmitDefaultValue=false)]
+        public string ApiKey { get; set; }
 
         /// <summary>
-        /// Gets or Sets CredentialId
+        /// Gets or Sets FromEmailAddress
         /// </summary>
-        [DataMember(Name="credentialId", EmitDefaultValue=false)]
-        public Guid? CredentialId { get; set; }
+        [DataMember(Name="fromEmailAddress", EmitDefaultValue=false)]
+        public string FromEmailAddress { get; set; }
+
+        /// <summary>
+        /// Gets or Sets FromName
+        /// </summary>
+        [DataMember(Name="fromName", EmitDefaultValue=false)]
+        public string FromName { get; set; }
+
+        /// <summary>
+        /// Gets or Sets StartOnUTC
+        /// </summary>
+        [DataMember(Name="startOnUTC", EmitDefaultValue=false)]
+        public DateTime? StartOnUTC { get; set; }
+
+        /// <summary>
+        /// Gets or Sets EndOnUTC
+        /// </summary>
+        [DataMember(Name="endOnUTC", EmitDefaultValue=false)]
+        public DateTime? EndOnUTC { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -251,18 +251,21 @@ namespace OpenBots.Service.API.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AgentModel {\n");
-            sb.Append("  MachineName: ").Append(MachineName).Append("\n");
-            sb.Append("  MacAddresses: ").Append(MacAddresses).Append("\n");
-            sb.Append("  IpAddresses: ").Append(IpAddresses).Append("\n");
-            sb.Append("  IsEnabled: ").Append(IsEnabled).Append("\n");
-            sb.Append("  LastReportedOn: ").Append(LastReportedOn).Append("\n");
-            sb.Append("  LastReportedStatus: ").Append(LastReportedStatus).Append("\n");
-            sb.Append("  LastReportedWork: ").Append(LastReportedWork).Append("\n");
-            sb.Append("  LastReportedMessage: ").Append(LastReportedMessage).Append("\n");
-            sb.Append("  IsHealthy: ").Append(IsHealthy).Append("\n");
-            sb.Append("  IsConnected: ").Append(IsConnected).Append("\n");
-            sb.Append("  CredentialId: ").Append(CredentialId).Append("\n");
+            sb.Append("class EmailAccount {\n");
+            sb.Append("  IsDisabled: ").Append(IsDisabled).Append("\n");
+            sb.Append("  IsDefault: ").Append(IsDefault).Append("\n");
+            sb.Append("  Provider: ").Append(Provider).Append("\n");
+            sb.Append("  IsSslEnabled: ").Append(IsSslEnabled).Append("\n");
+            sb.Append("  Host: ").Append(Host).Append("\n");
+            sb.Append("  Port: ").Append(Port).Append("\n");
+            sb.Append("  Username: ").Append(Username).Append("\n");
+            sb.Append("  EncryptedPassword: ").Append(EncryptedPassword).Append("\n");
+            sb.Append("  PasswordHash: ").Append(PasswordHash).Append("\n");
+            sb.Append("  ApiKey: ").Append(ApiKey).Append("\n");
+            sb.Append("  FromEmailAddress: ").Append(FromEmailAddress).Append("\n");
+            sb.Append("  FromName: ").Append(FromName).Append("\n");
+            sb.Append("  StartOnUTC: ").Append(StartOnUTC).Append("\n");
+            sb.Append("  EndOnUTC: ").Append(EndOnUTC).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -293,74 +296,89 @@ namespace OpenBots.Service.API.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as AgentModel);
+            return this.Equals(input as EmailAccount);
         }
 
         /// <summary>
-        /// Returns true if AgentModel instances are equal
+        /// Returns true if EmailAccount instances are equal
         /// </summary>
-        /// <param name="input">Instance of AgentModel to be compared</param>
+        /// <param name="input">Instance of EmailAccount to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AgentModel input)
+        public bool Equals(EmailAccount input)
         {
             if (input == null)
                 return false;
 
             return 
                 (
-                    this.MachineName == input.MachineName ||
-                    (this.MachineName != null &&
-                    this.MachineName.Equals(input.MachineName))
+                    this.IsDisabled == input.IsDisabled ||
+                    (this.IsDisabled != null &&
+                    this.IsDisabled.Equals(input.IsDisabled))
                 ) && 
                 (
-                    this.MacAddresses == input.MacAddresses ||
-                    (this.MacAddresses != null &&
-                    this.MacAddresses.Equals(input.MacAddresses))
+                    this.IsDefault == input.IsDefault ||
+                    (this.IsDefault != null &&
+                    this.IsDefault.Equals(input.IsDefault))
                 ) && 
                 (
-                    this.IpAddresses == input.IpAddresses ||
-                    (this.IpAddresses != null &&
-                    this.IpAddresses.Equals(input.IpAddresses))
+                    this.Provider == input.Provider ||
+                    (this.Provider != null &&
+                    this.Provider.Equals(input.Provider))
                 ) && 
                 (
-                    this.IsEnabled == input.IsEnabled ||
-                    (this.IsEnabled != null &&
-                    this.IsEnabled.Equals(input.IsEnabled))
+                    this.IsSslEnabled == input.IsSslEnabled ||
+                    (this.IsSslEnabled != null &&
+                    this.IsSslEnabled.Equals(input.IsSslEnabled))
                 ) && 
                 (
-                    this.LastReportedOn == input.LastReportedOn ||
-                    (this.LastReportedOn != null &&
-                    this.LastReportedOn.Equals(input.LastReportedOn))
+                    this.Host == input.Host ||
+                    (this.Host != null &&
+                    this.Host.Equals(input.Host))
                 ) && 
                 (
-                    this.LastReportedStatus == input.LastReportedStatus ||
-                    (this.LastReportedStatus != null &&
-                    this.LastReportedStatus.Equals(input.LastReportedStatus))
+                    this.Port == input.Port ||
+                    (this.Port != null &&
+                    this.Port.Equals(input.Port))
                 ) && 
                 (
-                    this.LastReportedWork == input.LastReportedWork ||
-                    (this.LastReportedWork != null &&
-                    this.LastReportedWork.Equals(input.LastReportedWork))
+                    this.Username == input.Username ||
+                    (this.Username != null &&
+                    this.Username.Equals(input.Username))
                 ) && 
                 (
-                    this.LastReportedMessage == input.LastReportedMessage ||
-                    (this.LastReportedMessage != null &&
-                    this.LastReportedMessage.Equals(input.LastReportedMessage))
+                    this.EncryptedPassword == input.EncryptedPassword ||
+                    (this.EncryptedPassword != null &&
+                    this.EncryptedPassword.Equals(input.EncryptedPassword))
                 ) && 
                 (
-                    this.IsHealthy == input.IsHealthy ||
-                    (this.IsHealthy != null &&
-                    this.IsHealthy.Equals(input.IsHealthy))
+                    this.PasswordHash == input.PasswordHash ||
+                    (this.PasswordHash != null &&
+                    this.PasswordHash.Equals(input.PasswordHash))
                 ) && 
                 (
-                    this.IsConnected == input.IsConnected ||
-                    (this.IsConnected != null &&
-                    this.IsConnected.Equals(input.IsConnected))
+                    this.ApiKey == input.ApiKey ||
+                    (this.ApiKey != null &&
+                    this.ApiKey.Equals(input.ApiKey))
                 ) && 
                 (
-                    this.CredentialId == input.CredentialId ||
-                    (this.CredentialId != null &&
-                    this.CredentialId.Equals(input.CredentialId))
+                    this.FromEmailAddress == input.FromEmailAddress ||
+                    (this.FromEmailAddress != null &&
+                    this.FromEmailAddress.Equals(input.FromEmailAddress))
+                ) && 
+                (
+                    this.FromName == input.FromName ||
+                    (this.FromName != null &&
+                    this.FromName.Equals(input.FromName))
+                ) && 
+                (
+                    this.StartOnUTC == input.StartOnUTC ||
+                    (this.StartOnUTC != null &&
+                    this.StartOnUTC.Equals(input.StartOnUTC))
+                ) && 
+                (
+                    this.EndOnUTC == input.EndOnUTC ||
+                    (this.EndOnUTC != null &&
+                    this.EndOnUTC.Equals(input.EndOnUTC))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -423,28 +441,34 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.MachineName != null)
-                    hashCode = hashCode * 59 + this.MachineName.GetHashCode();
-                if (this.MacAddresses != null)
-                    hashCode = hashCode * 59 + this.MacAddresses.GetHashCode();
-                if (this.IpAddresses != null)
-                    hashCode = hashCode * 59 + this.IpAddresses.GetHashCode();
-                if (this.IsEnabled != null)
-                    hashCode = hashCode * 59 + this.IsEnabled.GetHashCode();
-                if (this.LastReportedOn != null)
-                    hashCode = hashCode * 59 + this.LastReportedOn.GetHashCode();
-                if (this.LastReportedStatus != null)
-                    hashCode = hashCode * 59 + this.LastReportedStatus.GetHashCode();
-                if (this.LastReportedWork != null)
-                    hashCode = hashCode * 59 + this.LastReportedWork.GetHashCode();
-                if (this.LastReportedMessage != null)
-                    hashCode = hashCode * 59 + this.LastReportedMessage.GetHashCode();
-                if (this.IsHealthy != null)
-                    hashCode = hashCode * 59 + this.IsHealthy.GetHashCode();
-                if (this.IsConnected != null)
-                    hashCode = hashCode * 59 + this.IsConnected.GetHashCode();
-                if (this.CredentialId != null)
-                    hashCode = hashCode * 59 + this.CredentialId.GetHashCode();
+                if (this.IsDisabled != null)
+                    hashCode = hashCode * 59 + this.IsDisabled.GetHashCode();
+                if (this.IsDefault != null)
+                    hashCode = hashCode * 59 + this.IsDefault.GetHashCode();
+                if (this.Provider != null)
+                    hashCode = hashCode * 59 + this.Provider.GetHashCode();
+                if (this.IsSslEnabled != null)
+                    hashCode = hashCode * 59 + this.IsSslEnabled.GetHashCode();
+                if (this.Host != null)
+                    hashCode = hashCode * 59 + this.Host.GetHashCode();
+                if (this.Port != null)
+                    hashCode = hashCode * 59 + this.Port.GetHashCode();
+                if (this.Username != null)
+                    hashCode = hashCode * 59 + this.Username.GetHashCode();
+                if (this.EncryptedPassword != null)
+                    hashCode = hashCode * 59 + this.EncryptedPassword.GetHashCode();
+                if (this.PasswordHash != null)
+                    hashCode = hashCode * 59 + this.PasswordHash.GetHashCode();
+                if (this.ApiKey != null)
+                    hashCode = hashCode * 59 + this.ApiKey.GetHashCode();
+                if (this.FromEmailAddress != null)
+                    hashCode = hashCode * 59 + this.FromEmailAddress.GetHashCode();
+                if (this.FromName != null)
+                    hashCode = hashCode * 59 + this.FromName.GetHashCode();
+                if (this.StartOnUTC != null)
+                    hashCode = hashCode * 59 + this.StartOnUTC.GetHashCode();
+                if (this.EndOnUTC != null)
+                    hashCode = hashCode * 59 + this.EndOnUTC.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)

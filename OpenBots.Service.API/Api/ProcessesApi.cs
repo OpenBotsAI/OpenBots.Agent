@@ -14,7 +14,6 @@ using System.Linq;
 using RestSharp;
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
-using System.IO;
 using IO = System.IO;
 
 namespace OpenBots.Service.API.Api
@@ -57,8 +56,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ProcessPaginatedList</returns>
-        ProcessPaginatedList ApiV1ProcessesGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ProcessViewModelPaginatedList</returns>
+        ProcessViewModelPaginatedList ApiV1ProcessesGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
         /// Provides a list of all processes
@@ -71,8 +70,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of ProcessPaginatedList</returns>
-        ApiResponse<ProcessPaginatedList> ApiV1ProcessesGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ApiResponse of ProcessViewModelPaginatedList</returns>
+        ApiResponse<ProcessViewModelPaginatedList> ApiV1ProcessesGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
         /// Lookup list of all processes
         /// </summary>
@@ -168,7 +167,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <returns>Process</returns>
-        Process ApiV1ProcessesIdUploadPost (string id);
+        Process ApiV1ProcessesIdUploadPut (string id);
 
         /// <summary>
         /// Update Process file
@@ -179,7 +178,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <returns>ApiResponse of Process</returns>
-        ApiResponse<Process> ApiV1ProcessesIdUploadPostWithHttpInfo (string id);
+        ApiResponse<Process> ApiV1ProcessesIdUploadPutWithHttpInfo (string id);
         /// <summary>
         /// Uploads a process
         /// </summary>
@@ -275,8 +274,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ProcessPaginatedList</returns>
-        System.Threading.Tasks.Task<ProcessPaginatedList> ApiV1ProcessesGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ProcessViewModelPaginatedList</returns>
+        System.Threading.Tasks.Task<ProcessViewModelPaginatedList> ApiV1ProcessesGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
         /// Provides a list of all processes
@@ -289,8 +288,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (ProcessPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ProcessPaginatedList>> ApiV1ProcessesGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ApiResponse (ProcessViewModelPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ProcessViewModelPaginatedList>> ApiV1ProcessesGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
         /// Lookup list of all processes
         /// </summary>
@@ -386,7 +385,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <returns>Task of Process</returns>
-        System.Threading.Tasks.Task<Process> ApiV1ProcessesIdUploadPostAsync (string id);
+        System.Threading.Tasks.Task<Process> ApiV1ProcessesIdUploadPutAsync (string id);
 
         /// <summary>
         /// Update Process file
@@ -397,7 +396,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <returns>Task of ApiResponse (Process)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Process>> ApiV1ProcessesIdUploadPostAsyncWithHttpInfo (string id);
+        System.Threading.Tasks.Task<ApiResponse<Process>> ApiV1ProcessesIdUploadPutAsyncWithHttpInfo (string id);
         /// <summary>
         /// Uploads a process
         /// </summary>
@@ -703,10 +702,10 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ProcessPaginatedList</returns>
-        public ProcessPaginatedList ApiV1ProcessesGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ProcessViewModelPaginatedList</returns>
+        public ProcessViewModelPaginatedList ApiV1ProcessesGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<ProcessPaginatedList> localVarResponse = ApiV1ProcessesGetWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<ProcessViewModelPaginatedList> localVarResponse = ApiV1ProcessesGetWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
         }
 
@@ -718,8 +717,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of ProcessPaginatedList</returns>
-        public ApiResponse< ProcessPaginatedList > ApiV1ProcessesGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ApiResponse of ProcessViewModelPaginatedList</returns>
+        public ApiResponse< ProcessViewModelPaginatedList > ApiV1ProcessesGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
             var localVarPath = "/api/v1/Processes";
@@ -761,9 +760,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<ProcessPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ProcessPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessPaginatedList)));
+                (ProcessViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessViewModelPaginatedList)));
         }
 
         /// <summary>
@@ -774,10 +773,10 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ProcessPaginatedList</returns>
-        public async System.Threading.Tasks.Task<ProcessPaginatedList> ApiV1ProcessesGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ProcessViewModelPaginatedList</returns>
+        public async System.Threading.Tasks.Task<ProcessViewModelPaginatedList> ApiV1ProcessesGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<ProcessPaginatedList> localVarResponse = await ApiV1ProcessesGetAsyncWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<ProcessViewModelPaginatedList> localVarResponse = await ApiV1ProcessesGetAsyncWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
 
         }
@@ -790,8 +789,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (ProcessPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ProcessPaginatedList>> ApiV1ProcessesGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ApiResponse (ProcessViewModelPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<ProcessViewModelPaginatedList>> ApiV1ProcessesGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
             var localVarPath = "/api/v1/Processes";
@@ -833,9 +832,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<ProcessPaginatedList>(localVarStatusCode,
+            return new ApiResponse<ProcessViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ProcessPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessPaginatedList)));
+                (ProcessViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ProcessViewModelPaginatedList)));
         }
 
         /// <summary>
@@ -1412,9 +1411,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <returns>Process</returns>
-        public Process ApiV1ProcessesIdUploadPost (string id)
+        public Process ApiV1ProcessesIdUploadPut (string id)
         {
-             ApiResponse<Process> localVarResponse = ApiV1ProcessesIdUploadPostWithHttpInfo(id);
+             ApiResponse<Process> localVarResponse = ApiV1ProcessesIdUploadPutWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
@@ -1424,11 +1423,11 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <returns>ApiResponse of Process</returns>
-        public ApiResponse< Process > ApiV1ProcessesIdUploadPostWithHttpInfo (string id)
+        public ApiResponse< Process > ApiV1ProcessesIdUploadPutWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessesApi->ApiV1ProcessesIdUploadPost");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessesApi->ApiV1ProcessesIdUploadPut");
 
             var localVarPath = "/api/v1/Processes/{id}/upload";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1466,14 +1465,14 @@ namespace OpenBots.Service.API.Api
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1ProcessesIdUploadPost", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessesIdUploadPut", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1488,9 +1487,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <returns>Task of Process</returns>
-        public async System.Threading.Tasks.Task<Process> ApiV1ProcessesIdUploadPostAsync (string id)
+        public async System.Threading.Tasks.Task<Process> ApiV1ProcessesIdUploadPutAsync (string id)
         {
-             ApiResponse<Process> localVarResponse = await ApiV1ProcessesIdUploadPostAsyncWithHttpInfo(id);
+             ApiResponse<Process> localVarResponse = await ApiV1ProcessesIdUploadPutAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
@@ -1501,11 +1500,11 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">Process Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <returns>Task of ApiResponse (Process)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Process>> ApiV1ProcessesIdUploadPostAsyncWithHttpInfo (string id)
+        public async System.Threading.Tasks.Task<ApiResponse<Process>> ApiV1ProcessesIdUploadPutAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessesApi->ApiV1ProcessesIdUploadPost");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ProcessesApi->ApiV1ProcessesIdUploadPut");
 
             var localVarPath = "/api/v1/Processes/{id}/upload";
             var localVarPathParams = new Dictionary<String, String>();
@@ -1543,14 +1542,14 @@ namespace OpenBots.Service.API.Api
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
             int localVarStatusCode = (int) localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1ProcessesIdUploadPost", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1ProcessesIdUploadPut", localVarResponse);
                 if (exception != null) throw exception;
             }
 

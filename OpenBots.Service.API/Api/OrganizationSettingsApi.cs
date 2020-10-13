@@ -149,7 +149,7 @@ namespace OpenBots.Service.API.Api
         /// <returns>ApiResponse of OrganizationSetting</returns>
         ApiResponse<OrganizationSetting> ApiV1OrganizationsOrganizationIdOrganizationSettingsPostWithHttpInfo (string organizationId, OrganizationSetting body = null);
         /// <summary>
-        /// Gets a particular  Business process for an organization.
+        /// Gets a particular Business process for an organization.
         /// </summary>
         /// <remarks>
         /// 
@@ -161,7 +161,7 @@ namespace OpenBots.Service.API.Api
         OrganizationSetting GetOrganizationSetting (string organizationId, string id);
 
         /// <summary>
-        /// Gets a particular  Business process for an organization.
+        /// Gets a particular Business process for an organization.
         /// </summary>
         /// <remarks>
         /// 
@@ -299,7 +299,7 @@ namespace OpenBots.Service.API.Api
         /// <returns>Task of ApiResponse (OrganizationSetting)</returns>
         System.Threading.Tasks.Task<ApiResponse<OrganizationSetting>> ApiV1OrganizationsOrganizationIdOrganizationSettingsPostAsyncWithHttpInfo (string organizationId, OrganizationSetting body = null);
         /// <summary>
-        /// Gets a particular  Business process for an organization.
+        /// Gets a particular Business process for an organization.
         /// </summary>
         /// <remarks>
         /// 
@@ -311,7 +311,7 @@ namespace OpenBots.Service.API.Api
         System.Threading.Tasks.Task<OrganizationSetting> GetOrganizationSettingAsync (string organizationId, string id);
 
         /// <summary>
-        /// Gets a particular  Business process for an organization.
+        /// Gets a particular Business process for an organization.
         /// </summary>
         /// <remarks>
         /// 
@@ -1232,7 +1232,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Gets a particular  Business process for an organization. 
+        /// Gets a particular Business process for an organization. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="organizationId">Organization identifier</param>
@@ -1245,7 +1245,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Gets a particular  Business process for an organization. 
+        /// Gets a particular Business process for an organization. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="organizationId">Organization identifier</param>
@@ -1303,7 +1303,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Gets a particular  Business process for an organization. 
+        /// Gets a particular Business process for an organization. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="organizationId">Organization identifier</param>
@@ -1317,7 +1317,7 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Gets a particular  Business process for an organization. 
+        /// Gets a particular Business process for an organization. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="organizationId">Organization identifier</param>

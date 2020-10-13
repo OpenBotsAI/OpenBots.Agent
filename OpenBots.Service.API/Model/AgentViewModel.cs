@@ -24,16 +24,17 @@ using SwaggerDateConverter = OpenBots.Service.API.Client.SwaggerDateConverter;
 namespace OpenBots.Service.API.Model
 {
     /// <summary>
-    /// CreateAgentViewModel
+    /// AgentViewModel
     /// </summary>
     [DataContract]
-        public partial class CreateAgentViewModel :  IEquatable<CreateAgentViewModel>, IValidatableObject
+        public partial class AgentViewModel :  IEquatable<AgentViewModel>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateAgentViewModel" /> class.
+        /// Initializes a new instance of the <see cref="AgentViewModel" /> class.
         /// </summary>
         /// <param name="id">id.</param>
-        /// <param name="name">name (required).</param>
+        /// <param name="name">name.</param>
+        /// <param name="userName">userName.</param>
         /// <param name="machineName">machineName (required).</param>
         /// <param name="macAddresses">macAddresses.</param>
         /// <param name="ipAddresses">ipAddresses.</param>
@@ -45,23 +46,13 @@ namespace OpenBots.Service.API.Model
         /// <param name="isHealthy">isHealthy.</param>
         /// <param name="isConnected">isConnected (required).</param>
         /// <param name="credentialId">credentialId.</param>
-        /// <param name="userName">userName (required).</param>
-        /// <param name="password">password (required).</param>
-        public CreateAgentViewModel(Guid? id = default(Guid?), string name = default(string), string machineName = default(string), string macAddresses = default(string), string ipAddresses = default(string), bool? isEnabled = default(bool?), DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?), bool? isConnected = default(bool?), Guid? credentialId = default(Guid?), string userName = default(string), string password = default(string))
+        /// <param name="credentialName">credentialName.</param>
+        public AgentViewModel(Guid? id = default(Guid?), string name = default(string), string userName = default(string), string machineName = default(string), string macAddresses = default(string), string ipAddresses = default(string), bool? isEnabled = default(bool?), DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?), bool? isConnected = default(bool?), Guid? credentialId = default(Guid?), string credentialName = default(string))
         {
-            // to ensure "name" is required (not null)
-            if (name == null)
-            {
-                throw new InvalidDataException("name is a required property for CreateAgentViewModel and cannot be null");
-            }
-            else
-            {
-                this.Name = name;
-            }
             // to ensure "machineName" is required (not null)
             if (machineName == null)
             {
-                throw new InvalidDataException("machineName is a required property for CreateAgentViewModel and cannot be null");
+                throw new InvalidDataException("machineName is a required property for AgentViewModel and cannot be null");
             }
             else
             {
@@ -70,7 +61,7 @@ namespace OpenBots.Service.API.Model
             // to ensure "isEnabled" is required (not null)
             if (isEnabled == null)
             {
-                throw new InvalidDataException("isEnabled is a required property for CreateAgentViewModel and cannot be null");
+                throw new InvalidDataException("isEnabled is a required property for AgentViewModel and cannot be null");
             }
             else
             {
@@ -79,31 +70,15 @@ namespace OpenBots.Service.API.Model
             // to ensure "isConnected" is required (not null)
             if (isConnected == null)
             {
-                throw new InvalidDataException("isConnected is a required property for CreateAgentViewModel and cannot be null");
+                throw new InvalidDataException("isConnected is a required property for AgentViewModel and cannot be null");
             }
             else
             {
                 this.IsConnected = isConnected;
             }
-            // to ensure "userName" is required (not null)
-            if (userName == null)
-            {
-                throw new InvalidDataException("userName is a required property for CreateAgentViewModel and cannot be null");
-            }
-            else
-            {
-                this.UserName = userName;
-            }
-            // to ensure "password" is required (not null)
-            if (password == null)
-            {
-                throw new InvalidDataException("password is a required property for CreateAgentViewModel and cannot be null");
-            }
-            else
-            {
-                this.Password = password;
-            }
             this.Id = id;
+            this.Name = name;
+            this.UserName = userName;
             this.MacAddresses = macAddresses;
             this.IpAddresses = ipAddresses;
             this.LastReportedOn = lastReportedOn;
@@ -112,6 +87,7 @@ namespace OpenBots.Service.API.Model
             this.LastReportedMessage = lastReportedMessage;
             this.IsHealthy = isHealthy;
             this.CredentialId = credentialId;
+            this.CredentialName = credentialName;
         }
         
         /// <summary>
@@ -125,6 +101,12 @@ namespace OpenBots.Service.API.Model
         /// </summary>
         [DataMember(Name="name", EmitDefaultValue=false)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UserName
+        /// </summary>
+        [DataMember(Name="userName", EmitDefaultValue=false)]
+        public string UserName { get; set; }
 
         /// <summary>
         /// Gets or Sets MachineName
@@ -193,16 +175,10 @@ namespace OpenBots.Service.API.Model
         public Guid? CredentialId { get; set; }
 
         /// <summary>
-        /// Gets or Sets UserName
+        /// Gets or Sets CredentialName
         /// </summary>
-        [DataMember(Name="userName", EmitDefaultValue=false)]
-        public string UserName { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Password
-        /// </summary>
-        [DataMember(Name="password", EmitDefaultValue=false)]
-        public string Password { get; set; }
+        [DataMember(Name="credentialName", EmitDefaultValue=false)]
+        public string CredentialName { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -211,9 +187,10 @@ namespace OpenBots.Service.API.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CreateAgentViewModel {\n");
+            sb.Append("class AgentViewModel {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  UserName: ").Append(UserName).Append("\n");
             sb.Append("  MachineName: ").Append(MachineName).Append("\n");
             sb.Append("  MacAddresses: ").Append(MacAddresses).Append("\n");
             sb.Append("  IpAddresses: ").Append(IpAddresses).Append("\n");
@@ -225,8 +202,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  IsHealthy: ").Append(IsHealthy).Append("\n");
             sb.Append("  IsConnected: ").Append(IsConnected).Append("\n");
             sb.Append("  CredentialId: ").Append(CredentialId).Append("\n");
-            sb.Append("  UserName: ").Append(UserName).Append("\n");
-            sb.Append("  Password: ").Append(Password).Append("\n");
+            sb.Append("  CredentialName: ").Append(CredentialName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -247,15 +223,15 @@ namespace OpenBots.Service.API.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as CreateAgentViewModel);
+            return this.Equals(input as AgentViewModel);
         }
 
         /// <summary>
-        /// Returns true if CreateAgentViewModel instances are equal
+        /// Returns true if AgentViewModel instances are equal
         /// </summary>
-        /// <param name="input">Instance of CreateAgentViewModel to be compared</param>
+        /// <param name="input">Instance of AgentViewModel to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CreateAgentViewModel input)
+        public bool Equals(AgentViewModel input)
         {
             if (input == null)
                 return false;
@@ -270,6 +246,11 @@ namespace OpenBots.Service.API.Model
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
+                ) && 
+                (
+                    this.UserName == input.UserName ||
+                    (this.UserName != null &&
+                    this.UserName.Equals(input.UserName))
                 ) && 
                 (
                     this.MachineName == input.MachineName ||
@@ -327,14 +308,9 @@ namespace OpenBots.Service.API.Model
                     this.CredentialId.Equals(input.CredentialId))
                 ) && 
                 (
-                    this.UserName == input.UserName ||
-                    (this.UserName != null &&
-                    this.UserName.Equals(input.UserName))
-                ) && 
-                (
-                    this.Password == input.Password ||
-                    (this.Password != null &&
-                    this.Password.Equals(input.Password))
+                    this.CredentialName == input.CredentialName ||
+                    (this.CredentialName != null &&
+                    this.CredentialName.Equals(input.CredentialName))
                 );
         }
 
@@ -351,6 +327,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
+                if (this.UserName != null)
+                    hashCode = hashCode * 59 + this.UserName.GetHashCode();
                 if (this.MachineName != null)
                     hashCode = hashCode * 59 + this.MachineName.GetHashCode();
                 if (this.MacAddresses != null)
@@ -373,10 +351,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.IsConnected.GetHashCode();
                 if (this.CredentialId != null)
                     hashCode = hashCode * 59 + this.CredentialId.GetHashCode();
-                if (this.UserName != null)
-                    hashCode = hashCode * 59 + this.UserName.GetHashCode();
-                if (this.Password != null)
-                    hashCode = hashCode * 59 + this.Password.GetHashCode();
+                if (this.CredentialName != null)
+                    hashCode = hashCode * 59 + this.CredentialName.GetHashCode();
                 return hashCode;
             }
         }

@@ -20,11 +20,11 @@ namespace OpenBots.Service.API.Api
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-        public interface ISchedulesApi : IApiAccessor
+        public interface IEmailLogsApi : IApiAccessor
     {
         #region Synchronous Operations
         /// <summary>
-        /// Gets count of Schedules in database
+        /// Gets count of email logs in database
         /// </summary>
         /// <remarks>
         /// 
@@ -32,10 +32,10 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
-        int? ApiV1SchedulesCountGet (string filter = null);
+        int? ApiV1EmailLogsCountGet (string filter = null);
 
         /// <summary>
-        /// Gets count of Schedules in database
+        /// Gets count of email logs in database
         /// </summary>
         /// <remarks>
         /// 
@@ -43,9 +43,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
-        ApiResponse<int?> ApiV1SchedulesCountGetWithHttpInfo (string filter = null);
+        ApiResponse<int?> ApiV1EmailLogsCountGetWithHttpInfo (string filter = null);
         /// <summary>
-        /// Provides a list of all Schedules
+        /// Provides email logs
         /// </summary>
         /// <remarks>
         /// 
@@ -55,11 +55,11 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ScheduleViewModelPaginatedList</returns>
-        ScheduleViewModelPaginatedList ApiV1SchedulesGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>EmailLogViewModelPaginatedList</returns>
+        EmailLogViewModelPaginatedList ApiV1EmailLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of all Schedules
+        /// Provides email logs
         /// </summary>
         /// <remarks>
         /// 
@@ -69,144 +69,121 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of ScheduleViewModelPaginatedList</returns>
-        ApiResponse<ScheduleViewModelPaginatedList> ApiV1SchedulesGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ApiResponse of EmailLogViewModelPaginatedList</returns>
+        ApiResponse<EmailLogViewModelPaginatedList> ApiV1EmailLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Deletes an Schedule with a specified id from the Schedules.
+        /// Delete email log with a specified id from list of email logs.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <param name="id">Email log id to be deleted - throws BadRequest if null or empty Guid/</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1SchedulesIdDelete (string id);
+        IActionResult ApiV1EmailLogsIdDelete (string id);
 
         /// <summary>
-        /// Deletes an Schedule with a specified id from the Schedules.
+        /// Delete email log with a specified id from list of email logs.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <param name="id">Email log id to be deleted - throws BadRequest if null or empty Guid/</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1SchedulesIdDeleteWithHttpInfo (string id);
+        ApiResponse<IActionResult> ApiV1EmailLogsIdDeleteWithHttpInfo (string id);
         /// <summary>
-        /// Updates partial details of Schedule.
+        /// Updates partial details of email log
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule identifier</param>
+        /// <param name="id"></param>
         /// <param name="body"> (optional)</param>
-        /// <returns>IActionResult</returns>
-        IActionResult ApiV1SchedulesIdPatch (string id, List<Operation> body = null);
+        /// <returns>EmailLog</returns>
+        EmailLog ApiV1EmailLogsIdPatch (string id, List<Operation> body = null);
 
         /// <summary>
-        /// Updates partial details of Schedule.
+        /// Updates partial details of email log
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule identifier</param>
+        /// <param name="id"></param>
         /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1SchedulesIdPatchWithHttpInfo (string id, List<Operation> body = null);
+        /// <returns>ApiResponse of EmailLog</returns>
+        ApiResponse<EmailLog> ApiV1EmailLogsIdPatchWithHttpInfo (string id, List<Operation> body = null);
         /// <summary>
-        /// Updates an Schedule
+        /// Updates email logs
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Schedule, when Schedule id and the new details of Schedule are given
+        /// Provides an action to update email log, when email log id and the new details of email log are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
-        /// <returns>IActionResult</returns>
-        IActionResult ApiV1SchedulesIdPut (string id, ScheduleViewModel body = null);
+        /// <param name="id">Email log id, produces Bad request if id is null or ids don&#x27;t match</param>
+        /// <param name="body">Email log details to be updated (optional)</param>
+        /// <returns>EmailLog</returns>
+        EmailLog ApiV1EmailLogsIdPut (string id, EmailLog body = null);
 
         /// <summary>
-        /// Updates an Schedule
+        /// Updates email logs
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Schedule, when Schedule id and the new details of Schedule are given
+        /// Provides an action to update email log, when email log id and the new details of email log are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1SchedulesIdPutWithHttpInfo (string id, ScheduleViewModel body = null);
+        /// <param name="id">Email log id, produces Bad request if id is null or ids don&#x27;t match</param>
+        /// <param name="body">Email log details to be updated (optional)</param>
+        /// <returns>ApiResponse of EmailLog</returns>
+        ApiResponse<EmailLog> ApiV1EmailLogsIdPutWithHttpInfo (string id, EmailLog body = null);
         /// <summary>
-        /// Adds a new Schedule to the existing Schedules
+        /// Adds a new email log to the existing email logs
         /// </summary>
         /// <remarks>
-        /// Adds the Schedule with unique Schedule Id to the existing Schedules
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="body"> (optional)</param>
-        /// <returns>Schedule</returns>
-        Schedule ApiV1SchedulesPost (ScheduleViewModel body = null);
-
-        /// <summary>
-        /// Adds a new Schedule to the existing Schedules
-        /// </summary>
-        /// <remarks>
-        /// Adds the Schedule with unique Schedule Id to the existing Schedules
+        /// Adds the email log with unique email log id to the existing email logs
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of Schedule</returns>
-        ApiResponse<Schedule> ApiV1SchedulesPostWithHttpInfo (ScheduleViewModel body = null);
-        /// <summary>
-        /// API to run a job now
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="processId">Process Id, against which job will be created</param>
-        /// <param name="agentId">Agent id against which job will be created (optional)</param>
-        /// <returns>IActionResult</returns>
-        IActionResult ApiV1SchedulesProcessProcessIdRunNowPost (string processId, string agentId = null);
+        /// <returns>EmailLog</returns>
+        EmailLog ApiV1EmailLogsPost (EmailLog body = null);
 
         /// <summary>
-        /// API to run a job now
+        /// Adds a new email log to the existing email logs
         /// </summary>
         /// <remarks>
-        /// 
+        /// Adds the email log with unique email log id to the existing email logs
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="processId">Process Id, against which job will be created</param>
-        /// <param name="agentId">Agent id against which job will be created (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1SchedulesProcessProcessIdRunNowPostWithHttpInfo (string processId, string agentId = null);
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of EmailLog</returns>
+        ApiResponse<EmailLog> ApiV1EmailLogsPostWithHttpInfo (EmailLog body = null);
         /// <summary>
-        /// Provides an Schedule details for a particular Schedule Id.
+        /// Get email log by id
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule id</param>
-        /// <returns>SchedulePaginatedList</returns>
-        SchedulePaginatedList GetSchedule (string id);
+        /// <param name="id"></param>
+        /// <returns>EmailLogPaginatedList</returns>
+        EmailLogPaginatedList GetEmailLogs (string id);
 
         /// <summary>
-        /// Provides an Schedule details for a particular Schedule Id.
+        /// Get email log by id
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule id</param>
-        /// <returns>ApiResponse of SchedulePaginatedList</returns>
-        ApiResponse<SchedulePaginatedList> GetScheduleWithHttpInfo (string id);
+        /// <param name="id"></param>
+        /// <returns>ApiResponse of EmailLogPaginatedList</returns>
+        ApiResponse<EmailLogPaginatedList> GetEmailLogsWithHttpInfo (string id);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
-        /// Gets count of Schedules in database
+        /// Gets count of email logs in database
         /// </summary>
         /// <remarks>
         /// 
@@ -214,10 +191,10 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
-        System.Threading.Tasks.Task<int?> ApiV1SchedulesCountGetAsync (string filter = null);
+        System.Threading.Tasks.Task<int?> ApiV1EmailLogsCountGetAsync (string filter = null);
 
         /// <summary>
-        /// Gets count of Schedules in database
+        /// Gets count of email logs in database
         /// </summary>
         /// <remarks>
         /// 
@@ -225,9 +202,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
-        System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1SchedulesCountGetAsyncWithHttpInfo (string filter = null);
+        System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1EmailLogsCountGetAsyncWithHttpInfo (string filter = null);
         /// <summary>
-        /// Provides a list of all Schedules
+        /// Provides email logs
         /// </summary>
         /// <remarks>
         /// 
@@ -237,11 +214,11 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ScheduleViewModelPaginatedList</returns>
-        System.Threading.Tasks.Task<ScheduleViewModelPaginatedList> ApiV1SchedulesGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of EmailLogViewModelPaginatedList</returns>
+        System.Threading.Tasks.Task<EmailLogViewModelPaginatedList> ApiV1EmailLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of all Schedules
+        /// Provides email logs
         /// </summary>
         /// <remarks>
         /// 
@@ -251,155 +228,132 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (ScheduleViewModelPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ScheduleViewModelPaginatedList>> ApiV1SchedulesGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ApiResponse (EmailLogViewModelPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<EmailLogViewModelPaginatedList>> ApiV1EmailLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Deletes an Schedule with a specified id from the Schedules.
+        /// Delete email log with a specified id from list of email logs.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <param name="id">Email log id to be deleted - throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1SchedulesIdDeleteAsync (string id);
+        System.Threading.Tasks.Task<IActionResult> ApiV1EmailLogsIdDeleteAsync (string id);
 
         /// <summary>
-        /// Deletes an Schedule with a specified id from the Schedules.
+        /// Delete email log with a specified id from list of email logs.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <param name="id">Email log id to be deleted - throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1SchedulesIdDeleteAsyncWithHttpInfo (string id);
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1EmailLogsIdDeleteAsyncWithHttpInfo (string id);
         /// <summary>
-        /// Updates partial details of Schedule.
+        /// Updates partial details of email log
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule identifier</param>
+        /// <param name="id"></param>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1SchedulesIdPatchAsync (string id, List<Operation> body = null);
+        /// <returns>Task of EmailLog</returns>
+        System.Threading.Tasks.Task<EmailLog> ApiV1EmailLogsIdPatchAsync (string id, List<Operation> body = null);
 
         /// <summary>
-        /// Updates partial details of Schedule.
+        /// Updates partial details of email log
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule identifier</param>
+        /// <param name="id"></param>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1SchedulesIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null);
+        /// <returns>Task of ApiResponse (EmailLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<EmailLog>> ApiV1EmailLogsIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null);
         /// <summary>
-        /// Updates an Schedule
+        /// Updates email logs
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Schedule, when Schedule id and the new details of Schedule are given
+        /// Provides an action to update email log, when email log id and the new details of email log are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1SchedulesIdPutAsync (string id, ScheduleViewModel body = null);
+        /// <param name="id">Email log id, produces Bad request if id is null or ids don&#x27;t match</param>
+        /// <param name="body">Email log details to be updated (optional)</param>
+        /// <returns>Task of EmailLog</returns>
+        System.Threading.Tasks.Task<EmailLog> ApiV1EmailLogsIdPutAsync (string id, EmailLog body = null);
 
         /// <summary>
-        /// Updates an Schedule
+        /// Updates email logs
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an Schedule, when Schedule id and the new details of Schedule are given
+        /// Provides an action to update email log, when email log id and the new details of email log are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1SchedulesIdPutAsyncWithHttpInfo (string id, ScheduleViewModel body = null);
+        /// <param name="id">Email log id, produces Bad request if id is null or ids don&#x27;t match</param>
+        /// <param name="body">Email log details to be updated (optional)</param>
+        /// <returns>Task of ApiResponse (EmailLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<EmailLog>> ApiV1EmailLogsIdPutAsyncWithHttpInfo (string id, EmailLog body = null);
         /// <summary>
-        /// Adds a new Schedule to the existing Schedules
+        /// Adds a new email log to the existing email logs
         /// </summary>
         /// <remarks>
-        /// Adds the Schedule with unique Schedule Id to the existing Schedules
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="body"> (optional)</param>
-        /// <returns>Task of Schedule</returns>
-        System.Threading.Tasks.Task<Schedule> ApiV1SchedulesPostAsync (ScheduleViewModel body = null);
-
-        /// <summary>
-        /// Adds a new Schedule to the existing Schedules
-        /// </summary>
-        /// <remarks>
-        /// Adds the Schedule with unique Schedule Id to the existing Schedules
+        /// Adds the email log with unique email log id to the existing email logs
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (Schedule)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Schedule>> ApiV1SchedulesPostAsyncWithHttpInfo (ScheduleViewModel body = null);
-        /// <summary>
-        /// API to run a job now
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="processId">Process Id, against which job will be created</param>
-        /// <param name="agentId">Agent id against which job will be created (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1SchedulesProcessProcessIdRunNowPostAsync (string processId, string agentId = null);
+        /// <returns>Task of EmailLog</returns>
+        System.Threading.Tasks.Task<EmailLog> ApiV1EmailLogsPostAsync (EmailLog body = null);
 
         /// <summary>
-        /// API to run a job now
+        /// Adds a new email log to the existing email logs
         /// </summary>
         /// <remarks>
-        /// 
+        /// Adds the email log with unique email log id to the existing email logs
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="processId">Process Id, against which job will be created</param>
-        /// <param name="agentId">Agent id against which job will be created (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1SchedulesProcessProcessIdRunNowPostAsyncWithHttpInfo (string processId, string agentId = null);
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (EmailLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<EmailLog>> ApiV1EmailLogsPostAsyncWithHttpInfo (EmailLog body = null);
         /// <summary>
-        /// Provides an Schedule details for a particular Schedule Id.
+        /// Get email log by id
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule id</param>
-        /// <returns>Task of SchedulePaginatedList</returns>
-        System.Threading.Tasks.Task<SchedulePaginatedList> GetScheduleAsync (string id);
+        /// <param name="id"></param>
+        /// <returns>Task of EmailLogPaginatedList</returns>
+        System.Threading.Tasks.Task<EmailLogPaginatedList> GetEmailLogsAsync (string id);
 
         /// <summary>
-        /// Provides an Schedule details for a particular Schedule Id.
+        /// Get email log by id
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule id</param>
-        /// <returns>Task of ApiResponse (SchedulePaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<SchedulePaginatedList>> GetScheduleAsyncWithHttpInfo (string id);
+        /// <param name="id"></param>
+        /// <returns>Task of ApiResponse (EmailLogPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<EmailLogPaginatedList>> GetEmailLogsAsyncWithHttpInfo (string id);
         #endregion Asynchronous Operations
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-        public partial class SchedulesApi : ISchedulesApi
+        public partial class EmailLogsApi : IEmailLogsApi
     {
         private OpenBots.Service.API.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulesApi"/> class.
+        /// Initializes a new instance of the <see cref="EmailLogsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public SchedulesApi(String basePath)
+        public EmailLogsApi(String basePath)
         {
             this.Configuration = new OpenBots.Service.API.Client.Configuration { BasePath = basePath };
 
@@ -407,10 +361,10 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulesApi"/> class
+        /// Initializes a new instance of the <see cref="EmailLogsApi"/> class
         /// </summary>
         /// <returns></returns>
-        public SchedulesApi()
+        public EmailLogsApi()
         {
             this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
 
@@ -418,12 +372,12 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulesApi"/> class
+        /// Initializes a new instance of the <see cref="EmailLogsApi"/> class
         /// using Configuration object
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public SchedulesApi(OpenBots.Service.API.Client.Configuration configuration = null)
+        public EmailLogsApi(OpenBots.Service.API.Client.Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
                 this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
@@ -497,27 +451,27 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Gets count of Schedules in database 
+        /// Gets count of email logs in database 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
-        public int? ApiV1SchedulesCountGet (string filter = null)
+        public int? ApiV1EmailLogsCountGet (string filter = null)
         {
-             ApiResponse<int?> localVarResponse = ApiV1SchedulesCountGetWithHttpInfo(filter);
+             ApiResponse<int?> localVarResponse = ApiV1EmailLogsCountGetWithHttpInfo(filter);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Gets count of Schedules in database 
+        /// Gets count of email logs in database 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
-        public ApiResponse< int? > ApiV1SchedulesCountGetWithHttpInfo (string filter = null)
+        public ApiResponse< int? > ApiV1EmailLogsCountGetWithHttpInfo (string filter = null)
         {
 
-            var localVarPath = "/api/v1/Schedules/count";
+            var localVarPath = "/api/v1/EmailLogs/count";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -549,7 +503,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesCountGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsCountGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -559,28 +513,28 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Gets count of Schedules in database 
+        /// Gets count of email logs in database 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
-        public async System.Threading.Tasks.Task<int?> ApiV1SchedulesCountGetAsync (string filter = null)
+        public async System.Threading.Tasks.Task<int?> ApiV1EmailLogsCountGetAsync (string filter = null)
         {
-             ApiResponse<int?> localVarResponse = await ApiV1SchedulesCountGetAsyncWithHttpInfo(filter);
+             ApiResponse<int?> localVarResponse = await ApiV1EmailLogsCountGetAsyncWithHttpInfo(filter);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Gets count of Schedules in database 
+        /// Gets count of email logs in database 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1SchedulesCountGetAsyncWithHttpInfo (string filter = null)
+        public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1EmailLogsCountGetAsyncWithHttpInfo (string filter = null)
         {
 
-            var localVarPath = "/api/v1/Schedules/count";
+            var localVarPath = "/api/v1/EmailLogs/count";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -612,7 +566,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesCountGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsCountGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -622,33 +576,33 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides a list of all Schedules 
+        /// Provides email logs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ScheduleViewModelPaginatedList</returns>
-        public ScheduleViewModelPaginatedList ApiV1SchedulesGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>EmailLogViewModelPaginatedList</returns>
+        public EmailLogViewModelPaginatedList ApiV1EmailLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<ScheduleViewModelPaginatedList> localVarResponse = ApiV1SchedulesGetWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<EmailLogViewModelPaginatedList> localVarResponse = ApiV1EmailLogsGetWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Provides a list of all Schedules 
+        /// Provides email logs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of ScheduleViewModelPaginatedList</returns>
-        public ApiResponse< ScheduleViewModelPaginatedList > ApiV1SchedulesGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ApiResponse of EmailLogViewModelPaginatedList</returns>
+        public ApiResponse< EmailLogViewModelPaginatedList > ApiV1EmailLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
-            var localVarPath = "/api/v1/Schedules";
+            var localVarPath = "/api/v1/EmailLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -683,44 +637,44 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<ScheduleViewModelPaginatedList>(localVarStatusCode,
+            return new ApiResponse<EmailLogViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ScheduleViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ScheduleViewModelPaginatedList)));
+                (EmailLogViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLogViewModelPaginatedList)));
         }
 
         /// <summary>
-        /// Provides a list of all Schedules 
+        /// Provides email logs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ScheduleViewModelPaginatedList</returns>
-        public async System.Threading.Tasks.Task<ScheduleViewModelPaginatedList> ApiV1SchedulesGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of EmailLogViewModelPaginatedList</returns>
+        public async System.Threading.Tasks.Task<EmailLogViewModelPaginatedList> ApiV1EmailLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<ScheduleViewModelPaginatedList> localVarResponse = await ApiV1SchedulesGetAsyncWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<EmailLogViewModelPaginatedList> localVarResponse = await ApiV1EmailLogsGetAsyncWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides a list of all Schedules 
+        /// Provides email logs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (ScheduleViewModelPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ScheduleViewModelPaginatedList>> ApiV1SchedulesGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ApiResponse (EmailLogViewModelPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<EmailLogViewModelPaginatedList>> ApiV1EmailLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
-            var localVarPath = "/api/v1/Schedules";
+            var localVarPath = "/api/v1/EmailLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -755,40 +709,40 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<ScheduleViewModelPaginatedList>(localVarStatusCode,
+            return new ApiResponse<EmailLogViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ScheduleViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ScheduleViewModelPaginatedList)));
+                (EmailLogViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLogViewModelPaginatedList)));
         }
 
         /// <summary>
-        /// Deletes an Schedule with a specified id from the Schedules. 
+        /// Delete email log with a specified id from list of email logs. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <param name="id">Email log id to be deleted - throws BadRequest if null or empty Guid/</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1SchedulesIdDelete (string id)
+        public IActionResult ApiV1EmailLogsIdDelete (string id)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1SchedulesIdDeleteWithHttpInfo(id);
+             ApiResponse<IActionResult> localVarResponse = ApiV1EmailLogsIdDeleteWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Deletes an Schedule with a specified id from the Schedules. 
+        /// Delete email log with a specified id from list of email logs. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <param name="id">Email log id to be deleted - throws BadRequest if null or empty Guid/</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1SchedulesIdDeleteWithHttpInfo (string id)
+        public ApiResponse< IActionResult > ApiV1EmailLogsIdDeleteWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling SchedulesApi->ApiV1SchedulesIdDelete");
+                throw new ApiException(400, "Missing required parameter 'id' when calling EmailLogsApi->ApiV1EmailLogsIdDelete");
 
-            var localVarPath = "/api/v1/Schedules/{id}";
+            var localVarPath = "/api/v1/EmailLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -820,7 +774,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesIdDelete", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsIdDelete", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -830,31 +784,31 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Deletes an Schedule with a specified id from the Schedules. 
+        /// Delete email log with a specified id from list of email logs. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <param name="id">Email log id to be deleted - throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1SchedulesIdDeleteAsync (string id)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1EmailLogsIdDeleteAsync (string id)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1SchedulesIdDeleteAsyncWithHttpInfo(id);
+             ApiResponse<IActionResult> localVarResponse = await ApiV1EmailLogsIdDeleteAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Deletes an Schedule with a specified id from the Schedules. 
+        /// Delete email log with a specified id from list of email logs. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule ID to be deleted- throws BadRequest if null or empty Guid/</param>
+        /// <param name="id">Email log id to be deleted - throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1SchedulesIdDeleteAsyncWithHttpInfo (string id)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1EmailLogsIdDeleteAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling SchedulesApi->ApiV1SchedulesIdDelete");
+                throw new ApiException(400, "Missing required parameter 'id' when calling EmailLogsApi->ApiV1EmailLogsIdDelete");
 
-            var localVarPath = "/api/v1/Schedules/{id}";
+            var localVarPath = "/api/v1/EmailLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -886,7 +840,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesIdDelete", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsIdDelete", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -896,32 +850,32 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates partial details of Schedule. 
+        /// Updates partial details of email log 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule identifier</param>
+        /// <param name="id"></param>
         /// <param name="body"> (optional)</param>
-        /// <returns>IActionResult</returns>
-        public IActionResult ApiV1SchedulesIdPatch (string id, List<Operation> body = null)
+        /// <returns>EmailLog</returns>
+        public EmailLog ApiV1EmailLogsIdPatch (string id, List<Operation> body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1SchedulesIdPatchWithHttpInfo(id, body);
+             ApiResponse<EmailLog> localVarResponse = ApiV1EmailLogsIdPatchWithHttpInfo(id, body);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Updates partial details of Schedule. 
+        /// Updates partial details of email log 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule identifier</param>
+        /// <param name="id"></param>
         /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1SchedulesIdPatchWithHttpInfo (string id, List<Operation> body = null)
+        /// <returns>ApiResponse of EmailLog</returns>
+        public ApiResponse< EmailLog > ApiV1EmailLogsIdPatchWithHttpInfo (string id, List<Operation> body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling SchedulesApi->ApiV1SchedulesIdPatch");
+                throw new ApiException(400, "Missing required parameter 'id' when calling EmailLogsApi->ApiV1EmailLogsIdPatch");
 
-            var localVarPath = "/api/v1/Schedules/{id}";
+            var localVarPath = "/api/v1/EmailLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -965,43 +919,43 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesIdPatch", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsIdPatch", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<IActionResult>(localVarStatusCode,
+            return new ApiResponse<EmailLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+                (EmailLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLog)));
         }
 
         /// <summary>
-        /// Updates partial details of Schedule. 
+        /// Updates partial details of email log 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule identifier</param>
+        /// <param name="id"></param>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1SchedulesIdPatchAsync (string id, List<Operation> body = null)
+        /// <returns>Task of EmailLog</returns>
+        public async System.Threading.Tasks.Task<EmailLog> ApiV1EmailLogsIdPatchAsync (string id, List<Operation> body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1SchedulesIdPatchAsyncWithHttpInfo(id, body);
+             ApiResponse<EmailLog> localVarResponse = await ApiV1EmailLogsIdPatchAsyncWithHttpInfo(id, body);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Updates partial details of Schedule. 
+        /// Updates partial details of email log 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule identifier</param>
+        /// <param name="id"></param>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1SchedulesIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null)
+        /// <returns>Task of ApiResponse (EmailLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<EmailLog>> ApiV1EmailLogsIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling SchedulesApi->ApiV1SchedulesIdPatch");
+                throw new ApiException(400, "Missing required parameter 'id' when calling EmailLogsApi->ApiV1EmailLogsIdPatch");
 
-            var localVarPath = "/api/v1/Schedules/{id}";
+            var localVarPath = "/api/v1/EmailLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1045,42 +999,42 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesIdPatch", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsIdPatch", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<IActionResult>(localVarStatusCode,
+            return new ApiResponse<EmailLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+                (EmailLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLog)));
         }
 
         /// <summary>
-        /// Updates an Schedule Provides an action to update an Schedule, when Schedule id and the new details of Schedule are given
+        /// Updates email logs Provides an action to update email log, when email log id and the new details of email log are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
-        /// <returns>IActionResult</returns>
-        public IActionResult ApiV1SchedulesIdPut (string id, ScheduleViewModel body = null)
+        /// <param name="id">Email log id, produces Bad request if id is null or ids don&#x27;t match</param>
+        /// <param name="body">Email log details to be updated (optional)</param>
+        /// <returns>EmailLog</returns>
+        public EmailLog ApiV1EmailLogsIdPut (string id, EmailLog body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1SchedulesIdPutWithHttpInfo(id, body);
+             ApiResponse<EmailLog> localVarResponse = ApiV1EmailLogsIdPutWithHttpInfo(id, body);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Updates an Schedule Provides an action to update an Schedule, when Schedule id and the new details of Schedule are given
+        /// Updates email logs Provides an action to update email log, when email log id and the new details of email log are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1SchedulesIdPutWithHttpInfo (string id, ScheduleViewModel body = null)
+        /// <param name="id">Email log id, produces Bad request if id is null or ids don&#x27;t match</param>
+        /// <param name="body">Email log details to be updated (optional)</param>
+        /// <returns>ApiResponse of EmailLog</returns>
+        public ApiResponse< EmailLog > ApiV1EmailLogsIdPutWithHttpInfo (string id, EmailLog body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling SchedulesApi->ApiV1SchedulesIdPut");
+                throw new ApiException(400, "Missing required parameter 'id' when calling EmailLogsApi->ApiV1EmailLogsIdPut");
 
-            var localVarPath = "/api/v1/Schedules/{id}";
+            var localVarPath = "/api/v1/EmailLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1124,43 +1078,43 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesIdPut", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsIdPut", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<IActionResult>(localVarStatusCode,
+            return new ApiResponse<EmailLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+                (EmailLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLog)));
         }
 
         /// <summary>
-        /// Updates an Schedule Provides an action to update an Schedule, when Schedule id and the new details of Schedule are given
+        /// Updates email logs Provides an action to update email log, when email log id and the new details of email log are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1SchedulesIdPutAsync (string id, ScheduleViewModel body = null)
+        /// <param name="id">Email log id, produces Bad request if id is null or ids don&#x27;t match</param>
+        /// <param name="body">Email log details to be updated (optional)</param>
+        /// <returns>Task of EmailLog</returns>
+        public async System.Threading.Tasks.Task<EmailLog> ApiV1EmailLogsIdPutAsync (string id, EmailLog body = null)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1SchedulesIdPutAsyncWithHttpInfo(id, body);
+             ApiResponse<EmailLog> localVarResponse = await ApiV1EmailLogsIdPutAsyncWithHttpInfo(id, body);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Updates an Schedule Provides an action to update an Schedule, when Schedule id and the new details of Schedule are given
+        /// Updates email logs Provides an action to update email log, when email log id and the new details of email log are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
-        /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1SchedulesIdPutAsyncWithHttpInfo (string id, ScheduleViewModel body = null)
+        /// <param name="id">Email log id, produces Bad request if id is null or ids don&#x27;t match</param>
+        /// <param name="body">Email log details to be updated (optional)</param>
+        /// <returns>Task of ApiResponse (EmailLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<EmailLog>> ApiV1EmailLogsIdPutAsyncWithHttpInfo (string id, EmailLog body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling SchedulesApi->ApiV1SchedulesIdPut");
+                throw new ApiException(400, "Missing required parameter 'id' when calling EmailLogsApi->ApiV1EmailLogsIdPut");
 
-            var localVarPath = "/api/v1/Schedules/{id}";
+            var localVarPath = "/api/v1/EmailLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1204,37 +1158,37 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesIdPut", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsIdPut", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<IActionResult>(localVarStatusCode,
+            return new ApiResponse<EmailLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+                (EmailLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLog)));
         }
 
         /// <summary>
-        /// Adds a new Schedule to the existing Schedules Adds the Schedule with unique Schedule Id to the existing Schedules
+        /// Adds a new email log to the existing email logs Adds the email log with unique email log id to the existing email logs
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Schedule</returns>
-        public Schedule ApiV1SchedulesPost (ScheduleViewModel body = null)
+        /// <returns>EmailLog</returns>
+        public EmailLog ApiV1EmailLogsPost (EmailLog body = null)
         {
-             ApiResponse<Schedule> localVarResponse = ApiV1SchedulesPostWithHttpInfo(body);
+             ApiResponse<EmailLog> localVarResponse = ApiV1EmailLogsPostWithHttpInfo(body);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Adds a new Schedule to the existing Schedules Adds the Schedule with unique Schedule Id to the existing Schedules
+        /// Adds a new email log to the existing email logs Adds the email log with unique email log id to the existing email logs
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of Schedule</returns>
-        public ApiResponse< Schedule > ApiV1SchedulesPostWithHttpInfo (ScheduleViewModel body = null)
+        /// <returns>ApiResponse of EmailLog</returns>
+        public ApiResponse< EmailLog > ApiV1EmailLogsPostWithHttpInfo (EmailLog body = null)
         {
 
-            var localVarPath = "/api/v1/Schedules";
+            var localVarPath = "/api/v1/EmailLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1277,38 +1231,38 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesPost", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsPost", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<Schedule>(localVarStatusCode,
+            return new ApiResponse<EmailLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (Schedule) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Schedule)));
+                (EmailLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLog)));
         }
 
         /// <summary>
-        /// Adds a new Schedule to the existing Schedules Adds the Schedule with unique Schedule Id to the existing Schedules
+        /// Adds a new email log to the existing email logs Adds the email log with unique email log id to the existing email logs
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of Schedule</returns>
-        public async System.Threading.Tasks.Task<Schedule> ApiV1SchedulesPostAsync (ScheduleViewModel body = null)
+        /// <returns>Task of EmailLog</returns>
+        public async System.Threading.Tasks.Task<EmailLog> ApiV1EmailLogsPostAsync (EmailLog body = null)
         {
-             ApiResponse<Schedule> localVarResponse = await ApiV1SchedulesPostAsyncWithHttpInfo(body);
+             ApiResponse<EmailLog> localVarResponse = await ApiV1EmailLogsPostAsyncWithHttpInfo(body);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Adds a new Schedule to the existing Schedules Adds the Schedule with unique Schedule Id to the existing Schedules
+        /// Adds a new email log to the existing email logs Adds the email log with unique email log id to the existing email logs
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (Schedule)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Schedule>> ApiV1SchedulesPostAsyncWithHttpInfo (ScheduleViewModel body = null)
+        /// <returns>Task of ApiResponse (EmailLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<EmailLog>> ApiV1EmailLogsPostAsyncWithHttpInfo (EmailLog body = null)
         {
 
-            var localVarPath = "/api/v1/Schedules";
+            var localVarPath = "/api/v1/EmailLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1351,177 +1305,40 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1SchedulesPost", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1EmailLogsPost", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<Schedule>(localVarStatusCode,
+            return new ApiResponse<EmailLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (Schedule) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(Schedule)));
+                (EmailLog) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLog)));
         }
 
         /// <summary>
-        /// API to run a job now 
+        /// Get email log by id 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="processId">Process Id, against which job will be created</param>
-        /// <param name="agentId">Agent id against which job will be created (optional)</param>
-        /// <returns>IActionResult</returns>
-        public IActionResult ApiV1SchedulesProcessProcessIdRunNowPost (string processId, string agentId = null)
+        /// <param name="id"></param>
+        /// <returns>EmailLogPaginatedList</returns>
+        public EmailLogPaginatedList GetEmailLogs (string id)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1SchedulesProcessProcessIdRunNowPostWithHttpInfo(processId, agentId);
+             ApiResponse<EmailLogPaginatedList> localVarResponse = GetEmailLogsWithHttpInfo(id);
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// API to run a job now 
+        /// Get email log by id 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="processId">Process Id, against which job will be created</param>
-        /// <param name="agentId">Agent id against which job will be created (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1SchedulesProcessProcessIdRunNowPostWithHttpInfo (string processId, string agentId = null)
-        {
-            // verify the required parameter 'processId' is set
-            if (processId == null)
-                throw new ApiException(400, "Missing required parameter 'processId' when calling SchedulesApi->ApiV1SchedulesProcessProcessIdRunNowPost");
-
-            var localVarPath = "/api/v1/Schedules/Process/{processId}/RunNow";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (processId != null) localVarPathParams.Add("processId", this.Configuration.ApiClient.ParameterToString(processId)); // path parameter
-            if (agentId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "agentId", agentId)); // query parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1SchedulesProcessProcessIdRunNowPost", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<IActionResult>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
-        }
-
-        /// <summary>
-        /// API to run a job now 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="processId">Process Id, against which job will be created</param>
-        /// <param name="agentId">Agent id against which job will be created (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1SchedulesProcessProcessIdRunNowPostAsync (string processId, string agentId = null)
-        {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1SchedulesProcessProcessIdRunNowPostAsyncWithHttpInfo(processId, agentId);
-             return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// API to run a job now 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="processId">Process Id, against which job will be created</param>
-        /// <param name="agentId">Agent id against which job will be created (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1SchedulesProcessProcessIdRunNowPostAsyncWithHttpInfo (string processId, string agentId = null)
-        {
-            // verify the required parameter 'processId' is set
-            if (processId == null)
-                throw new ApiException(400, "Missing required parameter 'processId' when calling SchedulesApi->ApiV1SchedulesProcessProcessIdRunNowPost");
-
-            var localVarPath = "/api/v1/Schedules/Process/{processId}/RunNow";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (processId != null) localVarPathParams.Add("processId", this.Configuration.ApiClient.ParameterToString(processId)); // path parameter
-            if (agentId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "agentId", agentId)); // query parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1SchedulesProcessProcessIdRunNowPost", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<IActionResult>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
-        }
-
-        /// <summary>
-        /// Provides an Schedule details for a particular Schedule Id. 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule id</param>
-        /// <returns>SchedulePaginatedList</returns>
-        public SchedulePaginatedList GetSchedule (string id)
-        {
-             ApiResponse<SchedulePaginatedList> localVarResponse = GetScheduleWithHttpInfo(id);
-             return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Provides an Schedule details for a particular Schedule Id. 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule id</param>
-        /// <returns>ApiResponse of SchedulePaginatedList</returns>
-        public ApiResponse< SchedulePaginatedList > GetScheduleWithHttpInfo (string id)
+        /// <param name="id"></param>
+        /// <returns>ApiResponse of EmailLogPaginatedList</returns>
+        public ApiResponse< EmailLogPaginatedList > GetEmailLogsWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling SchedulesApi->GetSchedule");
+                throw new ApiException(400, "Missing required parameter 'id' when calling EmailLogsApi->GetEmailLogs");
 
-            var localVarPath = "/api/v1/Schedules/{id}";
+            var localVarPath = "/api/v1/EmailLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1553,41 +1370,41 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetSchedule", localVarResponse);
+                Exception exception = ExceptionFactory("GetEmailLogs", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<SchedulePaginatedList>(localVarStatusCode,
+            return new ApiResponse<EmailLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (SchedulePaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(SchedulePaginatedList)));
+                (EmailLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLogPaginatedList)));
         }
 
         /// <summary>
-        /// Provides an Schedule details for a particular Schedule Id. 
+        /// Get email log by id 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule id</param>
-        /// <returns>Task of SchedulePaginatedList</returns>
-        public async System.Threading.Tasks.Task<SchedulePaginatedList> GetScheduleAsync (string id)
+        /// <param name="id"></param>
+        /// <returns>Task of EmailLogPaginatedList</returns>
+        public async System.Threading.Tasks.Task<EmailLogPaginatedList> GetEmailLogsAsync (string id)
         {
-             ApiResponse<SchedulePaginatedList> localVarResponse = await GetScheduleAsyncWithHttpInfo(id);
+             ApiResponse<EmailLogPaginatedList> localVarResponse = await GetEmailLogsAsyncWithHttpInfo(id);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides an Schedule details for a particular Schedule Id. 
+        /// Get email log by id 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Schedule id</param>
-        /// <returns>Task of ApiResponse (SchedulePaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<SchedulePaginatedList>> GetScheduleAsyncWithHttpInfo (string id)
+        /// <param name="id"></param>
+        /// <returns>Task of ApiResponse (EmailLogPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<EmailLogPaginatedList>> GetEmailLogsAsyncWithHttpInfo (string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling SchedulesApi->GetSchedule");
+                throw new ApiException(400, "Missing required parameter 'id' when calling EmailLogsApi->GetEmailLogs");
 
-            var localVarPath = "/api/v1/Schedules/{id}";
+            var localVarPath = "/api/v1/EmailLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1619,13 +1436,13 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetSchedule", localVarResponse);
+                Exception exception = ExceptionFactory("GetEmailLogs", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<SchedulePaginatedList>(localVarStatusCode,
+            return new ApiResponse<EmailLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (SchedulePaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(SchedulePaginatedList)));
+                (EmailLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(EmailLogPaginatedList)));
         }
 
     }

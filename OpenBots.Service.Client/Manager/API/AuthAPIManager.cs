@@ -43,8 +43,8 @@ namespace OpenBots.Service.Client.Manager
         public void RegisterAgentUser()
         {
             AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
-            var signupModel = new SignUpViewModel(ServerSettings.AgentUsername,null, null, null, ServerSettings.AgentUsername, 
-                ServerSettings.AgentPassword, true, false, null, null, null, null, null, null, null);
+            var signupModel = new SignUpViewModel(ServerSettings.AgentUsername,null, null, null,  
+                ServerSettings.AgentPassword, false, null, null, null, null, null, null, null);
             
             var apiResponse = authAPI.ApiV1AuthRegisterPostWithHttpInfo(signupModel);
         }

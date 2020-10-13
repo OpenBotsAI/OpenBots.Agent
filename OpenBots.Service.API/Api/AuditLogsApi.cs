@@ -103,8 +103,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AuditLogPaginatedList</returns>
-        AuditLogPaginatedList ApiV1AuditLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>AuditLogViewModelPaginatedList</returns>
+        AuditLogViewModelPaginatedList ApiV1AuditLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
         /// Provides a list of all audit logs
@@ -117,8 +117,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AuditLogPaginatedList</returns>
-        ApiResponse<AuditLogPaginatedList> ApiV1AuditLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ApiResponse of AuditLogViewModelPaginatedList</returns>
+        ApiResponse<AuditLogViewModelPaginatedList> ApiV1AuditLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
         /// Provides additional details on a specific Audit Log
         /// </summary>
@@ -222,8 +222,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AuditLogPaginatedList</returns>
-        System.Threading.Tasks.Task<AuditLogPaginatedList> ApiV1AuditLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of AuditLogViewModelPaginatedList</returns>
+        System.Threading.Tasks.Task<AuditLogViewModelPaginatedList> ApiV1AuditLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
         /// Provides a list of all audit logs
@@ -236,8 +236,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AuditLogPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AuditLogPaginatedList>> ApiV1AuditLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ApiResponse (AuditLogViewModelPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AuditLogViewModelPaginatedList>> ApiV1AuditLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
         /// Provides additional details on a specific Audit Log
         /// </summary>
@@ -781,10 +781,10 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AuditLogPaginatedList</returns>
-        public AuditLogPaginatedList ApiV1AuditLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>AuditLogViewModelPaginatedList</returns>
+        public AuditLogViewModelPaginatedList ApiV1AuditLogsGet (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<AuditLogPaginatedList> localVarResponse = ApiV1AuditLogsGetWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<AuditLogViewModelPaginatedList> localVarResponse = ApiV1AuditLogsGetWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
         }
 
@@ -796,8 +796,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AuditLogPaginatedList</returns>
-        public ApiResponse< AuditLogPaginatedList > ApiV1AuditLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ApiResponse of AuditLogViewModelPaginatedList</returns>
+        public ApiResponse< AuditLogViewModelPaginatedList > ApiV1AuditLogsGetWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
             var localVarPath = "/api/v1/AuditLogs";
@@ -839,9 +839,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AuditLogPaginatedList>(localVarStatusCode,
+            return new ApiResponse<AuditLogViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AuditLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogPaginatedList)));
+                (AuditLogViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogViewModelPaginatedList)));
         }
 
         /// <summary>
@@ -852,10 +852,10 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AuditLogPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AuditLogPaginatedList> ApiV1AuditLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of AuditLogViewModelPaginatedList</returns>
+        public async System.Threading.Tasks.Task<AuditLogViewModelPaginatedList> ApiV1AuditLogsGetAsync (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-             ApiResponse<AuditLogPaginatedList> localVarResponse = await ApiV1AuditLogsGetAsyncWithHttpInfo(filter, orderby, top, skip);
+             ApiResponse<AuditLogViewModelPaginatedList> localVarResponse = await ApiV1AuditLogsGetAsyncWithHttpInfo(filter, orderby, top, skip);
              return localVarResponse.Data;
 
         }
@@ -868,8 +868,8 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional, default to UpdatedOn desc)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AuditLogPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AuditLogPaginatedList>> ApiV1AuditLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ApiResponse (AuditLogViewModelPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<AuditLogViewModelPaginatedList>> ApiV1AuditLogsGetAsyncWithHttpInfo (string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
 
             var localVarPath = "/api/v1/AuditLogs";
@@ -911,9 +911,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AuditLogPaginatedList>(localVarStatusCode,
+            return new ApiResponse<AuditLogViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AuditLogPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogPaginatedList)));
+                (AuditLogViewModelPaginatedList) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AuditLogViewModelPaginatedList)));
         }
 
         /// <summary>
