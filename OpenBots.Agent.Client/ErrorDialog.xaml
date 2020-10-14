@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client"
         mc:Ignorable="d"
-        Title="OpenBots Agent Error" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+        Title="OpenBots Agent Error" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="CenterScreen" Width="368">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -32,8 +32,8 @@
                         </Grid.ColumnDefinitions>
                         <Label Content="Status Code:" Name="lbl_StatusCode" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontSize="11"/>
                         <Label Content="" Name="lbl_StatusCodeValue" Grid.Column="1" VerticalContentAlignment="Center" FontSize="11"/>
-                        <Label Content="Error Message:" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Left" FontSize="11"/>
-                        <TextBlock Text="" Name="txtBlock_ErrorMessage" Grid.Row="1" Grid.Column="1" FontSize="11" VerticalAlignment="Center"/>
+                        <Label Content="Error Message:" Grid.Row="1" VerticalContentAlignment="Top" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="11"/>
+                        <TextBlock Text="" TextWrapping="Wrap" Name="txtBlock_ErrorMessage" Grid.Row="1" Grid.Column="1" FontSize="11" VerticalAlignment="Top"/>
                     </Grid>
                 </StackPanel>
             </Expander>
