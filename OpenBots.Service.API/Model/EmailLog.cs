@@ -38,6 +38,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="senderAddress">senderAddress.</param>
         /// <param name="senderUserId">senderUserId.</param>
         /// <param name="status">status.</param>
+        /// <param name="reason">reason.</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
         /// <param name="createdBy">createdBy.</param>
@@ -47,7 +48,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public EmailLog(Guid? emailAccountId = default(Guid?), DateTime? sentOnUTC = default(DateTime?), string emailObjectJson = default(string), string senderAddress = default(string), Guid? senderUserId = default(Guid?), string status = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public EmailLog(Guid? emailAccountId = default(Guid?), DateTime? sentOnUTC = default(DateTime?), string emailObjectJson = default(string), string senderAddress = default(string), Guid? senderUserId = default(Guid?), string status = default(string), string reason = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             this.EmailAccountId = emailAccountId;
             this.SentOnUTC = sentOnUTC;
@@ -55,6 +56,7 @@ namespace OpenBots.Service.API.Model
             this.SenderAddress = senderAddress;
             this.SenderUserId = senderUserId;
             this.Status = status;
+            this.Reason = reason;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -109,6 +111,12 @@ namespace OpenBots.Service.API.Model
         /// </summary>
         [DataMember(Name="status", EmitDefaultValue=false)]
         public string Status { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Reason
+        /// </summary>
+        [DataMember(Name="reason", EmitDefaultValue=false)]
+        public string Reason { get; set; }
 
         /// <summary>
         /// Gets or Sets Id
@@ -178,6 +186,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  SenderAddress: ").Append(SenderAddress).Append("\n");
             sb.Append("  SenderUserId: ").Append(SenderUserId).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
+            sb.Append("  Reason: ").Append(Reason).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
@@ -252,6 +261,11 @@ namespace OpenBots.Service.API.Model
                     this.Status.Equals(input.Status))
                 ) && 
                 (
+                    this.Reason == input.Reason ||
+                    (this.Reason != null &&
+                    this.Reason.Equals(input.Reason))
+                ) && 
+                (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
@@ -319,6 +333,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.SenderUserId.GetHashCode();
                 if (this.Status != null)
                     hashCode = hashCode * 59 + this.Status.GetHashCode();
+                if (this.Reason != null)
+                    hashCode = hashCode * 59 + this.Reason.GetHashCode();
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.IsDeleted != null)

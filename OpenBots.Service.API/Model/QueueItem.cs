@@ -51,6 +51,8 @@ namespace OpenBots.Service.API.Model
         /// <param name="errorCode">Error Code received when processing a queue item.</param>
         /// <param name="errorMessage">Error message received when processing a queue item.</param>
         /// <param name="errorSerialized">ErrorCode and ErrorMessage serialized into JSON string.</param>
+        /// <param name="source">System of event that was raised (ex: \&quot;Employee.Onboarded\&quot;).</param>
+        /// <param name="_event">Event raised from an application (ex: \&quot;New employee joins the company.\&quot;).</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -61,7 +63,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public QueueItem(bool? isLocked = default(bool?), DateTime? lockedOnUTC = default(DateTime?), DateTime? lockedUntilUTC = default(DateTime?), Guid? lockedBy = default(Guid?), Guid? queueId = default(Guid?), string type = default(string), string jsonType = default(string), string dataJson = default(string), string state = default(string), string stateMessage = default(string), Guid? lockTransactionKey = default(Guid?), DateTime? lockedEndTimeUTC = default(DateTime?), int? retryCount = default(int?), int? priority = default(int?), DateTime? expireOnUTC = default(DateTime?), DateTime? postponeUntilUTC = default(DateTime?), string errorCode = default(string), string errorMessage = default(string), string errorSerialized = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public QueueItem(bool? isLocked = default(bool?), DateTime? lockedOnUTC = default(DateTime?), DateTime? lockedUntilUTC = default(DateTime?), Guid? lockedBy = default(Guid?), Guid? queueId = default(Guid?), string type = default(string), string jsonType = default(string), string dataJson = default(string), string state = default(string), string stateMessage = default(string), Guid? lockTransactionKey = default(Guid?), DateTime? lockedEndTimeUTC = default(DateTime?), int? retryCount = default(int?), int? priority = default(int?), DateTime? expireOnUTC = default(DateTime?), DateTime? postponeUntilUTC = default(DateTime?), string errorCode = default(string), string errorMessage = default(string), string errorSerialized = default(string), string source = default(string), string _event = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -91,6 +93,8 @@ namespace OpenBots.Service.API.Model
             this.ErrorCode = errorCode;
             this.ErrorMessage = errorMessage;
             this.ErrorSerialized = errorSerialized;
+            this.Source = source;
+            this.Event = _event;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -244,6 +248,20 @@ namespace OpenBots.Service.API.Model
         public string ErrorSerialized { get; set; }
 
         /// <summary>
+        /// System of event that was raised (ex: \&quot;Employee.Onboarded\&quot;)
+        /// </summary>
+        /// <value>System of event that was raised (ex: \&quot;Employee.Onboarded\&quot;)</value>
+        [DataMember(Name="source", EmitDefaultValue=false)]
+        public string Source { get; set; }
+
+        /// <summary>
+        /// Event raised from an application (ex: \&quot;New employee joins the company.\&quot;)
+        /// </summary>
+        /// <value>Event raised from an application (ex: \&quot;New employee joins the company.\&quot;)</value>
+        [DataMember(Name="event", EmitDefaultValue=false)]
+        public string Event { get; set; }
+
+        /// <summary>
         /// Gets or Sets Name
         /// </summary>
         [DataMember(Name="name", EmitDefaultValue=false)]
@@ -330,6 +348,8 @@ namespace OpenBots.Service.API.Model
             sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
             sb.Append("  ErrorMessage: ").Append(ErrorMessage).Append("\n");
             sb.Append("  ErrorSerialized: ").Append(ErrorSerialized).Append("\n");
+            sb.Append("  Source: ").Append(Source).Append("\n");
+            sb.Append("  Event: ").Append(Event).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -470,6 +490,16 @@ namespace OpenBots.Service.API.Model
                     this.ErrorSerialized.Equals(input.ErrorSerialized))
                 ) && 
                 (
+                    this.Source == input.Source ||
+                    (this.Source != null &&
+                    this.Source.Equals(input.Source))
+                ) && 
+                (
+                    this.Event == input.Event ||
+                    (this.Event != null &&
+                    this.Event.Equals(input.Event))
+                ) && 
+                (
                     this.Name == input.Name ||
                     (this.Name != null &&
                     this.Name.Equals(input.Name))
@@ -568,6 +598,10 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.ErrorMessage.GetHashCode();
                 if (this.ErrorSerialized != null)
                     hashCode = hashCode * 59 + this.ErrorSerialized.GetHashCode();
+                if (this.Source != null)
+                    hashCode = hashCode * 59 + this.Source.GetHashCode();
+                if (this.Event != null)
+                    hashCode = hashCode * 59 + this.Event.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)

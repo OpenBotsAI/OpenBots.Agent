@@ -53,7 +53,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public Job(Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), string jobStatus = default(string), string message = default(string), bool? isSuccessful = default(bool?), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public Job(Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), JobStatusType jobStatus = default(JobStatusType), string message = default(string), bool? isSuccessful = default(bool?), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "agentId" is required (not null)
             if (agentId == null)
@@ -142,7 +142,7 @@ namespace OpenBots.Service.API.Model
         /// Gets or Sets JobStatus
         /// </summary>
         [DataMember(Name="jobStatus", EmitDefaultValue=false)]
-        public string JobStatus { get; set; }
+        public JobStatusType JobStatus { get; set; }
 
         /// <summary>
         /// Gets or Sets Message

@@ -53,6 +53,7 @@
     <Compile Include="Api\ClientDetailsApi.cs" />
     <Compile Include="Api\CredentialsApi.cs" />
     <Compile Include="Api\EmailAccountsApi.cs" />
+    <Compile Include="Api\EmailApi.cs" />
     <Compile Include="Api\EmailLogsApi.cs" />
     <Compile Include="Api\EmailSettingsApi.cs" />
     <Compile Include="Api\EmailVerificationsApi.cs" />
@@ -102,10 +103,14 @@
     <Compile Include="Model\EmailAccountPaginatedList.cs" />
     <Compile Include="Model\EmailAccountViewModel.cs" />
     <Compile Include="Model\EmailAccountViewModelPaginatedList.cs" />
+    <Compile Include="Model\EmailAddress.cs" />
+    <Compile Include="Model\EmailAttachment.cs" />
+    <Compile Include="Model\EmailHeader.cs" />
     <Compile Include="Model\EmailLog.cs" />
     <Compile Include="Model\EmailLogPaginatedList.cs" />
     <Compile Include="Model\EmailLogViewModel.cs" />
     <Compile Include="Model\EmailLogViewModelPaginatedList.cs" />
+    <Compile Include="Model\EmailMessage.cs" />
     <Compile Include="Model\EmailSettings.cs" />
     <Compile Include="Model\EmailSettingsPaginatedList.cs" />
     <Compile Include="Model\HeartbeatViewModel.cs" />

@@ -78,9 +78,12 @@ namespace OpenBots.Service.Client.Manager.Execution
                 var job = JobsQueueManager.Instance.DequeueJob();
 
                 // Update Job Status (Failed)
-                JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.Id.ToString(),
-                JobStatusType.Failed, job.AgentId.ToString(), 
-                new JobErrorViewModel(ex.Message, ex.GetType().GetProperty("ErrorCode").GetValue(ex, null)?.ToString(), ex.ToString()));
+                JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
+                JobStatusType.Failed, new JobErrorViewModel(
+                    ex.Message, 
+                    ex.GetType().GetProperty("ErrorCode").GetValue(ex, null)?.ToString(), 
+                    ex.ToString())
+                );
 
                 SetEngineStatus(false);
             }
@@ -97,9 +100,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Download Process and Extract Files
             var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(processInfo);
 
-            //////// Update Job Status (InProgress)
-            //////JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.Id.ToString(),
-            //////    JobStatusType.InProgress, job.AgentId.ToString());
+            // Update Job Status (InProgress)
+            JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
+                JobStatusType.InProgress);
 
             // Run Process
             RunProcess(processInfo.Name, mainScriptFilePath);
@@ -107,9 +110,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Delete Process Files Directory
             Directory.Delete(Path.GetDirectoryName(mainScriptFilePath), true);
 
-            //////// Update Job Status (Completed)
-            //////JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.Id.ToString(),
-            //////    JobStatusType.Completed, job.AgentId.ToString());
+            // Update Job Status (Completed)
+            JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
+                JobStatusType.Completed);
 
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();

@@ -49,7 +49,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="errorReason">errorReason.</param>
         /// <param name="errorCode">errorCode.</param>
         /// <param name="serializedErrorString">serializedErrorString.</param>
-        public JobViewModel(Guid? id = default(Guid?), string agentName = default(string), string processName = default(string), Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), string jobStatus = default(string), string message = default(string), bool? isSuccessful = default(bool?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string))
+        public JobViewModel(Guid? id = default(Guid?), string agentName = default(string), string processName = default(string), Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), JobStatusType jobStatus = default(JobStatusType), string message = default(string), bool? isSuccessful = default(bool?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string))
         {
             this.Id = id;
             this.AgentName = agentName;
@@ -128,7 +128,7 @@ namespace OpenBots.Service.API.Model
         /// Gets or Sets JobStatus
         /// </summary>
         [DataMember(Name="jobStatus", EmitDefaultValue=false)]
-        public string JobStatus { get; set; }
+        public JobStatusType JobStatus { get; set; }
 
         /// <summary>
         /// Gets or Sets Message

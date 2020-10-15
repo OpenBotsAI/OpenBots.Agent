@@ -166,12 +166,12 @@ namespace OpenBots.Service.API.Api
         /// Provides an action to update a Job status, when Job id and the new details of Job are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentId">Id of Agent that is updating Job Status</param>
         /// <param name="id">Job Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="status">Status value for the specified JobId</param>
-        /// <param name="body">Job details to be updated (optional)</param>
-        /// <param name="agentId">Id of Agent that is updating Job Status (optional)</param>
+        /// <param name="body"> (optional)</param>
         /// <returns>Job</returns>
-        Job ApiV1JobsIdStatusStatusPut (string id, JobStatusType status, string agentId = null, JobErrorViewModel body = null);
+        Job ApiV1JobsIdStatusStatusPut (string agentId, string id, JobStatusType status, JobErrorViewModel body = null);
 
         /// <summary>
         /// Updates a Job with the specified status
@@ -180,12 +180,12 @@ namespace OpenBots.Service.API.Api
         /// Provides an action to update a Job status, when Job id and the new details of Job are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentId">Id of Agent that is updating Job Status</param>
         /// <param name="id">Job Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="status">Status value for the specified JobId</param>
-        /// <param name="body">Job details to be updated (optional)</param>
-        /// <param name="agentId">Id of Agent that is updating Job Status (optional)</param>
+        /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Job</returns>
-        ApiResponse<Job> ApiV1JobsIdStatusStatusPutWithHttpInfo (string id, JobStatusType status, string agentId = null, JobErrorViewModel body = null);
+        ApiResponse<Job> ApiV1JobsIdStatusStatusPutWithHttpInfo (string agentId, string id, JobStatusType status, JobErrorViewModel body = null);
         /// <summary>
         /// Provides a lookup list of all Jobs agents and processes
         /// </summary>
@@ -461,12 +461,12 @@ namespace OpenBots.Service.API.Api
         /// Provides an action to update a Job status, when Job id and the new details of Job are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentId">Id of Agent that is updating Job Status</param>
         /// <param name="id">Job Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="status">Status value for the specified JobId</param>
-        /// <param name="body">Job details to be updated (optional)</param>
-        /// <param name="agentId">Id of Agent that is updating Job Status (optional)</param>
+        /// <param name="body"> (optional)</param>
         /// <returns>Task of Job</returns>
-        System.Threading.Tasks.Task<Job> ApiV1JobsIdStatusStatusPutAsync (string id, JobStatusType status, JobErrorViewModel body = null, string agentId = null);
+        System.Threading.Tasks.Task<Job> ApiV1JobsIdStatusStatusPutAsync (string agentId, string id, JobStatusType status, JobErrorViewModel body = null);
 
         /// <summary>
         /// Updates a Job with the specified status
@@ -475,12 +475,12 @@ namespace OpenBots.Service.API.Api
         /// Provides an action to update a Job status, when Job id and the new details of Job are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentId">Id of Agent that is updating Job Status</param>
         /// <param name="id">Job Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="status">Status value for the specified JobId</param>
-        /// <param name="body">Job details to be updated (optional)</param>
-        /// <param name="agentId">Id of Agent that is updating Job Status (optional)</param>
+        /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (Job)</returns>
-        System.Threading.Tasks.Task<ApiResponse<Job>> ApiV1JobsIdStatusStatusPutAsyncWithHttpInfo (string id, JobStatusType status, JobErrorViewModel body = null, string agentId = null);
+        System.Threading.Tasks.Task<ApiResponse<Job>> ApiV1JobsIdStatusStatusPutAsyncWithHttpInfo (string agentId, string id, JobStatusType status, JobErrorViewModel body = null);
         /// <summary>
         /// Provides a lookup list of all Jobs agents and processes
         /// </summary>
@@ -1576,14 +1576,14 @@ namespace OpenBots.Service.API.Api
         /// Updates a Job with the specified status Provides an action to update a Job status, when Job id and the new details of Job are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentId">Id of Agent that is updating Job Status</param>
         /// <param name="id">Job Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="status">Status value for the specified JobId</param>
-        /// <param name="body">Job details to be updated (optional)</param>
-        /// <param name="agentId">Id of Agent that is updating Job Status (optional)</param>
+        /// <param name="body"> (optional)</param>
         /// <returns>Job</returns>
-        public Job ApiV1JobsIdStatusStatusPut (string id, JobStatusType status, string agentId = null, JobErrorViewModel body = null)
+        public Job ApiV1JobsIdStatusStatusPut (string agentId, string id, JobStatusType status, JobErrorViewModel body = null)
         {
-             ApiResponse<Job> localVarResponse = ApiV1JobsIdStatusStatusPutWithHttpInfo(id, status, agentId, body);
+             ApiResponse<Job> localVarResponse = ApiV1JobsIdStatusStatusPutWithHttpInfo(agentId, id, status, body);
              return localVarResponse.Data;
         }
 
@@ -1591,13 +1591,16 @@ namespace OpenBots.Service.API.Api
         /// Updates a Job with the specified status Provides an action to update a Job status, when Job id and the new details of Job are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentId">Id of Agent that is updating Job Status</param>
         /// <param name="id">Job Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="status">Status value for the specified JobId</param>
-        /// <param name="body">Job details to be updated (optional)</param>
-        /// <param name="agentId">Id of Agent that is updating Job Status (optional)</param>
+        /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Job</returns>
-        public ApiResponse< Job > ApiV1JobsIdStatusStatusPutWithHttpInfo (string id, JobStatusType status, string agentId = null, JobErrorViewModel body = null)
+        public ApiResponse< Job > ApiV1JobsIdStatusStatusPutWithHttpInfo (string agentId, string id, JobStatusType status, JobErrorViewModel body = null)
         {
+            // verify the required parameter 'agentId' is set
+            if (agentId == null)
+                throw new ApiException(400, "Missing required parameter 'agentId' when calling JobsApi->ApiV1JobsIdStatusStatusPut");
             // verify the required parameter 'id' is set
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling JobsApi->ApiV1JobsIdStatusStatusPut");
@@ -1668,14 +1671,14 @@ namespace OpenBots.Service.API.Api
         /// Updates a Job with the specified status Provides an action to update a Job status, when Job id and the new details of Job are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentId">Id of Agent that is updating Job Status</param>
         /// <param name="id">Job Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="status">Status value for the specified JobId</param>
-        /// <param name="body">Job details to be updated (optional)</param>
-        /// <param name="agentId">Id of Agent that is updating Job Status (optional)</param>
+        /// <param name="body"> (optional)</param>
         /// <returns>Task of Job</returns>
-        public async System.Threading.Tasks.Task<Job> ApiV1JobsIdStatusStatusPutAsync (string id, JobStatusType status, JobErrorViewModel body = null, string agentId = null)
+        public async System.Threading.Tasks.Task<Job> ApiV1JobsIdStatusStatusPutAsync (string agentId, string id, JobStatusType status, JobErrorViewModel body = null)
         {
-             ApiResponse<Job> localVarResponse = await ApiV1JobsIdStatusStatusPutAsyncWithHttpInfo(id, status, body, agentId);
+             ApiResponse<Job> localVarResponse = await ApiV1JobsIdStatusStatusPutAsyncWithHttpInfo(agentId, id, status, body);
              return localVarResponse.Data;
 
         }
@@ -1684,13 +1687,16 @@ namespace OpenBots.Service.API.Api
         /// Updates a Job with the specified status Provides an action to update a Job status, when Job id and the new details of Job are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentId">Id of Agent that is updating Job Status</param>
         /// <param name="id">Job Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
         /// <param name="status">Status value for the specified JobId</param>
-        /// <param name="body">Job details to be updated (optional)</param>
-        /// <param name="agentId">Id of Agent that is updating Job Status (optional)</param>
+        /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse (Job)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Job>> ApiV1JobsIdStatusStatusPutAsyncWithHttpInfo (string id, JobStatusType status, JobErrorViewModel body = null, string agentId = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Job>> ApiV1JobsIdStatusStatusPutAsyncWithHttpInfo (string agentId, string id, JobStatusType status, JobErrorViewModel body = null)
         {
+            // verify the required parameter 'agentId' is set
+            if (agentId == null)
+                throw new ApiException(400, "Missing required parameter 'agentId' when calling JobsApi->ApiV1JobsIdStatusStatusPut");
             // verify the required parameter 'id' is set
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling JobsApi->ApiV1JobsIdStatusStatusPut");

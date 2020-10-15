@@ -29,13 +29,13 @@ namespace OpenBots.Service.Client.Manager.API
             }
         }
 
-        public static ApiResponse<Job> UpdateJobStatus(AuthAPIManager apiManager, string jobId, JobStatusType status, string agentId, JobErrorViewModel errorModel = null)
+        public static ApiResponse<Job> UpdateJobStatus(AuthAPIManager apiManager, string agentId, string jobId, JobStatusType status, JobErrorViewModel errorModel = null)
         {
             JobsApi jobsApi = new JobsApi(apiManager.Configuration);
 
             try
             {
-                return jobsApi.ApiV1JobsIdStatusStatusPutWithHttpInfo(jobId, status, agentId);
+                return jobsApi.ApiV1JobsIdStatusStatusPutWithHttpInfo(agentId, jobId, status, errorModel);
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     jobsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return jobsApi.ApiV1JobsIdStatusStatusPutWithHttpInfo(jobId, status, agentId);
+                    return jobsApi.ApiV1JobsIdStatusStatusPutWithHttpInfo(agentId, jobId, status, errorModel);
                 }
                 throw ex;
             }

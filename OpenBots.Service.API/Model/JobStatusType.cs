@@ -20,7 +20,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using SwaggerDateConverter = OpenBots.Service.API.Client.SwaggerDateConverter;
-using System.ComponentModel;
 
 namespace OpenBots.Service.API.Model
 {
@@ -31,39 +30,38 @@ namespace OpenBots.Service.API.Model
         public enum JobStatusType
     {
         /// <summary>
-        /// Enum Unknown for value: "Unknown"
+        /// Enum Unknown for value: Unknown
         /// </summary>
-        [EnumMember(Value = "0")]
-        Unknown,
+        [EnumMember(Value = "Unknown")]
+        Unknown = 1,
         /// <summary>
-        /// Enum New for value: "New"
+        /// Enum New for value: New
         /// </summary>
         [EnumMember(Value = "New")]
-        New,
+        New = 2,
         /// <summary>
-        /// Enum Assigned for value: "Assigned"
+        /// Enum Assigned for value: Assigned
         /// </summary>
         [EnumMember(Value = "Assigned")]
-        Assigned,
+        Assigned = 3,
         /// <summary>
-        /// Enum InProgress for value: "InProgress"
+        /// Enum InProgress for value: InProgress
         /// </summary>
         [EnumMember(Value = "InProgress")]
-        InProgress,
+        InProgress = 4,
         /// <summary>
-        /// Enum Failed for value: "Failed"
+        /// Enum Failed for value: Failed
         /// </summary>
         [EnumMember(Value = "Failed")]
-        Failed,
+        Failed = 5,
         /// <summary>
-        /// Enum Completed for value: "Completed"
+        /// Enum Completed for value: Completed
         /// </summary>
         [EnumMember(Value = "Completed")]
-        Completed,
+        Completed = 6,
         /// <summary>
-        /// Enum Abandoned for value: "Abandoned"
+        /// Enum Abandoned for value: Abandoned
         /// </summary>
         [EnumMember(Value = "Abandoned")]
-        Abandoned
-    }
+        Abandoned = 7    }
 }

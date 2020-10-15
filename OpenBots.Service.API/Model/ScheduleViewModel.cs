@@ -32,6 +32,7 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="ScheduleViewModel" /> class.
         /// </summary>
+        /// <param name="createdOn">createdOn.</param>
         /// <param name="id">id.</param>
         /// <param name="name">name.</param>
         /// <param name="agentId">agentId.</param>
@@ -48,11 +49,11 @@ namespace OpenBots.Service.API.Model
         /// <param name="status">status.</param>
         /// <param name="expiryDate">expiryDate.</param>
         /// <param name="startDate">startDate.</param>
-        /// <param name="createdOn">createdOn.</param>
         /// <param name="createdBy">createdBy.</param>
         /// <param name="scheduleNow">scheduleNow.</param>
-        public ScheduleViewModel(Guid? id = default(Guid?), string name = default(string), Guid? agentId = default(Guid?), string agentName = default(string), string cronExpression = default(string), DateTime? lastExecution = default(DateTime?), DateTime? nextExecution = default(DateTime?), bool? isDisabled = default(bool?), Guid? projectId = default(Guid?), Guid? processId = default(Guid?), string processName = default(string), string triggerName = default(string), string startingType = default(string), string status = default(string), DateTime? expiryDate = default(DateTime?), DateTime? startDate = default(DateTime?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), bool? scheduleNow = default(bool?))
+        public ScheduleViewModel(DateTime? createdOn = default(DateTime?), Guid? id = default(Guid?), string name = default(string), Guid? agentId = default(Guid?), string agentName = default(string), string cronExpression = default(string), DateTime? lastExecution = default(DateTime?), DateTime? nextExecution = default(DateTime?), bool? isDisabled = default(bool?), Guid? projectId = default(Guid?), Guid? processId = default(Guid?), string processName = default(string), string triggerName = default(string), string startingType = default(string), string status = default(string), DateTime? expiryDate = default(DateTime?), DateTime? startDate = default(DateTime?), string createdBy = default(string), bool? scheduleNow = default(bool?))
         {
+            this.CreatedOn = createdOn;
             this.Id = id;
             this.Name = name;
             this.AgentId = agentId;
@@ -69,11 +70,16 @@ namespace OpenBots.Service.API.Model
             this.Status = status;
             this.ExpiryDate = expiryDate;
             this.StartDate = startDate;
-            this.CreatedOn = createdOn;
             this.CreatedBy = createdBy;
             this.ScheduleNow = scheduleNow;
         }
         
+        /// <summary>
+        /// Gets or Sets CreatedOn
+        /// </summary>
+        [DataMember(Name="createdOn", EmitDefaultValue=false)]
+        public DateTime? CreatedOn { get; set; }
+
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
@@ -171,12 +177,6 @@ namespace OpenBots.Service.API.Model
         public DateTime? StartDate { get; set; }
 
         /// <summary>
-        /// Gets or Sets CreatedOn
-        /// </summary>
-        [DataMember(Name="createdOn", EmitDefaultValue=false)]
-        public DateTime? CreatedOn { get; set; }
-
-        /// <summary>
         /// Gets or Sets CreatedBy
         /// </summary>
         [DataMember(Name="createdBy", EmitDefaultValue=false)]
@@ -196,6 +196,7 @@ namespace OpenBots.Service.API.Model
         {
             var sb = new StringBuilder();
             sb.Append("class ScheduleViewModel {\n");
+            sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  AgentId: ").Append(AgentId).Append("\n");
@@ -212,7 +213,6 @@ namespace OpenBots.Service.API.Model
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  ExpiryDate: ").Append(ExpiryDate).Append("\n");
             sb.Append("  StartDate: ").Append(StartDate).Append("\n");
-            sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
             sb.Append("  ScheduleNow: ").Append(ScheduleNow).Append("\n");
             sb.Append("}\n");
@@ -249,6 +249,11 @@ namespace OpenBots.Service.API.Model
                 return false;
 
             return 
+                (
+                    this.CreatedOn == input.CreatedOn ||
+                    (this.CreatedOn != null &&
+                    this.CreatedOn.Equals(input.CreatedOn))
+                ) && 
                 (
                     this.Id == input.Id ||
                     (this.Id != null &&
@@ -330,11 +335,6 @@ namespace OpenBots.Service.API.Model
                     this.StartDate.Equals(input.StartDate))
                 ) && 
                 (
-                    this.CreatedOn == input.CreatedOn ||
-                    (this.CreatedOn != null &&
-                    this.CreatedOn.Equals(input.CreatedOn))
-                ) && 
-                (
                     this.CreatedBy == input.CreatedBy ||
                     (this.CreatedBy != null &&
                     this.CreatedBy.Equals(input.CreatedBy))
@@ -355,6 +355,8 @@ namespace OpenBots.Service.API.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
+                if (this.CreatedOn != null)
+                    hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.Name != null)
@@ -387,8 +389,6 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.ExpiryDate.GetHashCode();
                 if (this.StartDate != null)
                     hashCode = hashCode * 59 + this.StartDate.GetHashCode();
-                if (this.CreatedOn != null)
-                    hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
                 if (this.CreatedBy != null)
                     hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
                 if (this.ScheduleNow != null)

@@ -46,7 +46,9 @@ namespace OpenBots.Service.API.Model
         /// <param name="errorCode">errorCode.</param>
         /// <param name="errorMessage">errorMessage.</param>
         /// <param name="errorSerialized">errorSerialized.</param>
-        public QueueItemViewModel(string name = default(string), Guid? id = default(Guid?), string state = default(string), string stateMessage = default(string), bool? isLocked = default(bool?), Guid? lockedBy = default(Guid?), DateTime? lockedOnUTC = default(DateTime?), DateTime? lockedUntilUTC = default(DateTime?), DateTime? lockedEndTimeUTC = default(DateTime?), DateTime? expireOnUTC = default(DateTime?), DateTime? postponeUntilUTC = default(DateTime?), string errorCode = default(string), string errorMessage = default(string), string errorSerialized = default(string))
+        /// <param name="source">source.</param>
+        /// <param name="_event">_event.</param>
+        public QueueItemViewModel(string name = default(string), Guid? id = default(Guid?), string state = default(string), string stateMessage = default(string), bool? isLocked = default(bool?), Guid? lockedBy = default(Guid?), DateTime? lockedOnUTC = default(DateTime?), DateTime? lockedUntilUTC = default(DateTime?), DateTime? lockedEndTimeUTC = default(DateTime?), DateTime? expireOnUTC = default(DateTime?), DateTime? postponeUntilUTC = default(DateTime?), string errorCode = default(string), string errorMessage = default(string), string errorSerialized = default(string), string source = default(string), string _event = default(string))
         {
             this.Name = name;
             this.Id = id;
@@ -62,6 +64,8 @@ namespace OpenBots.Service.API.Model
             this.ErrorCode = errorCode;
             this.ErrorMessage = errorMessage;
             this.ErrorSerialized = errorSerialized;
+            this.Source = source;
+            this.Event = _event;
         }
         
         /// <summary>
@@ -149,6 +153,18 @@ namespace OpenBots.Service.API.Model
         public string ErrorSerialized { get; set; }
 
         /// <summary>
+        /// Gets or Sets Source
+        /// </summary>
+        [DataMember(Name="source", EmitDefaultValue=false)]
+        public string Source { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Event
+        /// </summary>
+        [DataMember(Name="event", EmitDefaultValue=false)]
+        public string Event { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -170,6 +186,8 @@ namespace OpenBots.Service.API.Model
             sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
             sb.Append("  ErrorMessage: ").Append(ErrorMessage).Append("\n");
             sb.Append("  ErrorSerialized: ").Append(ErrorSerialized).Append("\n");
+            sb.Append("  Source: ").Append(Source).Append("\n");
+            sb.Append("  Event: ").Append(Event).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -273,6 +291,16 @@ namespace OpenBots.Service.API.Model
                     this.ErrorSerialized == input.ErrorSerialized ||
                     (this.ErrorSerialized != null &&
                     this.ErrorSerialized.Equals(input.ErrorSerialized))
+                ) && 
+                (
+                    this.Source == input.Source ||
+                    (this.Source != null &&
+                    this.Source.Equals(input.Source))
+                ) && 
+                (
+                    this.Event == input.Event ||
+                    (this.Event != null &&
+                    this.Event.Equals(input.Event))
                 );
         }
 
@@ -313,6 +341,10 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.ErrorMessage.GetHashCode();
                 if (this.ErrorSerialized != null)
                     hashCode = hashCode * 59 + this.ErrorSerialized.GetHashCode();
+                if (this.Source != null)
+                    hashCode = hashCode * 59 + this.Source.GetHashCode();
+                if (this.Event != null)
+                    hashCode = hashCode * 59 + this.Event.GetHashCode();
                 return hashCode;
             }
         }

@@ -30,38 +30,38 @@ namespace OpenBots.Service.API.Model
         public enum OperationType
     {
         /// <summary>
-        /// Enum NUMBER_0 for value: 0
+        /// Enum Add for value: Add
         /// </summary>
-        [EnumMember(Value = "0")]
-        NUMBER_0 = 1,
+        [EnumMember(Value = "Add")]
+        Add = 1,
         /// <summary>
-        /// Enum NUMBER_1 for value: 1
+        /// Enum Remove for value: Remove
         /// </summary>
-        [EnumMember(Value = "1")]
-        NUMBER_1 = 2,
+        [EnumMember(Value = "Remove")]
+        Remove = 2,
         /// <summary>
-        /// Enum NUMBER_2 for value: 2
+        /// Enum Replace for value: Replace
         /// </summary>
-        [EnumMember(Value = "2")]
-        NUMBER_2 = 3,
+        [EnumMember(Value = "Replace")]
+        Replace = 3,
         /// <summary>
-        /// Enum NUMBER_3 for value: 3
+        /// Enum Move for value: Move
         /// </summary>
-        [EnumMember(Value = "3")]
-        NUMBER_3 = 4,
+        [EnumMember(Value = "Move")]
+        Move = 4,
         /// <summary>
-        /// Enum NUMBER_4 for value: 4
+        /// Enum Copy for value: Copy
         /// </summary>
-        [EnumMember(Value = "4")]
-        NUMBER_4 = 5,
+        [EnumMember(Value = "Copy")]
+        Copy = 5,
         /// <summary>
-        /// Enum NUMBER_5 for value: 5
+        /// Enum Test for value: Test
         /// </summary>
-        [EnumMember(Value = "5")]
-        NUMBER_5 = 6,
+        [EnumMember(Value = "Test")]
+        Test = 6,
         /// <summary>
-        /// Enum NUMBER_6 for value: 6
+        /// Enum Invalid for value: Invalid
         /// </summary>
-        [EnumMember(Value = "6")]
-        NUMBER_6 = 7    }
+        [EnumMember(Value = "Invalid")]
+        Invalid = 7    }
 }
