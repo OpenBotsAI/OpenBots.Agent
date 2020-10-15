@@ -109,6 +109,8 @@
     <Compile Include="Model\EmailSettings.cs" />
     <Compile Include="Model\EmailSettingsPaginatedList.cs" />
     <Compile Include="Model\HeartbeatViewModel.cs" />
+    <Compile Include="Model\JobErrorViewModel.cs" />
+    <Compile Include="Model\JobStatusType.cs" />
     <Compile Include="Model\MemoryStream.cs" />
     <Compile Include="Model\AccessRequest.cs" />
     <Compile Include="Model\AgentModel.cs" />
@@ -146,6 +148,7 @@
     <Compile Include="Model\LoginResponseModel.cs" />
     <Compile Include="Model\LookupValue.cs" />
     <Compile Include="Model\LookupValuePaginatedList.cs" />
+    <Compile Include="Model\NextJobViewModel.cs" />
     <Compile Include="Model\Operation.cs" />
     <Compile Include="Model\OperationType.cs" />
     <Compile Include="Model\Organization.cs" />

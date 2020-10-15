@@ -39,11 +39,12 @@ namespace OpenBots.Service.API.Model
         /// <param name="correlationEntityId">correlationEntityId.</param>
         /// <param name="correlationEntity">correlationEntity.</param>
         /// <param name="storagePath">storagePath.</param>
+        /// <param name="folder">folder.</param>
         /// <param name="storageProvider">storageProvider.</param>
         /// <param name="sizeInBytes">sizeInBytes.</param>
         /// <param name="hashCode">hashCode.</param>
         /// <param name="_file">_file.</param>
-        public Body5(Guid? id = default(Guid?), string name = default(string), Guid? organizationId = default(Guid?), string contentType = default(string), Guid? correlationEntityId = default(Guid?), string correlationEntity = default(string), string storagePath = default(string), string storageProvider = default(string), long? sizeInBytes = default(long?), string hashCode = default(string), byte[] _file = default(byte[]))
+        public Body5(Guid? id = default(Guid?), string name = default(string), Guid? organizationId = default(Guid?), string contentType = default(string), Guid? correlationEntityId = default(Guid?), string correlationEntity = default(string), string storagePath = default(string), string folder = default(string), string storageProvider = default(string), long? sizeInBytes = default(long?), string hashCode = default(string), byte[] _file = default(byte[]))
         {
             this.Id = id;
             this.Name = name;
@@ -52,6 +53,7 @@ namespace OpenBots.Service.API.Model
             this.CorrelationEntityId = correlationEntityId;
             this.CorrelationEntity = correlationEntity;
             this.StoragePath = storagePath;
+            this.Folder = folder;
             this.StorageProvider = storageProvider;
             this.SizeInBytes = sizeInBytes;
             this.HashCode = hashCode;
@@ -101,6 +103,12 @@ namespace OpenBots.Service.API.Model
         public string StoragePath { get; set; }
 
         /// <summary>
+        /// Gets or Sets Folder
+        /// </summary>
+        [DataMember(Name="Folder", EmitDefaultValue=false)]
+        public string Folder { get; set; }
+
+        /// <summary>
         /// Gets or Sets StorageProvider
         /// </summary>
         [DataMember(Name="StorageProvider", EmitDefaultValue=false)]
@@ -139,6 +147,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  CorrelationEntityId: ").Append(CorrelationEntityId).Append("\n");
             sb.Append("  CorrelationEntity: ").Append(CorrelationEntity).Append("\n");
             sb.Append("  StoragePath: ").Append(StoragePath).Append("\n");
+            sb.Append("  Folder: ").Append(Folder).Append("\n");
             sb.Append("  StorageProvider: ").Append(StorageProvider).Append("\n");
             sb.Append("  SizeInBytes: ").Append(SizeInBytes).Append("\n");
             sb.Append("  HashCode: ").Append(HashCode).Append("\n");
@@ -213,6 +222,11 @@ namespace OpenBots.Service.API.Model
                     this.StoragePath.Equals(input.StoragePath))
                 ) && 
                 (
+                    this.Folder == input.Folder ||
+                    (this.Folder != null &&
+                    this.Folder.Equals(input.Folder))
+                ) && 
+                (
                     this.StorageProvider == input.StorageProvider ||
                     (this.StorageProvider != null &&
                     this.StorageProvider.Equals(input.StorageProvider))
@@ -257,6 +271,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.CorrelationEntity.GetHashCode();
                 if (this.StoragePath != null)
                     hashCode = hashCode * 59 + this.StoragePath.GetHashCode();
+                if (this.Folder != null)
+                    hashCode = hashCode * 59 + this.Folder.GetHashCode();
                 if (this.StorageProvider != null)
                     hashCode = hashCode * 59 + this.StorageProvider.GetHashCode();
                 if (this.SizeInBytes != null)

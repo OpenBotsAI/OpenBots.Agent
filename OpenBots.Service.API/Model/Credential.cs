@@ -32,7 +32,7 @@ namespace OpenBots.Service.API.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Credential" /> class.
         /// </summary>
-        /// <param name="provider">provider (required).</param>
+        /// <param name="provider">provider.</param>
         /// <param name="startDate">startDate.</param>
         /// <param name="endDate">endDate.</param>
         /// <param name="domain">domain.</param>
@@ -52,15 +52,6 @@ namespace OpenBots.Service.API.Model
         /// <param name="updatedBy">updatedBy.</param>
         public Credential(string provider = default(string), DateTime? startDate = default(DateTime?), DateTime? endDate = default(DateTime?), string domain = default(string), string userName = default(string), string passwordSecret = default(string), string passwordHash = default(string), string certificate = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
-            // to ensure "provider" is required (not null)
-            if (provider == null)
-            {
-                throw new InvalidDataException("provider is a required property for Credential and cannot be null");
-            }
-            else
-            {
-                this.Provider = provider;
-            }
             // to ensure "userName" is required (not null)
             if (userName == null)
             {
@@ -79,6 +70,7 @@ namespace OpenBots.Service.API.Model
             {
                 this.Name = name;
             }
+            this.Provider = provider;
             this.StartDate = startDate;
             this.EndDate = endDate;
             this.Domain = domain;

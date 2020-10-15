@@ -13,7 +13,7 @@ namespace OpenBots.Service.Client.Manager.Execution
     {
         public static string DownloadAndExtractProcess(Process process)
         {
-            // Check if (Root) Processes Directory Exists
+            // Check if (Root) Processes Directory Exists, If Not create it
             var processesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Processes");
             if (!Directory.Exists(processesDirectory))
                 Directory.CreateDirectory(processesDirectory);
@@ -21,35 +21,48 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Process Directory
             var processDirectoryPath = Path.Combine(processesDirectory, process.Id.ToString());
 
-            // Download Process If it's not found
+            // Create Process Directory named as Process Id If it doesn't exist
             if (!Directory.Exists(processDirectoryPath))
+                Directory.CreateDirectory(processDirectoryPath);
+
+            var processNugetFilePath = Path.Combine(processDirectoryPath, process.Name.ToString() + process.Version.ToString() + ".nuget");
+            var processZipFilePath = Path.Combine(processDirectoryPath, process.Name.ToString() + process.Version.ToString() + ".zip");
+            
+            // Check if Process (.nuget) file exists if Not Download it
+            if (!File.Exists(processNugetFilePath))
             {
                 // Download Process by Id
                 var apiResponse = ProcessesAPIManager.ExportProcess(AuthAPIManager.Instance, process.Id.ToString());
 
-                // Create Process Directory named as Process Id
-                Directory.CreateDirectory(processDirectoryPath);
-
-                // Write Downloaded (.zip) file in the Process Directory
-                var processZipFilePath = Path.Combine(processDirectoryPath, process.Id.ToString() + ".zip");
-                File.WriteAllBytes(processZipFilePath, apiResponse.Data.ToArray());
-
-                // Extract Files/Folders from (.zip) file
-                DecompressFile(processZipFilePath, processDirectoryPath);
-
-                // Delete .zip File
-                File.Delete(processZipFilePath);
+                // Write Downloaded(.nuget) file in the Process Directory
+                File.WriteAllBytes(processNugetFilePath, apiResponse.Data.ToArray());
             }
 
-            string configFilePath = Directory.GetFiles(processDirectoryPath, "project.config", SearchOption.AllDirectories).First();
+            // Create .zip file if it doesn't exist
+            if (!File.Exists(processZipFilePath))
+                File.Copy(processNugetFilePath, processZipFilePath);
+
+            var extractToDirectoryPath = Path.ChangeExtension(processZipFilePath, null);
+
+            // Extract Files/Folders from (.zip) file
+            DecompressFile(processZipFilePath, extractToDirectoryPath);
+
+            // Delete .zip File
+            File.Delete(processZipFilePath);
+
+            string configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.config", SearchOption.AllDirectories).First();
             string mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
 
             // Return "Main" Script File Path of the Process
-            return Directory.GetFiles(processDirectoryPath, mainFileName, SearchOption.AllDirectories).First();
+            return Directory.GetFiles(extractToDirectoryPath, mainFileName, SearchOption.AllDirectories).First();
         }
 
         private static void DecompressFile(string processZipFilePath, string targetDirectory)
         {
+            // Create Target Directory If it doesn't exist
+            if(!Directory.Exists(targetDirectory))
+                Directory.CreateDirectory(targetDirectory);
+
             // Extract Files/Folders from downloaded (.zip) file
             FileStream fs = File.OpenRead(processZipFilePath);
             ZipFile file = new ZipFile(fs);

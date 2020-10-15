@@ -1,11 +1,16 @@
-﻿namespace OpenBots.Agent.Core.Enums
+﻿using System.ComponentModel;
+
+namespace OpenBots.Agent.Core.Enums
 {
     public enum JobStatus
     {
+        Unknown,
         New,
+        Assigned,
         InProgress,
-        Complete,
-        Fail
+        Completed,
+        Failed,
+        Abandoned
     }
 
     // Sink Type for Logging

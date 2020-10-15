@@ -89,7 +89,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void OnNewJobAddedEvent(string agentId)
         {
-            FetchNewJobs();
+            if(ConnectionSettingsManager.Instance.ConnectionSettings.AgentId == agentId)
+                FetchNewJobs();
         }
 
         private void StopHubManager()

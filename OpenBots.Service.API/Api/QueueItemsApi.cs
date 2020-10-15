@@ -186,7 +186,7 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">QueueItem identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <param name="body">Value of the QueueItem to be updated. (optional)</param>
         /// <returns>IActionResult</returns>
         IActionResult ApiV1QueueItemsIdPatch (string id, List<Operation> body = null);
 
@@ -198,9 +198,40 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">QueueItem identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <param name="body">Value of the QueueItem to be updated. (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
         ApiResponse<IActionResult> ApiV1QueueItemsIdPatchWithHttpInfo (string id, List<Operation> body = null);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <param name="transactionKey"> (optional)</param>
+        /// <param name="state"> (optional)</param>
+        /// <param name="stateMessage"> (optional)</param>
+        /// <param name="errorCode"> (optional)</param>
+        /// <param name="errorMessage"> (optional)</param>
+        /// <returns>IActionResult</returns>
+        IActionResult ApiV1QueueItemsIdStatePut (string id, string transactionKey = null, string state = null, string stateMessage = null, string errorCode = null, string errorMessage = null);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <param name="transactionKey"> (optional)</param>
+        /// <param name="state"> (optional)</param>
+        /// <param name="stateMessage"> (optional)</param>
+        /// <param name="errorCode"> (optional)</param>
+        /// <param name="errorMessage"> (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        ApiResponse<IActionResult> ApiV1QueueItemsIdStatePutWithHttpInfo (string id, string transactionKey = null, string state = null, string stateMessage = null, string errorCode = null, string errorMessage = null);
         /// <summary>
         /// Rollback QueueItem.
         /// </summary>
@@ -209,10 +240,11 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="error"> (optional)</param>
-        /// <param name="isFatal"> (optional, default to false)</param>
+        /// <param name="errorCode">Error code that has occurred while processing queue item (optional)</param>
+        /// <param name="errorMessage">Error message that has occurred while processing queue item (optional)</param>
+        /// <param name="isFatal">Limit to how many retries a QueueItem can have (optional, default to false)</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string error = null, bool? isFatal = null);
+        IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string errorCode = null, string errorMessage = null, bool? isFatal = null);
 
         /// <summary>
         /// Rollback QueueItem.
@@ -222,10 +254,11 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="error"> (optional)</param>
-        /// <param name="isFatal"> (optional, default to false)</param>
+        /// <param name="errorCode">Error code that has occurred while processing queue item (optional)</param>
+        /// <param name="errorMessage">Error message that has occurred while processing queue item (optional)</param>
+        /// <param name="isFatal">Limit to how many retries a QueueItem can have (optional, default to false)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string error = null, bool? isFatal = null);
+        ApiResponse<IActionResult> ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string errorCode = null, string errorMessage = null, bool? isFatal = null);
         /// <summary>
         /// Provides QueueItem details for a particular QueueItem Id.
         /// </summary>
@@ -412,7 +445,7 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">QueueItem identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <param name="body">Value of the QueueItem to be updated. (optional)</param>
         /// <returns>Task of IActionResult</returns>
         System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsIdPatchAsync (string id, List<Operation> body = null);
 
@@ -424,9 +457,40 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">QueueItem identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <param name="body">Value of the QueueItem to be updated. (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <param name="transactionKey"> (optional)</param>
+        /// <param name="state"> (optional)</param>
+        /// <param name="stateMessage"> (optional)</param>
+        /// <param name="errorCode"> (optional)</param>
+        /// <param name="errorMessage"> (optional)</param>
+        /// <returns>Task of IActionResult</returns>
+        System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsIdStatePutAsync (string id, string transactionKey = null, string state = null, string stateMessage = null, string errorCode = null, string errorMessage = null);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <param name="transactionKey"> (optional)</param>
+        /// <param name="state"> (optional)</param>
+        /// <param name="stateMessage"> (optional)</param>
+        /// <param name="errorCode"> (optional)</param>
+        /// <param name="errorMessage"> (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsIdStatePutAsyncWithHttpInfo (string id, string transactionKey = null, string state = null, string stateMessage = null, string errorCode = null, string errorMessage = null);
         /// <summary>
         /// Rollback QueueItem.
         /// </summary>
@@ -435,10 +499,11 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="error"> (optional)</param>
-        /// <param name="isFatal"> (optional, default to false)</param>
+        /// <param name="errorCode">Error code that has occurred while processing queue item (optional)</param>
+        /// <param name="errorMessage">Error message that has occurred while processing queue item (optional)</param>
+        /// <param name="isFatal">Limit to how many retries a QueueItem can have (optional, default to false)</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string error = null, bool? isFatal = null);
+        System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string errorCode = null, string errorMessage = null, bool? isFatal = null);
 
         /// <summary>
         /// Rollback QueueItem.
@@ -448,10 +513,11 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="error"> (optional)</param>
-        /// <param name="isFatal"> (optional, default to false)</param>
+        /// <param name="errorCode">Error code that has occurred while processing queue item (optional)</param>
+        /// <param name="errorMessage">Error message that has occurred while processing queue item (optional)</param>
+        /// <param name="isFatal">Limit to how many retries a QueueItem can have (optional, default to false)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string error = null, bool? isFatal = null);
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string errorCode = null, string errorMessage = null, bool? isFatal = null);
         /// <summary>
         /// Provides QueueItem details for a particular QueueItem Id.
         /// </summary>
@@ -1516,7 +1582,7 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">QueueItem identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <param name="body">Value of the QueueItem to be updated. (optional)</param>
         /// <returns>IActionResult</returns>
         public IActionResult ApiV1QueueItemsIdPatch (string id, List<Operation> body = null)
         {
@@ -1529,7 +1595,7 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">QueueItem identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <param name="body">Value of the QueueItem to be updated. (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
         public ApiResponse< IActionResult > ApiV1QueueItemsIdPatchWithHttpInfo (string id, List<Operation> body = null)
         {
@@ -1595,7 +1661,7 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">QueueItem identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <param name="body">Value of the QueueItem to be updated. (optional)</param>
         /// <returns>Task of IActionResult</returns>
         public async System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsIdPatchAsync (string id, List<Operation> body = null)
         {
@@ -1609,7 +1675,7 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">QueueItem identifier</param>
-        /// <param name="body"> (optional)</param>
+        /// <param name="body">Value of the QueueItem to be updated. (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
         public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsIdPatchAsyncWithHttpInfo (string id, List<Operation> body = null)
         {
@@ -1671,16 +1737,178 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <param name="transactionKey"> (optional)</param>
+        /// <param name="state"> (optional)</param>
+        /// <param name="stateMessage"> (optional)</param>
+        /// <param name="errorCode"> (optional)</param>
+        /// <param name="errorMessage"> (optional)</param>
+        /// <returns>IActionResult</returns>
+        public IActionResult ApiV1QueueItemsIdStatePut (string id, string transactionKey = null, string state = null, string stateMessage = null, string errorCode = null, string errorMessage = null)
+        {
+             ApiResponse<IActionResult> localVarResponse = ApiV1QueueItemsIdStatePutWithHttpInfo(id, transactionKey, state, stateMessage, errorCode, errorMessage);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <param name="transactionKey"> (optional)</param>
+        /// <param name="state"> (optional)</param>
+        /// <param name="stateMessage"> (optional)</param>
+        /// <param name="errorCode"> (optional)</param>
+        /// <param name="errorMessage"> (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        public ApiResponse< IActionResult > ApiV1QueueItemsIdStatePutWithHttpInfo (string id, string transactionKey = null, string state = null, string stateMessage = null, string errorCode = null, string errorMessage = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling QueueItemsApi->ApiV1QueueItemsIdStatePut");
+
+            var localVarPath = "/api/v1/QueueItems/{id}/state";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (transactionKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "transactionKey", transactionKey)); // query parameter
+            if (state != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "state", state)); // query parameter
+            if (stateMessage != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "stateMessage", stateMessage)); // query parameter
+            if (errorCode != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "errorCode", errorCode)); // query parameter
+            if (errorMessage != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "errorMessage", errorMessage)); // query parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1QueueItemsIdStatePut", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<IActionResult>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <param name="transactionKey"> (optional)</param>
+        /// <param name="state"> (optional)</param>
+        /// <param name="stateMessage"> (optional)</param>
+        /// <param name="errorCode"> (optional)</param>
+        /// <param name="errorMessage"> (optional)</param>
+        /// <returns>Task of IActionResult</returns>
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsIdStatePutAsync (string id, string transactionKey = null, string state = null, string stateMessage = null, string errorCode = null, string errorMessage = null)
+        {
+             ApiResponse<IActionResult> localVarResponse = await ApiV1QueueItemsIdStatePutAsyncWithHttpInfo(id, transactionKey, state, stateMessage, errorCode, errorMessage);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id"></param>
+        /// <param name="transactionKey"> (optional)</param>
+        /// <param name="state"> (optional)</param>
+        /// <param name="stateMessage"> (optional)</param>
+        /// <param name="errorCode"> (optional)</param>
+        /// <param name="errorMessage"> (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsIdStatePutAsyncWithHttpInfo (string id, string transactionKey = null, string state = null, string stateMessage = null, string errorCode = null, string errorMessage = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling QueueItemsApi->ApiV1QueueItemsIdStatePut");
+
+            var localVarPath = "/api/v1/QueueItems/{id}/state";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (transactionKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "transactionKey", transactionKey)); // query parameter
+            if (state != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "state", state)); // query parameter
+            if (stateMessage != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "stateMessage", stateMessage)); // query parameter
+            if (errorCode != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "errorCode", errorCode)); // query parameter
+            if (errorMessage != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "errorMessage", errorMessage)); // query parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1QueueItemsIdStatePut", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<IActionResult>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (IActionResult) this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+        }
+
+        /// <summary>
         /// Rollback QueueItem. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="error"> (optional)</param>
-        /// <param name="isFatal"> (optional, default to false)</param>
+        /// <param name="errorCode">Error code that has occurred while processing queue item (optional)</param>
+        /// <param name="errorMessage">Error message that has occurred while processing queue item (optional)</param>
+        /// <param name="isFatal">Limit to how many retries a QueueItem can have (optional, default to false)</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string error = null, bool? isFatal = null)
+        public IActionResult ApiV1QueueItemsRollbackPut (string transactionKey = null, string errorCode = null, string errorMessage = null, bool? isFatal = null)
         {
-             ApiResponse<IActionResult> localVarResponse = ApiV1QueueItemsRollbackPutWithHttpInfo(transactionKey, error, isFatal);
+             ApiResponse<IActionResult> localVarResponse = ApiV1QueueItemsRollbackPutWithHttpInfo(transactionKey, errorCode, errorMessage, isFatal);
              return localVarResponse.Data;
         }
 
@@ -1689,10 +1917,11 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="error"> (optional)</param>
-        /// <param name="isFatal"> (optional, default to false)</param>
+        /// <param name="errorCode">Error code that has occurred while processing queue item (optional)</param>
+        /// <param name="errorMessage">Error message that has occurred while processing queue item (optional)</param>
+        /// <param name="isFatal">Limit to how many retries a QueueItem can have (optional, default to false)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse< IActionResult > ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string error = null, bool? isFatal = null)
+        public ApiResponse< IActionResult > ApiV1QueueItemsRollbackPutWithHttpInfo (string transactionKey = null, string errorCode = null, string errorMessage = null, bool? isFatal = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Rollback";
@@ -1717,8 +1946,9 @@ namespace OpenBots.Service.API.Api
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
             if (transactionKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "transactionKey", transactionKey)); // query parameter
-            if (error != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "error", error)); // query parameter
-            if (isFatal != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "IsFatal", isFatal)); // query parameter
+            if (errorCode != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "errorCode", errorCode)); // query parameter
+            if (errorMessage != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "errorMessage", errorMessage)); // query parameter
+            if (isFatal != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "isFatal", isFatal)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
@@ -1743,12 +1973,13 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="error"> (optional)</param>
-        /// <param name="isFatal"> (optional, default to false)</param>
+        /// <param name="errorCode">Error code that has occurred while processing queue item (optional)</param>
+        /// <param name="errorMessage">Error message that has occurred while processing queue item (optional)</param>
+        /// <param name="isFatal">Limit to how many retries a QueueItem can have (optional, default to false)</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string error = null, bool? isFatal = null)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1QueueItemsRollbackPutAsync (string transactionKey = null, string errorCode = null, string errorMessage = null, bool? isFatal = null)
         {
-             ApiResponse<IActionResult> localVarResponse = await ApiV1QueueItemsRollbackPutAsyncWithHttpInfo(transactionKey, error, isFatal);
+             ApiResponse<IActionResult> localVarResponse = await ApiV1QueueItemsRollbackPutAsyncWithHttpInfo(transactionKey, errorCode, errorMessage, isFatal);
              return localVarResponse.Data;
 
         }
@@ -1758,10 +1989,11 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="transactionKey">transactionKeyId to be verified. (optional)</param>
-        /// <param name="error"> (optional)</param>
-        /// <param name="isFatal"> (optional, default to false)</param>
+        /// <param name="errorCode">Error code that has occurred while processing queue item (optional)</param>
+        /// <param name="errorMessage">Error message that has occurred while processing queue item (optional)</param>
+        /// <param name="isFatal">Limit to how many retries a QueueItem can have (optional, default to false)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string error = null, bool? isFatal = null)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1QueueItemsRollbackPutAsyncWithHttpInfo (string transactionKey = null, string errorCode = null, string errorMessage = null, bool? isFatal = null)
         {
 
             var localVarPath = "/api/v1/QueueItems/Rollback";
@@ -1786,8 +2018,9 @@ namespace OpenBots.Service.API.Api
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
             if (transactionKey != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "transactionKey", transactionKey)); // query parameter
-            if (error != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "error", error)); // query parameter
-            if (isFatal != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "IsFatal", isFatal)); // query parameter
+            if (errorCode != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "errorCode", errorCode)); // query parameter
+            if (errorMessage != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "errorMessage", errorMessage)); // query parameter
+            if (isFatal != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "isFatal", isFatal)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,

@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Timers;
 
@@ -71,18 +73,14 @@ namespace OpenBots.Service.Client.Manager.Execution
                     SetEngineStatus(false);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 var job = JobsQueueManager.Instance.DequeueJob();
 
-                // Update Job Status (Fail)
-                JobsAPIManager.UpdateJob(AuthAPIManager.Instance, job.Id.ToString(),
-                    new List<Operation>()
-                    {
-                        new Operation(){ Op = "replace", Path = "/jobStatus", Value = nameof(JobStatus.Fail)},
-                        new Operation(){ Op = "replace", Path = "/message", Value = "Job is failed"},
-                        new Operation(){ Op = "replace", Path = "/isSuccessful", Value = false}
-                    });
+                // Update Job Status (Failed)
+                JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.Id.ToString(),
+                JobStatusType.Failed, job.AgentId.ToString(), 
+                new JobErrorViewModel(ex.Message, ex.GetType().GetProperty("ErrorCode").GetValue(ex, null)?.ToString(), ex.ToString()));
 
                 SetEngineStatus(false);
             }
@@ -93,31 +91,25 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Peek Job
             var job = JobsQueueManager.Instance.PeekJob();
 
-            // Update Job Status (InProgress)
-            JobsAPIManager.UpdateJob(AuthAPIManager.Instance, job.Id.ToString(),
-                new List<Operation>()
-                {
-                    new Operation(){ Op = "replace", Path = "/jobStatus", Value = nameof(JobStatus.InProgress)},
-                    new Operation(){ Op = "replace", Path = "/message", Value = "Job is running"}
-                });
-
             // Get Process Info
             var processInfo = ProcessesAPIManager.GetProcess(AuthAPIManager.Instance, job.ProcessId.ToString());
 
             // Download Process and Extract Files
             var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(processInfo);
 
+            //////// Update Job Status (InProgress)
+            //////JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.Id.ToString(),
+            //////    JobStatusType.InProgress, job.AgentId.ToString());
+
             // Run Process
             RunProcess(processInfo.Name, mainScriptFilePath);
 
-            // Update Job Status (Complete)
-            JobsAPIManager.UpdateJob(AuthAPIManager.Instance, job.Id.ToString(),
-                new List<Operation>()
-                {
-                    new Operation(){ Op = "replace", Path = "/jobStatus", Value = nameof(JobStatus.Complete)},
-                    new Operation(){ Op = "replace", Path = "/message", Value = "Job is completed"},
-                    new Operation(){ Op = "replace", Path = "/isSuccessful", Value = true}
-                });
+            // Delete Process Files Directory
+            Directory.Delete(Path.GetDirectoryName(mainScriptFilePath), true);
+
+            //////// Update Job Status (Completed)
+            //////JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.Id.ToString(),
+            //////    JobStatusType.Completed, job.AgentId.ToString());
 
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();
@@ -153,8 +145,8 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ProjectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath),
                 ServerConnectionSettings = ConnectionSettingsManager.Instance.ConnectionSettings
             };
-
-            return JsonSerializer.Serialize(executionParams);
+            var paramsJsonString = JsonConvert.SerializeObject(executionParams);
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(paramsJsonString));
         }
     }
 }

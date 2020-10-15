@@ -188,7 +188,7 @@ namespace OpenBots.Agent.Client
         {
             _serviceHeartBeat = new Timer();
             _serviceHeartBeat.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            _serviceHeartBeat.Interval = 10000; //number in miliseconds  
+            _serviceHeartBeat.Interval = 5000; //number in miliseconds  
             _serviceHeartBeat.Enabled = true;
         }
         private void OnElapsedTime(object source, ElapsedEventArgs e)

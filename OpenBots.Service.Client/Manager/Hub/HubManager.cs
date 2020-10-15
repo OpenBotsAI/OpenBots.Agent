@@ -13,7 +13,7 @@ namespace OpenBots.Service.Client.Manager.Hub
             _connection = new HubConnectionBuilder()
                 .WithUrl($"{ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL}/notification")
                 .Build();
-            _connection.On<string>("sendjobnotification", (message) => JobNotificationReceived?.Invoke(message));
+            _connection.On<string>("botnewjobnotification", (agentId) => JobNotificationReceived?.Invoke(agentId));
         }
 
         public void Connect()

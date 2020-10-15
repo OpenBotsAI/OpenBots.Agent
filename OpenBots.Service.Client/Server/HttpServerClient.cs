@@ -89,6 +89,7 @@ namespace OpenBots.Service.Client.Server
             }
             catch (Exception)
             {
+                ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;
             }
         }
         #endregion HeartBeat

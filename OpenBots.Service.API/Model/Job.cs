@@ -41,6 +41,9 @@ namespace OpenBots.Service.API.Model
         /// <param name="jobStatus">jobStatus.</param>
         /// <param name="message">message.</param>
         /// <param name="isSuccessful">isSuccessful.</param>
+        /// <param name="errorReason">errorReason.</param>
+        /// <param name="errorCode">errorCode.</param>
+        /// <param name="serializedErrorString">serializedErrorString.</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
         /// <param name="createdBy">createdBy.</param>
@@ -50,7 +53,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public Job(Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), string jobStatus = default(string), string message = default(string), bool? isSuccessful = default(bool?), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public Job(Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), string jobStatus = default(string), string message = default(string), bool? isSuccessful = default(bool?), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "agentId" is required (not null)
             if (agentId == null)
@@ -77,6 +80,9 @@ namespace OpenBots.Service.API.Model
             this.JobStatus = jobStatus;
             this.Message = message;
             this.IsSuccessful = isSuccessful;
+            this.ErrorReason = errorReason;
+            this.ErrorCode = errorCode;
+            this.SerializedErrorString = serializedErrorString;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -151,6 +157,24 @@ namespace OpenBots.Service.API.Model
         public bool? IsSuccessful { get; set; }
 
         /// <summary>
+        /// Gets or Sets ErrorReason
+        /// </summary>
+        [DataMember(Name="errorReason", EmitDefaultValue=false)]
+        public string ErrorReason { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ErrorCode
+        /// </summary>
+        [DataMember(Name="errorCode", EmitDefaultValue=false)]
+        public string ErrorCode { get; set; }
+
+        /// <summary>
+        /// Gets or Sets SerializedErrorString
+        /// </summary>
+        [DataMember(Name="serializedErrorString", EmitDefaultValue=false)]
+        public string SerializedErrorString { get; set; }
+
+        /// <summary>
         /// Gets or Sets Id
         /// </summary>
         [DataMember(Name="id", EmitDefaultValue=false)]
@@ -221,6 +245,9 @@ namespace OpenBots.Service.API.Model
             sb.Append("  JobStatus: ").Append(JobStatus).Append("\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
             sb.Append("  IsSuccessful: ").Append(IsSuccessful).Append("\n");
+            sb.Append("  ErrorReason: ").Append(ErrorReason).Append("\n");
+            sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
+            sb.Append("  SerializedErrorString: ").Append(SerializedErrorString).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
@@ -310,6 +337,21 @@ namespace OpenBots.Service.API.Model
                     this.IsSuccessful.Equals(input.IsSuccessful))
                 ) && 
                 (
+                    this.ErrorReason == input.ErrorReason ||
+                    (this.ErrorReason != null &&
+                    this.ErrorReason.Equals(input.ErrorReason))
+                ) && 
+                (
+                    this.ErrorCode == input.ErrorCode ||
+                    (this.ErrorCode != null &&
+                    this.ErrorCode.Equals(input.ErrorCode))
+                ) && 
+                (
+                    this.SerializedErrorString == input.SerializedErrorString ||
+                    (this.SerializedErrorString != null &&
+                    this.SerializedErrorString.Equals(input.SerializedErrorString))
+                ) && 
+                (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
@@ -383,6 +425,12 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Message.GetHashCode();
                 if (this.IsSuccessful != null)
                     hashCode = hashCode * 59 + this.IsSuccessful.GetHashCode();
+                if (this.ErrorReason != null)
+                    hashCode = hashCode * 59 + this.ErrorReason.GetHashCode();
+                if (this.ErrorCode != null)
+                    hashCode = hashCode * 59 + this.ErrorCode.GetHashCode();
+                if (this.SerializedErrorString != null)
+                    hashCode = hashCode * 59 + this.SerializedErrorString.GetHashCode();
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.IsDeleted != null)

@@ -46,7 +46,10 @@ namespace OpenBots.Service.API.Model
         /// <param name="isSuccessful">isSuccessful.</param>
         /// <param name="createdOn">createdOn.</param>
         /// <param name="createdBy">createdBy.</param>
-        public JobViewModel(Guid? id = default(Guid?), string agentName = default(string), string processName = default(string), Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), string jobStatus = default(string), string message = default(string), bool? isSuccessful = default(bool?), DateTime? createdOn = default(DateTime?), string createdBy = default(string))
+        /// <param name="errorReason">errorReason.</param>
+        /// <param name="errorCode">errorCode.</param>
+        /// <param name="serializedErrorString">serializedErrorString.</param>
+        public JobViewModel(Guid? id = default(Guid?), string agentName = default(string), string processName = default(string), Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), string jobStatus = default(string), string message = default(string), bool? isSuccessful = default(bool?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string))
         {
             this.Id = id;
             this.AgentName = agentName;
@@ -62,6 +65,9 @@ namespace OpenBots.Service.API.Model
             this.IsSuccessful = isSuccessful;
             this.CreatedOn = createdOn;
             this.CreatedBy = createdBy;
+            this.ErrorReason = errorReason;
+            this.ErrorCode = errorCode;
+            this.SerializedErrorString = serializedErrorString;
         }
         
         /// <summary>
@@ -149,6 +155,24 @@ namespace OpenBots.Service.API.Model
         public string CreatedBy { get; set; }
 
         /// <summary>
+        /// Gets or Sets ErrorReason
+        /// </summary>
+        [DataMember(Name="errorReason", EmitDefaultValue=false)]
+        public string ErrorReason { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ErrorCode
+        /// </summary>
+        [DataMember(Name="errorCode", EmitDefaultValue=false)]
+        public string ErrorCode { get; set; }
+
+        /// <summary>
+        /// Gets or Sets SerializedErrorString
+        /// </summary>
+        [DataMember(Name="serializedErrorString", EmitDefaultValue=false)]
+        public string SerializedErrorString { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -170,6 +194,9 @@ namespace OpenBots.Service.API.Model
             sb.Append("  IsSuccessful: ").Append(IsSuccessful).Append("\n");
             sb.Append("  CreatedOn: ").Append(CreatedOn).Append("\n");
             sb.Append("  CreatedBy: ").Append(CreatedBy).Append("\n");
+            sb.Append("  ErrorReason: ").Append(ErrorReason).Append("\n");
+            sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
+            sb.Append("  SerializedErrorString: ").Append(SerializedErrorString).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -273,6 +300,21 @@ namespace OpenBots.Service.API.Model
                     this.CreatedBy == input.CreatedBy ||
                     (this.CreatedBy != null &&
                     this.CreatedBy.Equals(input.CreatedBy))
+                ) && 
+                (
+                    this.ErrorReason == input.ErrorReason ||
+                    (this.ErrorReason != null &&
+                    this.ErrorReason.Equals(input.ErrorReason))
+                ) && 
+                (
+                    this.ErrorCode == input.ErrorCode ||
+                    (this.ErrorCode != null &&
+                    this.ErrorCode.Equals(input.ErrorCode))
+                ) && 
+                (
+                    this.SerializedErrorString == input.SerializedErrorString ||
+                    (this.SerializedErrorString != null &&
+                    this.SerializedErrorString.Equals(input.SerializedErrorString))
                 );
         }
 
@@ -313,6 +355,12 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.CreatedOn.GetHashCode();
                 if (this.CreatedBy != null)
                     hashCode = hashCode * 59 + this.CreatedBy.GetHashCode();
+                if (this.ErrorReason != null)
+                    hashCode = hashCode * 59 + this.ErrorReason.GetHashCode();
+                if (this.ErrorCode != null)
+                    hashCode = hashCode * 59 + this.ErrorCode.GetHashCode();
+                if (this.SerializedErrorString != null)
+                    hashCode = hashCode * 59 + this.SerializedErrorString.GetHashCode();
                 return hashCode;
             }
         }

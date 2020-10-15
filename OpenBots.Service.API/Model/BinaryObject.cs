@@ -36,6 +36,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="contentType">Content Type.</param>
         /// <param name="correlationEntityId">Correlation Identity Id.</param>
         /// <param name="correlationEntity">Correlation Identity.</param>
+        /// <param name="folder">Folder.</param>
         /// <param name="storagePath">Storage Path.</param>
         /// <param name="storageProvider">Storage Provider.</param>
         /// <param name="sizeInBytes">Size in Bytes.</param>
@@ -50,7 +51,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public BinaryObject(Guid? organizationId = default(Guid?), string contentType = default(string), Guid? correlationEntityId = default(Guid?), string correlationEntity = default(string), string storagePath = default(string), string storageProvider = default(string), long? sizeInBytes = default(long?), string hashCode = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public BinaryObject(Guid? organizationId = default(Guid?), string contentType = default(string), Guid? correlationEntityId = default(Guid?), string correlationEntity = default(string), string folder = default(string), string storagePath = default(string), string storageProvider = default(string), long? sizeInBytes = default(long?), string hashCode = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -65,6 +66,7 @@ namespace OpenBots.Service.API.Model
             this.ContentType = contentType;
             this.CorrelationEntityId = correlationEntityId;
             this.CorrelationEntity = correlationEntity;
+            this.Folder = folder;
             this.StoragePath = storagePath;
             this.StorageProvider = storageProvider;
             this.SizeInBytes = sizeInBytes;
@@ -115,6 +117,13 @@ namespace OpenBots.Service.API.Model
         /// <value>Correlation Identity</value>
         [DataMember(Name="correlationEntity", EmitDefaultValue=false)]
         public string CorrelationEntity { get; set; }
+
+        /// <summary>
+        /// Folder
+        /// </summary>
+        /// <value>Folder</value>
+        [DataMember(Name="folder", EmitDefaultValue=false)]
+        public string Folder { get; set; }
 
         /// <summary>
         /// Storage Path
@@ -216,6 +225,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  ContentType: ").Append(ContentType).Append("\n");
             sb.Append("  CorrelationEntityId: ").Append(CorrelationEntityId).Append("\n");
             sb.Append("  CorrelationEntity: ").Append(CorrelationEntity).Append("\n");
+            sb.Append("  Folder: ").Append(Folder).Append("\n");
             sb.Append("  StoragePath: ").Append(StoragePath).Append("\n");
             sb.Append("  StorageProvider: ").Append(StorageProvider).Append("\n");
             sb.Append("  SizeInBytes: ").Append(SizeInBytes).Append("\n");
@@ -283,6 +293,11 @@ namespace OpenBots.Service.API.Model
                     this.CorrelationEntity == input.CorrelationEntity ||
                     (this.CorrelationEntity != null &&
                     this.CorrelationEntity.Equals(input.CorrelationEntity))
+                ) && 
+                (
+                    this.Folder == input.Folder ||
+                    (this.Folder != null &&
+                    this.Folder.Equals(input.Folder))
                 ) && 
                 (
                     this.StoragePath == input.StoragePath ||
@@ -373,6 +388,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.CorrelationEntityId.GetHashCode();
                 if (this.CorrelationEntity != null)
                     hashCode = hashCode * 59 + this.CorrelationEntity.GetHashCode();
+                if (this.Folder != null)
+                    hashCode = hashCode * 59 + this.Folder.GetHashCode();
                 if (this.StoragePath != null)
                     hashCode = hashCode * 59 + this.StoragePath.GetHashCode();
                 if (this.StorageProvider != null)

@@ -33,8 +33,8 @@ namespace OpenBots.Service.API.Model
         /// Initializes a new instance of the <see cref="QueueItem" /> class.
         /// </summary>
         /// <param name="isLocked">Whether a QueueItem is locked by a job or not.</param>
-        /// <param name="lockedOn">When the QueueItem was locked.</param>
-        /// <param name="lockedUntil">When to lock QueueItem if still being executed.</param>
+        /// <param name="lockedOnUTC">When the QueueItem was locked.</param>
+        /// <param name="lockedUntilUTC">When to lock QueueItem if still being executed.</param>
         /// <param name="lockedBy">Which Agent locked the QueueItem.</param>
         /// <param name="queueId">Which Queue the QueueItem belongs to.</param>
         /// <param name="type">Format of Data.</param>
@@ -43,9 +43,14 @@ namespace OpenBots.Service.API.Model
         /// <param name="state">Failed, Expired, Successful, New.</param>
         /// <param name="stateMessage">Message given to user after state of QueueItem was changed.</param>
         /// <param name="lockTransactionKey">Guid generated when item is dequeued.</param>
-        /// <param name="lockedEndTime">Tells when QueueItem has been executed and when IsLocked as been turned back to false.</param>
+        /// <param name="lockedEndTimeUTC">Tells when QueueItem has been executed and when IsLocked has been turned back to false.</param>
         /// <param name="retryCount">Number of time a QueueItem has been retried.</param>
         /// <param name="priority">Priority of when queue item should be dequeued.</param>
+        /// <param name="expireOnUTC">DateTime the queue item will expire on.</param>
+        /// <param name="postponeUntilUTC">DateTime to postpone the queue item from being processed until.</param>
+        /// <param name="errorCode">Error Code received when processing a queue item.</param>
+        /// <param name="errorMessage">Error message received when processing a queue item.</param>
+        /// <param name="errorSerialized">ErrorCode and ErrorMessage serialized into JSON string.</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -56,7 +61,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public QueueItem(bool? isLocked = default(bool?), DateTime? lockedOn = default(DateTime?), DateTime? lockedUntil = default(DateTime?), Guid? lockedBy = default(Guid?), Guid? queueId = default(Guid?), string type = default(string), string jsonType = default(string), string dataJson = default(string), string state = default(string), string stateMessage = default(string), Guid? lockTransactionKey = default(Guid?), DateTime? lockedEndTime = default(DateTime?), int? retryCount = default(int?), int? priority = default(int?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public QueueItem(bool? isLocked = default(bool?), DateTime? lockedOnUTC = default(DateTime?), DateTime? lockedUntilUTC = default(DateTime?), Guid? lockedBy = default(Guid?), Guid? queueId = default(Guid?), string type = default(string), string jsonType = default(string), string dataJson = default(string), string state = default(string), string stateMessage = default(string), Guid? lockTransactionKey = default(Guid?), DateTime? lockedEndTimeUTC = default(DateTime?), int? retryCount = default(int?), int? priority = default(int?), DateTime? expireOnUTC = default(DateTime?), DateTime? postponeUntilUTC = default(DateTime?), string errorCode = default(string), string errorMessage = default(string), string errorSerialized = default(string), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -68,8 +73,8 @@ namespace OpenBots.Service.API.Model
                 this.Name = name;
             }
             this.IsLocked = isLocked;
-            this.LockedOn = lockedOn;
-            this.LockedUntil = lockedUntil;
+            this.LockedOnUTC = lockedOnUTC;
+            this.LockedUntilUTC = lockedUntilUTC;
             this.LockedBy = lockedBy;
             this.QueueId = queueId;
             this.Type = type;
@@ -78,9 +83,14 @@ namespace OpenBots.Service.API.Model
             this.State = state;
             this.StateMessage = stateMessage;
             this.LockTransactionKey = lockTransactionKey;
-            this.LockedEndTime = lockedEndTime;
+            this.LockedEndTimeUTC = lockedEndTimeUTC;
             this.RetryCount = retryCount;
             this.Priority = priority;
+            this.ExpireOnUTC = expireOnUTC;
+            this.PostponeUntilUTC = postponeUntilUTC;
+            this.ErrorCode = errorCode;
+            this.ErrorMessage = errorMessage;
+            this.ErrorSerialized = errorSerialized;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -111,15 +121,15 @@ namespace OpenBots.Service.API.Model
         /// When the QueueItem was locked
         /// </summary>
         /// <value>When the QueueItem was locked</value>
-        [DataMember(Name="lockedOn", EmitDefaultValue=false)]
-        public DateTime? LockedOn { get; set; }
+        [DataMember(Name="lockedOnUTC", EmitDefaultValue=false)]
+        public DateTime? LockedOnUTC { get; set; }
 
         /// <summary>
         /// When to lock QueueItem if still being executed
         /// </summary>
         /// <value>When to lock QueueItem if still being executed</value>
-        [DataMember(Name="lockedUntil", EmitDefaultValue=false)]
-        public DateTime? LockedUntil { get; set; }
+        [DataMember(Name="lockedUntilUTC", EmitDefaultValue=false)]
+        public DateTime? LockedUntilUTC { get; set; }
 
         /// <summary>
         /// Which Agent locked the QueueItem
@@ -178,11 +188,11 @@ namespace OpenBots.Service.API.Model
         public Guid? LockTransactionKey { get; set; }
 
         /// <summary>
-        /// Tells when QueueItem has been executed and when IsLocked as been turned back to false
+        /// Tells when QueueItem has been executed and when IsLocked has been turned back to false
         /// </summary>
-        /// <value>Tells when QueueItem has been executed and when IsLocked as been turned back to false</value>
-        [DataMember(Name="lockedEndTime", EmitDefaultValue=false)]
-        public DateTime? LockedEndTime { get; set; }
+        /// <value>Tells when QueueItem has been executed and when IsLocked has been turned back to false</value>
+        [DataMember(Name="lockedEndTimeUTC", EmitDefaultValue=false)]
+        public DateTime? LockedEndTimeUTC { get; set; }
 
         /// <summary>
         /// Number of time a QueueItem has been retried
@@ -197,6 +207,41 @@ namespace OpenBots.Service.API.Model
         /// <value>Priority of when queue item should be dequeued</value>
         [DataMember(Name="priority", EmitDefaultValue=false)]
         public int? Priority { get; set; }
+
+        /// <summary>
+        /// DateTime the queue item will expire on
+        /// </summary>
+        /// <value>DateTime the queue item will expire on</value>
+        [DataMember(Name="expireOnUTC", EmitDefaultValue=false)]
+        public DateTime? ExpireOnUTC { get; set; }
+
+        /// <summary>
+        /// DateTime to postpone the queue item from being processed until
+        /// </summary>
+        /// <value>DateTime to postpone the queue item from being processed until</value>
+        [DataMember(Name="postponeUntilUTC", EmitDefaultValue=false)]
+        public DateTime? PostponeUntilUTC { get; set; }
+
+        /// <summary>
+        /// Error Code received when processing a queue item
+        /// </summary>
+        /// <value>Error Code received when processing a queue item</value>
+        [DataMember(Name="errorCode", EmitDefaultValue=false)]
+        public string ErrorCode { get; set; }
+
+        /// <summary>
+        /// Error message received when processing a queue item
+        /// </summary>
+        /// <value>Error message received when processing a queue item</value>
+        [DataMember(Name="errorMessage", EmitDefaultValue=false)]
+        public string ErrorMessage { get; set; }
+
+        /// <summary>
+        /// ErrorCode and ErrorMessage serialized into JSON string
+        /// </summary>
+        /// <value>ErrorCode and ErrorMessage serialized into JSON string</value>
+        [DataMember(Name="errorSerialized", EmitDefaultValue=false)]
+        public string ErrorSerialized { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -267,8 +312,8 @@ namespace OpenBots.Service.API.Model
             var sb = new StringBuilder();
             sb.Append("class QueueItem {\n");
             sb.Append("  IsLocked: ").Append(IsLocked).Append("\n");
-            sb.Append("  LockedOn: ").Append(LockedOn).Append("\n");
-            sb.Append("  LockedUntil: ").Append(LockedUntil).Append("\n");
+            sb.Append("  LockedOnUTC: ").Append(LockedOnUTC).Append("\n");
+            sb.Append("  LockedUntilUTC: ").Append(LockedUntilUTC).Append("\n");
             sb.Append("  LockedBy: ").Append(LockedBy).Append("\n");
             sb.Append("  QueueId: ").Append(QueueId).Append("\n");
             sb.Append("  Type: ").Append(Type).Append("\n");
@@ -277,9 +322,14 @@ namespace OpenBots.Service.API.Model
             sb.Append("  State: ").Append(State).Append("\n");
             sb.Append("  StateMessage: ").Append(StateMessage).Append("\n");
             sb.Append("  LockTransactionKey: ").Append(LockTransactionKey).Append("\n");
-            sb.Append("  LockedEndTime: ").Append(LockedEndTime).Append("\n");
+            sb.Append("  LockedEndTimeUTC: ").Append(LockedEndTimeUTC).Append("\n");
             sb.Append("  RetryCount: ").Append(RetryCount).Append("\n");
             sb.Append("  Priority: ").Append(Priority).Append("\n");
+            sb.Append("  ExpireOnUTC: ").Append(ExpireOnUTC).Append("\n");
+            sb.Append("  PostponeUntilUTC: ").Append(PostponeUntilUTC).Append("\n");
+            sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
+            sb.Append("  ErrorMessage: ").Append(ErrorMessage).Append("\n");
+            sb.Append("  ErrorSerialized: ").Append(ErrorSerialized).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -330,14 +380,14 @@ namespace OpenBots.Service.API.Model
                     this.IsLocked.Equals(input.IsLocked))
                 ) && 
                 (
-                    this.LockedOn == input.LockedOn ||
-                    (this.LockedOn != null &&
-                    this.LockedOn.Equals(input.LockedOn))
+                    this.LockedOnUTC == input.LockedOnUTC ||
+                    (this.LockedOnUTC != null &&
+                    this.LockedOnUTC.Equals(input.LockedOnUTC))
                 ) && 
                 (
-                    this.LockedUntil == input.LockedUntil ||
-                    (this.LockedUntil != null &&
-                    this.LockedUntil.Equals(input.LockedUntil))
+                    this.LockedUntilUTC == input.LockedUntilUTC ||
+                    (this.LockedUntilUTC != null &&
+                    this.LockedUntilUTC.Equals(input.LockedUntilUTC))
                 ) && 
                 (
                     this.LockedBy == input.LockedBy ||
@@ -380,9 +430,9 @@ namespace OpenBots.Service.API.Model
                     this.LockTransactionKey.Equals(input.LockTransactionKey))
                 ) && 
                 (
-                    this.LockedEndTime == input.LockedEndTime ||
-                    (this.LockedEndTime != null &&
-                    this.LockedEndTime.Equals(input.LockedEndTime))
+                    this.LockedEndTimeUTC == input.LockedEndTimeUTC ||
+                    (this.LockedEndTimeUTC != null &&
+                    this.LockedEndTimeUTC.Equals(input.LockedEndTimeUTC))
                 ) && 
                 (
                     this.RetryCount == input.RetryCount ||
@@ -393,6 +443,31 @@ namespace OpenBots.Service.API.Model
                     this.Priority == input.Priority ||
                     (this.Priority != null &&
                     this.Priority.Equals(input.Priority))
+                ) && 
+                (
+                    this.ExpireOnUTC == input.ExpireOnUTC ||
+                    (this.ExpireOnUTC != null &&
+                    this.ExpireOnUTC.Equals(input.ExpireOnUTC))
+                ) && 
+                (
+                    this.PostponeUntilUTC == input.PostponeUntilUTC ||
+                    (this.PostponeUntilUTC != null &&
+                    this.PostponeUntilUTC.Equals(input.PostponeUntilUTC))
+                ) && 
+                (
+                    this.ErrorCode == input.ErrorCode ||
+                    (this.ErrorCode != null &&
+                    this.ErrorCode.Equals(input.ErrorCode))
+                ) && 
+                (
+                    this.ErrorMessage == input.ErrorMessage ||
+                    (this.ErrorMessage != null &&
+                    this.ErrorMessage.Equals(input.ErrorMessage))
+                ) && 
+                (
+                    this.ErrorSerialized == input.ErrorSerialized ||
+                    (this.ErrorSerialized != null &&
+                    this.ErrorSerialized.Equals(input.ErrorSerialized))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -457,10 +532,10 @@ namespace OpenBots.Service.API.Model
                 int hashCode = 41;
                 if (this.IsLocked != null)
                     hashCode = hashCode * 59 + this.IsLocked.GetHashCode();
-                if (this.LockedOn != null)
-                    hashCode = hashCode * 59 + this.LockedOn.GetHashCode();
-                if (this.LockedUntil != null)
-                    hashCode = hashCode * 59 + this.LockedUntil.GetHashCode();
+                if (this.LockedOnUTC != null)
+                    hashCode = hashCode * 59 + this.LockedOnUTC.GetHashCode();
+                if (this.LockedUntilUTC != null)
+                    hashCode = hashCode * 59 + this.LockedUntilUTC.GetHashCode();
                 if (this.LockedBy != null)
                     hashCode = hashCode * 59 + this.LockedBy.GetHashCode();
                 if (this.QueueId != null)
@@ -477,12 +552,22 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.StateMessage.GetHashCode();
                 if (this.LockTransactionKey != null)
                     hashCode = hashCode * 59 + this.LockTransactionKey.GetHashCode();
-                if (this.LockedEndTime != null)
-                    hashCode = hashCode * 59 + this.LockedEndTime.GetHashCode();
+                if (this.LockedEndTimeUTC != null)
+                    hashCode = hashCode * 59 + this.LockedEndTimeUTC.GetHashCode();
                 if (this.RetryCount != null)
                     hashCode = hashCode * 59 + this.RetryCount.GetHashCode();
                 if (this.Priority != null)
                     hashCode = hashCode * 59 + this.Priority.GetHashCode();
+                if (this.ExpireOnUTC != null)
+                    hashCode = hashCode * 59 + this.ExpireOnUTC.GetHashCode();
+                if (this.PostponeUntilUTC != null)
+                    hashCode = hashCode * 59 + this.PostponeUntilUTC.GetHashCode();
+                if (this.ErrorCode != null)
+                    hashCode = hashCode * 59 + this.ErrorCode.GetHashCode();
+                if (this.ErrorMessage != null)
+                    hashCode = hashCode * 59 + this.ErrorMessage.GetHashCode();
+                if (this.ErrorSerialized != null)
+                    hashCode = hashCode * 59 + this.ErrorSerialized.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)

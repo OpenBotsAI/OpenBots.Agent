@@ -38,10 +38,15 @@ namespace OpenBots.Service.API.Model
         /// <param name="stateMessage">stateMessage.</param>
         /// <param name="isLocked">isLocked.</param>
         /// <param name="lockedBy">lockedBy.</param>
-        /// <param name="lockedOn">lockedOn.</param>
-        /// <param name="lockedUntil">lockedUntil.</param>
-        /// <param name="lockedEndTime">lockedEndTime.</param>
-        public QueueItemViewModel(string name = default(string), Guid? id = default(Guid?), string state = default(string), string stateMessage = default(string), bool? isLocked = default(bool?), Guid? lockedBy = default(Guid?), DateTime? lockedOn = default(DateTime?), DateTime? lockedUntil = default(DateTime?), DateTime? lockedEndTime = default(DateTime?))
+        /// <param name="lockedOnUTC">lockedOnUTC.</param>
+        /// <param name="lockedUntilUTC">lockedUntilUTC.</param>
+        /// <param name="lockedEndTimeUTC">lockedEndTimeUTC.</param>
+        /// <param name="expireOnUTC">expireOnUTC.</param>
+        /// <param name="postponeUntilUTC">postponeUntilUTC.</param>
+        /// <param name="errorCode">errorCode.</param>
+        /// <param name="errorMessage">errorMessage.</param>
+        /// <param name="errorSerialized">errorSerialized.</param>
+        public QueueItemViewModel(string name = default(string), Guid? id = default(Guid?), string state = default(string), string stateMessage = default(string), bool? isLocked = default(bool?), Guid? lockedBy = default(Guid?), DateTime? lockedOnUTC = default(DateTime?), DateTime? lockedUntilUTC = default(DateTime?), DateTime? lockedEndTimeUTC = default(DateTime?), DateTime? expireOnUTC = default(DateTime?), DateTime? postponeUntilUTC = default(DateTime?), string errorCode = default(string), string errorMessage = default(string), string errorSerialized = default(string))
         {
             this.Name = name;
             this.Id = id;
@@ -49,9 +54,14 @@ namespace OpenBots.Service.API.Model
             this.StateMessage = stateMessage;
             this.IsLocked = isLocked;
             this.LockedBy = lockedBy;
-            this.LockedOn = lockedOn;
-            this.LockedUntil = lockedUntil;
-            this.LockedEndTime = lockedEndTime;
+            this.LockedOnUTC = lockedOnUTC;
+            this.LockedUntilUTC = lockedUntilUTC;
+            this.LockedEndTimeUTC = lockedEndTimeUTC;
+            this.ExpireOnUTC = expireOnUTC;
+            this.PostponeUntilUTC = postponeUntilUTC;
+            this.ErrorCode = errorCode;
+            this.ErrorMessage = errorMessage;
+            this.ErrorSerialized = errorSerialized;
         }
         
         /// <summary>
@@ -91,22 +101,52 @@ namespace OpenBots.Service.API.Model
         public Guid? LockedBy { get; set; }
 
         /// <summary>
-        /// Gets or Sets LockedOn
+        /// Gets or Sets LockedOnUTC
         /// </summary>
-        [DataMember(Name="lockedOn", EmitDefaultValue=false)]
-        public DateTime? LockedOn { get; set; }
+        [DataMember(Name="lockedOnUTC", EmitDefaultValue=false)]
+        public DateTime? LockedOnUTC { get; set; }
 
         /// <summary>
-        /// Gets or Sets LockedUntil
+        /// Gets or Sets LockedUntilUTC
         /// </summary>
-        [DataMember(Name="lockedUntil", EmitDefaultValue=false)]
-        public DateTime? LockedUntil { get; set; }
+        [DataMember(Name="lockedUntilUTC", EmitDefaultValue=false)]
+        public DateTime? LockedUntilUTC { get; set; }
 
         /// <summary>
-        /// Gets or Sets LockedEndTime
+        /// Gets or Sets LockedEndTimeUTC
         /// </summary>
-        [DataMember(Name="lockedEndTime", EmitDefaultValue=false)]
-        public DateTime? LockedEndTime { get; set; }
+        [DataMember(Name="lockedEndTimeUTC", EmitDefaultValue=false)]
+        public DateTime? LockedEndTimeUTC { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ExpireOnUTC
+        /// </summary>
+        [DataMember(Name="expireOnUTC", EmitDefaultValue=false)]
+        public DateTime? ExpireOnUTC { get; set; }
+
+        /// <summary>
+        /// Gets or Sets PostponeUntilUTC
+        /// </summary>
+        [DataMember(Name="postponeUntilUTC", EmitDefaultValue=false)]
+        public DateTime? PostponeUntilUTC { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ErrorCode
+        /// </summary>
+        [DataMember(Name="errorCode", EmitDefaultValue=false)]
+        public string ErrorCode { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ErrorMessage
+        /// </summary>
+        [DataMember(Name="errorMessage", EmitDefaultValue=false)]
+        public string ErrorMessage { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ErrorSerialized
+        /// </summary>
+        [DataMember(Name="errorSerialized", EmitDefaultValue=false)]
+        public string ErrorSerialized { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -122,9 +162,14 @@ namespace OpenBots.Service.API.Model
             sb.Append("  StateMessage: ").Append(StateMessage).Append("\n");
             sb.Append("  IsLocked: ").Append(IsLocked).Append("\n");
             sb.Append("  LockedBy: ").Append(LockedBy).Append("\n");
-            sb.Append("  LockedOn: ").Append(LockedOn).Append("\n");
-            sb.Append("  LockedUntil: ").Append(LockedUntil).Append("\n");
-            sb.Append("  LockedEndTime: ").Append(LockedEndTime).Append("\n");
+            sb.Append("  LockedOnUTC: ").Append(LockedOnUTC).Append("\n");
+            sb.Append("  LockedUntilUTC: ").Append(LockedUntilUTC).Append("\n");
+            sb.Append("  LockedEndTimeUTC: ").Append(LockedEndTimeUTC).Append("\n");
+            sb.Append("  ExpireOnUTC: ").Append(ExpireOnUTC).Append("\n");
+            sb.Append("  PostponeUntilUTC: ").Append(PostponeUntilUTC).Append("\n");
+            sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
+            sb.Append("  ErrorMessage: ").Append(ErrorMessage).Append("\n");
+            sb.Append("  ErrorSerialized: ").Append(ErrorSerialized).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -190,19 +235,44 @@ namespace OpenBots.Service.API.Model
                     this.LockedBy.Equals(input.LockedBy))
                 ) && 
                 (
-                    this.LockedOn == input.LockedOn ||
-                    (this.LockedOn != null &&
-                    this.LockedOn.Equals(input.LockedOn))
+                    this.LockedOnUTC == input.LockedOnUTC ||
+                    (this.LockedOnUTC != null &&
+                    this.LockedOnUTC.Equals(input.LockedOnUTC))
                 ) && 
                 (
-                    this.LockedUntil == input.LockedUntil ||
-                    (this.LockedUntil != null &&
-                    this.LockedUntil.Equals(input.LockedUntil))
+                    this.LockedUntilUTC == input.LockedUntilUTC ||
+                    (this.LockedUntilUTC != null &&
+                    this.LockedUntilUTC.Equals(input.LockedUntilUTC))
                 ) && 
                 (
-                    this.LockedEndTime == input.LockedEndTime ||
-                    (this.LockedEndTime != null &&
-                    this.LockedEndTime.Equals(input.LockedEndTime))
+                    this.LockedEndTimeUTC == input.LockedEndTimeUTC ||
+                    (this.LockedEndTimeUTC != null &&
+                    this.LockedEndTimeUTC.Equals(input.LockedEndTimeUTC))
+                ) && 
+                (
+                    this.ExpireOnUTC == input.ExpireOnUTC ||
+                    (this.ExpireOnUTC != null &&
+                    this.ExpireOnUTC.Equals(input.ExpireOnUTC))
+                ) && 
+                (
+                    this.PostponeUntilUTC == input.PostponeUntilUTC ||
+                    (this.PostponeUntilUTC != null &&
+                    this.PostponeUntilUTC.Equals(input.PostponeUntilUTC))
+                ) && 
+                (
+                    this.ErrorCode == input.ErrorCode ||
+                    (this.ErrorCode != null &&
+                    this.ErrorCode.Equals(input.ErrorCode))
+                ) && 
+                (
+                    this.ErrorMessage == input.ErrorMessage ||
+                    (this.ErrorMessage != null &&
+                    this.ErrorMessage.Equals(input.ErrorMessage))
+                ) && 
+                (
+                    this.ErrorSerialized == input.ErrorSerialized ||
+                    (this.ErrorSerialized != null &&
+                    this.ErrorSerialized.Equals(input.ErrorSerialized))
                 );
         }
 
@@ -227,12 +297,22 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.IsLocked.GetHashCode();
                 if (this.LockedBy != null)
                     hashCode = hashCode * 59 + this.LockedBy.GetHashCode();
-                if (this.LockedOn != null)
-                    hashCode = hashCode * 59 + this.LockedOn.GetHashCode();
-                if (this.LockedUntil != null)
-                    hashCode = hashCode * 59 + this.LockedUntil.GetHashCode();
-                if (this.LockedEndTime != null)
-                    hashCode = hashCode * 59 + this.LockedEndTime.GetHashCode();
+                if (this.LockedOnUTC != null)
+                    hashCode = hashCode * 59 + this.LockedOnUTC.GetHashCode();
+                if (this.LockedUntilUTC != null)
+                    hashCode = hashCode * 59 + this.LockedUntilUTC.GetHashCode();
+                if (this.LockedEndTimeUTC != null)
+                    hashCode = hashCode * 59 + this.LockedEndTimeUTC.GetHashCode();
+                if (this.ExpireOnUTC != null)
+                    hashCode = hashCode * 59 + this.ExpireOnUTC.GetHashCode();
+                if (this.PostponeUntilUTC != null)
+                    hashCode = hashCode * 59 + this.PostponeUntilUTC.GetHashCode();
+                if (this.ErrorCode != null)
+                    hashCode = hashCode * 59 + this.ErrorCode.GetHashCode();
+                if (this.ErrorMessage != null)
+                    hashCode = hashCode * 59 + this.ErrorMessage.GetHashCode();
+                if (this.ErrorSerialized != null)
+                    hashCode = hashCode * 59 + this.ErrorSerialized.GetHashCode();
                 return hashCode;
             }
         }

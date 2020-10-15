@@ -185,10 +185,6 @@
       <Project>{93ebf09a-d073-49a8-a07d-9528f3eaf78f}</Project>
       <Name>OpenBots.Agent.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenBots.Executor\OpenBots.Executor.csproj">
-      <Project>{5c7640e4-0cb9-416b-8cec-5e2045870d38}</Project>
-      <Name>OpenBots.Executor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OpenBots.Service.API\OpenBots.Service.API.csproj">
       <Project>{fbd953e4-9510-4e2a-8fa2-5ae749354546}</Project>
       <Name>OpenBots.Service.API</Name>
