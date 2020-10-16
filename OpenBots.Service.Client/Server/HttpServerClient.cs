@@ -60,7 +60,7 @@ namespace OpenBots.Service.Client.Server
 
                 //setup heartbeat to the server
                 _heartbeatTimer = new Timer();
-                _heartbeatTimer.Interval = 60000;
+                _heartbeatTimer.Interval = 30000;
                 _heartbeatTimer.Elapsed += Heartbeat_Elapsed;
                 _heartbeatTimer.Enabled = true;
             }

@@ -20,6 +20,7 @@ namespace OpenBots.Service.Client.Manager.Execution
     {
         public bool IsEngineBusy { get; private set; } = false;
         private Timer _newJobsCheckTimer;
+        private ProcessExecutionLog _executionLog;
 
         public event EventHandler JobFinishedEvent;
         public static ExecutionManager Instance
@@ -33,7 +34,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
         }
         private static ExecutionManager instance;
-
+        
         private ExecutionManager()
         {
         }
@@ -77,6 +78,16 @@ namespace OpenBots.Service.Client.Manager.Execution
             {
                 var job = JobsQueueManager.Instance.DequeueJob();
 
+                // Update Process Execution Log (Execution Failure)
+                if (_executionLog != null)
+                {
+                    _executionLog.Status = "Job has failed";
+                    _executionLog.HasErrors = true;
+                    _executionLog.ErrorMessage = ex.Message;
+                    _executionLog.ErrorDetails = ex.ToString();
+                    ExecutionLogsAPIManager.UpdateExecutionLog(AuthAPIManager.Instance, _executionLog);
+                }
+
                 // Update Job Status (Failed)
                 JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
                 JobStatusType.Failed, new JobErrorViewModel(
@@ -100,15 +111,39 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Download Process and Extract Files
             var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(processInfo);
 
+            //// Create Process Execution Log (Execution Started)
+            //_executionLog = ExecutionLogsAPIManager.CreateExecutionLog(AuthAPIManager.Instance, new ProcessExecutionLog(job.Id,
+            //    job.ProcessId, job.AgentId, DateTime.Now, null, null, null, "Job has started processing", false,
+            //    null, null));
+
             // Update Job Status (InProgress)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
                 JobStatusType.InProgress, new JobErrorViewModel());
 
+            // Update Job Start Time
+            JobsAPIManager.UpdateJobPatch(AuthAPIManager.Instance, job.Id.ToString(),
+                new List<Operation>()
+                {
+                    new Operation(){ Op = "replace", Path = "/startTime", Value = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")}
+                });
+
             // Run Process
             RunProcess(processInfo.Name, mainScriptFilePath);
 
+            // Update Job End Time
+            JobsAPIManager.UpdateJobPatch(AuthAPIManager.Instance, job.Id.ToString(),
+                new List<Operation>()
+                {
+                    new Operation(){ Op = "replace", Path = "/endTime", Value = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")},
+                });
+
             // Delete Process Files Directory
             Directory.Delete(Path.GetDirectoryName(mainScriptFilePath), true);
+
+            //// Update Process Execution Log (Execution Finished)
+            //_executionLog.CompletedOn = DateTime.Now;
+            //_executionLog.Status = "Job has finished processing";
+            //ExecutionLogsAPIManager.UpdateExecutionLog(AuthAPIManager.Instance, _executionLog);
 
             // Update Job Status (Completed)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
