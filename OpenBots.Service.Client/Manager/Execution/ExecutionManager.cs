@@ -102,7 +102,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Update Job Status (InProgress)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
-                JobStatusType.InProgress);
+                JobStatusType.InProgress, new JobErrorViewModel());
 
             // Run Process
             RunProcess(processInfo.Name, mainScriptFilePath);
@@ -112,7 +112,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Update Job Status (Completed)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
-                JobStatusType.Completed);
+                JobStatusType.Completed, new JobErrorViewModel());
 
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();

@@ -19,6 +19,8 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using RestSharp;
+using OpenBots.Service.API.Model;
+using System.Runtime.Serialization;
 
 namespace OpenBots.Service.API.Client
 {
@@ -263,6 +265,17 @@ namespace OpenBots.Service.API.Client
                 }
                 return flattenedString.ToString();
             }
+            else if(obj is JobStatusType)
+            {
+                var memInfo = typeof(JobStatusType).GetMember(obj.ToString());
+                var attr = memInfo[0].GetCustomAttributes(false).OfType<EnumMemberAttribute>().FirstOrDefault();
+                if (attr != null)
+                {
+                    return attr.Value;
+                }
+
+                return null;
+            }
             else
                 return Convert.ToString (obj);
         }
@@ -301,7 +314,7 @@ namespace OpenBots.Service.API.Client
                         }
                     }
                 }
-                var stream = new MemoryStream(response.RawBytes);
+                var stream = new System.IO.MemoryStream(response.RawBytes);
                 return stream;
             }
 
@@ -315,9 +328,9 @@ namespace OpenBots.Service.API.Client
                 return ConvertType(response.Content, type);
             }
 
-            if (type == typeof(MemoryStream))
+            if (type == typeof(System.IO.MemoryStream))
             {
-                return new MemoryStream(response.RawBytes, true);
+                return new System.IO.MemoryStream(response.RawBytes, true);
             }
 
             // at this point, it must be a model (json)
@@ -432,7 +445,7 @@ namespace OpenBots.Service.API.Client
         public static byte[] ReadAsBytes(Stream inputStream)
         {
             byte[] buf = new byte[16*1024];
-            using (MemoryStream ms = new MemoryStream())
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
             {
                 int count;
                 while ((count = inputStream.Read(buf, 0, buf.Length)) > 0)
