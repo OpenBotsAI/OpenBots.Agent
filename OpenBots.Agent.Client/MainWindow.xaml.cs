@@ -294,59 +294,64 @@ namespace OpenBots.Agent.Client
                 _connectionSettings.LoggingValue4 = txt_SinkType_Logging4.Text;
 
                 var serverResponse = PipeProxy.Instance.ConnectToServer(_connectionSettings);
-                if (serverResponse.Data != null)
+                if(serverResponse != null)
                 {
-                    _agentSettings.OpenBotsServerUrl = _connectionSettings.ServerURL;
-                    _agentSettings.AgentId = ((ServerConnectionSettings)serverResponse.Data).AgentId.ToString();
-                    _agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
-
-                    UpdateUIOnConnect();
-
-                    //Set Registry Keys if NOT already Set
-                    if(string.IsNullOrEmpty(_registryManager.AgentUsername) || string.IsNullOrEmpty(_registryManager.AgentPassword))
+                    if (serverResponse.Data != null)
                     {
-                        _registryManager.AgentUsername = _connectionSettings.AgentUsername;
-                        _registryManager.AgentPassword = _connectionSettings.AgentPassword;
+                        _agentSettings.OpenBotsServerUrl = _connectionSettings.ServerURL;
+                        _agentSettings.AgentId = ((ServerConnectionSettings)serverResponse.Data).AgentId.ToString();
+                        _agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
 
-                        OnSetRegistryKeys();
+                        UpdateUIOnConnect();
+
+                        //Set Registry Keys if NOT already Set
+                        if (string.IsNullOrEmpty(_registryManager.AgentUsername) || string.IsNullOrEmpty(_registryManager.AgentPassword))
+                        {
+                            _registryManager.AgentUsername = _connectionSettings.AgentUsername;
+                            _registryManager.AgentPassword = _connectionSettings.AgentPassword;
+
+                            OnSetRegistryKeys();
+                        }
+
+                        // Update OpenBots.settings file
+                        SettingsManager.UpdateSettings(_agentSettings);
                     }
-
-                    // Update OpenBots.settings file
-                    SettingsManager.UpdateSettings(_agentSettings);
-                }
-                else
-                {
-                    ErrorDialog errorDialog = new ErrorDialog("An error occurred while connecting to the server.", 
-                        serverResponse.StatusCode, 
-                        serverResponse.Message);
-                    errorDialog.Owner = Application.Current.MainWindow;
-                    errorDialog.ShowDialog();
-                }
+                    else
+                    {
+                        ErrorDialog errorDialog = new ErrorDialog("An error occurred while connecting to the server.",
+                            serverResponse.StatusCode,
+                            serverResponse.Message);
+                        errorDialog.Owner = Application.Current.MainWindow;
+                        errorDialog.ShowDialog();
+                    }
+                }  
             }
             else if (btn_Connect.Content.ToString() == "Disconnect")
             {
                 var serverResponse = PipeProxy.Instance.DisconnectFromServer(_connectionSettings);
-                if (serverResponse.StatusCode == "200")
+                if(serverResponse != null)
                 {
-                    _agentSettings.OpenBotsServerUrl = "";
-                    _agentSettings.AgentId = string.Empty;
-                    _agentSettings.AgentName = string.Empty;
+                    if (serverResponse.StatusCode == "200")
+                    {
+                        _agentSettings.OpenBotsServerUrl = "";
+                        _agentSettings.AgentId = string.Empty;
+                        _agentSettings.AgentName = string.Empty;
 
-                    UpdateUIOnDisconnect();
+                        UpdateUIOnDisconnect();
 
-                    // Update OpenBots.settings file
-                    SettingsManager.UpdateSettings(_agentSettings);
+                        // Update OpenBots.settings file
+                        SettingsManager.UpdateSettings(_agentSettings);
+                    }
+                    else
+                    {
+                        string errorMessage = JToken.Parse(serverResponse.Message).ToString(Formatting.Indented);
+                        ErrorDialog errorDialog = new ErrorDialog("An error occurred while disconnecting from the server.",
+                            serverResponse.StatusCode,
+                            errorMessage);
+                        errorDialog.Owner = Application.Current.MainWindow;
+                        errorDialog.ShowDialog();
+                    }
                 }
-                else
-                {
-                    string errorMessage = JToken.Parse(serverResponse.Message).ToString(Formatting.Indented);
-                    ErrorDialog errorDialog = new ErrorDialog("An error occurred while disconnecting from the server.",
-                        serverResponse.StatusCode,
-                        errorMessage);
-                    errorDialog.Owner = Application.Current.MainWindow;
-                    errorDialog.ShowDialog();
-                }
-
             }
         }
         private void OnDropDownClosed_LogLevel(object sender, EventArgs e)

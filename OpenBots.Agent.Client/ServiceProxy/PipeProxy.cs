@@ -2,6 +2,7 @@
 using OpenBots.Agent.Core.Model;
 using System;
 using System.ServiceModel;
+using System.Windows;
 
 namespace OpenBots.Agent.Client
 {
@@ -44,12 +45,38 @@ namespace OpenBots.Agent.Client
 
         public ServerResponse ConnectToServer(ServerConnectionSettings connectionSettings)
         {
-            return _pipeProxy.ConnectToServer(connectionSettings);
+            try
+            {
+                return _pipeProxy.ConnectToServer(connectionSettings);
+            }
+            catch (Exception Ex)
+            {
+                ErrorDialog errorDialog = new ErrorDialog("An error occurred while connecting to the server.",
+                        Ex.GetType().Name,
+                        Ex.Message);
+                errorDialog.Owner = Application.Current.MainWindow;
+                errorDialog.ShowDialog();
+
+                return null;
+            }   
         }
 
         public ServerResponse DisconnectFromServer(ServerConnectionSettings connectionSettings)
         {
-            return _pipeProxy.DisconnectFromServer(connectionSettings);
+            try
+            {
+                return _pipeProxy.DisconnectFromServer(connectionSettings);
+            }
+            catch (Exception Ex)
+            {
+                ErrorDialog errorDialog = new ErrorDialog("An error occurred while disconnecting from the server.",
+                        Ex.Source,
+                        Ex.Message);
+                errorDialog.Owner = Application.Current.MainWindow;
+                errorDialog.ShowDialog();
+
+                return null;
+            }
         }
 
         public bool IsServiceAlive()
