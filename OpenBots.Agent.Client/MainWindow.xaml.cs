@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Drawing = System.Drawing;
 using Forms = System.Windows.Forms;
+using System.IO;
 
 namespace OpenBots.Agent.Client
 {
@@ -40,9 +41,7 @@ namespace OpenBots.Agent.Client
         public MainWindow()
         {
             InitializeComponent();
-
-            // Connect to WCF Service Endpoint
-            _isServiceUP = PipeProxy.Instance.StartServiceEndPoint();
+            ConnectToService();
         }
 
         #region Window Events / Helper Methods
@@ -76,6 +75,7 @@ namespace OpenBots.Agent.Client
         }
         private void OnLoad(object sender, RoutedEventArgs e)
         {
+            SetConfigFilePath();
             LoadConnectionSettings();
             UpdateConnectButtonState();
             UpdateSaveButtonState();
@@ -158,7 +158,7 @@ namespace OpenBots.Agent.Client
                     MachineName = Environment.MachineName,
                     AgentId = string.Empty,
                     MACAddress = AgentHelper.GetMacAddress(),
-                    IPAddress = new WebClient().DownloadString("http://icanhazip.com").Trim()
+                    IPAddress = new WebClient().DownloadString("https://ipv4.icanhazip.com/").Trim()
                 };
             }
 
@@ -180,7 +180,51 @@ namespace OpenBots.Agent.Client
                 UpdateUIOnConnect();
             }
         }
+        private void SetConfigFilePath()
+        {
+            if(_isServiceUP)
+            {
+                string envVariableName = "OpenBots_Agent_Config_Path";
 
+                try
+                {
+                    // Get Settings file Path from Environment Variable
+                    string agentSettingsPath = Environment.GetEnvironmentVariable(envVariableName, EnvironmentVariableTarget.Machine);
+
+                    // Create Environment Variable if It doesn't exist
+                    if (string.IsNullOrEmpty(agentSettingsPath))
+                    {
+                        string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.settings");
+                        if (File.Exists(settingsFilePath))
+                            PipeProxy.Instance.SetConfigFilePath(envVariableName, settingsFilePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorDialog("An error occurred while setting up OpenBots.Settings (Config File Path)" +
+                        "to an Environment Variable.\n" +
+                        $"Please add the variable \"{envVariableName}\" manually and re-run the agent.",
+                        "",
+                        ex.Message,
+                        Application.Current.MainWindow);
+                }
+            }
+        }
+        private void ConnectToService()
+        {
+            // Connect to WCF Service Endpoint
+            _isServiceUP = PipeProxy.Instance.StartServiceEndPoint();
+
+            if (!_isServiceUP)
+            {
+                ShowErrorDialog("An error occurred while connecting to the service.",
+                    "",
+                    "OpenBots Agent Service is not running. " +
+                    "Please start the service \"OpenBotsSvc\" and try again.");
+
+                ExitApplication();
+            }
+        }
         #endregion
 
         #region Service HeartBeat Method(s)
@@ -258,6 +302,10 @@ namespace OpenBots.Agent.Client
             if (_contextMenuTrayIcon != null)
                 _contextMenuTrayIcon.Dispose();
 
+            ShutDownApplication();
+        }
+        private void ShutDownApplication()
+        {
             Application.Current.Shutdown();
         }
 
@@ -294,7 +342,7 @@ namespace OpenBots.Agent.Client
                 _connectionSettings.LoggingValue4 = txt_SinkType_Logging4.Text;
 
                 var serverResponse = PipeProxy.Instance.ConnectToServer(_connectionSettings);
-                if(serverResponse != null)
+                if (serverResponse != null)
                 {
                     if (serverResponse.Data != null)
                     {
@@ -318,18 +366,17 @@ namespace OpenBots.Agent.Client
                     }
                     else
                     {
-                        ErrorDialog errorDialog = new ErrorDialog("An error occurred while connecting to the server.",
+                        ShowErrorDialog("An error occurred while connecting to the server.",
                             serverResponse.StatusCode,
-                            serverResponse.Message);
-                        errorDialog.Owner = Application.Current.MainWindow;
-                        errorDialog.ShowDialog();
+                            serverResponse.Message,
+                            Application.Current.MainWindow);
                     }
-                }  
+                }
             }
             else if (btn_Connect.Content.ToString() == "Disconnect")
             {
                 var serverResponse = PipeProxy.Instance.DisconnectFromServer(_connectionSettings);
-                if(serverResponse != null)
+                if (serverResponse != null)
                 {
                     if (serverResponse.StatusCode == "200")
                     {
@@ -345,11 +392,11 @@ namespace OpenBots.Agent.Client
                     else
                     {
                         string errorMessage = JToken.Parse(serverResponse.Message).ToString(Formatting.Indented);
-                        ErrorDialog errorDialog = new ErrorDialog("An error occurred while disconnecting from the server.",
+
+                        ShowErrorDialog("An error occurred while disconnecting from the server.",
                             serverResponse.StatusCode,
-                            errorMessage);
-                        errorDialog.Owner = Application.Current.MainWindow;
-                        errorDialog.ShowDialog();
+                            errorMessage,
+                            Application.Current.MainWindow);
                     }
                 }
             }
@@ -588,6 +635,16 @@ namespace OpenBots.Agent.Client
                 txt_Username.IsEnabled = true;
                 txt_Password.IsEnabled = true;
             }
+        }
+        #endregion
+
+        #region Dialog Windows Handler
+        private void ShowErrorDialog(string generalMessage, string errorCode, string errorMessage, Window parentWindow = null)
+        {
+            ErrorDialog errorDialog = new ErrorDialog(generalMessage, errorCode, errorMessage);
+            if(parentWindow != null)
+                errorDialog.Owner = parentWindow;
+            errorDialog.ShowDialog();
         }
         #endregion
     }
