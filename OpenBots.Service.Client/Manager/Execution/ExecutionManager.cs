@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Utilities;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Server;
@@ -93,7 +94,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 JobStatusType.Failed, new JobErrorViewModel(
                     ex.Message, 
                     ex.GetType().GetProperty("ErrorCode").GetValue(ex, null)?.ToString(), 
-                    ex.ToString())
+                    ExceptionSerializer.Serialize(ex))
                 );
 
                 SetEngineStatus(false);

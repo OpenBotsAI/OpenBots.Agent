@@ -71,10 +71,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserRegistry\RegistryKeys.cs" />
     <Compile Include="UserRegistry\RegistryManager.cs" />
+    <Compile Include="Utilities\ExceptionSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
