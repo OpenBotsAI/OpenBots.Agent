@@ -179,6 +179,7 @@
     <Content Include="lib\Microsoft.Web.XmlTransform.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="lib\Microsoft.Web.XmlTransform.pdb" />
     <Content Include="lib\Microsoft.Win32.TaskScheduler.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
