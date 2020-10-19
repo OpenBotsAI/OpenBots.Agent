@@ -22,6 +22,9 @@ namespace OpenBots.Agent.Core.Infrastructure
 
         [OperationContract]
         ServerConnectionSettings GetConnectionSettings();
+
+        [OperationContract]
+        void SetEnvironmentVariable(string environmentVariable, string settingsFilePath);
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using OpenBots.Agent.Core.Infrastructure;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Service.Client.Server;
+using System;
 
 namespace OpenBots.Service.Client
 {
@@ -29,6 +30,18 @@ namespace OpenBots.Service.Client
         public bool IsConnected()
         {
             return ConnectionSettingsManager.Instance?.ConnectionSettings?.ServerConnectionEnabled ?? false;
+        }
+
+        public void SetEnvironmentVariable(string environmentVariable, string settingsFilePath)
+        {
+            try
+            {
+                Environment.SetEnvironmentVariable(environmentVariable, settingsFilePath, EnvironmentVariableTarget.Machine);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

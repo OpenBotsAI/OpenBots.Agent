@@ -74,5 +74,10 @@ namespace OpenBots.Agent.Client
         {
             return _pipeProxy.GetConnectionSettings();
         }
+
+        public void SetConfigFilePath(string environmentVariable, string settingsFilePath)
+        {
+            _pipeProxy.SetEnvironmentVariable(environmentVariable, settingsFilePath);
+        }
     }
 }
