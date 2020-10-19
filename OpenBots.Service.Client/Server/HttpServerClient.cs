@@ -102,7 +102,8 @@ namespace OpenBots.Service.Client.Server
         }
         private void StopJobPolling()
         {
-            _jobsPolling.StopJobsPolling();
+            if (_jobsPolling != null)
+                _jobsPolling.StopJobsPolling();
         }
 
         #endregion JobsPolling
