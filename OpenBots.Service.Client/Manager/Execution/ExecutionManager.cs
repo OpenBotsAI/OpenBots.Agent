@@ -1,7 +1,5 @@
 ﻿
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Service.API.Model;
@@ -12,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Timers;
 
 namespace OpenBots.Service.Client.Manager.Execution
@@ -112,10 +109,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Download Process and Extract Files
             var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(processInfo);
 
-            //// Create Process Execution Log (Execution Started)
-            //_executionLog = ExecutionLogsAPIManager.CreateExecutionLog(AuthAPIManager.Instance, new ProcessExecutionLog(job.Id,
-            //    job.ProcessId, job.AgentId, DateTime.Now, null, null, null, "Job has started processing", false,
-            //    null, null));
+            // Create Process Execution Log (Execution Started)
+            _executionLog = ExecutionLogsAPIManager.CreateExecutionLog(AuthAPIManager.Instance, new ProcessExecutionLog(job.Id,
+                job.ProcessId, job.AgentId, DateTime.Now, null, null, null, "Job has started processing"));
 
             // Update Job Status (InProgress)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
@@ -141,10 +137,10 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Delete Process Files Directory
             Directory.Delete(Path.GetDirectoryName(mainScriptFilePath), true);
 
-            //// Update Process Execution Log (Execution Finished)
-            //_executionLog.CompletedOn = DateTime.Now;
-            //_executionLog.Status = "Job has finished processing";
-            //ExecutionLogsAPIManager.UpdateExecutionLog(AuthAPIManager.Instance, _executionLog);
+            // Update Process Execution Log (Execution Finished)
+            _executionLog.CompletedOn = DateTime.Now;
+            _executionLog.Status = "Job has finished processing";
+            ExecutionLogsAPIManager.UpdateExecutionLog(AuthAPIManager.Instance, _executionLog);
 
             // Update Job Status (Completed)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),

@@ -1,5 +1,4 @@
-﻿using OpenBots.Agent.Core.Model;
-using OpenBots.Service.Client.Manager.API;
+﻿using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.Hub;
 using OpenBots.Service.Client.Server;
 using System;

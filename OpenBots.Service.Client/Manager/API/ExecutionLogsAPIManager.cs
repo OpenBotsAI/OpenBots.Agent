@@ -11,11 +11,11 @@ namespace OpenBots.Service.Client.Manager.API
     {
         public static ProcessExecutionLog CreateExecutionLog(AuthAPIManager apiManager, ProcessExecutionLog body)
         {
-            ProcessExecutionLogApi executionLogsApi = new ProcessExecutionLogApi(apiManager.Configuration);
+            ProcessExecutionLogsApi executionLogsApi = new ProcessExecutionLogsApi(apiManager.Configuration);
 
             try
             {
-                return executionLogsApi.ApiV1ProcessExecutionLogStartprocessPost(body);
+                return executionLogsApi.ApiV1ProcessExecutionLogsStartprocessPost(body);
             }
             catch (Exception ex)
             {
@@ -24,7 +24,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     executionLogsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return executionLogsApi.ApiV1ProcessExecutionLogStartprocessPost(body);
+                    return executionLogsApi.ApiV1ProcessExecutionLogsStartprocessPost(body);
                 }
                 throw ex;
             }
