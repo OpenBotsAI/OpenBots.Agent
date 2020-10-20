@@ -444,10 +444,12 @@ namespace OpenBots.Agent.Client
         }
         private void OnTextChange_Logging1(object sender, TextChangedEventArgs e)
         {
-            if (/*(agentSettings.SinkType.Equals("File")|| agentSettings.SinkType.Equals("Http")) && */!_agentSettings.LoggingValue1.Equals(txt_SinkType_Logging1.Text))
+            if (!_agentSettings.LoggingValue1.Equals(txt_SinkType_Logging1.Text))
                 _logInfoChanged = true;
             else
                 _logInfoChanged = false;
+
+            SetToolTip(txt_SinkType_Logging1);
             UpdateSaveButtonState();
         }
         private void OnTextChange_Logging2(object sender, TextChangedEventArgs e)
@@ -456,6 +458,8 @@ namespace OpenBots.Agent.Client
                 _logInfoChanged = true;
             else
                 _logInfoChanged = false;
+
+            SetToolTip(txt_SinkType_Logging2);
             UpdateSaveButtonState();
         }
         private void OnTextChange_Logging3(object sender, TextChangedEventArgs e)
@@ -464,6 +468,8 @@ namespace OpenBots.Agent.Client
                 _logInfoChanged = true;
             else
                 _logInfoChanged = false;
+
+            SetToolTip(txt_SinkType_Logging3);
             UpdateSaveButtonState();
         }
         private void OnTextChange_Logging4(object sender, TextChangedEventArgs e)
@@ -472,8 +478,18 @@ namespace OpenBots.Agent.Client
                 _logInfoChanged = true;
             else
                 _logInfoChanged = false;
+
+            SetToolTip(txt_SinkType_Logging4);
             UpdateSaveButtonState();
         }
+        private void SetToolTip(TextBox txtLogging)
+        {
+            if (txtLogging.Text.Length > 36)
+                txtLogging.ToolTip = txtLogging.Text;
+            else
+                txtLogging.ClearValue(TextBox.ToolTipProperty);
+        }
+
         private void OnClick_SaveBtn(object sender, RoutedEventArgs e)
         {
             _agentSettings.TracingLevel = cmb_LogLevel.Text;
