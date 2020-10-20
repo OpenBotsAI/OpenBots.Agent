@@ -70,11 +70,18 @@
     <Compile Include="ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Dialog\MachineInfo.xaml.cs">
+      <DependentUpon>MachineInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ServiceProxy\PipeProxy.cs" />
     <Compile Include="Settings\OpenBotsSettings.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="Utilities\AgentHelper.cs" />
     <Page Include="ErrorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Dialog\MachineInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

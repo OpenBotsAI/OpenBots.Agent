@@ -14,8 +14,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Drawing = System.Drawing;
-using Forms = System.Windows.Forms;
+using SystemForms = System.Windows.Forms;
 using System.IO;
+using OpenBots.Agent.Client.Forms.Dialog;
 
 namespace OpenBots.Agent.Client
 {
@@ -29,10 +30,11 @@ namespace OpenBots.Agent.Client
         private Timer _serviceHeartBeat;
         private RegistryManager _registryManager;
 
-        private Forms.NotifyIcon _notifyIcon = null;
+        private SystemForms.NotifyIcon _notifyIcon = null;
         private Dictionary<string, Drawing.Icon> _iconHandles = null;
-        private Forms.ContextMenu _contextMenuTrayIcon;
-        private Forms.MenuItem _menuItemExit;
+        private SystemForms.ContextMenu _contextMenuTrayIcon;
+        private SystemForms.MenuItem _menuItemExit;
+        private SystemForms.MenuItem _menuItemMachineInfo;
 
         private bool _isServiceUP = false;
         private bool _windowHeightReduced = false;
@@ -51,20 +53,26 @@ namespace OpenBots.Agent.Client
             _registryManager = new RegistryManager();
 
             // Create ContextMenu
-            _contextMenuTrayIcon = new Forms.ContextMenu();
-            _menuItemExit = new Forms.MenuItem();
+            _contextMenuTrayIcon = new SystemForms.ContextMenu();
+            _menuItemExit = new SystemForms.MenuItem();
+            _menuItemMachineInfo = new SystemForms.MenuItem();
             
             // Initialize contextMenu
-            _contextMenuTrayIcon.MenuItems.AddRange(new Forms.MenuItem[] { _menuItemExit });
+            _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[] { _menuItemExit, _menuItemMachineInfo });
 
-            // Initialize menuItem1
-            _menuItemExit.Index = 0;
+            // Initialize _menuItemExit
+            _menuItemExit.Index = 1;
             _menuItemExit.Text = "Exit";
             _menuItemExit.Click += menuItemExit_Click;
 
+            // Initialize _menuItemMachineInfo
+            _menuItemMachineInfo.Index = 0;
+            _menuItemMachineInfo.Text = "Machine Info";
+            _menuItemMachineInfo.Click += menuItemMachineInfo_Click;
+
             _iconHandles = new Dictionary<string, Drawing.Icon>();
             _iconHandles.Add("QuickLaunch", new Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"OpenBots.ico")));
-            _notifyIcon = new Forms.NotifyIcon();
+            _notifyIcon = new SystemForms.NotifyIcon();
             _notifyIcon.ContextMenu = _contextMenuTrayIcon;
             _notifyIcon.Click += notifyIcon_Click;
             _notifyIcon.DoubleClick += notifyIcon_DoubleClick;
@@ -288,6 +296,16 @@ namespace OpenBots.Agent.Client
         }
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
+        }
+        private void menuItemMachineInfo_Click(object Sender, EventArgs e)
+        {
+            MachineInfo machineInfoDialog = new MachineInfo(
+                _connectionSettings.DNSHost, 
+                _connectionSettings.MACAddress, 
+                _connectionSettings.IPAddress);
+
+            machineInfoDialog.Owner = Application.Current.MainWindow;
+            machineInfoDialog.ShowDialog();
         }
         private void menuItemExit_Click(object Sender, EventArgs e)
         {
