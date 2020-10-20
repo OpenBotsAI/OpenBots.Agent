@@ -45,38 +45,12 @@ namespace OpenBots.Agent.Client
 
         public ServerResponse ConnectToServer(ServerConnectionSettings connectionSettings)
         {
-            try
-            {
-                return _pipeProxy.ConnectToServer(connectionSettings);
-            }
-            catch (Exception Ex)
-            {
-                ErrorDialog errorDialog = new ErrorDialog("An error occurred while connecting to the server.",
-                        Ex.GetType().Name,
-                        Ex.Message);
-                errorDialog.Owner = Application.Current.MainWindow;
-                errorDialog.ShowDialog();
-
-                return null;
-            }   
+            return _pipeProxy.ConnectToServer(connectionSettings);
         }
 
         public ServerResponse DisconnectFromServer(ServerConnectionSettings connectionSettings)
         {
-            try
-            {
-                return _pipeProxy.DisconnectFromServer(connectionSettings);
-            }
-            catch (Exception Ex)
-            {
-                ErrorDialog errorDialog = new ErrorDialog("An error occurred while disconnecting from the server.",
-                        Ex.Source,
-                        Ex.Message);
-                errorDialog.Owner = Application.Current.MainWindow;
-                errorDialog.ShowDialog();
-
-                return null;
-            }
+            return _pipeProxy.DisconnectFromServer(connectionSettings);
         }
 
         public bool IsServiceAlive()
