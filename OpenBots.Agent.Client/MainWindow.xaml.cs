@@ -60,15 +60,15 @@ namespace OpenBots.Agent.Client
             // Initialize contextMenu
             _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[] { _menuItemExit, _menuItemMachineInfo });
 
-            // Initialize _menuItemExit
-            _menuItemExit.Index = 1;
-            _menuItemExit.Text = "Exit";
-            _menuItemExit.Click += menuItemExit_Click;
-
             // Initialize _menuItemMachineInfo
             _menuItemMachineInfo.Index = 0;
             _menuItemMachineInfo.Text = "Machine Info";
             _menuItemMachineInfo.Click += menuItemMachineInfo_Click;
+
+            // Initialize _menuItemExit
+            _menuItemExit.Index = 1;
+            _menuItemExit.Text = "Exit";
+            _menuItemExit.Click += menuItemExit_Click;
 
             _iconHandles = new Dictionary<string, Drawing.Icon>();
             _iconHandles.Add("QuickLaunch", new Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"OpenBots.ico")));
@@ -141,7 +141,7 @@ namespace OpenBots.Agent.Client
         private void LoadConnectionSettings()
         {
             // Load settings from "OpenBots.Settings" (Config File)
-            _agentSettings = SettingsManager.ReadSettings();
+            _agentSettings = SettingsManager.Instance.ReadSettings();
             bool isServerAlive = false;
 
             // If Server Connection is already Up and Agent has just started.
@@ -154,6 +154,9 @@ namespace OpenBots.Agent.Client
 
             if (_connectionSettings == null)
             {
+                if (!string.IsNullOrEmpty(_agentSettings.AgentId))
+                    _agentSettings = SettingsManager.Instance.ResetToDefaultSettings();
+
                 _connectionSettings = new ServerConnectionSettings()
                 {
                     ServerConnectionEnabled = false,
@@ -192,29 +195,43 @@ namespace OpenBots.Agent.Client
         {
             if(_isServiceUP)
             {
-                string envVariableName = "OpenBots_Agent_Config_Path";
-
                 try
                 {
                     // Get Settings file Path from Environment Variable
-                    string agentSettingsPath = Environment.GetEnvironmentVariable(envVariableName, EnvironmentVariableTarget.Machine);
+                    string agentSettingsPath = Environment.GetEnvironmentVariable(
+                        SettingsManager.Instance.EnvironmentVariableName, 
+                        EnvironmentVariableTarget.Machine);
 
                     // Create Environment Variable if It doesn't exist
                     if (string.IsNullOrEmpty(agentSettingsPath))
                     {
-                        string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.settings");
+                        string settingsFilePath = SettingsManager.Instance.EnvironmentVariableValue;
                         if (File.Exists(settingsFilePath))
-                            PipeProxy.Instance.SetConfigFilePath(envVariableName, settingsFilePath);
+                            PipeProxy.Instance.SetConfigFilePath(SettingsManager.Instance.EnvironmentVariableName, settingsFilePath);
+                        else
+                            throw new FileNotFoundException($"OpenBots Agent Settings file not found at \"{settingsFilePath}\"");
                     }
+                }
+                catch (FileNotFoundException ex)
+                {
+                    ShowErrorDialog("An error occurred while setting up OpenBots Agent Settings File Path " +
+                        "to an Environment Variable.",
+                        "",
+                        ex.Message,
+                        Application.Current.MainWindow);
+
+                    ShutDownApplication();
                 }
                 catch (Exception ex)
                 {
                     ShowErrorDialog("An error occurred while setting up OpenBots.Settings (Config File Path)" +
-                        "to an Environment Variable.\n" +
-                        $"Please add the variable \"{envVariableName}\" manually and re-run the agent.",
+                        $"to an Environment Variable. Please add the variable \"{SettingsManager.Instance.EnvironmentVariableName}\" " +
+                        "manually and re-run the agent.",
                         "",
                         ex.Message,
                         Application.Current.MainWindow);
+
+                    ShutDownApplication();
                 }
             }
         }
@@ -383,7 +400,7 @@ namespace OpenBots.Agent.Client
                             }
 
                             // Update OpenBots.settings file
-                            SettingsManager.UpdateSettings(_agentSettings);
+                            SettingsManager.Instance.UpdateSettings(_agentSettings);
                         }
                         else
                         {
@@ -419,7 +436,7 @@ namespace OpenBots.Agent.Client
                             UpdateUIOnDisconnect();
 
                             // Update OpenBots.settings file
-                            SettingsManager.UpdateSettings(_agentSettings);
+                            SettingsManager.Instance.UpdateSettings(_agentSettings);
                         }
                         else
                         {
@@ -500,14 +517,6 @@ namespace OpenBots.Agent.Client
             SetToolTip(txt_SinkType_Logging4);
             UpdateSaveButtonState();
         }
-        private void SetToolTip(TextBox txtLogging)
-        {
-            if (txtLogging.Text.Length > 36)
-                txtLogging.ToolTip = txtLogging.Text;
-            else
-                txtLogging.ClearValue(TextBox.ToolTipProperty);
-        }
-
         private void OnClick_SaveBtn(object sender, RoutedEventArgs e)
         {
             _agentSettings.TracingLevel = cmb_LogLevel.Text;
@@ -517,9 +526,17 @@ namespace OpenBots.Agent.Client
             _agentSettings.LoggingValue3 = txt_SinkType_Logging3.Text;
             _agentSettings.LoggingValue4 = txt_SinkType_Logging4.Text;
 
-            SettingsManager.UpdateSettings(_agentSettings);
+            SettingsManager.Instance.UpdateSettings(_agentSettings);
             _logInfoChanged = false;
             UpdateSaveButtonState();
+        }
+
+        private void SetToolTip(TextBox txtLogging)
+        {
+            if (txtLogging.Text.Length > 36)
+                txtLogging.ToolTip = txtLogging.Text;
+            else
+                txtLogging.ClearValue(TextBox.ToolTipProperty);
         }
         private void UpdateUIOnConnect()
         {

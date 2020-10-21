@@ -4,24 +4,61 @@ using System.IO;
 
 namespace OpenBots.Agent.Client
 {
-    public static class SettingsManager
+    public class SettingsManager
     {
-        public static void UpdateSettings(OpenBotsSettings agentSettings)
+        public static SettingsManager Instance
         {
-            File.WriteAllText(GetSettingsFilePath(), JsonConvert.SerializeObject(agentSettings, Formatting.Indented));
+            get
+            {
+                if (instance == null)
+                    instance = new SettingsManager();
+
+                return instance;
+            }
+        }
+        private static SettingsManager instance;
+
+        private SettingsManager()
+        {
         }
 
-        public static OpenBotsSettings ReadSettings()
+        public string EnvironmentVariableName { get; } = "OpenBots_Agent_Config_Path";
+        public string EnvironmentVariableValue { get; } = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                        "OpenBots Inc",
+                        "OpenBots Agent",
+                        "OpenBots.settings"
+                        );
+
+        public void UpdateSettings(OpenBotsSettings agentSettings)
         {
-            return JsonConvert.DeserializeObject<OpenBotsSettings>(File.ReadAllText(GetSettingsFilePath()));
+            File.WriteAllText(EnvironmentVariableValue, JsonConvert.SerializeObject(agentSettings, Formatting.Indented));
         }
 
-        public static string GetSettingsFilePath()
+        public OpenBotsSettings ReadSettings()
         {
-            string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"OpenBots.settings");
-            if (!File.Exists(settingsFilePath))
-                throw new FileNotFoundException($"File NOT found at {settingsFilePath}");
-            return settingsFilePath;
+            return JsonConvert.DeserializeObject<OpenBotsSettings>(File.ReadAllText(EnvironmentVariableValue));
+        }
+
+        public OpenBotsSettings ResetToDefaultSettings()
+        {
+            // Default Settings
+            var agentSettings = new OpenBotsSettings()
+            {
+                TracingLevel = "Information",
+                SinkType = "Http",
+                LoggingValue1 = "https://openbotsserver-dev.azurewebsites.net/api/v1/Logger/Agent",
+                LoggingValue2 = "",
+                LoggingValue3 = "",
+                LoggingValue4 = "",
+                OpenBotsServerUrl = "",
+                AgentId = "",
+                AgentName = ""
+            };
+
+            UpdateSettings(agentSettings);
+
+            return agentSettings;
         }
     }
 }
