@@ -150,10 +150,7 @@ namespace OpenBots.Service.Client.Server
                 if (errorCode == "401")
                     errorMessage = "Authentication Error - \"Agent is not found for given credentials\"";
                 else
-                {
-                    errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? string.Empty;
-                    errorMessage = errorMessage ?? ex.GetType().GetProperty("Message")?.GetValue(ex, null)?.ToString() ?? string.Empty;
-                }
+                    errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? ex.Message;
                 
                 // Send Response to Agent
                 return new ServerResponse(null, errorCode, errorMessage);
@@ -176,13 +173,15 @@ namespace OpenBots.Service.Client.Server
                 StopHeartBeatTimer();
                 StopJobPolling();
 
+                // UnInitialize Configuration
+                AuthAPIManager.Instance.UnInitialize();
+
                 // Form Server Response
                 return new ServerResponse(ConnectionSettingsManager.Instance.ConnectionSettings, apiResponse.StatusCode.ToString());
             }
             catch (Exception ex)
             {
-                var errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? string.Empty;
-                errorMessage = errorMessage ?? ex.GetType().GetProperty("Message")?.GetValue(ex, null)?.ToString() ?? string.Empty;
+                var errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? ex.Message;
 
                 // Form Server Response
                 return new ServerResponse(null,

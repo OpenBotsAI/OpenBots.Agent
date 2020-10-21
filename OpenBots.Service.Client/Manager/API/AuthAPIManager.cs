@@ -32,6 +32,11 @@ namespace OpenBots.Service.Client.Manager
             Configuration.BasePath = ServerSettings.ServerURL;
         }
 
+        public void UnInitialize()
+        {
+            Configuration.ApiClient = null;
+        }
+
         public string GetToken()
         {
             AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
