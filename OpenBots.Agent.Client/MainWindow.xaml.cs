@@ -34,6 +34,7 @@ namespace OpenBots.Agent.Client
         private Dictionary<string, Drawing.Icon> _iconHandles = null;
         private SystemForms.ContextMenu _contextMenuTrayIcon;
         private SystemForms.MenuItem _menuItemExit;
+        private SystemForms.MenuItem _menuItemClearCredentials;
         private SystemForms.MenuItem _menuItemMachineInfo;
 
         private bool _isServiceUP = false;
@@ -55,18 +56,26 @@ namespace OpenBots.Agent.Client
             // Create ContextMenu
             _contextMenuTrayIcon = new SystemForms.ContextMenu();
             _menuItemExit = new SystemForms.MenuItem();
+            _menuItemClearCredentials = new SystemForms.MenuItem();
             _menuItemMachineInfo = new SystemForms.MenuItem();
             
             // Initialize contextMenu
-            _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[] { _menuItemExit, _menuItemMachineInfo });
+            _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[] 
+            { 
+                _menuItemMachineInfo,
+                _menuItemClearCredentials,
+                _menuItemExit
+            });
 
             // Initialize _menuItemMachineInfo
-            _menuItemMachineInfo.Index = 0;
             _menuItemMachineInfo.Text = "Machine Info";
             _menuItemMachineInfo.Click += menuItemMachineInfo_Click;
 
+            // Initialize _menuItemClearCredentials
+            _menuItemClearCredentials.Text = "Clear Credentials";
+            _menuItemClearCredentials.Click += menuItemClearCredentials_Click;
+
             // Initialize _menuItemExit
-            _menuItemExit.Index = 1;
             _menuItemExit.Text = "Exit";
             _menuItemExit.Click += menuItemExit_Click;
 
@@ -81,6 +90,7 @@ namespace OpenBots.Agent.Client
             Closing += OnClosing;
             Closed += OnClosed;
         }
+
         private void OnLoad(object sender, RoutedEventArgs e)
         {
             SetConfigFilePath();
@@ -324,6 +334,18 @@ namespace OpenBots.Agent.Client
             machineInfoDialog.Owner = Application.Current.MainWindow;
             machineInfoDialog.ShowDialog();
         }
+        private void menuItemClearCredentials_Click(object sender, EventArgs e)
+        {
+            ClearCredentials();
+            LoadConnectionSettings();
+
+            MessageDialog messageDialog = new MessageDialog(
+                "Credentials Cleared",
+                "OpenBots Agent Credentials have been cleared.");
+
+            messageDialog.Owner = Application.Current.MainWindow;
+            messageDialog.ShowDialog();
+        }
         private void menuItemExit_Click(object Sender, EventArgs e)
         {
             // Close the application.
@@ -343,7 +365,21 @@ namespace OpenBots.Agent.Client
         {
             Application.Current.Shutdown();
         }
+        private void RestartApplication()
+        {
+            SystemForms.Application.Restart();
+            ShutDownApplication();
+        }
+        private void ClearCredentials()
+        {
+            // Clear from Registry
+            _registryManager.AgentUsername = string.Empty;
+            _registryManager.AgentPassword = string.Empty;
 
+            // Update UI
+            txt_Username.Text = string.Empty;
+            txt_Password.Password = string.Empty;
+        }
         #endregion
 
         #region Input Control Events / Helper Methods
@@ -554,6 +590,10 @@ namespace OpenBots.Agent.Client
             txt_SinkType_Logging2.IsEnabled = false;
             txt_SinkType_Logging3.IsEnabled = false;
             txt_SinkType_Logging4.IsEnabled = false;
+
+            // Disable and Hide _menuItemClearCredentials
+            _menuItemClearCredentials.Enabled = false;
+            _menuItemClearCredentials.Visible = false;
         }
         private void UpdateUIOnDisconnect()
         {
@@ -571,6 +611,10 @@ namespace OpenBots.Agent.Client
             txt_SinkType_Logging2.IsEnabled = true;
             txt_SinkType_Logging3.IsEnabled = true;
             txt_SinkType_Logging4.IsEnabled = true;
+
+            // Enable and Show _menuItemClearCredentials
+            _menuItemClearCredentials.Enabled = true;
+            _menuItemClearCredentials.Visible = true;
         }
         private void UpdateConnectButtonState()
         {
@@ -696,7 +740,7 @@ namespace OpenBots.Agent.Client
         private void OnSetRegistryKeys()
         {
             // If Agent's Credentials (Username, Password) exist in the Registry
-            if(!string.IsNullOrEmpty(txt_Username.Text) && !string.IsNullOrEmpty(txt_Password.Password))
+            if(!string.IsNullOrEmpty(_registryManager.AgentUsername) && !string.IsNullOrEmpty(_registryManager.AgentPassword))
             {
                 // Disable Credentials Controls
                 txt_Username.IsEnabled = false;

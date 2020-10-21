@@ -73,6 +73,9 @@
     <Compile Include="Forms\Dialog\MachineInfo.xaml.cs">
       <DependentUpon>MachineInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Dialog\MessageDialog.xaml.cs">
+      <DependentUpon>MessageDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ServiceProxy\PipeProxy.cs" />
     <Compile Include="Settings\OpenBotsSettings.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
@@ -82,6 +85,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Dialog\MachineInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Dialog\MessageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
