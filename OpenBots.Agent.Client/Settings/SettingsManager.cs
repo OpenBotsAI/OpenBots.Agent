@@ -24,7 +24,7 @@ namespace OpenBots.Agent.Client
 
         public string EnvironmentVariableName { get; } = "OpenBots_Agent_Config_Path";
         public string EnvironmentVariableValue { get; } = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                         "OpenBots Inc",
                         "OpenBots Agent",
                         "OpenBots.settings"
