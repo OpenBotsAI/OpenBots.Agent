@@ -32,12 +32,12 @@ namespace OpenBots.Agent.Client
 
         public void UpdateSettings(OpenBotsSettings agentSettings)
         {
-            File.WriteAllText(EnvironmentVariableValue, JsonConvert.SerializeObject(agentSettings, Formatting.Indented));
+            File.WriteAllText(GetSettingsFilePath(), JsonConvert.SerializeObject(agentSettings, Formatting.Indented));
         }
 
         public OpenBotsSettings ReadSettings()
         {
-            return JsonConvert.DeserializeObject<OpenBotsSettings>(File.ReadAllText(EnvironmentVariableValue));
+            return JsonConvert.DeserializeObject<OpenBotsSettings>(File.ReadAllText(GetSettingsFilePath()));
         }
 
         public OpenBotsSettings ResetToDefaultSettings()
@@ -59,6 +59,15 @@ namespace OpenBots.Agent.Client
             UpdateSettings(agentSettings);
 
             return agentSettings;
+        }
+
+        private string GetSettingsFilePath()
+        {
+            var settingsFilePath = Environment.GetEnvironmentVariable(
+                        SettingsManager.Instance.EnvironmentVariableName,
+                        EnvironmentVariableTarget.Machine);
+
+            return settingsFilePath ?? EnvironmentVariableValue;
         }
     }
 }
