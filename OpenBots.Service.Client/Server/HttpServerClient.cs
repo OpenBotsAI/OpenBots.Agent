@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Timers;
 using OpenBots.Service.Client.Manager.Execution;
 using OpenBots.Service.Client.Manager;
+using System.Security.Authentication;
+using OpenBots.Service.API.Client;
 
 namespace OpenBots.Service.Client.Server
 {
@@ -118,7 +120,7 @@ namespace OpenBots.Service.Client.Server
             try
             {
                 // Authenticate Agent
-                AuthenticateAgent();
+                AuthAPIManager.Instance.GetToken();
 
                 // API Call to Connect
                 var connectAPIResponse = AgentsAPIManager.ConnectAgent(AuthAPIManager.Instance, ConnectionSettingsManager.Instance.ConnectionSettings);
@@ -142,12 +144,19 @@ namespace OpenBots.Service.Client.Server
                 ConnectionSettingsManager.Instance.ConnectionSettings.AgentId = string.Empty;
                 ConnectionSettingsManager.Instance.ConnectionSettings.AgentName = string.Empty;
 
-                var errorMessage = ex.GetType().GetProperty("ErrorContent").GetValue(ex, null)?.ToString();
-                errorMessage = errorMessage ?? ex.GetType().GetProperty("Message").GetValue(ex, null)?.ToString();
+                string errorMessage;
+                var errorCode = ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty;
+
+                if (errorCode == "401")
+                    errorMessage = "Authentication Error - \"Agent is not found for given credentials\"";
+                else
+                {
+                    errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? string.Empty;
+                    errorMessage = errorMessage ?? ex.GetType().GetProperty("Message")?.GetValue(ex, null)?.ToString() ?? string.Empty;
+                }
+                
                 // Send Response to Agent
-                return new ServerResponse(null,
-                    ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString(),
-                    errorMessage);
+                return new ServerResponse(null, errorCode, errorMessage);
             }
         }
         public ServerResponse Disconnect(ServerConnectionSettings connectionSettings)
@@ -172,47 +181,13 @@ namespace OpenBots.Service.Client.Server
             }
             catch (Exception ex)
             {
-                var errorMessage = ex.GetType().GetProperty("ErrorContent").GetValue(ex, null)?.ToString();
-                errorMessage = errorMessage ?? ex.GetType().GetProperty("Message").GetValue(ex, null)?.ToString();
+                var errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? string.Empty;
+                errorMessage = errorMessage ?? ex.GetType().GetProperty("Message")?.GetValue(ex, null)?.ToString() ?? string.Empty;
 
                 // Form Server Response
                 return new ServerResponse(null,
-                    ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString(),
+                    ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty,
                     errorMessage);
-            }
-        }
-        private void AuthenticateAgent()
-        {
-            // API Call to Get Token (Login)
-            try
-            {
-                AuthAPIManager.Instance.GetToken();
-            }
-            catch (Exception ex)
-            {
-                // If Unauthorized Request
-                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
-                {
-                    // Create Agent User
-                    AuthAPIManager.Instance.RegisterAgentUser();
-
-                    // Get Token after successful SignUp
-                    AuthAPIManager.Instance.GetToken();
-
-                }
-                else
-                    throw ex;
-            }
-
-            // Create Agent if doesn't exist
-            try
-            {
-                if (!AgentsAPIManager.FindAgent(AuthAPIManager.Instance, $"name eq '{ConnectionSettingsManager.Instance.ConnectionSettings.AgentUsername}'"))
-                    AgentsAPIManager.CreateAgent(AuthAPIManager.Instance, ConnectionSettingsManager.Instance.ConnectionSettings);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
 

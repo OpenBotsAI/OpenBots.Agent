@@ -450,7 +450,7 @@ namespace OpenBots.Agent.Client
                 catch (Exception ex)
                 {
                     ShowErrorDialog("An error occurred while connecting to the server.",
-                        ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString(),
+                        ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty,
                         ex.Message,
                         Application.Current.MainWindow);
                 }
@@ -488,7 +488,7 @@ namespace OpenBots.Agent.Client
                 catch (Exception ex)
                 {
                     ShowErrorDialog("An error occurred while disconnecting from the server.",
-                        ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString(),
+                        ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty,
                         ex.Message,
                         Application.Current.MainWindow);
                 }
