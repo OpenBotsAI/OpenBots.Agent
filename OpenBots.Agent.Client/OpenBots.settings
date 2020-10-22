@@ -1,7 +1,7 @@
 {
   "TracingLevel": "Information",
   "SinkType": "Http",
-  "LoggingValue1": "https://openbotsserver-dev.azurewebsites.net/api/v1/Logger/Agent",
+  "LoggingValue1": "",
   "LoggingValue2": "",
   "LoggingValue3": "",
   "LoggingValue4": "",

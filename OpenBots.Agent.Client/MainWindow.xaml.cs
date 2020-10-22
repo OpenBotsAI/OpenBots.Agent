@@ -391,6 +391,38 @@ namespace OpenBots.Agent.Client
         {
             UpdateConnectButtonState();
         }
+        private bool UpdateHttpSinkURL()
+        {
+            string endPoint = SettingsManager.Instance.GetDefaultSettings().LoggingValue1;
+
+            // Change Logging Value for Http Sink Type
+            if (cmb_SinkType.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Http" &&
+                string.IsNullOrEmpty(txt_SinkType_Logging1.Text))
+            {
+                Uri baseUri = new Uri(txt_ServerURL.Text);
+                txt_SinkType_Logging1.Text = new Uri(baseUri, endPoint).ToString();
+                btn_Save.IsEnabled = false;
+
+                return true;
+            }
+            return false;
+        }
+        private void OnUpdateHttpSinkURL(bool isSinkURLModified, bool isConnectedToServer)
+        {
+            if (isSinkURLModified)
+            {
+                if (isConnectedToServer)
+                    _agentSettings.LoggingValue1 = _connectionSettings.LoggingValue1;
+                else
+                {
+                    _agentSettings.LoggingValue1 = string.Empty;
+                    _connectionSettings.LoggingValue1 = string.Empty;
+                    txt_SinkType_Logging1.Text = string.Empty;
+                    btn_Save.IsEnabled = false;
+                }
+            }
+        }
+
         private void OnTextChange_AgentUsername(object sender, TextChangedEventArgs e)
         {
             UpdateConnectButtonState();
@@ -403,6 +435,9 @@ namespace OpenBots.Agent.Client
         {
             if (btn_Connect.Content.ToString() == "Connect")
             {
+                // Update Http Sink URL
+                var isSinkURLModified = UpdateHttpSinkURL();
+
                 // Server Configuration
                 _connectionSettings.ServerURL = txt_ServerURL.Text;
                 _connectionSettings.AgentUsername = txt_Username.Text;
@@ -427,6 +462,7 @@ namespace OpenBots.Agent.Client
                             _agentSettings.OpenBotsServerUrl = _connectionSettings.ServerURL;
                             _agentSettings.AgentId = ((ServerConnectionSettings)serverResponse.Data).AgentId.ToString();
                             _agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
+                            OnUpdateHttpSinkURL(isSinkURLModified, true);
 
                             UpdateUIOnConnect();
 
@@ -444,6 +480,8 @@ namespace OpenBots.Agent.Client
                         }
                         else
                         {
+                            OnUpdateHttpSinkURL(isSinkURLModified, false);
+
                             ShowErrorDialog("An error occurred while connecting to the server.",
                                 serverResponse.StatusCode,
                                 serverResponse.Message,
@@ -453,6 +491,8 @@ namespace OpenBots.Agent.Client
                 }
                 catch (Exception ex)
                 {
+                    OnUpdateHttpSinkURL(isSinkURLModified, false);
+
                     ShowErrorDialog("An error occurred while connecting to the server.",
                         ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty,
                         ex.Message,

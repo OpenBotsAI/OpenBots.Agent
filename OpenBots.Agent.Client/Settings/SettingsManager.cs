@@ -40,14 +40,14 @@ namespace OpenBots.Agent.Client
             return JsonConvert.DeserializeObject<OpenBotsSettings>(File.ReadAllText(GetSettingsFilePath()));
         }
 
-        public OpenBotsSettings ResetToDefaultSettings()
+        public OpenBotsSettings GetDefaultSettings()
         {
             // Default Settings
-            var agentSettings = new OpenBotsSettings()
+            return new OpenBotsSettings()
             {
                 TracingLevel = "Information",
                 SinkType = "Http",
-                LoggingValue1 = "https://openbotsserver-dev.azurewebsites.net/api/v1/Logger/Agent",
+                LoggingValue1 = "/api/v1/Logger/Agent",
                 LoggingValue2 = "",
                 LoggingValue3 = "",
                 LoggingValue4 = "",
@@ -55,6 +55,12 @@ namespace OpenBots.Agent.Client
                 AgentId = "",
                 AgentName = ""
             };
+        }
+
+        public OpenBotsSettings ResetToDefaultSettings()
+        {
+            var agentSettings = GetDefaultSettings();
+            agentSettings.LoggingValue1 = string.Empty;
 
             UpdateSettings(agentSettings);
 
