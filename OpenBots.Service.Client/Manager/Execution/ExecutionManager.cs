@@ -104,10 +104,10 @@ namespace OpenBots.Service.Client.Manager.Execution
             var job = JobsQueueManager.Instance.PeekJob();
 
             // Get Process Info
-            var processInfo = ProcessesAPIManager.GetProcess(AuthAPIManager.Instance, job.ProcessId.ToString());
+            var process = ProcessesAPIManager.GetProcess(AuthAPIManager.Instance, job.ProcessId.ToString());
 
             // Download Process and Extract Files
-            var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(processInfo);
+            var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(process);
 
             // Create Process Execution Log (Execution Started)
             _executionLog = ExecutionLogsAPIManager.CreateExecutionLog(AuthAPIManager.Instance, new ProcessExecutionLog(job.Id,
@@ -125,7 +125,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 });
 
             // Run Process
-            RunProcess(processInfo.Name, mainScriptFilePath);
+            RunProcess(job, process, mainScriptFilePath);
 
             // Update Job End Time
             JobsAPIManager.UpdateJobPatch(AuthAPIManager.Instance, job.Id.ToString(),
@@ -149,9 +149,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();
         }
-        private void RunProcess(string processName, string mainScriptFilePath)
+        private void RunProcess(Job job, Process process, string mainScriptFilePath)
         {
-            var executionParams = GetExecutionParams(processName, mainScriptFilePath);
+            var executionParams = GetExecutionParams(job, process, mainScriptFilePath);
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
             
@@ -171,11 +171,13 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobFinishedEvent?.Invoke(this, e);
         }
 
-        private string GetExecutionParams(string processName, string mainScriptFilePath)
+        private string GetExecutionParams(Job job, Process process, string mainScriptFilePath)
         {
             var executionParams = new JobExecutionParams()
             {
-                ProcessName = processName,
+                JobId = job.Id.ToString(),
+                ProcessId = process.Id.ToString(),
+                ProcessName = process.Name,
                 MainFilePath = mainScriptFilePath,
                 ProjectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath),
                 ServerConnectionSettings = ConnectionSettingsManager.Instance.ConnectionSettings

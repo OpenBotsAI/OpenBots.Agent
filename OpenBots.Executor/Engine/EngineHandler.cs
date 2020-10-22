@@ -1,7 +1,7 @@
 ﻿using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Executor.Model;
-using OpenBots.Executor.Utils;
+using OpenBots.Executor.Utilities;
 using Serilog.Core;
 using Serilog.Events;
 using System;
@@ -83,13 +83,13 @@ namespace OpenBots.Executor
 
                     break;
                 case SinkType.Http:
-                    logger = new Logging().CreateHTTPLogger(executionParams.ProcessName,
+                    logger = new Logging().CreateHTTPLogger(executionParams,
                         executionParams.ServerConnectionSettings.LoggingValue1, minLogLevel);
 
                     break;
                 case SinkType.SignalR:
 
-                    logger = new Logging().CreateSignalRLogger(executionParams.ProcessName,
+                    logger = new Logging().CreateSignalRLogger(executionParams,
                         executionParams.ServerConnectionSettings.LoggingValue1,
                         executionParams.ServerConnectionSettings.LoggingValue2,
                         executionParams.ServerConnectionSettings.LoggingValue3.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries),

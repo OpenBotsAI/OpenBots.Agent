@@ -1,11 +1,12 @@
-﻿using Serilog;
+﻿using OpenBots.Agent.Core.Model;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using System;
 using System.Net;
 
-namespace OpenBots.Executor.Utils
+namespace OpenBots.Executor.Utilities
 {
     /// <summary>
     /// Handles functionality for logging to files
@@ -32,7 +33,7 @@ namespace OpenBots.Executor.Utils
             }
         }
 
-        public Logger CreateHTTPLogger(string projectName, string uri, LogEventLevel minLogLevel = LogEventLevel.Verbose)
+        public Logger CreateHTTPLogger(JobExecutionParams executionParams, string uri, LogEventLevel minLogLevel = LogEventLevel.Verbose)
         {
             try
             {
@@ -40,9 +41,12 @@ namespace OpenBots.Executor.Utils
                 levelSwitch.MinimumLevel = minLogLevel;
 
                 return new LoggerConfiguration()
-                        .Enrich.WithProperty("JobId", Guid.NewGuid())
-                        .Enrich.WithProperty("ProcessName", $"{Dns.GetHostName()}-{projectName}")
-                        .Enrich.WithProperty("MachineName", Dns.GetHostName())
+                        .Enrich.WithProperty("JobId", executionParams.JobId)
+                        .Enrich.WithProperty("ProcessId", executionParams.ProcessId)
+                        .Enrich.WithProperty("ProcessName", executionParams.ProcessName)
+                        .Enrich.WithProperty("AgentId", executionParams.ServerConnectionSettings.AgentId)
+                        .Enrich.WithProperty("AgentName", executionParams.ServerConnectionSettings.AgentName)
+                        .Enrich.WithProperty("MachineName", executionParams.ServerConnectionSettings.DNSHost)
                         .MinimumLevel.ControlledBy(levelSwitch)
                         .WriteTo.Http(uri)
                         .CreateLogger();
@@ -53,7 +57,7 @@ namespace OpenBots.Executor.Utils
             }
         }
 
-        public Logger CreateSignalRLogger(string projectName, string url, string logHub = "LogHub", string[] logGroupNames = null,
+        public Logger CreateSignalRLogger(JobExecutionParams executionParams, string url, string logHub = "LogHub", string[] logGroupNames = null,
             string[] logUserIds = null, LogEventLevel minLogLevel = LogEventLevel.Verbose)
         {
             try
@@ -62,9 +66,12 @@ namespace OpenBots.Executor.Utils
                 levelSwitch.MinimumLevel = minLogLevel;
 
                 return new LoggerConfiguration()
-                        .Enrich.WithProperty("JobId", Guid.NewGuid())
-                        .Enrich.WithProperty("ProcessName", $"{Dns.GetHostName()}-{projectName}")
-                        .Enrich.WithProperty("MachineName", Dns.GetHostName())
+                        .Enrich.WithProperty("JobId", executionParams.JobId)
+                        .Enrich.WithProperty("ProcessId", executionParams.ProcessId)
+                        .Enrich.WithProperty("ProcessName", executionParams.ProcessName)
+                        .Enrich.WithProperty("AgentId", executionParams.ServerConnectionSettings.AgentId)
+                        .Enrich.WithProperty("AgentName", executionParams.ServerConnectionSettings.AgentName)
+                        .Enrich.WithProperty("MachineName", executionParams.ServerConnectionSettings.DNSHost)
                         .MinimumLevel.ControlledBy(levelSwitch)
                         .WriteTo.SignalRClient(url,
                                                hub: logHub, // default is LogHub
