@@ -14,6 +14,8 @@ namespace OpenBots.Agent.Core.Model
         [DataMember]
         public string DNSHost { get; set; }
         [DataMember]
+        public string WhoAmI { get; set; }
+        [DataMember]
         public string MachineName { get; set; }
         [DataMember]
         public string AgentId { get; set; }

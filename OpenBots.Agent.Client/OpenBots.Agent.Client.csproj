@@ -120,8 +120,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="OpenBots.settings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -145,6 +146,12 @@
       <Project>{93ebf09a-d073-49a8-a07d-9528f3eaf78f}</Project>
       <Name>OpenBots.Agent.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\copy_black_color_512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\copy_gray_color_512.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

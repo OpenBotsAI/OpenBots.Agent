@@ -17,6 +17,7 @@ using Drawing = System.Drawing;
 using SystemForms = System.Windows.Forms;
 using System.IO;
 using OpenBots.Agent.Client.Forms.Dialog;
+using System.Security.Principal;
 
 namespace OpenBots.Agent.Client
 {
@@ -176,6 +177,7 @@ namespace OpenBots.Agent.Client
                     SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? SinkType.File.ToString() : _agentSettings.SinkType,
                     TracingLevel = string.IsNullOrEmpty(_agentSettings.TracingLevel) ? LogEventLevel.Information.ToString() : _agentSettings.TracingLevel,
                     DNSHost = Dns.GetHostName(),
+                    WhoAmI = WindowsIdentity.GetCurrent().Name.ToLower(),
                     MachineName = Environment.MachineName,
                     AgentId = string.Empty,
                     MACAddress = AgentHelper.GetMacAddress(),
@@ -328,6 +330,7 @@ namespace OpenBots.Agent.Client
         private void menuItemMachineInfo_Click(object Sender, EventArgs e)
         {
             MachineInfo machineInfoDialog = new MachineInfo(
+                _connectionSettings.WhoAmI,
                 _connectionSettings.DNSHost, 
                 _connectionSettings.MACAddress, 
                 _connectionSettings.IPAddress);

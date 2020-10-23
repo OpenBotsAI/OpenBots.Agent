@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Controls = System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Drawing;
+using System.Windows.Media;
 
 namespace OpenBots.Agent.Client.Forms.Dialog
 {
@@ -12,9 +15,10 @@ namespace OpenBots.Agent.Client.Forms.Dialog
     public partial class MachineInfo : Window
     {
         private DispatcherTimer _dispatcherTimer;
-        public MachineInfo(string machineName, string macAddress, string ipAddress)
+        public MachineInfo(string whoami, string machineName, string macAddress, string ipAddress)
         {
             InitializeComponent();
+            lbl_MachineInfo_WhoAmI.Content = whoami;
             lbl_MachineInfo_MachineName.Content = machineName;
             lbl_MachineInfo_MACAddress.Content = macAddress;
             lbl_MachineInfo_IPAddress.Content = ipAddress;
@@ -33,17 +37,33 @@ namespace OpenBots.Agent.Client.Forms.Dialog
             _dispatcherTimer.IsEnabled = false;
         }
 
-        private void OnClick_CopyBtn(object sender, RoutedEventArgs e)
+        private void DisplayCopiedMessage()
         {
-            string machineInfo = $"Machine Name: {lbl_MachineInfo_MachineName.Content}\n" +
-                $"MAC Address: {lbl_MachineInfo_MACAddress.Content}\n" +
-                $"IP Address: {lbl_MachineInfo_IPAddress.Content}\n";
-
-            Clipboard.SetText(machineInfo);
-
             lbl_CopytoClipboard.Visibility = Visibility.Visible;
 
             _dispatcherTimer.Start();
+        }
+
+        private void OnClick_CopyImage(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            string imageName = sender.GetType().GetProperty("Name").GetValue(sender, null).ToString();
+
+            switch(imageName)
+            {
+                case "img_whoami":
+                    Clipboard.SetText(lbl_MachineInfo_WhoAmI.Content.ToString());
+                    break;
+                case "img_machineName":
+                    Clipboard.SetText(lbl_MachineInfo_MachineName.Content.ToString());
+                    break;
+                case "img_macAddress":
+                    Clipboard.SetText(lbl_MachineInfo_MACAddress.Content.ToString());
+                    break;
+                case "img_ipAddress":
+                    Clipboard.SetText(lbl_MachineInfo_IPAddress.Content.ToString());
+                    break;
+            }
+            DisplayCopiedMessage();
         }
     }
 }
