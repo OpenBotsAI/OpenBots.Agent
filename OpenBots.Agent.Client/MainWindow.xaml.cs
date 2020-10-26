@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Client.Utilities;
 using OpenBots.Agent.Core.Model;
-using OpenBots.Agent.Core.UserRegistry;
+using OpenBots.Agent.Core.MachineRegistry;
 using OpenBots.Agent.Core.Enums;
 using Serilog.Events;
 using System;
@@ -211,16 +211,15 @@ namespace OpenBots.Agent.Client
                 try
                 {
                     // Get Settings file Path from Environment Variable
-                    string agentSettingsPath = Environment.GetEnvironmentVariable(
-                        SettingsManager.Instance.EnvironmentVariableName, 
-                        EnvironmentVariableTarget.Machine);
+                    string environmentVariableValue = SettingsManager.Instance.EnvironmentSettings.GetEnvironmentVariable();
 
                     // Create Environment Variable if It doesn't exist
-                    if (string.IsNullOrEmpty(agentSettingsPath))
+                    if (string.IsNullOrEmpty(environmentVariableValue))
                     {
-                        string settingsFilePath = SettingsManager.Instance.EnvironmentVariableValue;
+                        string settingsFilePath = SettingsManager.Instance.GetSettingsFilePath();
+
                         if (File.Exists(settingsFilePath))
-                            PipeProxy.Instance.SetConfigFilePath(SettingsManager.Instance.EnvironmentVariableName, settingsFilePath);
+                            PipeProxy.Instance.SetConfigFilePath(SettingsManager.Instance.EnvironmentSettings.EnvironmentVariableName, settingsFilePath);
                         else
                             throw new FileNotFoundException($"OpenBots Agent Settings file not found at \"{settingsFilePath}\"");
                     }
@@ -238,7 +237,7 @@ namespace OpenBots.Agent.Client
                 catch (Exception ex)
                 {
                     ShowErrorDialog("An error occurred while setting up OpenBots.Settings (Config File Path)" +
-                        $"to an Environment Variable. Please add the variable \"{SettingsManager.Instance.EnvironmentVariableName}\" " +
+                        $"to an Environment Variable. Please add the variable \"{SettingsManager.Instance.EnvironmentSettings.EnvironmentVariableName}\" " +
                         "manually and re-run the agent.",
                         "",
                         ex.Message,

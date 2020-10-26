@@ -4,16 +4,15 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using System;
-using System.Net;
 
-namespace OpenBots.Executor.Utilities
+namespace OpenBots.Agent.Core.Utilities
 {
     /// <summary>
     /// Handles functionality for logging to files
     /// </summary>
     public class Logging
     {
-        public Logger CreateFileLogger(string filePath, RollingInterval logInterval,
+        public Logger CreateFileLogger(string filePath, RollingInterval logInterval = RollingInterval.Day,
             LogEventLevel minLogLevel = LogEventLevel.Verbose)
         {
             try
@@ -105,6 +104,22 @@ namespace OpenBots.Executor.Utilities
             }
         }
 
+        public Logger CreateStandardFileLogger(string filePath, LogEventLevel minLogLevel = LogEventLevel.Information)
+        {
+            try
+            {
+                var levelSwitch = new LoggingLevelSwitch();
+                levelSwitch.MinimumLevel = minLogLevel;
 
+                return new LoggerConfiguration()
+                        .MinimumLevel.ControlledBy(levelSwitch)
+                        .WriteTo.File(filePath, rollingInterval: RollingInterval.Day)
+                        .CreateLogger();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

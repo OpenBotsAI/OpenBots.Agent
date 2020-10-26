@@ -1,6 +1,8 @@
 ﻿using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.Hub;
+using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Server;
+using Serilog.Events;
 using System;
 using System.Timers;
 
@@ -60,6 +62,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                 _newJobsFetchTimer.Elapsed += JobsFetchTimer_Elapsed;
                 _newJobsFetchTimer.Enabled = true;
             }
+
+            // Log Event
+            FileLogger.Instance.LogEvent("Timed Polling", "Started Timed Polling");
         }
         private void StopJobsFetchTimer()
         {
@@ -67,6 +72,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             {
                 _newJobsFetchTimer.Enabled = false;
                 _newJobsFetchTimer.Elapsed -= JobsFetchTimer_Elapsed;
+
+                // Log Event
+                FileLogger.Instance.LogEvent("Timed Polling", "Stopped Timed Polling");
             }
         }
         private void JobsFetchTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -84,12 +92,22 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             _jobsHubManager.JobNotificationReceived += OnNewJobAddedEvent;
             _jobsHubManager.Connect();
+
+            // Log Event
+            FileLogger.Instance.LogEvent("Long Polling", "Started Long Polling");
         }
 
         private void OnNewJobAddedEvent(string agentId)
         {
-            if(ConnectionSettingsManager.Instance.ConnectionSettings.AgentId == agentId)
+            // Log Event
+            FileLogger.Instance.LogEvent("Long Polling", $"New job notification received for AgentId \"{agentId}\"");
+            if (ConnectionSettingsManager.Instance.ConnectionSettings.AgentId == agentId)
+            {
+                // Log Event
+                FileLogger.Instance.LogEvent("Job Fetch", $"Attempt to fetch new Job for AgentId \"{ConnectionSettingsManager.Instance.ConnectionSettings.AgentId}\"");
+
                 FetchNewJobs();
+            }
         }
 
         private void StopHubManager()
@@ -98,6 +116,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             {
                 _jobsHubManager.Disconnect();
                 _jobsHubManager.JobNotificationReceived -= OnNewJobAddedEvent;
+
+                // Log Event
+                FileLogger.Instance.LogEvent("Long Polling", "Stopped Long Polling");
             }
         }
 
@@ -114,10 +135,20 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                 if (apiResponse.Data.Items.Count != 0)
                     foreach (var job in apiResponse.Data.Items)
+                    {
                         JobsQueueManager.Instance.EnqueueJob(job);
+
+                        // Log Event
+                        FileLogger.Instance.LogEvent("Job Fetch", "Job fetched and queued for execution");
+
+                    }
             }
             catch (Exception ex)
             {
+                // Log Event
+                FileLogger.Instance.LogEvent("Job Fetch", $"Error occurred while fetching new job; Error Message = {ex.ToString()}",
+                    LogEventLevel.Error);
+
                 throw ex;
             }
         }

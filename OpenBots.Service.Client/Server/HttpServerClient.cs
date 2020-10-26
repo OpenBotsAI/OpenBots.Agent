@@ -8,6 +8,8 @@ using OpenBots.Service.Client.Manager.Execution;
 using OpenBots.Service.Client.Manager;
 using System.Security.Authentication;
 using OpenBots.Service.API.Client;
+using OpenBots.Service.Client.Manager.Logs;
+using Serilog.Events;
 
 namespace OpenBots.Service.Client.Server
 {
@@ -111,8 +113,14 @@ namespace OpenBots.Service.Client.Server
         #endregion JobsPolling
 
         #region ServerConnection
-        public ServerResponse Connect(ServerConnectionSettings connectionSettings)
+        public ServerResponse Connect(ServerConnectionSettings connectionSettings, string agentDataDirectoryPath)
         {
+            // Initialize File Logger for Debug Purpose
+            FileLogger.Instance.Initialize(agentDataDirectoryPath);
+
+            // Log Event
+            FileLogger.Instance.LogEvent("Connect", "Attempt to connect to the Server");
+
             ConnectionSettingsManager.Instance.ConnectionSettings = connectionSettings;
 
             // Initialize AuthAPIManager
@@ -151,13 +159,20 @@ namespace OpenBots.Service.Client.Server
                     errorMessage = "Authentication Error - \"Agent is not found for given credentials\"";
                 else
                     errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? ex.Message;
-                
+
+                // Log Event (Error)
+                FileLogger.Instance.LogEvent("Connect", $"Error occurred while connecting to the Server; " +
+                    $"Error Code = {errorCode}; Error Message = {errorMessage}", LogEventLevel.Error);
+
                 // Send Response to Agent
                 return new ServerResponse(null, errorCode, errorMessage);
             }
         }
         public ServerResponse Disconnect(ServerConnectionSettings connectionSettings)
         {
+            // Log Event
+            FileLogger.Instance.LogEvent("Disconnect", "Attempt to disconnect from the Server");
+
             try
             {
                 // API Call to Disconnect
@@ -181,16 +196,18 @@ namespace OpenBots.Service.Client.Server
             }
             catch (Exception ex)
             {
+                var errorCode = ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty;
                 var errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? ex.Message;
 
+                // Log Event (Error)
+                FileLogger.Instance.LogEvent("Disconnect", $"Error occurred while disconnecting from the Server; " +
+                    $"Error Code = {errorCode}; Error Message = {errorMessage}", LogEventLevel.Error);
+
                 // Form Server Response
-                return new ServerResponse(null,
-                    ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty,
-                    errorMessage);
+                return new ServerResponse(null, errorCode, errorMessage);
             }
         }
 
         #endregion ServerConnection
-
     }
 }

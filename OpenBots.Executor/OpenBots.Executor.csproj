@@ -97,7 +97,6 @@
     <Compile Include="Engine\EngineHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\Logging.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -312,6 +311,9 @@
       <Project>{93ebf09a-d073-49a8-a07d-9528f3eaf78f}</Project>
       <Name>OpenBots.Agent.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

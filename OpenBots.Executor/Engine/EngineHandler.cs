@@ -1,7 +1,7 @@
 ﻿using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Utilities;
 using OpenBots.Executor.Model;
-using OpenBots.Executor.Utilities;
 using Serilog.Core;
 using Serilog.Events;
 using System;

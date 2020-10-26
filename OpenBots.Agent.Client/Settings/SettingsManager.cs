@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenBots.Agent.Core.Model;
 using System;
 using System.IO;
 
@@ -6,6 +7,7 @@ namespace OpenBots.Agent.Client
 {
     public class SettingsManager
     {
+        public EnvironmentSettings EnvironmentSettings;
         public static SettingsManager Instance
         {
             get
@@ -20,15 +22,8 @@ namespace OpenBots.Agent.Client
 
         private SettingsManager()
         {
+            EnvironmentSettings = new EnvironmentSettings();
         }
-
-        public string EnvironmentVariableName { get; } = "OpenBots_Agent_Config_Path";
-        public string EnvironmentVariableValue { get; } = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        "OpenBots Inc",
-                        "OpenBots Agent",
-                        "OpenBots.settings"
-                        );
 
         public void UpdateSettings(OpenBotsSettings agentSettings)
         {
@@ -67,13 +62,9 @@ namespace OpenBots.Agent.Client
             return agentSettings;
         }
 
-        private string GetSettingsFilePath()
+        public string GetSettingsFilePath()
         {
-            var settingsFilePath = Environment.GetEnvironmentVariable(
-                        SettingsManager.Instance.EnvironmentVariableName,
-                        EnvironmentVariableTarget.Machine);
-
-            return settingsFilePath ?? EnvironmentVariableValue;
+            return Path.Combine(EnvironmentSettings.EnvironmentVariableValue, EnvironmentSettings.SettingsFileName);
         }
     }
 }
