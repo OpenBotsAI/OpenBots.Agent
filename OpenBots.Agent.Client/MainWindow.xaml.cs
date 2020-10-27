@@ -216,7 +216,7 @@ namespace OpenBots.Agent.Client
                     // Create Environment Variable if It doesn't exist
                     if (string.IsNullOrEmpty(environmentVariableValue))
                     {
-                        string settingsFilePath = SettingsManager.Instance.GetSettingsFilePath();
+                        string settingsFilePath = SettingsManager.Instance.GetSettingsFilePath(); 
 
                         if (File.Exists(settingsFilePath))
                             PipeProxy.Instance.SetConfigFilePath(SettingsManager.Instance.EnvironmentSettings.EnvironmentVariableName, settingsFilePath);

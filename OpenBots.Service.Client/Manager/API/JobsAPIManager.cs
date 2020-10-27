@@ -8,13 +8,13 @@ namespace OpenBots.Service.Client.Manager.API
 {
     public static class JobsAPIManager
     {
-        public static ApiResponse<JobPaginatedList> GetJobs(AuthAPIManager apiManager, string filter)
+        public static ApiResponse<NextJobViewModel> GetJob(AuthAPIManager apiManager, string agentId)
         {
             JobsApi jobsApi = new JobsApi(apiManager.Configuration);
 
             try
             {
-                return jobsApi.ApiV1JobsGetWithHttpInfo(filter);
+                return jobsApi.ApiV1JobsNextGetWithHttpInfo(agentId);
             }
             catch (Exception ex)
             {
@@ -23,7 +23,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     jobsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return jobsApi.ApiV1JobsGetWithHttpInfo(filter);
+                    return jobsApi.ApiV1JobsNextGetWithHttpInfo(agentId);
                 }
                 throw ex;
             }

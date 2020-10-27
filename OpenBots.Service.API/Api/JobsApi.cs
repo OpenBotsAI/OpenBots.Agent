@@ -1920,6 +1920,10 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
+            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
+            if (localVarHttpHeaderAuthorization != null)
+                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
+
             if (agentId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "agentId", agentId)); // query parameter
 
             // make the HTTP request

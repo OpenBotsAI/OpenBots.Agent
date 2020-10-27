@@ -129,19 +129,17 @@ namespace OpenBots.Service.Client.Manager.Execution
             try
             {
                 //Retrieve New Jobs for this Agent
-                var apiResponse = JobsAPIManager.GetJobs(
+                var apiResponse = JobsAPIManager.GetJob(
                     AuthAPIManager.Instance,
-                    $"agentId eq guid'{ConnectionSettingsManager.Instance.ConnectionSettings.AgentId}' and jobStatus eq 'New'");
+                    ConnectionSettingsManager.Instance.ConnectionSettings.AgentId);
 
-                if (apiResponse.Data.Items.Count != 0)
-                    foreach (var job in apiResponse.Data.Items)
-                    {
-                        JobsQueueManager.Instance.EnqueueJob(job);
+                if (apiResponse.Data.AssignedJob != null)
+                {
+                    JobsQueueManager.Instance.EnqueueJob(apiResponse.Data.AssignedJob);
 
-                        // Log Event
-                        FileLogger.Instance.LogEvent("Job Fetch", "Job fetched and queued for execution");
-
-                    }
+                    // Log Event
+                    FileLogger.Instance.LogEvent("Job Fetch", "Job fetched and queued for execution");
+                }
             }
             catch (Exception ex)
             {
