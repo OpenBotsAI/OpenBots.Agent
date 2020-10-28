@@ -56,7 +56,7 @@ namespace OpenBots.Service.Client.Manager.API
             AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
             try
             {
-                return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress, new Guid(serverSettings.AgentId));
+                return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.DNSHost, serverSettings.MACAddress, new Guid(serverSettings.AgentId));
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress, new Guid(serverSettings.AgentId));
+                    return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.DNSHost, serverSettings.MACAddress, new Guid(serverSettings.AgentId));
                 }
                 throw ex;
             }
@@ -74,7 +74,7 @@ namespace OpenBots.Service.Client.Manager.API
         public static string CreateAgent(AuthAPIManager apiManager, ServerConnectionSettings serverSettings)
         {
             AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
-            var agentModel = new CreateAgentViewModel(null, serverSettings.AgentName, serverSettings.MachineName, serverSettings.MACAddress,
+            var agentModel = new CreateAgentViewModel(null, serverSettings.AgentName, serverSettings.DNSHost, serverSettings.MACAddress,
                 serverSettings.IPAddress, true, null, null, null, null, true, false, null, 
                 serverSettings.AgentUsername, serverSettings.AgentPassword);
             
