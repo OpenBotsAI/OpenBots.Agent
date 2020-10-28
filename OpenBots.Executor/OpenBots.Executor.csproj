@@ -145,6 +145,9 @@
     <Content Include="lib\Microsoft.AspNet.SignalR.Core.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="lib\Microsoft.Extensions.Configuration.Abstractions.dll" />
+    <Content Include="lib\Microsoft.Extensions.Configuration.dll" />
+    <Content Include="lib\Microsoft.Extensions.Primitives.dll" />
     <Content Include="lib\Microsoft.Office.Interop.Outlook.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -176,6 +179,8 @@
     <Content Include="lib\OpenBots.Commands.API.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="lib\OpenBots.Commands.Asset.dll" />
+    <Content Include="lib\OpenBots.Commands.Credential.dll" />
     <Content Include="lib\OpenBots.Commands.Data.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -218,6 +223,7 @@
     <Content Include="lib\OpenBots.Commands.Process.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="lib\OpenBots.Commands.QueueItem.dll" />
     <Content Include="lib\OpenBots.Commands.RegEx.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -290,9 +296,13 @@
     <Content Include="lib\SuperSocket.ClientEngine.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="lib\System.Buffers.dll" />
     <Content Include="lib\System.ComponentModel.Annotations.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="lib\System.Memory.dll" />
+    <Content Include="lib\System.Numerics.Vectors.dll" />
+    <Content Include="lib\System.Runtime.CompilerServices.Unsafe.dll" />
     <Content Include="lib\WebDriver.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
