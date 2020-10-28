@@ -36,7 +36,7 @@ namespace OpenBots.Service.Client.Manager.API
 
             try
             {
-                return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress);
+                return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.DNSHost, serverSettings.MACAddress);
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.MachineName, serverSettings.MACAddress);
+                    return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.DNSHost, serverSettings.MACAddress);
                 }
                 throw ex;
             }
