@@ -79,6 +79,8 @@ namespace OpenBots.Service.Client.Manager.Execution
         }
         private void JobsFetchTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            // Log Event
+            FileLogger.Instance.LogEvent("Timed Polling", "Attempt to fetch new job");
             FetchNewJobs();
         }
 

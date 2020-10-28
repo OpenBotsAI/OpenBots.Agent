@@ -100,7 +100,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                     JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
                     JobStatusType.Failed, new JobErrorViewModel(
                         ex.Message,
-                        ex.GetType().GetProperty("ErrorCode").GetValue(ex, null)?.ToString(),
+                        ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty,
                         ExceptionSerializer.Serialize(ex))
                     );
                 }
@@ -200,9 +200,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ProcessLauncher.PROCESS_INFORMATION procInfo;
                 ProcessLauncher.LaunchProcess(cmdLine, out procInfo);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
         private void SetEngineStatus(bool isBusy)

@@ -16,7 +16,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         [StructLayout(LayoutKind.Sequential)]
         public struct SECURITY_ATTRIBUTES
         {
-            public int Length;
+            public uint nLength;
             public IntPtr lpSecurityDescriptor;
             public bool bInheritHandle;
         }
@@ -79,6 +79,10 @@ namespace OpenBots.Service.Client.Manager.Execution
         public const uint MAXIMUM_ALLOWED = 0x2000000;
         public const int CREATE_NEW_CONSOLE = 0x00000010;
         public const int CREATE_NO_WINDOW = 0x08000000;
+        private const int CREATE_UNICODE_ENVIRONMENT = 0x00000400;
+
+        private const uint TOKEN_QUERY = 0x0008;
+        private const uint TOKEN_ASSIGN_PRIMARY = 0x0001;
 
         public const int IDLE_PRIORITY_CLASS = 0x40;
         public const int NORMAL_PRIORITY_CLASS = 0x20;
@@ -125,7 +129,90 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool GetExitCodeProcess(IntPtr hProcess, out uint ExitCode);
+
+        [DllImport("userenv.dll", SetLastError = true)]
+        private static extern bool CreateEnvironmentBlock(ref IntPtr lpEnvironment, IntPtr hToken, bool bInherit);
         #endregion
+
+        #region Helping Methods
+        private static IntPtr GetEnvironmentBlock(IntPtr token)
+        {
+
+            IntPtr envBlock = IntPtr.Zero;
+            bool retVal = CreateEnvironmentBlock(ref envBlock, token, false);
+            if (retVal == false)
+            {
+
+                //Environment Block, things like common paths to My Documents etc.
+                //Will not be created if "false"
+                //It should not adversley affect CreateProcessAsUser.
+
+                throw new Exception(String.Format("CreateEnvironmentBlock Error: {0}", Marshal.GetLastWin32Error()));
+            }
+            return envBlock;
+        }
+
+        private static IntPtr GetPrimaryToken(int processId)
+        {
+            IntPtr token = IntPtr.Zero;
+            IntPtr primaryToken = IntPtr.Zero;
+            bool retVal = false;
+            Process p = null;
+
+            try
+            {
+                p = Process.GetProcessById(processId);
+            }
+
+            catch (ArgumentException)
+            {
+
+                string details = String.Format("ProcessID {0} Not Available", processId);
+                Debug.WriteLine(details);
+                throw;
+            }
+
+
+            //Gets impersonation token
+            retVal = OpenProcessToken(p.Handle, TOKEN_DUPLICATE, ref token);
+            if (retVal == true)
+            {
+
+                SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
+                sa.nLength = (uint)Marshal.SizeOf(sa);
+
+                //Convert the impersonation token into Primary token
+                retVal = DuplicateTokenEx(
+                    token,
+                    TOKEN_ASSIGN_PRIMARY | TOKEN_DUPLICATE | TOKEN_QUERY,
+                    ref sa,
+                    (int)SECURITY_IMPERSONATION_LEVEL.SecurityIdentification,
+                    (int)TOKEN_TYPE.TokenPrimary,
+                    ref primaryToken);
+
+                //Close the Token that was previously opened.
+                CloseHandle(token);
+                if (retVal == false)
+                {
+                    string message = String.Format("DuplicateTokenEx Error: {0}", Marshal.GetLastWin32Error());
+                    Debug.WriteLine(message);
+                }
+
+            }
+
+            else
+            {
+
+                string message = String.Format("OpenProcessToken Error: {0}", Marshal.GetLastWin32Error());
+                Debug.WriteLine(message);
+
+            }
+
+            //We'll Close this token after it is used.
+            return primaryToken;
+
+        }
+        #endregion Helping Methods
 
         /// <summary>
         /// Launches the given application with full admin rights, and in addition bypasses the Vista UAC prompt
@@ -135,7 +222,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         /// <returns>Exit Code of the Process</returns>
         public static bool LaunchProcess(String commandLine, out PROCESS_INFORMATION processInfo)
         {
-            uint winlogonPid = 0;
+            int winlogonPid = 0;
             uint exitCode = 0;
             Boolean pResult = false;
             IntPtr hUserTokenDup = IntPtr.Zero, hPToken = IntPtr.Zero, hProcess = IntPtr.Zero;
@@ -154,18 +241,25 @@ namespace OpenBots.Service.Client.Manager.Execution
                 {
                     if ((uint)p.SessionId == dwSessionId)
                     {
-                        winlogonPid = (uint)p.Id;
+                        winlogonPid = (int)p.Id;
                     }
                 }
 
                 // obtain a handle to the winlogon process
-                hProcess = OpenProcess(MAXIMUM_ALLOWED, false, winlogonPid);
+                //hProcess = OpenProcess(MAXIMUM_ALLOWED, false, winlogonPid);
 
-                // obtain a handle to the access token of the winlogon process
-                if (!OpenProcessToken(hProcess, TOKEN_DUPLICATE, ref hPToken))
+                //// obtain a handle to the access token of the winlogon process
+                //if (!OpenProcessToken(hProcess, TOKEN_DUPLICATE, ref hPToken))
+                //{
+                //    CloseHandle(hProcess);
+                //    return false;
+                //}
+
+                hPToken = GetPrimaryToken(winlogonPid);
+
+                if(hPToken == IntPtr.Zero)
                 {
-                    CloseHandle(hProcess);
-                    return false;
+                    throw new Exception("Couldn't retrieve the primary token.");
                 }
 
                 // Security attibute structure used in DuplicateTokenEx and CreateProcessAsUser
@@ -174,15 +268,15 @@ namespace OpenBots.Service.Client.Manager.Execution
                 // of the existing token. However, in C# structures are value types and therefore
                 // cannot be assigned the null value.
                 SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
-                sa.Length = Marshal.SizeOf(sa);
+                sa.nLength = (uint) Marshal.SizeOf(sa);
 
-                // copy the access token of the winlogon process; the newly created token will be a primary token
-                if (!DuplicateTokenEx(hPToken, MAXIMUM_ALLOWED, ref sa, (int)SECURITY_IMPERSONATION_LEVEL.SecurityIdentification, (int)TOKEN_TYPE.TokenPrimary, ref hUserTokenDup))
-                {
-                    CloseHandle(hProcess);
-                    CloseHandle(hPToken);
-                    return false;
-                }
+                //// copy the access token of the winlogon process; the newly created token will be a primary token
+                //if (!DuplicateTokenEx(hPToken, MAXIMUM_ALLOWED, ref sa, (int)SECURITY_IMPERSONATION_LEVEL.SecurityIdentification, (int)TOKEN_TYPE.TokenPrimary, ref hUserTokenDup))
+                //{
+                //    CloseHandle(hProcess);
+                //    CloseHandle(hPToken);
+                //    return false;
+                //}
 
                 // By default CreateProcessAsUser creates a process on a non-interactive window station, meaning
                 // the window station has a desktop that is invisible and the process is incapable of receiving
@@ -193,17 +287,19 @@ namespace OpenBots.Service.Client.Manager.Execution
                 si.lpDesktop = @"winsta0\default"; // interactive window station parameter; basically this indicates that the process created can display a GUI on the desktop
 
                 // flags that specify the priority and creation method of the process
-                int dwCreationFlags = NORMAL_PRIORITY_CLASS | CREATE_NEW_CONSOLE;
+                int dwCreationFlags = NORMAL_PRIORITY_CLASS | CREATE_NEW_CONSOLE | CREATE_UNICODE_ENVIRONMENT;
+
+                IntPtr envBlock = GetEnvironmentBlock(hPToken);
 
                 // create a new process in the current user's logon session
-                pResult = CreateProcessAsUser(hUserTokenDup,            // client's access token
+                pResult = CreateProcessAsUser(hPToken,            // client's access token
                                                 null,                   // file to execute
                                                 commandLine,            // command line
                                                 ref sa,                 // pointer to process SECURITY_ATTRIBUTES
                                                 ref sa,                 // pointer to thread SECURITY_ATTRIBUTES
                                                 false,                  // handles are not inheritable
                                                 dwCreationFlags,        // creation flags
-                                                IntPtr.Zero,            // pointer to new environment block 
+                                                envBlock,            // pointer to new environment block 
                                                 null,                   // name of current directory 
                                                 ref si,                 // pointer to STARTUPINFO structure
                                                 out processInfo         // receives information about new process
