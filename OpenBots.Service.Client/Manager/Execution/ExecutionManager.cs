@@ -75,9 +75,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 }
             }
             catch (Exception ex)
-            {
-                SetEngineStatus(false);
-                
+            {   
                 // Log Event
                 FileLogger.Instance.LogEvent("Job Execution", $"Error occurred while executing the job; ErrorMessage = {ex.ToString()}", 
                     LogEventLevel.Error);
@@ -108,10 +106,12 @@ namespace OpenBots.Service.Client.Manager.Execution
                 {
                     // Log Event
                     FileLogger.Instance.LogEvent("Job Execution", $"Error occurred while updating status on job failure; " +
-                        $"ErrorMessage = {exception.ToString()}", LogEventLevel.Error);
+                        $"ErrorMessage = {exception}", LogEventLevel.Error);
 
                     throw;
                 }
+
+                SetEngineStatus(false);
             }
         }
 
@@ -157,6 +157,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to execute process");
 
+            //AgentViewModel agent = AgentsAPIManager.GetAgent(AuthAPIManager.Instance, job.AgentId.ToString());
+            //Credential creds = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
+
             // Run Process
             RunProcess(job, process, mainScriptFilePath);
 
@@ -184,6 +187,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Update Job Status (Completed)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
                 JobStatusType.Completed, new JobErrorViewModel());
+
+            FileLogger.Instance.LogEvent("Job Execution", "Job status updated. Removing from queue.");
 
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();

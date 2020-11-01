@@ -115,5 +115,26 @@ namespace OpenBots.Service.Client.Manager.API
                 throw ex;
             }
         }
+
+        public static AgentViewModel GetAgent(AuthAPIManager apiManager, string agentId)
+        {
+            AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
+
+            try
+            {
+                return agentsApi.GetAgentModel(agentId);
+            }
+            catch (Exception ex)
+            {
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    agentsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return agentsApi.GetAgentModel(agentId);
+                }
+                throw ex;
+            }
+        }
     }
 }

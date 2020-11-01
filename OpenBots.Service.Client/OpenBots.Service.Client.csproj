@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager\API\ExecutionLogsAPIManager.cs" />
+    <Compile Include="Manager\API\CredentialsAPIManager.cs" />
     <Compile Include="Manager\Execution\ExecutionManager.cs" />
     <Compile Include="Manager\Execution\JobsQueueManager.cs" />
     <Compile Include="Manager\Execution\ProcessLauncher.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Manager\API\JobsAPIManager.cs" />
     <Compile Include="Manager\API\ProcessesAPIManager.cs" />
     <Compile Include="Manager\Execution\JobsPolling.cs" />
+    <Compile Include="Manager\Execution\WMIQueries.cs" />
     <Compile Include="Manager\Hub\HubManager.cs" />
     <Compile Include="Manager\Logs\FileLogger.cs" />
     <Compile Include="ProjectInstaller.cs">
