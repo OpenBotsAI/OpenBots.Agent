@@ -81,5 +81,10 @@ namespace OpenBots.Agent.Client
         {
             _pipeProxy.SetEnvironmentVariable(environmentVariable, settingsFilePath);
         }
+
+        public ServerResponse PingServer(ServerConnectionSettings connectionSettings)
+        {
+            return _pipeProxy.PingServer(connectionSettings);
+        }
     }
 }

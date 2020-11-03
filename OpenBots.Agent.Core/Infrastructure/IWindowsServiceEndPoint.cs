@@ -25,6 +25,8 @@ namespace OpenBots.Agent.Core.Infrastructure
 
         [OperationContract]
         void SetEnvironmentVariable(string environmentVariable, string settingsFilePath);
+
+        [OperationContract]
+        ServerResponse PingServer(ServerConnectionSettings settings);
     }
 }
-

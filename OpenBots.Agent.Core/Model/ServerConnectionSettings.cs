@@ -26,6 +26,8 @@ namespace OpenBots.Agent.Core.Model
         [DataMember]
         public string IPAddress { get; set; }
         [DataMember]
+        public string ServerIPAddress { get; set; }
+        [DataMember]
         public string TracingLevel { get; set; }
         [DataMember]
         public string SinkType { get; set; }
@@ -41,4 +43,3 @@ namespace OpenBots.Agent.Core.Model
         public bool ServerConnectionEnabled { get; set; }
     }
 }
-

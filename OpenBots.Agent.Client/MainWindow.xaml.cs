@@ -59,10 +59,10 @@ namespace OpenBots.Agent.Client
             _menuItemExit = new SystemForms.MenuItem();
             _menuItemClearCredentials = new SystemForms.MenuItem();
             _menuItemMachineInfo = new SystemForms.MenuItem();
-            
+
             // Initialize contextMenu
-            _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[] 
-            { 
+            _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[]
+            {
                 _menuItemMachineInfo,
                 _menuItemClearCredentials,
                 _menuItemExit
@@ -193,7 +193,7 @@ namespace OpenBots.Agent.Client
             cmb_LogLevel.SelectedIndex = Array.IndexOf((Array)cmb_LogLevel.ItemsSource, Enum.Parse(typeof(LogEventLevel), _connectionSettings.TracingLevel));
             cmb_SinkType.ItemsSource = Enum.GetValues(typeof(SinkType));
             cmb_SinkType.SelectedIndex = Array.IndexOf((Array)cmb_SinkType.ItemsSource, Enum.Parse(typeof(SinkType), _connectionSettings.SinkType));
-            
+
             // Update UI Controls after loading settings
             OnSetRegistryKeys();
             UpdateClearCredentialsUI();
@@ -206,7 +206,7 @@ namespace OpenBots.Agent.Client
         }
         private void SetConfigFilePath()
         {
-            if(_isServiceUP)
+            if (_isServiceUP)
             {
                 try
                 {
@@ -216,7 +216,7 @@ namespace OpenBots.Agent.Client
                     // Create Environment Variable if It doesn't exist
                     if (string.IsNullOrEmpty(environmentVariableValue))
                     {
-                        string settingsFilePath = SettingsManager.Instance.GetSettingsFilePath(); 
+                        string settingsFilePath = SettingsManager.Instance.GetSettingsFilePath();
 
                         if (File.Exists(settingsFilePath))
                             PipeProxy.Instance.SetConfigFilePath(SettingsManager.Instance.EnvironmentSettings.EnvironmentVariableName, settingsFilePath);
@@ -328,18 +328,43 @@ namespace OpenBots.Agent.Client
         }
         private void menuItemMachineInfo_Click(object Sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(txt_ServerURL.Text.Trim()))
+            {
+                _connectionSettings.ServerURL = txt_ServerURL.Text.Trim();
+
+                var serverResponse = PipeProxy.Instance.PingServer(_connectionSettings);
+                if (serverResponse?.Data != null)
+                {
+                    _connectionSettings.ServerIPAddress = (string)serverResponse.Data;
+                    ShowMachineInfoDialog(_connectionSettings.ServerIPAddress);
+                }
+                else
+                {
+                    ShowErrorDialog("An error occurred while pinging the server",
+                        serverResponse.StatusCode,
+                        serverResponse.Message,
+                        Application.Current.MainWindow);
+                }
+            }
+            else
+                ShowMachineInfoDialog(string.Empty);
+        }
+
+        private void ShowMachineInfoDialog(string serverIP)
+        {
             MachineInfo machineInfoDialog = new MachineInfo(
-                _connectionSettings.WhoAmI,
-                _connectionSettings.DNSHost, 
-                _connectionSettings.MACAddress, 
-                _connectionSettings.IPAddress);
+                    _connectionSettings.WhoAmI,
+                    _connectionSettings.DNSHost,
+                    _connectionSettings.MACAddress,
+                    _connectionSettings.IPAddress,
+                    serverIP);
 
             machineInfoDialog.Owner = Application.Current.MainWindow;
             machineInfoDialog.ShowDialog();
         }
         private void menuItemClearCredentials_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(_registryManager.AgentUsername))
+            if (!string.IsNullOrEmpty(_registryManager.AgentUsername))
             {
                 ClearCredentials();
                 LoadConnectionSettings();
@@ -673,12 +698,12 @@ namespace OpenBots.Agent.Client
                 _menuItemClearCredentials.Visible = false;
             }
 
-                
+
         }
         private void UpdateConnectButtonState()
         {
-            if (lbl_StatusValue.Content.ToString() != "Not Connected" && !string.IsNullOrEmpty(txt_ServerURL.Text) 
-                && !string.IsNullOrEmpty(txt_Username.Text) && !string.IsNullOrEmpty(txt_Password.Password) 
+            if (lbl_StatusValue.Content.ToString() != "Not Connected" && !string.IsNullOrEmpty(txt_ServerURL.Text)
+                && !string.IsNullOrEmpty(txt_Username.Text) && !string.IsNullOrEmpty(txt_Password.Password)
                 && !btn_Save.IsEnabled)
                 btn_Connect.IsEnabled = true;
             else
@@ -799,7 +824,7 @@ namespace OpenBots.Agent.Client
         private void OnSetRegistryKeys()
         {
             // If Agent's Credentials (Username, Password) exist in the Registry
-            if(!string.IsNullOrEmpty(_registryManager.AgentUsername) && !string.IsNullOrEmpty(_registryManager.AgentPassword))
+            if (!string.IsNullOrEmpty(_registryManager.AgentUsername) && !string.IsNullOrEmpty(_registryManager.AgentPassword))
             {
                 // Disable Credentials Controls
                 txt_Username.IsEnabled = false;
@@ -818,7 +843,7 @@ namespace OpenBots.Agent.Client
         private void ShowErrorDialog(string generalMessage, string errorCode, string errorMessage, Window parentWindow = null)
         {
             ErrorDialog errorDialog = new ErrorDialog(generalMessage, errorCode, errorMessage);
-            if(parentWindow != null)
+            if (parentWindow != null)
                 errorDialog.Owner = parentWindow;
             errorDialog.ShowDialog();
         }

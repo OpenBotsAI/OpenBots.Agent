@@ -20,7 +20,7 @@ namespace OpenBots.Service.API.Api
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-        public interface IAuthApi : IApiAccessor
+    public interface IAuthApi : IApiAccessor
     {
         #region Synchronous Operations
         /// <summary>
@@ -32,7 +32,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthChangePasswordPut (ChangePasswordBindingModel body = null);
+        void ApiV1AuthChangePasswordPut(ChangePasswordBindingModel body = null);
 
         /// <summary>
         /// Change / Reset with new password
@@ -43,7 +43,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthChangePasswordPutWithHttpInfo (ChangePasswordBindingModel body = null);
+        ApiResponse<Object> ApiV1AuthChangePasswordPutWithHttpInfo(ChangePasswordBindingModel body = null);
         /// <summary>
         /// Confirm email address
         /// </summary>
@@ -54,7 +54,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="emailAddress"> (optional)</param>
         /// <param name="token"> (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthConfirmEmailAddressGet (string emailAddress = null, string token = null);
+        void ApiV1AuthConfirmEmailAddressGet(string emailAddress = null, string token = null);
 
         /// <summary>
         /// Confirm email address
@@ -66,7 +66,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="emailAddress"> (optional)</param>
         /// <param name="token"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthConfirmEmailAddressGetWithHttpInfo (string emailAddress = null, string token = null);
+        ApiResponse<Object> ApiV1AuthConfirmEmailAddressGetWithHttpInfo(string emailAddress = null, string token = null);
         /// <summary>
         /// Confirm new user
         /// </summary>
@@ -77,7 +77,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthConfirmEmailGet (string userId = null, string code = null);
+        void ApiV1AuthConfirmEmailGet(string userId = null, string code = null);
 
         /// <summary>
         /// Confirm new user
@@ -89,7 +89,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthConfirmEmailGetWithHttpInfo (string userId = null, string code = null);
+        ApiResponse<Object> ApiV1AuthConfirmEmailGetWithHttpInfo(string userId = null, string code = null);
         /// <summary>
         /// forgot password using email address
         /// </summary>
@@ -99,7 +99,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthForgotPasswordPost (ForgotPasswordBindingModel body = null);
+        void ApiV1AuthForgotPasswordPost(ForgotPasswordBindingModel body = null);
 
         /// <summary>
         /// forgot password using email address
@@ -110,7 +110,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthForgotPasswordPostWithHttpInfo (ForgotPasswordBindingModel body = null);
+        ApiResponse<Object> ApiV1AuthForgotPasswordPostWithHttpInfo(ForgotPasswordBindingModel body = null);
         /// <summary>
         /// Get user info for logged authenticated user
         /// </summary>
@@ -119,7 +119,7 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns></returns>
-        void ApiV1AuthGetUserInfoGet ();
+        void ApiV1AuthGetUserInfoGet();
 
         /// <summary>
         /// Get user info for logged authenticated user
@@ -129,7 +129,28 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthGetUserInfoGetWithHttpInfo ();
+        ApiResponse<Object> ApiV1AuthGetUserInfoGetWithHttpInfo();
+        /// <summary>
+        /// Used to get current user's IP Address
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="version"></param>
+        /// <returns>string</returns>
+        string ApiV1AuthPingGet();
+
+        /// <summary>
+        /// Used to get current user's IP Address
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="version"></param>
+        /// <returns>ApiResponse of string</returns>
+        ApiResponse<string> ApiV1AuthPingGetWithHttpInfo();
         /// <summary>
         /// Used to refresh expired access and old refresh token
         /// </summary>
@@ -139,7 +160,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthRefreshPost (RefreshModel body = null);
+        void ApiV1AuthRefreshPost(RefreshModel body = null);
 
         /// <summary>
         /// Used to refresh expired access and old refresh token
@@ -150,7 +171,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthRefreshPostWithHttpInfo (RefreshModel body = null);
+        ApiResponse<Object> ApiV1AuthRefreshPostWithHttpInfo(RefreshModel body = null);
         /// <summary>
         /// Signup /  Register new user
         /// </summary>
@@ -160,7 +181,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Signup model (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthRegisterPost (SignUpViewModel body = null);
+        void ApiV1AuthRegisterPost(SignUpViewModel body = null);
 
         /// <summary>
         /// Signup /  Register new user
@@ -171,7 +192,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Signup model (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthRegisterPostWithHttpInfo (SignUpViewModel body = null);
+        ApiResponse<Object> ApiV1AuthRegisterPostWithHttpInfo(SignUpViewModel body = null);
         /// <summary>
         /// Resend confirmation mail to registered email address
         /// </summary>
@@ -181,7 +202,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="emailAddress">Email address needed for confirmation (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthResendEmailConfirmationPut (string emailAddress = null);
+        void ApiV1AuthResendEmailConfirmationPut(string emailAddress = null);
 
         /// <summary>
         /// Resend confirmation mail to registered email address
@@ -192,7 +213,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="emailAddress">Email address needed for confirmation (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthResendEmailConfirmationPutWithHttpInfo (string emailAddress = null);
+        ApiResponse<Object> ApiV1AuthResendEmailConfirmationPutWithHttpInfo(string emailAddress = null);
         /// <summary>
         /// Set new password
         /// </summary>
@@ -202,7 +223,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthSetPasswordPut (ResetPasswordBindingModel body = null);
+        void ApiV1AuthSetPasswordPut(ResetPasswordBindingModel body = null);
 
         /// <summary>
         /// Set new password
@@ -213,7 +234,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthSetPasswordPutWithHttpInfo (ResetPasswordBindingModel body = null);
+        ApiResponse<Object> ApiV1AuthSetPasswordPutWithHttpInfo(ResetPasswordBindingModel body = null);
         /// <summary>
         /// Set new password
         /// </summary>
@@ -223,7 +244,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthSetUserPasswordPut (SetPasswordBindingModel body = null);
+        void ApiV1AuthSetUserPasswordPut(SetPasswordBindingModel body = null);
 
         /// <summary>
         /// Set new password
@@ -234,7 +255,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthSetUserPasswordPutWithHttpInfo (SetPasswordBindingModel body = null);
+        ApiResponse<Object> ApiV1AuthSetUserPasswordPutWithHttpInfo(SetPasswordBindingModel body = null);
         /// <summary>
         /// Login with username and password
         /// </summary>
@@ -244,7 +265,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Input model (optional)</param>
         /// <returns></returns>
-        ApiResponse<LoginResponseModel> ApiV1AuthTokenPost (LoginModel body = null);
+        ApiResponse<LoginResponseModel> ApiV1AuthTokenPost(LoginModel body = null);
 
         /// <summary>
         /// Login with username and password
@@ -255,7 +276,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Input model (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<LoginResponseModel> ApiV1AuthTokenPostWithHttpInfo (LoginModel body = null);
+        ApiResponse<LoginResponseModel> ApiV1AuthTokenPostWithHttpInfo(LoginModel body = null);
         /// <summary>
         /// Verify User Token before resetting the password
         /// </summary>
@@ -266,7 +287,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns></returns>
-        void ApiV1AuthVerifyUserTokenGet (string userId = null, string code = null);
+        void ApiV1AuthVerifyUserTokenGet(string userId = null, string code = null);
 
         /// <summary>
         /// Verify User Token before resetting the password
@@ -278,7 +299,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthVerifyUserTokenGetWithHttpInfo (string userId = null, string code = null);
+        ApiResponse<Object> ApiV1AuthVerifyUserTokenGetWithHttpInfo(string userId = null, string code = null);
         /// <summary>
         /// 
         /// </summary>
@@ -287,7 +308,7 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns></returns>
-        void ApiV1AuthWpRegisterPost ();
+        void ApiV1AuthWpRegisterPost();
 
         /// <summary>
         /// 
@@ -297,7 +318,7 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>ApiResponse of Object(void)</returns>
-        ApiResponse<Object> ApiV1AuthWpRegisterPostWithHttpInfo ();
+        ApiResponse<Object> ApiV1AuthWpRegisterPostWithHttpInfo();
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
@@ -309,7 +330,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthChangePasswordPutAsync (ChangePasswordBindingModel body = null);
+        System.Threading.Tasks.Task ApiV1AuthChangePasswordPutAsync(ChangePasswordBindingModel body = null);
 
         /// <summary>
         /// Change / Reset with new password
@@ -320,7 +341,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthChangePasswordPutAsyncWithHttpInfo (ChangePasswordBindingModel body = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthChangePasswordPutAsyncWithHttpInfo(ChangePasswordBindingModel body = null);
         /// <summary>
         /// Confirm email address
         /// </summary>
@@ -331,7 +352,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="emailAddress"> (optional)</param>
         /// <param name="token"> (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthConfirmEmailAddressGetAsync (string emailAddress = null, string token = null);
+        System.Threading.Tasks.Task ApiV1AuthConfirmEmailAddressGetAsync(string emailAddress = null, string token = null);
 
         /// <summary>
         /// Confirm email address
@@ -343,7 +364,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="emailAddress"> (optional)</param>
         /// <param name="token"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthConfirmEmailAddressGetAsyncWithHttpInfo (string emailAddress = null, string token = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthConfirmEmailAddressGetAsyncWithHttpInfo(string emailAddress = null, string token = null);
         /// <summary>
         /// Confirm new user
         /// </summary>
@@ -354,7 +375,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthConfirmEmailGetAsync (string userId = null, string code = null);
+        System.Threading.Tasks.Task ApiV1AuthConfirmEmailGetAsync(string userId = null, string code = null);
 
         /// <summary>
         /// Confirm new user
@@ -366,7 +387,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthConfirmEmailGetAsyncWithHttpInfo (string userId = null, string code = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthConfirmEmailGetAsyncWithHttpInfo(string userId = null, string code = null);
         /// <summary>
         /// forgot password using email address
         /// </summary>
@@ -376,7 +397,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthForgotPasswordPostAsync (ForgotPasswordBindingModel body = null);
+        System.Threading.Tasks.Task ApiV1AuthForgotPasswordPostAsync(ForgotPasswordBindingModel body = null);
 
         /// <summary>
         /// forgot password using email address
@@ -387,7 +408,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthForgotPasswordPostAsyncWithHttpInfo (ForgotPasswordBindingModel body = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthForgotPasswordPostAsyncWithHttpInfo(ForgotPasswordBindingModel body = null);
         /// <summary>
         /// Get user info for logged authenticated user
         /// </summary>
@@ -396,7 +417,7 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthGetUserInfoGetAsync ();
+        System.Threading.Tasks.Task ApiV1AuthGetUserInfoGetAsync();
 
         /// <summary>
         /// Get user info for logged authenticated user
@@ -406,7 +427,26 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthGetUserInfoGetAsyncWithHttpInfo ();
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthGetUserInfoGetAsyncWithHttpInfo();
+        /// <summary>
+        /// Used to get current user's IP Address
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of string</returns>
+        System.Threading.Tasks.Task<string> ApiV1AuthPingGetAsync();
+
+        /// <summary>
+        /// Used to get current user's IP Address
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of ApiResponse (string)</returns>
+        System.Threading.Tasks.Task<ApiResponse<string>> ApiV1AuthPingGetAsyncWithHttpInfo();
         /// <summary>
         /// Used to refresh expired access and old refresh token
         /// </summary>
@@ -416,7 +456,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthRefreshPostAsync (RefreshModel body = null);
+        System.Threading.Tasks.Task ApiV1AuthRefreshPostAsync(RefreshModel body = null);
 
         /// <summary>
         /// Used to refresh expired access and old refresh token
@@ -427,7 +467,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthRefreshPostAsyncWithHttpInfo (RefreshModel body = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthRefreshPostAsyncWithHttpInfo(RefreshModel body = null);
         /// <summary>
         /// Signup /  Register new user
         /// </summary>
@@ -437,7 +477,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Signup model (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthRegisterPostAsync (SignUpViewModel body = null);
+        System.Threading.Tasks.Task ApiV1AuthRegisterPostAsync(SignUpViewModel body = null);
 
         /// <summary>
         /// Signup /  Register new user
@@ -448,7 +488,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Signup model (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthRegisterPostAsyncWithHttpInfo (SignUpViewModel body = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthRegisterPostAsyncWithHttpInfo(SignUpViewModel body = null);
         /// <summary>
         /// Resend confirmation mail to registered email address
         /// </summary>
@@ -458,7 +498,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="emailAddress">Email address needed for confirmation (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthResendEmailConfirmationPutAsync (string emailAddress = null);
+        System.Threading.Tasks.Task ApiV1AuthResendEmailConfirmationPutAsync(string emailAddress = null);
 
         /// <summary>
         /// Resend confirmation mail to registered email address
@@ -469,7 +509,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="emailAddress">Email address needed for confirmation (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthResendEmailConfirmationPutAsyncWithHttpInfo (string emailAddress = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthResendEmailConfirmationPutAsyncWithHttpInfo(string emailAddress = null);
         /// <summary>
         /// Set new password
         /// </summary>
@@ -479,7 +519,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthSetPasswordPutAsync (ResetPasswordBindingModel body = null);
+        System.Threading.Tasks.Task ApiV1AuthSetPasswordPutAsync(ResetPasswordBindingModel body = null);
 
         /// <summary>
         /// Set new password
@@ -490,7 +530,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthSetPasswordPutAsyncWithHttpInfo (ResetPasswordBindingModel body = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthSetPasswordPutAsyncWithHttpInfo(ResetPasswordBindingModel body = null);
         /// <summary>
         /// Set new password
         /// </summary>
@@ -500,7 +540,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthSetUserPasswordPutAsync (SetPasswordBindingModel body = null);
+        System.Threading.Tasks.Task ApiV1AuthSetUserPasswordPutAsync(SetPasswordBindingModel body = null);
 
         /// <summary>
         /// Set new password
@@ -511,7 +551,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthSetUserPasswordPutAsyncWithHttpInfo (SetPasswordBindingModel body = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthSetUserPasswordPutAsyncWithHttpInfo(SetPasswordBindingModel body = null);
         /// <summary>
         /// Login with username and password
         /// </summary>
@@ -521,7 +561,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Input model (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthTokenPostAsync (LoginModel body = null);
+        System.Threading.Tasks.Task ApiV1AuthTokenPostAsync(LoginModel body = null);
 
         /// <summary>
         /// Login with username and password
@@ -532,7 +572,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Input model (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthTokenPostAsyncWithHttpInfo (LoginModel body = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthTokenPostAsyncWithHttpInfo(LoginModel body = null);
         /// <summary>
         /// Verify User Token before resetting the password
         /// </summary>
@@ -543,7 +583,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthVerifyUserTokenGetAsync (string userId = null, string code = null);
+        System.Threading.Tasks.Task ApiV1AuthVerifyUserTokenGetAsync(string userId = null, string code = null);
 
         /// <summary>
         /// Verify User Token before resetting the password
@@ -555,7 +595,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthVerifyUserTokenGetAsyncWithHttpInfo (string userId = null, string code = null);
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthVerifyUserTokenGetAsyncWithHttpInfo(string userId = null, string code = null);
         /// <summary>
         /// 
         /// </summary>
@@ -564,7 +604,7 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of void</returns>
-        System.Threading.Tasks.Task ApiV1AuthWpRegisterPostAsync ();
+        System.Threading.Tasks.Task ApiV1AuthWpRegisterPostAsync();
 
         /// <summary>
         /// 
@@ -574,14 +614,14 @@ namespace OpenBots.Service.API.Api
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of ApiResponse</returns>
-        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthWpRegisterPostAsyncWithHttpInfo ();
+        System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthWpRegisterPostAsyncWithHttpInfo();
         #endregion Asynchronous Operations
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-        public partial class AuthApi : IAuthApi
+    public partial class AuthApi : IAuthApi
     {
         private OpenBots.Service.API.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
@@ -646,7 +686,7 @@ namespace OpenBots.Service.API.Api
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
-        public OpenBots.Service.API.Client.Configuration Configuration {get; set;}
+        public OpenBots.Service.API.Client.Configuration Configuration { get; set; }
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
@@ -692,9 +732,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthChangePasswordPut (ChangePasswordBindingModel body = null)
+        public void ApiV1AuthChangePasswordPut(ChangePasswordBindingModel body = null)
         {
-             ApiV1AuthChangePasswordPutWithHttpInfo(body);
+            ApiV1AuthChangePasswordPutWithHttpInfo(body);
         }
 
         /// <summary>
@@ -703,7 +743,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthChangePasswordPutWithHttpInfo (ChangePasswordBindingModel body = null)
+        public ApiResponse<Object> ApiV1AuthChangePasswordPutWithHttpInfo(ChangePasswordBindingModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/ChangePassword";
@@ -716,9 +756,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -740,11 +780,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -763,9 +803,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthChangePasswordPutAsync (ChangePasswordBindingModel body = null)
+        public async System.Threading.Tasks.Task ApiV1AuthChangePasswordPutAsync(ChangePasswordBindingModel body = null)
         {
-             await ApiV1AuthChangePasswordPutAsyncWithHttpInfo(body);
+            await ApiV1AuthChangePasswordPutAsyncWithHttpInfo(body);
 
         }
 
@@ -775,7 +815,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthChangePasswordPutAsyncWithHttpInfo (ChangePasswordBindingModel body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthChangePasswordPutAsyncWithHttpInfo(ChangePasswordBindingModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/ChangePassword";
@@ -788,9 +828,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -812,11 +852,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -836,9 +876,9 @@ namespace OpenBots.Service.API.Api
         /// <param name="emailAddress"> (optional)</param>
         /// <param name="token"> (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthConfirmEmailAddressGet (string emailAddress = null, string token = null)
+        public void ApiV1AuthConfirmEmailAddressGet(string emailAddress = null, string token = null)
         {
-             ApiV1AuthConfirmEmailAddressGetWithHttpInfo(emailAddress, token);
+            ApiV1AuthConfirmEmailAddressGetWithHttpInfo(emailAddress, token);
         }
 
         /// <summary>
@@ -848,7 +888,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="emailAddress"> (optional)</param>
         /// <param name="token"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthConfirmEmailAddressGetWithHttpInfo (string emailAddress = null, string token = null)
+        public ApiResponse<Object> ApiV1AuthConfirmEmailAddressGetWithHttpInfo(string emailAddress = null, string token = null)
         {
 
             var localVarPath = "/api/v1/Auth/ConfirmEmailAddress";
@@ -875,11 +915,11 @@ namespace OpenBots.Service.API.Api
             if (token != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "token", token)); // query parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -899,9 +939,9 @@ namespace OpenBots.Service.API.Api
         /// <param name="emailAddress"> (optional)</param>
         /// <param name="token"> (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthConfirmEmailAddressGetAsync (string emailAddress = null, string token = null)
+        public async System.Threading.Tasks.Task ApiV1AuthConfirmEmailAddressGetAsync(string emailAddress = null, string token = null)
         {
-             await ApiV1AuthConfirmEmailAddressGetAsyncWithHttpInfo(emailAddress, token);
+            await ApiV1AuthConfirmEmailAddressGetAsyncWithHttpInfo(emailAddress, token);
 
         }
 
@@ -912,7 +952,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="emailAddress"> (optional)</param>
         /// <param name="token"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthConfirmEmailAddressGetAsyncWithHttpInfo (string emailAddress = null, string token = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthConfirmEmailAddressGetAsyncWithHttpInfo(string emailAddress = null, string token = null)
         {
 
             var localVarPath = "/api/v1/Auth/ConfirmEmailAddress";
@@ -939,11 +979,11 @@ namespace OpenBots.Service.API.Api
             if (token != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "token", token)); // query parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -963,9 +1003,9 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthConfirmEmailGet (string userId = null, string code = null)
+        public void ApiV1AuthConfirmEmailGet(string userId = null, string code = null)
         {
-             ApiV1AuthConfirmEmailGetWithHttpInfo(userId, code);
+            ApiV1AuthConfirmEmailGetWithHttpInfo(userId, code);
         }
 
         /// <summary>
@@ -975,7 +1015,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthConfirmEmailGetWithHttpInfo (string userId = null, string code = null)
+        public ApiResponse<Object> ApiV1AuthConfirmEmailGetWithHttpInfo(string userId = null, string code = null)
         {
 
             var localVarPath = "/api/v1/Auth/ConfirmEmail";
@@ -1002,11 +1042,11 @@ namespace OpenBots.Service.API.Api
             if (code != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "code", code)); // query parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1026,9 +1066,9 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthConfirmEmailGetAsync (string userId = null, string code = null)
+        public async System.Threading.Tasks.Task ApiV1AuthConfirmEmailGetAsync(string userId = null, string code = null)
         {
-             await ApiV1AuthConfirmEmailGetAsyncWithHttpInfo(userId, code);
+            await ApiV1AuthConfirmEmailGetAsyncWithHttpInfo(userId, code);
 
         }
 
@@ -1039,7 +1079,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthConfirmEmailGetAsyncWithHttpInfo (string userId = null, string code = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthConfirmEmailGetAsyncWithHttpInfo(string userId = null, string code = null)
         {
 
             var localVarPath = "/api/v1/Auth/ConfirmEmail";
@@ -1066,11 +1106,11 @@ namespace OpenBots.Service.API.Api
             if (code != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "code", code)); // query parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1089,9 +1129,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthForgotPasswordPost (ForgotPasswordBindingModel body = null)
+        public void ApiV1AuthForgotPasswordPost(ForgotPasswordBindingModel body = null)
         {
-             ApiV1AuthForgotPasswordPostWithHttpInfo(body);
+            ApiV1AuthForgotPasswordPostWithHttpInfo(body);
         }
 
         /// <summary>
@@ -1100,7 +1140,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthForgotPasswordPostWithHttpInfo (ForgotPasswordBindingModel body = null)
+        public ApiResponse<Object> ApiV1AuthForgotPasswordPostWithHttpInfo(ForgotPasswordBindingModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/ForgotPassword";
@@ -1113,9 +1153,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1137,11 +1177,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1160,9 +1200,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthForgotPasswordPostAsync (ForgotPasswordBindingModel body = null)
+        public async System.Threading.Tasks.Task ApiV1AuthForgotPasswordPostAsync(ForgotPasswordBindingModel body = null)
         {
-             await ApiV1AuthForgotPasswordPostAsyncWithHttpInfo(body);
+            await ApiV1AuthForgotPasswordPostAsyncWithHttpInfo(body);
 
         }
 
@@ -1172,7 +1212,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthForgotPasswordPostAsyncWithHttpInfo (ForgotPasswordBindingModel body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthForgotPasswordPostAsyncWithHttpInfo(ForgotPasswordBindingModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/ForgotPassword";
@@ -1185,9 +1225,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1209,11 +1249,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1231,9 +1271,9 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns></returns>
-        public void ApiV1AuthGetUserInfoGet ()
+        public void ApiV1AuthGetUserInfoGet()
         {
-             ApiV1AuthGetUserInfoGetWithHttpInfo();
+            ApiV1AuthGetUserInfoGetWithHttpInfo();
         }
 
         /// <summary>
@@ -1241,7 +1281,7 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthGetUserInfoGetWithHttpInfo ()
+        public ApiResponse<Object> ApiV1AuthGetUserInfoGetWithHttpInfo()
         {
 
             var localVarPath = "/api/v1/Auth/GetUserInfo";
@@ -1266,11 +1306,11 @@ namespace OpenBots.Service.API.Api
 
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1288,9 +1328,9 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthGetUserInfoGetAsync ()
+        public async System.Threading.Tasks.Task ApiV1AuthGetUserInfoGetAsync()
         {
-             await ApiV1AuthGetUserInfoGetAsyncWithHttpInfo();
+            await ApiV1AuthGetUserInfoGetAsyncWithHttpInfo();
 
         }
 
@@ -1299,7 +1339,7 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthGetUserInfoGetAsyncWithHttpInfo ()
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthGetUserInfoGetAsyncWithHttpInfo()
         {
 
             var localVarPath = "/api/v1/Auth/GetUserInfo";
@@ -1324,11 +1364,11 @@ namespace OpenBots.Service.API.Api
 
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1342,14 +1382,151 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
+        /// Used to get current user's IP Address 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>string</returns>
+        public string ApiV1AuthPingGet()
+        {
+            ApiResponse<string> localVarResponse = ApiV1AuthPingGetWithHttpInfo();
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Used to get current user's IP Address 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>ApiResponse of string</returns>
+        public ApiResponse<string> ApiV1AuthPingGetWithHttpInfo()
+        {
+            // verify the required parameter 'version' is set
+            //if (version == null)
+            //    throw new ApiException(400, "Missing required parameter 'version' when calling AuthApi->ApiV1AuthPingGet");
+
+            var localVarPath = "/api/v1/Auth/Ping";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
+            if (localVarHttpHeaderAuthorization != null)
+                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
+
+            //if (version != null) localVarPathParams.Add("version", this.Configuration.ApiClient.ParameterToString(version)); // path parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AuthPingGet", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<string>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (string)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(string)));
+        }
+
+        /// <summary>
+        /// Used to get current user's IP Address 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="version"></param>
+        /// <returns>Task of string</returns>
+        public async System.Threading.Tasks.Task<string> ApiV1AuthPingGetAsync()
+        {
+            ApiResponse<string> localVarResponse = await ApiV1AuthPingGetAsyncWithHttpInfo();
+            return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Used to get current user's IP Address 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="version"></param>
+        /// <returns>Task of ApiResponse (string)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<string>> ApiV1AuthPingGetAsyncWithHttpInfo()
+        {
+            // verify the required parameter 'version' is set
+            //if (version == null)
+            //    throw new ApiException(400, "Missing required parameter 'version' when calling AuthApi->ApiV1AuthPingGet");
+
+            var localVarPath = "/api/v1/Auth/Ping";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "text/plain",
+                "application/json",
+                "text/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            //if (version != null) localVarPathParams.Add("version", this.Configuration.ApiClient.ParameterToString(version)); // path parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AuthPingGet", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<string>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (string)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(string)));
+        }
+
+        /// <summary>
         /// Used to refresh expired access and old refresh token 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthRefreshPost (RefreshModel body = null)
+        public void ApiV1AuthRefreshPost(RefreshModel body = null)
         {
-             ApiV1AuthRefreshPostWithHttpInfo(body);
+            ApiV1AuthRefreshPostWithHttpInfo(body);
         }
 
         /// <summary>
@@ -1358,7 +1535,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthRefreshPostWithHttpInfo (RefreshModel body = null)
+        public ApiResponse<Object> ApiV1AuthRefreshPostWithHttpInfo(RefreshModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/Refresh";
@@ -1371,9 +1548,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1395,11 +1572,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1418,9 +1595,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthRefreshPostAsync (RefreshModel body = null)
+        public async System.Threading.Tasks.Task ApiV1AuthRefreshPostAsync(RefreshModel body = null)
         {
-             await ApiV1AuthRefreshPostAsyncWithHttpInfo(body);
+            await ApiV1AuthRefreshPostAsyncWithHttpInfo(body);
 
         }
 
@@ -1430,7 +1607,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthRefreshPostAsyncWithHttpInfo (RefreshModel body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthRefreshPostAsyncWithHttpInfo(RefreshModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/Refresh";
@@ -1443,9 +1620,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1467,11 +1644,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1490,9 +1667,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Signup model (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthRegisterPost (SignUpViewModel body = null)
+        public void ApiV1AuthRegisterPost(SignUpViewModel body = null)
         {
-             ApiV1AuthRegisterPostWithHttpInfo(body);
+            ApiV1AuthRegisterPostWithHttpInfo(body);
         }
 
         /// <summary>
@@ -1501,7 +1678,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Signup model (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthRegisterPostWithHttpInfo (SignUpViewModel body = null)
+        public ApiResponse<Object> ApiV1AuthRegisterPostWithHttpInfo(SignUpViewModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/Register";
@@ -1514,9 +1691,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1541,11 +1718,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1564,9 +1741,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Signup model (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthRegisterPostAsync (SignUpViewModel body = null)
+        public async System.Threading.Tasks.Task ApiV1AuthRegisterPostAsync(SignUpViewModel body = null)
         {
-             await ApiV1AuthRegisterPostAsyncWithHttpInfo(body);
+            await ApiV1AuthRegisterPostAsyncWithHttpInfo(body);
 
         }
 
@@ -1576,7 +1753,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Signup model (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthRegisterPostAsyncWithHttpInfo (SignUpViewModel body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthRegisterPostAsyncWithHttpInfo(SignUpViewModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/Register";
@@ -1589,9 +1766,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1616,11 +1793,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1639,9 +1816,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="emailAddress">Email address needed for confirmation (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthResendEmailConfirmationPut (string emailAddress = null)
+        public void ApiV1AuthResendEmailConfirmationPut(string emailAddress = null)
         {
-             ApiV1AuthResendEmailConfirmationPutWithHttpInfo(emailAddress);
+            ApiV1AuthResendEmailConfirmationPutWithHttpInfo(emailAddress);
         }
 
         /// <summary>
@@ -1650,7 +1827,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="emailAddress">Email address needed for confirmation (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthResendEmailConfirmationPutWithHttpInfo (string emailAddress = null)
+        public ApiResponse<Object> ApiV1AuthResendEmailConfirmationPutWithHttpInfo(string emailAddress = null)
         {
 
             var localVarPath = "/api/v1/Auth/ResendEmailConfirmation";
@@ -1676,11 +1853,11 @@ namespace OpenBots.Service.API.Api
             if (emailAddress != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "emailAddress", emailAddress)); // query parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1699,9 +1876,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="emailAddress">Email address needed for confirmation (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthResendEmailConfirmationPutAsync (string emailAddress = null)
+        public async System.Threading.Tasks.Task ApiV1AuthResendEmailConfirmationPutAsync(string emailAddress = null)
         {
-             await ApiV1AuthResendEmailConfirmationPutAsyncWithHttpInfo(emailAddress);
+            await ApiV1AuthResendEmailConfirmationPutAsyncWithHttpInfo(emailAddress);
 
         }
 
@@ -1711,7 +1888,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="emailAddress">Email address needed for confirmation (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthResendEmailConfirmationPutAsyncWithHttpInfo (string emailAddress = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthResendEmailConfirmationPutAsyncWithHttpInfo(string emailAddress = null)
         {
 
             var localVarPath = "/api/v1/Auth/ResendEmailConfirmation";
@@ -1737,11 +1914,11 @@ namespace OpenBots.Service.API.Api
             if (emailAddress != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "emailAddress", emailAddress)); // query parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1760,9 +1937,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthSetPasswordPut (ResetPasswordBindingModel body = null)
+        public void ApiV1AuthSetPasswordPut(ResetPasswordBindingModel body = null)
         {
-             ApiV1AuthSetPasswordPutWithHttpInfo(body);
+            ApiV1AuthSetPasswordPutWithHttpInfo(body);
         }
 
         /// <summary>
@@ -1771,7 +1948,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthSetPasswordPutWithHttpInfo (ResetPasswordBindingModel body = null)
+        public ApiResponse<Object> ApiV1AuthSetPasswordPutWithHttpInfo(ResetPasswordBindingModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/SetPassword";
@@ -1784,9 +1961,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1808,11 +1985,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1831,9 +2008,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthSetPasswordPutAsync (ResetPasswordBindingModel body = null)
+        public async System.Threading.Tasks.Task ApiV1AuthSetPasswordPutAsync(ResetPasswordBindingModel body = null)
         {
-             await ApiV1AuthSetPasswordPutAsyncWithHttpInfo(body);
+            await ApiV1AuthSetPasswordPutAsyncWithHttpInfo(body);
 
         }
 
@@ -1843,7 +2020,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthSetPasswordPutAsyncWithHttpInfo (ResetPasswordBindingModel body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthSetPasswordPutAsyncWithHttpInfo(ResetPasswordBindingModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/SetPassword";
@@ -1856,9 +2033,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1880,11 +2057,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1903,9 +2080,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthSetUserPasswordPut (SetPasswordBindingModel body = null)
+        public void ApiV1AuthSetUserPasswordPut(SetPasswordBindingModel body = null)
         {
-             ApiV1AuthSetUserPasswordPutWithHttpInfo(body);
+            ApiV1AuthSetUserPasswordPutWithHttpInfo(body);
         }
 
         /// <summary>
@@ -1914,7 +2091,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthSetUserPasswordPutWithHttpInfo (SetPasswordBindingModel body = null)
+        public ApiResponse<Object> ApiV1AuthSetUserPasswordPutWithHttpInfo(SetPasswordBindingModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/SetUserPassword";
@@ -1927,9 +2104,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -1951,11 +2128,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -1974,9 +2151,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthSetUserPasswordPutAsync (SetPasswordBindingModel body = null)
+        public async System.Threading.Tasks.Task ApiV1AuthSetUserPasswordPutAsync(SetPasswordBindingModel body = null)
         {
-             await ApiV1AuthSetUserPasswordPutAsyncWithHttpInfo(body);
+            await ApiV1AuthSetUserPasswordPutAsyncWithHttpInfo(body);
 
         }
 
@@ -1986,7 +2163,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthSetUserPasswordPutAsyncWithHttpInfo (SetPasswordBindingModel body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthSetUserPasswordPutAsyncWithHttpInfo(SetPasswordBindingModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/SetUserPassword";
@@ -1999,9 +2176,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -2023,11 +2200,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -2046,9 +2223,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Input model (optional)</param>
         /// <returns></returns>
-        public ApiResponse<LoginResponseModel> ApiV1AuthTokenPost (LoginModel body = null)
+        public ApiResponse<LoginResponseModel> ApiV1AuthTokenPost(LoginModel body = null)
         {
-             return ApiV1AuthTokenPostWithHttpInfo(body);
+            return ApiV1AuthTokenPostWithHttpInfo(body);
         }
 
         /// <summary>
@@ -2057,7 +2234,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Input model (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<LoginResponseModel> ApiV1AuthTokenPostWithHttpInfo (LoginModel body = null)
+        public ApiResponse<LoginResponseModel> ApiV1AuthTokenPostWithHttpInfo(LoginModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/token";
@@ -2070,9 +2247,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -2094,11 +2271,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -2117,9 +2294,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Input model (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthTokenPostAsync (LoginModel body = null)
+        public async System.Threading.Tasks.Task ApiV1AuthTokenPostAsync(LoginModel body = null)
         {
-             await ApiV1AuthTokenPostAsyncWithHttpInfo(body);
+            await ApiV1AuthTokenPostAsyncWithHttpInfo(body);
 
         }
 
@@ -2129,7 +2306,7 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body">Input model (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthTokenPostAsyncWithHttpInfo (LoginModel body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthTokenPostAsyncWithHttpInfo(LoginModel body = null)
         {
 
             var localVarPath = "/api/v1/Auth/token";
@@ -2142,9 +2319,9 @@ namespace OpenBots.Service.API.Api
 
             // to determine the Content-Type header
             String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json", 
-                "application/json", 
-                "text/json", 
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
                 "application/_*+json"
             };
             String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
@@ -2166,11 +2343,11 @@ namespace OpenBots.Service.API.Api
             }
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -2190,9 +2367,9 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns></returns>
-        public void ApiV1AuthVerifyUserTokenGet (string userId = null, string code = null)
+        public void ApiV1AuthVerifyUserTokenGet(string userId = null, string code = null)
         {
-             ApiV1AuthVerifyUserTokenGetWithHttpInfo(userId, code);
+            ApiV1AuthVerifyUserTokenGetWithHttpInfo(userId, code);
         }
 
         /// <summary>
@@ -2202,7 +2379,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthVerifyUserTokenGetWithHttpInfo (string userId = null, string code = null)
+        public ApiResponse<Object> ApiV1AuthVerifyUserTokenGetWithHttpInfo(string userId = null, string code = null)
         {
 
             var localVarPath = "/api/v1/Auth/VerifyUserToken";
@@ -2229,11 +2406,11 @@ namespace OpenBots.Service.API.Api
             if (code != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "code", code)); // query parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -2253,9 +2430,9 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthVerifyUserTokenGetAsync (string userId = null, string code = null)
+        public async System.Threading.Tasks.Task ApiV1AuthVerifyUserTokenGetAsync(string userId = null, string code = null)
         {
-             await ApiV1AuthVerifyUserTokenGetAsyncWithHttpInfo(userId, code);
+            await ApiV1AuthVerifyUserTokenGetAsyncWithHttpInfo(userId, code);
 
         }
 
@@ -2266,7 +2443,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="userId"> (optional)</param>
         /// <param name="code"> (optional)</param>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthVerifyUserTokenGetAsyncWithHttpInfo (string userId = null, string code = null)
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthVerifyUserTokenGetAsyncWithHttpInfo(string userId = null, string code = null)
         {
 
             var localVarPath = "/api/v1/Auth/VerifyUserToken";
@@ -2293,11 +2470,11 @@ namespace OpenBots.Service.API.Api
             if (code != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "code", code)); // query parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -2315,9 +2492,9 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns></returns>
-        public void ApiV1AuthWpRegisterPost ()
+        public void ApiV1AuthWpRegisterPost()
         {
-             ApiV1AuthWpRegisterPostWithHttpInfo();
+            ApiV1AuthWpRegisterPostWithHttpInfo();
         }
 
         /// <summary>
@@ -2325,7 +2502,7 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>ApiResponse of Object(void)</returns>
-        public ApiResponse<Object> ApiV1AuthWpRegisterPostWithHttpInfo ()
+        public ApiResponse<Object> ApiV1AuthWpRegisterPostWithHttpInfo()
         {
 
             var localVarPath = "/api/v1/Auth/WpRegister";
@@ -2367,11 +2544,11 @@ namespace OpenBots.Service.API.Api
             //////if (apiKey != null) localVarFormParams.Add("ApiKey", this.Configuration.ApiClient.ParameterToString(apiKey)); // form parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) this.Configuration.ApiClient.CallApi(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {
@@ -2389,9 +2566,9 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of void</returns>
-        public async System.Threading.Tasks.Task ApiV1AuthWpRegisterPostAsync ()
+        public async System.Threading.Tasks.Task ApiV1AuthWpRegisterPostAsync()
         {
-             await ApiV1AuthWpRegisterPostAsyncWithHttpInfo();
+            await ApiV1AuthWpRegisterPostAsyncWithHttpInfo();
 
         }
 
@@ -2400,7 +2577,7 @@ namespace OpenBots.Service.API.Api
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of ApiResponse</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthWpRegisterPostAsyncWithHttpInfo ()
+        public async System.Threading.Tasks.Task<ApiResponse<Object>> ApiV1AuthWpRegisterPostAsyncWithHttpInfo()
         {
 
             var localVarPath = "/api/v1/Auth/WpRegister";
@@ -2442,11 +2619,11 @@ namespace OpenBots.Service.API.Api
             //////if (apiKey != null) localVarFormParams.Add("ApiKey", this.Configuration.ApiClient.ParameterToString(apiKey)); // form parameter
 
             // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse) await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
                 Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
                 localVarPathParams, localVarHttpContentType);
 
-            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (ExceptionFactory != null)
             {

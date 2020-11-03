@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Threading;
-using Controls = System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.IO;
-using System.Drawing;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace OpenBots.Agent.Client.Forms.Dialog
 {
@@ -15,13 +11,15 @@ namespace OpenBots.Agent.Client.Forms.Dialog
     public partial class MachineInfo : Window
     {
         private DispatcherTimer _dispatcherTimer;
-        public MachineInfo(string whoami, string machineName, string macAddress, string ipAddress)
+        public MachineInfo(string whoami, string machineName, string macAddress, string ipAddress, string serverGeneratedIP)
         {
             InitializeComponent();
             lbl_MachineInfo_WhoAmI.Content = whoami;
             lbl_MachineInfo_MachineName.Content = machineName;
             lbl_MachineInfo_MACAddress.Content = macAddress;
             lbl_MachineInfo_IPAddress.Content = ipAddress;
+            lbl_MachineInfo_ServerIPAddress.Content = string.IsNullOrEmpty(serverGeneratedIP) ? "No URL Provided" : serverGeneratedIP;
+            lbl_MachineInfo_ServerIPAddress.Foreground = string.IsNullOrEmpty(serverGeneratedIP) ? Brushes.Red : Brushes.Black;
 
             //Create a timer with interval of 2 secs
             _dispatcherTimer = new DispatcherTimer();
@@ -32,7 +30,7 @@ namespace OpenBots.Agent.Client.Forms.Dialog
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             lbl_CopytoClipboard.Visibility = Visibility.Collapsed;
-            
+
             //Disable the timer
             _dispatcherTimer.IsEnabled = false;
         }
@@ -48,7 +46,7 @@ namespace OpenBots.Agent.Client.Forms.Dialog
         {
             string imageName = sender.GetType().GetProperty("Name").GetValue(sender, null).ToString();
 
-            switch(imageName)
+            switch (imageName)
             {
                 case "img_whoami":
                     Clipboard.SetText(lbl_MachineInfo_WhoAmI.Content.ToString());
@@ -61,6 +59,9 @@ namespace OpenBots.Agent.Client.Forms.Dialog
                     break;
                 case "img_ipAddress":
                     Clipboard.SetText(lbl_MachineInfo_IPAddress.Content.ToString());
+                    break;
+                case "img_serverIPAddress":
+                    Clipboard.SetText(lbl_MachineInfo_ServerIPAddress.Content.ToString());
                     break;
             }
             DisplayCopiedMessage();

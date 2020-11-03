@@ -2,6 +2,7 @@
 using OpenBots.Service.API.Api;
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
+using System;
 
 namespace OpenBots.Service.Client.Manager
 {
@@ -41,17 +42,34 @@ namespace OpenBots.Service.Client.Manager
         {
             AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
             var apiResponse = authAPI.ApiV1AuthTokenPostWithHttpInfo(new LoginModel(ServerSettings.AgentUsername, ServerSettings.AgentPassword));
-            
+
             return (Configuration.AccessToken = apiResponse.Data.Token.ToString());
         }
 
         public void RegisterAgentUser()
         {
             AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
-            var signupModel = new SignUpViewModel(ServerSettings.AgentUsername,null, null, null,  
+            var signupModel = new SignUpViewModel(ServerSettings.AgentUsername, null, null, null,
                 ServerSettings.AgentPassword, false, null, null, null, null, null, null, null);
-            
+
             var apiResponse = authAPI.ApiV1AuthRegisterPostWithHttpInfo(signupModel);
+        }
+
+        public string Ping()
+        {
+            try
+            {
+                AuthApi authAPI = new AuthApi(Configuration);
+                var serverIP = authAPI.ApiV1AuthPingGet();
+
+                if (!string.IsNullOrEmpty(serverIP))
+                    serverIP = serverIP.Replace("\"", "");
+                return serverIP;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

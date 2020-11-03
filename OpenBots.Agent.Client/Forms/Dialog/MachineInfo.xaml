@@ -29,13 +29,14 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Name="pnl_MachineInfo_WhoAmI" Height="29">
                     <Grid Name="grd_MachineInfo_WhoAmI" Margin="0,0,10,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="115"/>
+                            <ColumnDefinition Width="121"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Domain\Username:" FontWeight="DemiBold"/>
                         <Label Name="lbl_MachineInfo_WhoAmI" Content="" Grid.Column="1" VerticalContentAlignment="Center"/>
@@ -45,9 +46,9 @@
                 <StackPanel Name="pnl_MachineInfo_MachineName" Grid.Row="1" Height="29">
                     <Grid Name="grd_MachineInfo_MachineName" Margin="0,0,10,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="115"/>
+                            <ColumnDefinition Width="121"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Machine Name:" FontWeight="DemiBold"/>
                         <Label Name="lbl_MachineInfo_MachineName" Content="" Grid.Column="1" VerticalContentAlignment="Center"/>
@@ -57,28 +58,40 @@
                 <StackPanel Name="pnl_MachineInfo_MACAddress" Grid.Row="2" Height="29">
                     <Grid Name="grd_MachineInfo_MACAddress" Margin="0,0,10,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="115"/>
+                            <ColumnDefinition Width="121"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
                         <Label Content="MAC Address:" FontWeight="DemiBold"/>
                         <Label Name="lbl_MachineInfo_MACAddress" Content="" Grid.Column="1" VerticalContentAlignment="Center"/>
                         <Image x:Name="img_macAddress" Grid.Column="2" MouseLeftButtonDown="OnClick_CopyImage"/>
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="pnl_SinkType_Logging3" Grid.Row="3" Height="29">
+                <StackPanel Name="pnl_MachineInfo_IPAddress" Grid.Row="3" Height="29">
                     <Grid Name="grd_MachineInfo_IPAddress" Margin="0,0,10,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="115"/>
+                            <ColumnDefinition Width="121"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="35"/>
                         </Grid.ColumnDefinitions>
                         <Label Content="IP Address:" FontWeight="DemiBold"/>
                         <Label Name="lbl_MachineInfo_IPAddress" Content="" Grid.Column="1" VerticalContentAlignment="Center"/>
                         <Image x:Name="img_ipAddress" Grid.Column="2" MouseLeftButtonDown="OnClick_CopyImage"/>
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="pnl_MachineInfo_Copy" Grid.Row="4" Margin="0,5,0,0" Height="29">
+                <StackPanel Name="pnl_MachineInfo_ServerIPAddress" Grid.Row="4" Height="29">
+                    <Grid Name="grd_MachineInfo_ServerIPAddress" Margin="0,0,10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="121"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="35"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Server Generated IP:" FontWeight="DemiBold"/>
+                        <Label Name="lbl_MachineInfo_ServerIPAddress" Content="" Grid.Column="1" VerticalContentAlignment="Center"/>
+                        <Image x:Name="img_serverIPAddress" Grid.Column="2" MouseLeftButtonDown="OnClick_CopyImage"/>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Name="pnl_MachineInfo_Copy" Grid.Row="5" Margin="0,5,0,0" Height="29">
                     <Label Name="lbl_CopytoClipboard" Content="Copied to Clipboard!" Visibility="Collapsed" FontWeight="DemiBold" Foreground="#808080"/>
                 </StackPanel>
             </Grid>
