@@ -38,6 +38,7 @@ namespace OpenBots.Agent.Client
         private SystemForms.MenuItem _menuItemClearCredentials;
         private SystemForms.MenuItem _menuItemMachineInfo;
 
+        private bool _minimizeToTray = true;
         private bool _isServiceUP = false;
         private bool _windowHeightReduced = false;
         private bool _logInfoChanged = false;
@@ -106,17 +107,20 @@ namespace OpenBots.Agent.Client
         {
 
         }
-        //private void OnFocusOut(object sender, EventArgs e)
-        //{
-        //    //if (this.WindowState != WindowState.Minimized)
-        //    //    this.WindowState = WindowState.Minimized;
-        //}
+        private void OnFocusOut(object sender, EventArgs e)
+        {
+            if (this.WindowState != WindowState.Minimized)
+            {
+                _minimizeToTray = false;
+                this.WindowState = WindowState.Minimized;
+            }
+        }
         private void OnStateChanged(object sender, EventArgs e)
         {
             if (this.WindowState == WindowState.Minimized)
             {
                 this.Topmost = false;
-                this.ShowInTaskbar = false;
+                this.ShowInTaskbar = !_minimizeToTray;
                 _notifyIcon.Visible = true;
             }
             else
@@ -131,6 +135,7 @@ namespace OpenBots.Agent.Client
             if (this.WindowState != WindowState.Minimized)
             {
                 e.Cancel = true;
+                _minimizeToTray = true;
                 this.WindowState = WindowState.Minimized;
             }
         }
