@@ -16,8 +16,7 @@ namespace OpenBots.Agent.Client.Utilities
         private static extern int SetForegroundWindow(IntPtr hwnd);
 
         [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowPlacement(IntPtr hWnd, ref Windowplacement lpwndpl);
+        private static extern bool IsIconic(IntPtr handle);
 
         private enum ShowWindowEnum
         {
@@ -40,21 +39,13 @@ namespace OpenBots.Agent.Client.Utilities
 
         public static void BringWindowToFront()
         {
-            IntPtr wdwIntPtr = FindWindow(null, "OpenBots Agent");
+            IntPtr windowHadle = FindWindow(null, "OpenBots Agent");
 
-            //get the hWnd of the process
-            Windowplacement placement = new Windowplacement();
-            GetWindowPlacement(wdwIntPtr, ref placement);
-
-            // Check if window is minimized
-            if (placement.showCmd == 2)
-            {
-                //the window is hidden so we restore it
-                ShowWindow(wdwIntPtr, ShowWindowEnum.Restore);
-            }
+            if (IsIconic(windowHadle))
+                ShowWindow(windowHadle, ShowWindowEnum.Restore);
 
             //set user's focus to the window
-            SetForegroundWindow(wdwIntPtr);
+            SetForegroundWindow(windowHadle);
         }
     }
 }
