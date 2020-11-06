@@ -157,11 +157,11 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to execute process");
 
-            //AgentViewModel agent = AgentsAPIManager.GetAgent(AuthAPIManager.Instance, job.AgentId.ToString());
-            //Credential creds = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
+            AgentViewModel agent = AgentsAPIManager.GetAgent(AuthAPIManager.Instance, job.AgentId.ToString());
+            Credential credential = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
 
             // Run Process
-            RunProcess(job, process, mainScriptFilePath);
+            RunProcess(job, process, credential, mainScriptFilePath);
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Process execution completed");
@@ -193,7 +193,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();
         }
-        private void RunProcess(Job job, Process process, string mainScriptFilePath)
+        private void RunProcess(Job job, Process process, Credential machineCredential, string mainScriptFilePath)
         {
             try
             {
@@ -203,7 +203,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                 // launch the Executor
                 ProcessLauncher.PROCESS_INFORMATION procInfo;
-                ProcessLauncher.LaunchProcess(cmdLine, out procInfo);
+                ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
             }
             catch (Exception ex)
             {
