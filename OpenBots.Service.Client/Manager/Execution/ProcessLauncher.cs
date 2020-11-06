@@ -279,12 +279,10 @@ namespace OpenBots.Service.Client.Manager.Execution
             // If activeSessionId is invalid (No Active Session found for the Required User)
             if (activeSessionId == INVALID_SESSION_ID)
             {
-                bResult = userLoggedOn = LogonUser("AccelirateAdmin",
-                                        "AliTest",
-                                        "WeLoveRobots123",
-                                        LOGON32_LOGON_INTERACTIVE,
-                                        LOGON32_PROVIDER_DEFAULT,
-                                        ref phUserToken);
+                // Logon with the given user credentials (opening an active console session)
+                bResult = userLoggedOn = LogonUser(machineCredential.UserName, machineCredential.Domain,
+                        machineCredential.PasswordSecret, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, ref phUserToken);
+
                 if (userLoggedOn)
                 {
                     File.AppendAllText(@"C:\RunJobTest\Test.txt", $"New Console Session created for: {domainUsername}" + Environment.NewLine);
@@ -374,7 +372,11 @@ namespace OpenBots.Service.Client.Manager.Execution
                                                 out processInfo         // receives information about new process
                                                 );
 
-                if (!pResult) { throw new Exception("CreateProcessAsUser error #" + Marshal.GetLastWin32Error()); }
+                if (!pResult)
+                {
+                    File.AppendAllText(@"C:\RunJobTest\Test.txt", $"CreateProcessAsUser error # {Marshal.GetLastWin32Error()}" + Environment.NewLine);
+                    throw new Exception("CreateProcessAsUser error #" + Marshal.GetLastWin32Error());
+                }
 
                 pResultWait = WaitForSingleObject(processInfo.hProcess, INFINITE);
                 if (pResultWait == WAIT_FAILED)

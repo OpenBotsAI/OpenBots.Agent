@@ -9,13 +9,14 @@ using OpenBots.Agent.Core.Model;
 using System.Text.Json;
 using Newtonsoft.Json;
 using System.Text;
+using OpenBots.Service.API.Model;
 
 namespace OpenBots.Service.Client
 {
     public partial class OpenBotsSvc : ServiceBase
     {
         Timer _heartbeatTimer = new Timer();
-        string mainScriptFilePath = @"C:\Users\HP\Documents\OpenBotsStudio\My Scripts\FileFolderTest\Main.json";
+        string mainScriptFilePath = @"C:\RunJobTest\UnattendedTest\Main.json";
         string processName = "FileFolderTest";
         public OpenBotsSvc()
         {
@@ -56,9 +57,11 @@ namespace OpenBots.Service.Client
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 
+            Credential machineCredential = new Credential(null, null, null, "AliTest", "AccelirateAdmin", "WeLoveRobots123", null);
+
             // launch the Executor
             ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, out procInfo);
+            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
         }
 
         private string GetExecutionParams(string jobId, string processId, string processName, string mainScriptFilePath)
