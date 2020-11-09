@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client"
         mc:Ignorable="d"
-        Title="OpenBots Agent" Name="wndMain" Height="655" Width="488" Loaded="OnLoad" ResizeMode="NoResize" Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed" WindowStartupLocation="CenterScreen" Deactivated="OnFocusOut">
+        Title="OpenBots Agent" Name="wndMain" Height="655" Width="488" Loaded="OnLoad" ResizeMode="NoResize" Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed" WindowStartupLocation="CenterScreen">
     <Grid Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="295"/>

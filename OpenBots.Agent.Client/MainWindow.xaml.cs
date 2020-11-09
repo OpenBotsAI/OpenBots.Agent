@@ -107,14 +107,14 @@ namespace OpenBots.Agent.Client
         {
 
         }
-        private void OnFocusOut(object sender, EventArgs e)
-        {
-            if (this.WindowState != WindowState.Minimized)
-            {
-                _minimizeToTray = false;
-                this.WindowState = WindowState.Minimized;
-            }
-        }
+        //private void OnFocusOut(object sender, EventArgs e)
+        //{
+        //    if (this.WindowState != WindowState.Minimized)
+        //    {
+        //        _minimizeToTray = false;
+        //        this.WindowState = WindowState.Minimized;
+        //    }
+        //}
         private void OnStateChanged(object sender, EventArgs e)
         {
             if (this.WindowState == WindowState.Minimized)

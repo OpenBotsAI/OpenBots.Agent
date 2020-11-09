@@ -1,10 +1,6 @@
 ﻿using OpenBots.Service.API.Model;
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Management;
 using System.Runtime.InteropServices;
-using System.Security;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -239,19 +235,12 @@ namespace OpenBots.Service.Client.Manager.Execution
             return username;
         }
 
-        private static bool GetSessionUserToken(Credential machineCredential, ref IntPtr phUserToken, ref bool userLoggedOn)
+        private static uint GetActiveUserSessionId(string domainUsername)
         {
-            var bResult = false;
-            var hImpersonationToken = IntPtr.Zero;
             var activeSessionId = INVALID_SESSION_ID;
             var pSessionInfo = IntPtr.Zero;
             var sessionCount = 0;
-            string domainUsername = $"{machineCredential.Domain}\\{machineCredential.UserName}";
 
-            SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
-            sa.nLength = (uint)Marshal.SizeOf(sa);
-
-            // Get a handle to the user access token for the current active session.
             if (WTSEnumerateSessions(WTS_CURRENT_SERVER_HANDLE, 0, 1, ref pSessionInfo, ref sessionCount) != 0)
             {
                 var arrayElementSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
@@ -270,37 +259,38 @@ namespace OpenBots.Service.Client.Manager.Execution
                     if (si.State == WTS_CONNECTSTATE_CLASS.WTSActive && sessionUsername.ToLower() == domainUsername.ToLower())
                     {
                         activeSessionId = si.SessionID;
-                        File.AppendAllText(@"C:\RunJobTest\Test.txt", $"Console Session found for User: {domainUsername}" + Environment.NewLine);
                         break;
                     }
                 }
             }
 
-            // If activeSessionId is invalid (No Active Session found for the Required User)
+            return activeSessionId;
+        }
+
+        private static bool GetSessionUserToken(Credential machineCredential, ref IntPtr phUserToken, ref bool userLoggedOn)
+        {
+            var bResult = false;
+            var hImpersonationToken = IntPtr.Zero;
+            string domainUsername = $"{machineCredential.Domain}\\{machineCredential.UserName}";
+
+            SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
+            sa.nLength = (uint)Marshal.SizeOf(sa);
+
+            // Get a handle to the user access token for the current active session.
+            var activeSessionId = GetActiveUserSessionId(domainUsername);
+
+            // If activeSessionId is invalid (No Active Session found for the Assigned User)
             if (activeSessionId == INVALID_SESSION_ID)
             {
                 // Logon with the given user credentials (opening an active console session)
                 bResult = userLoggedOn = LogonUser(machineCredential.UserName, machineCredential.Domain,
                         machineCredential.PasswordSecret, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, ref phUserToken);
-
-                if (userLoggedOn)
-                {
-                    File.AppendAllText(@"C:\RunJobTest\Test.txt", $"New Console Session created for: {domainUsername}" + Environment.NewLine);
-                    var consoleSessionId = WTSGetActiveConsoleSessionId();
-                    if (consoleSessionId == INVALID_SESSION_ID)
-                        File.AppendAllText(@"C:\RunJobTest\Test.txt", $"Session created for: {domainUsername} is Not a Console" + Environment.NewLine);
-                    else
-                        File.AppendAllText(@"C:\RunJobTest\Test.txt", $"Username/ConsoleId of the Console Session: {GetUsernameBySessionId(consoleSessionId, true)}/{consoleSessionId.ToString()}" + Environment.NewLine);
-                }
-                else
-                    File.AppendAllText(@"C:\RunJobTest\Test.txt", $"Exception Occurred: " + Marshal.GetLastWin32Error() + Environment.NewLine);
             }
             else if (WTSQueryUserToken(activeSessionId, ref hImpersonationToken) != 0)
             {
                 // Convert the impersonation token to a primary token
-                bResult = DuplicateTokenEx(hImpersonationToken, 0, ref sa,
-                    (int)SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, (int)TOKEN_TYPE.TokenPrimary,
-                    ref phUserToken);
+                bResult = DuplicateTokenEx(hImpersonationToken, 0, ref sa, (int)SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, 
+                    (int)TOKEN_TYPE.TokenPrimary, ref phUserToken);
 
                 CloseHandle(hImpersonationToken);
             }
@@ -323,6 +313,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             Boolean pResult = false;
             IntPtr hUserTokenDup = IntPtr.Zero, hPToken = IntPtr.Zero, hProcess = IntPtr.Zero, envBlock = IntPtr.Zero;
             UInt32 pResultWait = WAIT_FAILED;
+            string domainUsername = $"{machineCredential.Domain}\\{machineCredential.UserName}";
 
             processInfo = new PROCESS_INFORMATION();
 
@@ -351,8 +342,6 @@ namespace OpenBots.Service.Client.Manager.Execution
                 // flags that specify the priority and creation method of the process
                 int dwCreationFlags = NORMAL_PRIORITY_CLASS | CREATE_NEW_CONSOLE | CREATE_UNICODE_ENVIRONMENT;
 
-                envBlock = IntPtr.Zero;// = GetEnvironmentBlock(hPToken);
-
                 if (!CreateEnvironmentBlock(ref envBlock, hPToken, false))
                 {
                     throw new Exception("StartProcessAsCurrentUser: CreateEnvironmentBlock failed.");
@@ -373,17 +362,11 @@ namespace OpenBots.Service.Client.Manager.Execution
                                                 );
 
                 if (!pResult)
-                {
-                    File.AppendAllText(@"C:\RunJobTest\Test.txt", $"CreateProcessAsUser error # {Marshal.GetLastWin32Error()}" + Environment.NewLine);
                     throw new Exception("CreateProcessAsUser error #" + Marshal.GetLastWin32Error());
-                }
 
                 pResultWait = WaitForSingleObject(processInfo.hProcess, INFINITE);
                 if (pResultWait == WAIT_FAILED)
-                {
-                    File.AppendAllText(@"C:\RunJobTest\Test.txt", $"WaitForSingleObject error # {Marshal.GetLastWin32Error()}" + Environment.NewLine);
                     throw new Exception("WaitForSingleObject error #" + Marshal.GetLastWin32Error());
-                }
 
                 GetExitCodeProcess(processInfo.hProcess, out exitCode);
             }
@@ -391,18 +374,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             {
                 if (userLoggedOn)
                 {
-                    var testConsoleSessionId = WTSGetActiveConsoleSessionId();
-                    bool sessionLoggedOff = WTSLogoffSession(WTS_CURRENT_SERVER_HANDLE, (int)testConsoleSessionId, true);
-                    File.AppendAllText(@"C:\RunJobTest\Test.txt", $"Session Logged Off: {sessionLoggedOff.ToString()}" + Environment.NewLine);
-                    bool handleClosed = CloseHandle(hPToken);
-                    File.AppendAllText(@"C:\RunJobTest\Test.txt", $"User Handle Closed: {handleClosed.ToString()}" + Environment.NewLine);
-
-                    testConsoleSessionId = WTSGetActiveConsoleSessionId();
-
-                    if (testConsoleSessionId == INVALID_SESSION_ID)
-                        File.AppendAllText(@"C:\RunJobTest\Test.txt", $"Console Session {testConsoleSessionId.ToString()} is closed" + Environment.NewLine);
-                    else
-                        File.AppendAllText(@"C:\RunJobTest\Test.txt", $"Console Session {testConsoleSessionId.ToString()} is Not closed" + Environment.NewLine);
+                    var activeConsoleSessionId = WTSGetActiveConsoleSessionId();
+                    WTSLogoffSession(WTS_CURRENT_SERVER_HANDLE, (int)activeConsoleSessionId, true);
                 }
 
                 // invalidate the handles
@@ -418,6 +391,5 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             return pResult; // return the result
         }
-
     }
 }
