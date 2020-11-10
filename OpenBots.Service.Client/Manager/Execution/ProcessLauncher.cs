@@ -320,8 +320,11 @@ namespace OpenBots.Service.Client.Manager.Execution
             try
             {
                 // obtain the currently active session id, then use it to generate an inpersonation token; every logged on user in the system has a unique session id
-                GetSessionUserToken(machineCredential, ref hPToken, ref userLoggedOn);
+                bool sessionFound = GetSessionUserToken(machineCredential, ref hPToken, ref userLoggedOn);
 
+                // If unable to find/create an Active User Session
+                if (!sessionFound)
+                    throw new Exception($"Unable to Find/Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
 
                 // Security attibute structure used in DuplicateTokenEx and CreateProcessAsUser
                 // I would prefer to not have to use a security attribute variable and to just 
