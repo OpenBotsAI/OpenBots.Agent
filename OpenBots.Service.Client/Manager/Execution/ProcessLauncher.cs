@@ -255,7 +255,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                     // Get Domain\Username by Session Id
                     var sessionUsername = GetUsernameBySessionId(si.SessionID, true);
 
-                    // If Console Session for the required User is Connected
+                    // If there is an Active Session for the Assigned User
                     if (si.State == WTS_CONNECTSTATE_CLASS.WTSActive && sessionUsername.ToLower() == domainUsername.ToLower())
                     {
                         activeSessionId = si.SessionID;
@@ -276,13 +276,13 @@ namespace OpenBots.Service.Client.Manager.Execution
             SECURITY_ATTRIBUTES sa = new SECURITY_ATTRIBUTES();
             sa.nLength = (uint)Marshal.SizeOf(sa);
 
-            // Get a handle to the user access token for the current active session.
+            // Get Session Id of the active session.
             var activeSessionId = GetActiveUserSessionId(domainUsername);
 
             // If activeSessionId is invalid (No Active Session found for the Assigned User)
             if (activeSessionId == INVALID_SESSION_ID)
             {
-                // Logon with the given user credentials (opening an active console session)
+                // Logon with the given user credentials (creating an active console session)
                 bResult = userLoggedOn = LogonUser(machineCredential.UserName, machineCredential.Domain,
                         machineCredential.PasswordSecret, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, ref phUserToken);
             }
