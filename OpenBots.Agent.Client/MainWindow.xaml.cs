@@ -161,7 +161,7 @@ namespace OpenBots.Agent.Client
             bool isServerAlive = false;
 
             // If Server Connection is already Up and Agent has just started.
-            if (!string.IsNullOrEmpty(_agentSettings.AgentId) && PipeProxy.Instance.IsServerConnectionUp())
+            if (PipeProxy.Instance.IsServerConnectionUp())
             {
                 // Retrieve Connection Settings from Server
                 _connectionSettings = PipeProxy.Instance.GetConnectionHistory();

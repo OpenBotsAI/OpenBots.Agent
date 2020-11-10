@@ -113,10 +113,10 @@ namespace OpenBots.Service.Client.Server
         #endregion JobsPolling
 
         #region ServerConnection
-        public ServerResponse Connect(ServerConnectionSettings connectionSettings, string agentDataDirectoryPath)
+        public ServerResponse Connect(ServerConnectionSettings connectionSettings)
         {
             // Initialize File Logger for Debug Purpose
-            FileLogger.Instance.Initialize(agentDataDirectoryPath);
+            FileLogger.Instance.Initialize(new EnvironmentSettings().GetEnvironmentVariable());
 
             // Log Event
             FileLogger.Instance.LogEvent("Connect", "Attempt to connect to the Server");
