@@ -19,6 +19,7 @@ namespace OpenBots.Service.Client.Manager.Execution
     public class ExecutionManager
     {
         public bool IsEngineBusy { get; private set; } = false;
+        private bool _isSuccessfulExecution = false;
         private Timer _newJobsCheckTimer;
         private ProcessExecutionLog _executionLog;
 
@@ -110,7 +111,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                     throw;
                 }
-
+                _isSuccessfulExecution = false;
                 SetEngineStatus(false);
             }
         }
@@ -122,7 +123,6 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Peek Job
             var job = JobsQueueManager.Instance.PeekJob();
-
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to fetch Process Detail");
@@ -192,6 +192,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Dequeue the Job
             JobsQueueManager.Instance.DequeueJob();
+
+            _isSuccessfulExecution = true;
         }
         private void RunProcess(Job job, Process process, Credential machineCredential, string mainScriptFilePath)
         {
@@ -219,7 +221,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         protected virtual void OnJobFinishedEvent(EventArgs e)
         {
-            JobFinishedEvent?.Invoke(this, e);
+            if(_isSuccessfulExecution)
+                JobFinishedEvent?.Invoke(this, e);
         }
 
         private string GetExecutionParams(Job job, Process process, string mainScriptFilePath)
