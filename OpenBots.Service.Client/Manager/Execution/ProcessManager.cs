@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using OpenBots.Agent.Core.Model;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
 using System;
@@ -13,8 +14,8 @@ namespace OpenBots.Service.Client.Manager.Execution
     {
         public static string DownloadAndExtractProcess(Process process)
         {
-            // Check if (Root) Processes Directory Exists, If Not create it
-            var processesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Processes");
+            // Check if (Root) Processes Directory Exists (under User's AppData Folder), If Not create it
+            var processesDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariable(), "Processes");
             if (!Directory.Exists(processesDirectory))
                 Directory.CreateDirectory(processesDirectory);
 

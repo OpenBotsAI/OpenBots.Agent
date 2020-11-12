@@ -8,7 +8,7 @@ namespace OpenBots.Agent.Core.Infrastructure
     {
         [OperationContract]
         [ServiceKnownType(typeof(ServerConnectionSettings))]
-        ServerResponse ConnectToServer(ServerConnectionSettings settings, string agentDataDirectoryPath);
+        ServerResponse ConnectToServer(ServerConnectionSettings settings);
 
         [OperationContract]
         [ServiceKnownType(typeof(ServerConnectionSettings))]

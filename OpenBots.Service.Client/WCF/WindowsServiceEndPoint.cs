@@ -8,9 +8,9 @@ namespace OpenBots.Service.Client
 {
     public class WindowsServiceEndPoint : IWindowsServiceEndPoint
     {
-        public ServerResponse ConnectToServer(ServerConnectionSettings settings, string agentDataDirectoryPath)
+        public ServerResponse ConnectToServer(ServerConnectionSettings settings)
         {
-            return HttpServerClient.Instance.Connect(settings, agentDataDirectoryPath);
+            return HttpServerClient.Instance.Connect(settings);
         }
 
         public ServerResponse DisconnectFromServer(ServerConnectionSettings settings)
