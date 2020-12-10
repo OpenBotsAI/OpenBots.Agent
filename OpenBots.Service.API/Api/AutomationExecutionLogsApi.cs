@@ -20,57 +20,11 @@ namespace OpenBots.Service.API.Api
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public interface IAgentsApi : IApiAccessor
+    public interface IAutomationExecutionLogsApi : IApiAccessor
     {
         #region Synchronous Operations
         /// <summary>
-        /// Creates a new heartbeat for the specified AgentId
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent identifier</param>
-        /// <param name="body">Heartbeat values to be updated (optional)</param>
-        /// <returns>AgentHeartbeat</returns>
-        AgentHeartbeat ApiV1AgentsAgentIdAddHeartbeatPost(string agentId, AgentHeartbeat body = null);
-
-        /// <summary>
-        /// Creates a new heartbeat for the specified AgentId
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent identifier</param>
-        /// <param name="body">Heartbeat values to be updated (optional)</param>
-        /// <returns>ApiResponse of AgentHeartbeat</returns>
-        ApiResponse<AgentHeartbeat> ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(string agentId, AgentHeartbeat body = null);
-        /// <summary>
-        /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <returns>ConnectedViewModel</returns>
-        ConnectedViewModel ApiV1AgentsConnectPatch(string machineName, string macAddresses);
-
-        /// <summary>
-        /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <returns>ApiResponse of ConnectedViewModel</returns>
-        ApiResponse<ConnectedViewModel> ApiV1AgentsConnectPatchWithHttpInfo(string machineName, string macAddresses);
-        /// <summary>
-        /// Provides a count of agents
+        /// Provides a Count of AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
@@ -78,10 +32,10 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
-        int? ApiV1AgentsCountGet(string filter = null);
+        int? ApiV1AutomationExecutionLogsCountGet(string filter = null);
 
         /// <summary>
-        /// Provides a count of agents
+        /// Provides a Count of AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
@@ -89,34 +43,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
-        ApiResponse<int?> ApiV1AgentsCountGetWithHttpInfo(string filter = null);
+        ApiResponse<int?> ApiV1AutomationExecutionLogsCountGetWithHttpInfo(string filter = null);
         /// <summary>
-        /// Updates the isConnected field if the disconnect details are correct
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
-        /// <returns>IActionResult</returns>
-        IActionResult ApiV1AgentsDisconnectPatch(string machineName, string macAddresses, Guid? agentId = null);
-
-        /// <summary>
-        /// Updates the isConnected field if the disconnect details are correct
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AgentsDisconnectPatchWithHttpInfo(string machineName, string macAddresses, Guid? agentId = null);
-        /// <summary>
-        /// Provides a list of all Agents
+        /// Provides a list of all AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
@@ -126,11 +55,11 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AgentModelPaginatedList</returns>
-        AgentModelPaginatedList ApiV1AgentsGet(string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>AutomationExecutionLogPaginatedList</returns>
+        AutomationExecutionLogPaginatedList ApiV1AutomationExecutionLogsGet(string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of all Agents
+        /// Provides a list of all AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
@@ -140,215 +69,213 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AgentModelPaginatedList</returns>
-        ApiResponse<AgentModelPaginatedList> ApiV1AgentsGetWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ApiResponse of AutomationExecutionLogPaginatedList</returns>
+        ApiResponse<AutomationExecutionLogPaginatedList> ApiV1AutomationExecutionLogsGetWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Lookup list of all agents
+        /// Deletes a AutomationExecutionLog with a specified id from the AutomationExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>List&lt;JobAgentsLookup&gt;</returns>
-        List<JobAgentsLookup> ApiV1AgentsGetLookupGet();
-
-        /// <summary>
-        /// Lookup list of all agents
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>ApiResponse of List&lt;JobAgentsLookup&gt;</returns>
-        ApiResponse<List<JobAgentsLookup>> ApiV1AgentsGetLookupGetWithHttpInfo();
-        /// <summary>
-        /// Deletes an agent with a specified id from the agents
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id to be deleted - throws bad request if null or empty Guid</param>
+        /// <param name="id">AutomationExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1AgentsIdDelete(string id);
+        IActionResult ApiV1AutomationExecutionLogsIdDelete(string id);
 
         /// <summary>
-        /// Deletes an agent with a specified id from the agents
+        /// Deletes a AutomationExecutionLog with a specified id from the AutomationExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id to be deleted - throws bad request if null or empty Guid</param>
+        /// <param name="id">AutomationExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AgentsIdDeleteWithHttpInfo(string id);
+        ApiResponse<IActionResult> ApiV1AutomationExecutionLogsIdDeleteWithHttpInfo(string id);
         /// <summary>
-        /// Updates partial details of agent
+        /// Agent is able to update a AutomationExecutionLog End status
         /// </summary>
         /// <remarks>
-        /// 
+        /// Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent identifier</param>
-        /// <param name="body">Value of the agent to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1AgentsIdPatch(string id, List<Operation> body = null);
+        IActionResult ApiV1AutomationExecutionLogsIdEndAutomationPut(string id, AutomationExecutionLog body = null);
 
         /// <summary>
-        /// Updates partial details of agent
+        /// Agent is able to update a AutomationExecutionLog End status
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        ApiResponse<IActionResult> ApiV1AutomationExecutionLogsIdEndAutomationPutWithHttpInfo(string id, AutomationExecutionLog body = null);
+        /// <summary>
+        /// Updates partial details of AutomationExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent identifier</param>
-        /// <param name="body">Value of the agent to be updated (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AgentsIdPatchWithHttpInfo(string id, List<Operation> body = null);
-        /// <summary>
-        /// Updates an Agent
-        /// </summary>
-        /// <remarks>
-        /// Provides an action to update an agent, when agent id and the new details of agent are given
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id, produces bad request if id is null or ids don&#x27;t match</param>
-        /// <param name="body">Agent details to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog identifier</param>
+        /// <param name="body">Value of the AutomationExecutionLog to be updated. (optional)</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1AgentsIdPut(string id, AgentModel body = null);
+        IActionResult ApiV1AutomationExecutionLogsIdPatch(string id, List<Operation> body = null);
 
         /// <summary>
-        /// Updates an Agent
+        /// Updates partial details of AutomationExecutionLog.
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an agent, when agent id and the new details of agent are given
+        /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id, produces bad request if id is null or ids don&#x27;t match</param>
-        /// <param name="body">Agent details to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog identifier</param>
+        /// <param name="body">Value of the AutomationExecutionLog to be updated. (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AgentsIdPutWithHttpInfo(string id, AgentModel body = null);
+        ApiResponse<IActionResult> ApiV1AutomationExecutionLogsIdPatchWithHttpInfo(string id, List<Operation> body = null);
         /// <summary>
-        /// Adds a new agent to the existing agents and create a new agent application user
+        /// Updates a AutomationExecutionLog
         /// </summary>
         /// <remarks>
-        /// Adds the agent with unique agent id to the existing agents
+        /// Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>IActionResult</returns>
+        IActionResult ApiV1AutomationExecutionLogsIdPut(string id, AutomationExecutionLog body = null);
+
+        /// <summary>
+        /// Updates a AutomationExecutionLog
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        ApiResponse<IActionResult> ApiV1AutomationExecutionLogsIdPutWithHttpInfo(string id, AutomationExecutionLog body = null);
+        /// <summary>
+        /// Adds a new AutomationExecutionLog to the existing AutomationExecutionLogs
+        /// </summary>
+        /// <remarks>
+        /// Adds the AutomationExecutionLog with unique AutomationExecutionLog Id to the existing AutomationExecutionLogs
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>AgentModel</returns>
-        AgentModel ApiV1AgentsPost(CreateAgentViewModel body = null);
+        /// <returns>AutomationExecutionLog</returns>
+        AutomationExecutionLog ApiV1AutomationExecutionLogsPost(AutomationExecutionLog body = null);
 
         /// <summary>
-        /// Adds a new agent to the existing agents and create a new agent application user
+        /// Adds a new AutomationExecutionLog to the existing AutomationExecutionLogs
         /// </summary>
         /// <remarks>
-        /// Adds the agent with unique agent id to the existing agents
+        /// Adds the AutomationExecutionLog with unique AutomationExecutionLog Id to the existing AutomationExecutionLogs
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of AgentModel</returns>
-        ApiResponse<AgentModel> ApiV1AgentsPostWithHttpInfo(CreateAgentViewModel body = null);
+        /// <returns>ApiResponse of AutomationExecutionLog</returns>
+        ApiResponse<AutomationExecutionLog> ApiV1AutomationExecutionLogsPostWithHttpInfo(AutomationExecutionLog body = null);
         /// <summary>
-        /// Provides a list of heartbeat details for a particular agent id
+        /// Allows Agent to add a new AutomationExecutionLog to the existing AutomationExecutionLogs
+        /// </summary>
+        /// <remarks>
+        /// Agent is able to Add the AutomationExecutionLog if the Agent is Connected
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>AutomationExecutionLog</returns>
+        AutomationExecutionLog ApiV1AutomationExecutionLogsStartAutomationPost(AutomationExecutionLog body = null);
+
+        /// <summary>
+        /// Allows Agent to add a new AutomationExecutionLog to the existing AutomationExecutionLogs
+        /// </summary>
+        /// <remarks>
+        /// Agent is able to Add the AutomationExecutionLog if the Agent is Connected
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of AutomationExecutionLog</returns>
+        ApiResponse<AutomationExecutionLog> ApiV1AutomationExecutionLogsStartAutomationPostWithHttpInfo(AutomationExecutionLog body = null);
+        /// <summary>
+        /// Provides a viewmodel list of all AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent id</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AgentHeartbeatPaginatedList</returns>
-        AgentHeartbeatPaginatedList GetAgentHeartbeat(string agentId, string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>AutomationExecutionViewModelPaginatedList</returns>
+        AutomationExecutionViewModelPaginatedList ApiV1AutomationExecutionLogsViewGet(string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of heartbeat details for a particular agent id
+        /// Provides a viewmodel list of all AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent id</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AgentHeartbeatPaginatedList</returns>
-        ApiResponse<AgentHeartbeatPaginatedList> GetAgentHeartbeatWithHttpInfo(string agentId, string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>ApiResponse of AutomationExecutionViewModelPaginatedList</returns>
+        ApiResponse<AutomationExecutionViewModelPaginatedList> ApiV1AutomationExecutionLogsViewGetWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// 
+        /// Provides a AutomationExecution&#x27;s details for a particular AutomationExecution id
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>AgentViewModel</returns>
-        AgentViewModel GetAgentModel(string id);
+        /// <param name="id">AutomationExecution id</param>
+        /// <returns>AutomationExecutionViewModel</returns>
+        AutomationExecutionViewModel ApiV1AutomationExecutionLogsViewIdGet(string id);
 
         /// <summary>
-        /// 
+        /// Provides a AutomationExecution&#x27;s details for a particular AutomationExecution id
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>ApiResponse of AgentViewModel</returns>
-        ApiResponse<AgentViewModel> GetAgentModelWithHttpInfo(string id);
+        /// <param name="id">AutomationExecution id</param>
+        /// <returns>ApiResponse of AutomationExecutionViewModel</returns>
+        ApiResponse<AutomationExecutionViewModel> ApiV1AutomationExecutionLogsViewIdGetWithHttpInfo(string id);
+        /// <summary>
+        /// Provides a AutomationExecutionLog&#x27;s details for a particular AutomationExecutionLog Id.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog id</param>
+        /// <returns>AutomationExecutionLog</returns>
+        AutomationExecutionLog GetAutomationExecutionLog(string id);
+
+        /// <summary>
+        /// Provides a AutomationExecutionLog&#x27;s details for a particular AutomationExecutionLog Id.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog id</param>
+        /// <returns>ApiResponse of AutomationExecutionLog</returns>
+        ApiResponse<AutomationExecutionLog> GetAutomationExecutionLogWithHttpInfo(string id);
         #endregion Synchronous Operations
         #region Asynchronous Operations
         /// <summary>
-        /// Creates a new heartbeat for the specified AgentId
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent identifier</param>
-        /// <param name="body">Heartbeat values to be updated (optional)</param>
-        /// <returns>Task of AgentHeartbeat</returns>
-        System.Threading.Tasks.Task<AgentHeartbeat> ApiV1AgentsAgentIdAddHeartbeatPostAsync(string agentId, AgentHeartbeat body = null);
-
-        /// <summary>
-        /// Creates a new heartbeat for the specified AgentId
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent identifier</param>
-        /// <param name="body">Heartbeat values to be updated (optional)</param>
-        /// <returns>Task of ApiResponse (AgentHeartbeat)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AgentHeartbeat>> ApiV1AgentsAgentIdAddHeartbeatPostAsyncWithHttpInfo(string agentId, AgentHeartbeat body = null);
-        /// <summary>
-        /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <returns>Task of ConnectedViewModel</returns>
-        System.Threading.Tasks.Task<ConnectedViewModel> ApiV1AgentsConnectPatchAsync(string machineName, string macAddresses);
-
-        /// <summary>
-        /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <returns>Task of ApiResponse (ConnectedViewModel)</returns>
-        System.Threading.Tasks.Task<ApiResponse<ConnectedViewModel>> ApiV1AgentsConnectPatchAsyncWithHttpInfo(string machineName, string macAddresses);
-        /// <summary>
-        /// Provides a count of agents
+        /// Provides a Count of AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
@@ -356,10 +283,10 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
-        System.Threading.Tasks.Task<int?> ApiV1AgentsCountGetAsync(string filter = null);
+        System.Threading.Tasks.Task<int?> ApiV1AutomationExecutionLogsCountGetAsync(string filter = null);
 
         /// <summary>
-        /// Provides a count of agents
+        /// Provides a Count of AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
@@ -367,34 +294,9 @@ namespace OpenBots.Service.API.Api
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
-        System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1AgentsCountGetAsyncWithHttpInfo(string filter = null);
+        System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1AutomationExecutionLogsCountGetAsyncWithHttpInfo(string filter = null);
         /// <summary>
-        /// Updates the isConnected field if the disconnect details are correct
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1AgentsDisconnectPatchAsync(string machineName, string macAddresses, Guid? agentId = null);
-
-        /// <summary>
-        /// Updates the isConnected field if the disconnect details are correct
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AgentsDisconnectPatchAsyncWithHttpInfo(string machineName, string macAddresses, Guid? agentId = null);
-        /// <summary>
-        /// Provides a list of all Agents
+        /// Provides a list of all AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
@@ -404,11 +306,11 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AgentModelPaginatedList</returns>
-        System.Threading.Tasks.Task<AgentModelPaginatedList> ApiV1AgentsGetAsync(string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of AutomationExecutionLogPaginatedList</returns>
+        System.Threading.Tasks.Task<AutomationExecutionLogPaginatedList> ApiV1AutomationExecutionLogsGetAsync(string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of all Agents
+        /// Provides a list of all AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
@@ -418,180 +320,224 @@ namespace OpenBots.Service.API.Api
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AgentModelPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AgentModelPaginatedList>> ApiV1AgentsGetAsyncWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ApiResponse (AutomationExecutionLogPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AutomationExecutionLogPaginatedList>> ApiV1AutomationExecutionLogsGetAsyncWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// Lookup list of all agents
+        /// Deletes a AutomationExecutionLog with a specified id from the AutomationExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of List&lt;JobAgentsLookup&gt;</returns>
-        System.Threading.Tasks.Task<List<JobAgentsLookup>> ApiV1AgentsGetLookupGetAsync();
-
-        /// <summary>
-        /// Lookup list of all agents
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of ApiResponse (List&lt;JobAgentsLookup&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<List<JobAgentsLookup>>> ApiV1AgentsGetLookupGetAsyncWithHttpInfo();
-        /// <summary>
-        /// Deletes an agent with a specified id from the agents
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id to be deleted - throws bad request if null or empty Guid</param>
+        /// <param name="id">AutomationExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1AgentsIdDeleteAsync(string id);
+        System.Threading.Tasks.Task<IActionResult> ApiV1AutomationExecutionLogsIdDeleteAsync(string id);
 
         /// <summary>
-        /// Deletes an agent with a specified id from the agents
+        /// Deletes a AutomationExecutionLog with a specified id from the AutomationExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id to be deleted - throws bad request if null or empty Guid</param>
+        /// <param name="id">AutomationExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AgentsIdDeleteAsyncWithHttpInfo(string id);
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AutomationExecutionLogsIdDeleteAsyncWithHttpInfo(string id);
         /// <summary>
-        /// Updates partial details of agent
+        /// Agent is able to update a AutomationExecutionLog End status
         /// </summary>
         /// <remarks>
-        /// 
+        /// Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent identifier</param>
-        /// <param name="body">Value of the agent to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1AgentsIdPatchAsync(string id, List<Operation> body = null);
+        System.Threading.Tasks.Task<IActionResult> ApiV1AutomationExecutionLogsIdEndAutomationPutAsync(string id, AutomationExecutionLog body = null);
 
         /// <summary>
-        /// Updates partial details of agent
+        /// Agent is able to update a AutomationExecutionLog End status
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AutomationExecutionLogsIdEndAutomationPutAsyncWithHttpInfo(string id, AutomationExecutionLog body = null);
+        /// <summary>
+        /// Updates partial details of AutomationExecutionLog.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent identifier</param>
-        /// <param name="body">Value of the agent to be updated (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AgentsIdPatchAsyncWithHttpInfo(string id, List<Operation> body = null);
-        /// <summary>
-        /// Updates an Agent
-        /// </summary>
-        /// <remarks>
-        /// Provides an action to update an agent, when agent id and the new details of agent are given
-        /// </remarks>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id, produces bad request if id is null or ids don&#x27;t match</param>
-        /// <param name="body">Agent details to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog identifier</param>
+        /// <param name="body">Value of the AutomationExecutionLog to be updated. (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        System.Threading.Tasks.Task<IActionResult> ApiV1AgentsIdPutAsync(string id, AgentModel body = null);
+        System.Threading.Tasks.Task<IActionResult> ApiV1AutomationExecutionLogsIdPatchAsync(string id, List<Operation> body = null);
 
         /// <summary>
-        /// Updates an Agent
+        /// Updates partial details of AutomationExecutionLog.
         /// </summary>
         /// <remarks>
-        /// Provides an action to update an agent, when agent id and the new details of agent are given
+        /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id, produces bad request if id is null or ids don&#x27;t match</param>
-        /// <param name="body">Agent details to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog identifier</param>
+        /// <param name="body">Value of the AutomationExecutionLog to be updated. (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AgentsIdPutAsyncWithHttpInfo(string id, AgentModel body = null);
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AutomationExecutionLogsIdPatchAsyncWithHttpInfo(string id, List<Operation> body = null);
         /// <summary>
-        /// Adds a new agent to the existing agents and create a new agent application user
+        /// Updates a AutomationExecutionLog
         /// </summary>
         /// <remarks>
-        /// Adds the agent with unique agent id to the existing agents
+        /// Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of IActionResult</returns>
+        System.Threading.Tasks.Task<IActionResult> ApiV1AutomationExecutionLogsIdPutAsync(string id, AutomationExecutionLog body = null);
+
+        /// <summary>
+        /// Updates a AutomationExecutionLog
+        /// </summary>
+        /// <remarks>
+        /// Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AutomationExecutionLogsIdPutAsyncWithHttpInfo(string id, AutomationExecutionLog body = null);
+        /// <summary>
+        /// Adds a new AutomationExecutionLog to the existing AutomationExecutionLogs
+        /// </summary>
+        /// <remarks>
+        /// Adds the AutomationExecutionLog with unique AutomationExecutionLog Id to the existing AutomationExecutionLogs
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of AgentModel</returns>
-        System.Threading.Tasks.Task<AgentModel> ApiV1AgentsPostAsync(CreateAgentViewModel body = null);
+        /// <returns>Task of AutomationExecutionLog</returns>
+        System.Threading.Tasks.Task<AutomationExecutionLog> ApiV1AutomationExecutionLogsPostAsync(AutomationExecutionLog body = null);
 
         /// <summary>
-        /// Adds a new agent to the existing agents and create a new agent application user
+        /// Adds a new AutomationExecutionLog to the existing AutomationExecutionLogs
         /// </summary>
         /// <remarks>
-        /// Adds the agent with unique agent id to the existing agents
+        /// Adds the AutomationExecutionLog with unique AutomationExecutionLog Id to the existing AutomationExecutionLogs
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (AgentModel)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AgentModel>> ApiV1AgentsPostAsyncWithHttpInfo(CreateAgentViewModel body = null);
+        /// <returns>Task of ApiResponse (AutomationExecutionLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AutomationExecutionLog>> ApiV1AutomationExecutionLogsPostAsyncWithHttpInfo(AutomationExecutionLog body = null);
         /// <summary>
-        /// Provides a list of heartbeat details for a particular agent id
+        /// Allows Agent to add a new AutomationExecutionLog to the existing AutomationExecutionLogs
+        /// </summary>
+        /// <remarks>
+        /// Agent is able to Add the AutomationExecutionLog if the Agent is Connected
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of AutomationExecutionLog</returns>
+        System.Threading.Tasks.Task<AutomationExecutionLog> ApiV1AutomationExecutionLogsStartAutomationPostAsync(AutomationExecutionLog body = null);
+
+        /// <summary>
+        /// Allows Agent to add a new AutomationExecutionLog to the existing AutomationExecutionLogs
+        /// </summary>
+        /// <remarks>
+        /// Agent is able to Add the AutomationExecutionLog if the Agent is Connected
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (AutomationExecutionLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AutomationExecutionLog>> ApiV1AutomationExecutionLogsStartAutomationPostAsyncWithHttpInfo(AutomationExecutionLog body = null);
+        /// <summary>
+        /// Provides a viewmodel list of all AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent id</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AgentHeartbeatPaginatedList</returns>
-        System.Threading.Tasks.Task<AgentHeartbeatPaginatedList> GetAgentHeartbeatAsync(string agentId, string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of AutomationExecutionViewModelPaginatedList</returns>
+        System.Threading.Tasks.Task<AutomationExecutionViewModelPaginatedList> ApiV1AutomationExecutionLogsViewGetAsync(string filter = null, string orderby = null, int? top = null, int? skip = null);
 
         /// <summary>
-        /// Provides a list of heartbeat details for a particular agent id
+        /// Provides a viewmodel list of all AutomationExecutionLogs
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent id</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AgentHeartbeatPaginatedList)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AgentHeartbeatPaginatedList>> GetAgentHeartbeatAsyncWithHttpInfo(string agentId, string filter = null, string orderby = null, int? top = null, int? skip = null);
+        /// <returns>Task of ApiResponse (AutomationExecutionViewModelPaginatedList)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AutomationExecutionViewModelPaginatedList>> ApiV1AutomationExecutionLogsViewGetAsyncWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null);
         /// <summary>
-        /// 
+        /// Provides a AutomationExecution&#x27;s details for a particular AutomationExecution id
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>Task of AgentViewModel</returns>
-        System.Threading.Tasks.Task<AgentViewModel> GetAgentModelAsync(string id);
+        /// <param name="id">AutomationExecution id</param>
+        /// <returns>Task of AutomationExecutionViewModel</returns>
+        System.Threading.Tasks.Task<AutomationExecutionViewModel> ApiV1AutomationExecutionLogsViewIdGetAsync(string id);
 
         /// <summary>
-        /// 
+        /// Provides a AutomationExecution&#x27;s details for a particular AutomationExecution id
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>Task of ApiResponse (AgentViewModel)</returns>
-        System.Threading.Tasks.Task<ApiResponse<AgentViewModel>> GetAgentModelAsyncWithHttpInfo(string id);
+        /// <param name="id">AutomationExecution id</param>
+        /// <returns>Task of ApiResponse (AutomationExecutionViewModel)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AutomationExecutionViewModel>> ApiV1AutomationExecutionLogsViewIdGetAsyncWithHttpInfo(string id);
+        /// <summary>
+        /// Provides a AutomationExecutionLog&#x27;s details for a particular AutomationExecutionLog Id.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog id</param>
+        /// <returns>Task of AutomationExecutionLog</returns>
+        System.Threading.Tasks.Task<AutomationExecutionLog> GetAutomationExecutionLogAsync(string id);
+
+        /// <summary>
+        /// Provides a AutomationExecutionLog&#x27;s details for a particular AutomationExecutionLog Id.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog id</param>
+        /// <returns>Task of ApiResponse (AutomationExecutionLog)</returns>
+        System.Threading.Tasks.Task<ApiResponse<AutomationExecutionLog>> GetAutomationExecutionLogAsyncWithHttpInfo(string id);
         #endregion Asynchronous Operations
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public partial class AgentsApi : IAgentsApi
+    public partial class AutomationExecutionLogsApi : IAutomationExecutionLogsApi
     {
         private OpenBots.Service.API.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AgentsApi"/> class.
+        /// Initializes a new instance of the <see cref="AutomationExecutionLogsApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public AgentsApi(String basePath)
+        public AutomationExecutionLogsApi(String basePath)
         {
             this.Configuration = new OpenBots.Service.API.Client.Configuration { BasePath = basePath };
 
@@ -599,10 +545,10 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AgentsApi"/> class
+        /// Initializes a new instance of the <see cref="AutomationExecutionLogsApi"/> class
         /// </summary>
         /// <returns></returns>
-        public AgentsApi()
+        public AutomationExecutionLogsApi()
         {
             this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
 
@@ -610,12 +556,12 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AgentsApi"/> class
+        /// Initializes a new instance of the <see cref="AutomationExecutionLogsApi"/> class
         /// using Configuration object
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public AgentsApi(OpenBots.Service.API.Client.Configuration configuration = null)
+        public AutomationExecutionLogsApi(OpenBots.Service.API.Client.Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
                 this.Configuration = OpenBots.Service.API.Client.Configuration.Default;
@@ -689,336 +635,27 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Creates a new heartbeat for the specified AgentId 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent identifier</param>
-        /// <param name="body">Heartbeat values to be updated (optional)</param>
-        /// <returns>AgentHeartbeat</returns>
-        public AgentHeartbeat ApiV1AgentsAgentIdAddHeartbeatPost(string agentId, AgentHeartbeat body = null)
-        {
-            ApiResponse<AgentHeartbeat> localVarResponse = ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(agentId, body);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Creates a new heartbeat for the specified AgentId 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent identifier</param>
-        /// <param name="body">Heartbeat values to be updated (optional)</param>
-        /// <returns>ApiResponse of AgentHeartbeat</returns>
-        public ApiResponse<AgentHeartbeat> ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(string agentId, AgentHeartbeat body = null)
-        {
-            // verify the required parameter 'agentId' is set
-            if (agentId == null)
-                throw new ApiException(400, "Missing required parameter 'agentId' when calling AgentsApi->ApiV1AgentsAgentIdAddHeartbeatPost");
-            
-            var localVarPath = "/api/v1/Agents/{AgentId}/AddHeartbeat";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
-            if (localVarHttpHeaderAuthorization != null)
-                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
-
-            if (agentId != null) localVarPathParams.Add("AgentId", this.Configuration.ApiClient.ParameterToString(agentId)); // path parameter
-            if (body != null && body.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = body; // byte array
-            }
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsAgentIdAddHeartbeatPost", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<AgentHeartbeat>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentHeartbeat)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentHeartbeat)));
-        }
-
-        /// <summary>
-        /// Creates a new heartbeat for the specified AgentId 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent identifier</param>
-        /// <param name="body">Heartbeat values to be updated (optional)</param>
-        /// <returns>Task of AgentHeartbeat</returns>
-        public async System.Threading.Tasks.Task<AgentHeartbeat> ApiV1AgentsAgentIdAddHeartbeatPostAsync(string agentId, AgentHeartbeat body = null)
-        {
-            ApiResponse<AgentHeartbeat> localVarResponse = await ApiV1AgentsAgentIdAddHeartbeatPostAsyncWithHttpInfo(agentId, body);
-            return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Creates a new heartbeat for the specified AgentId 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent identifier</param>
-        /// <param name="body">Heartbeat values to be updated (optional)</param>
-        /// <returns>Task of ApiResponse (AgentHeartbeat)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AgentHeartbeat>> ApiV1AgentsAgentIdAddHeartbeatPostAsyncWithHttpInfo(string agentId, AgentHeartbeat body = null)
-        {
-            // verify the required parameter 'agentId' is set
-            if (agentId == null)
-                throw new ApiException(400, "Missing required parameter 'agentId' when calling AgentsApi->ApiV1AgentsAgentIdAddHeartbeatPost");
-            
-            var localVarPath = "/api/v1/Agents/{AgentId}/AddHeartbeat";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (agentId != null) localVarPathParams.Add("agentId", this.Configuration.ApiClient.ParameterToString(agentId)); // path parameter
-            if (body != null && body.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = body; // byte array
-            }
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsAgentIdAddHeartbeatPost", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<AgentHeartbeat>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentHeartbeat)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentHeartbeat)));
-        }
-
-        /// <summary>
-        /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <returns>ConnectedViewModel</returns>
-        public ConnectedViewModel ApiV1AgentsConnectPatch(string machineName, string macAddresses)
-        {
-            ApiResponse<ConnectedViewModel> localVarResponse = ApiV1AgentsConnectPatchWithHttpInfo(machineName, macAddresses);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <returns>ApiResponse of ConnectedViewModel</returns>
-        public ApiResponse<ConnectedViewModel> ApiV1AgentsConnectPatchWithHttpInfo(string machineName, string macAddresses)
-        {
-            // verify the required parameter 'machineName' is set
-            if (machineName == null)
-                throw new ApiException(400, "Missing required parameter 'machineName' when calling AgentsApi->ApiV1AgentsConnectPatch");
-            // verify the required parameter 'macAddresses' is set
-            if (macAddresses == null)
-                throw new ApiException(400, "Missing required parameter 'macAddresses' when calling AgentsApi->ApiV1AgentsConnectPatch");
-            
-            var localVarPath = "/api/v1/Agents/Connect";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
-            if (localVarHttpHeaderAuthorization != null)
-                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
-
-            if (machineName != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MachineName", machineName)); // query parameter
-            if (macAddresses != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MacAddresses", macAddresses)); // query parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsConnectPatch", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<ConnectedViewModel>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ConnectedViewModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ConnectedViewModel)));
-        }
-
-        /// <summary>
-        /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <returns>Task of ConnectedViewModel</returns>
-        public async System.Threading.Tasks.Task<ConnectedViewModel> ApiV1AgentsConnectPatchAsync(string machineName, string macAddresses)
-        {
-            ApiResponse<ConnectedViewModel> localVarResponse = await ApiV1AgentsConnectPatchAsyncWithHttpInfo(machineName, macAddresses);
-            return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <returns>Task of ApiResponse (ConnectedViewModel)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<ConnectedViewModel>> ApiV1AgentsConnectPatchAsyncWithHttpInfo(string machineName, string macAddresses)
-        {
-            // verify the required parameter 'machineName' is set
-            if (machineName == null)
-                throw new ApiException(400, "Missing required parameter 'machineName' when calling AgentsApi->ApiV1AgentsConnectPatch");
-            // verify the required parameter 'macAddresses' is set
-            if (macAddresses == null)
-                throw new ApiException(400, "Missing required parameter 'macAddresses' when calling AgentsApi->ApiV1AgentsConnectPatch");
-            
-            var localVarPath = "/api/v1/Agents/Connect";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (machineName != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MachineName", machineName)); // query parameter
-            if (macAddresses != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MacAddresses", macAddresses)); // query parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsConnectPatch", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<ConnectedViewModel>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (ConnectedViewModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(ConnectedViewModel)));
-        }
-
-        /// <summary>
-        /// Provides a count of agents 
+        /// Provides a Count of AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>int?</returns>
-        public int? ApiV1AgentsCountGet(string filter = null)
+        public int? ApiV1AutomationExecutionLogsCountGet(string filter = null)
         {
-            ApiResponse<int?> localVarResponse = ApiV1AgentsCountGetWithHttpInfo(filter);
+            ApiResponse<int?> localVarResponse = ApiV1AutomationExecutionLogsCountGetWithHttpInfo(filter);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Provides a count of agents 
+        /// Provides a Count of AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>ApiResponse of int?</returns>
-        public ApiResponse<int?> ApiV1AgentsCountGetWithHttpInfo(string filter = null)
+        public ApiResponse<int?> ApiV1AutomationExecutionLogsCountGetWithHttpInfo(string filter = null)
         {
-            var localVarPath = "/api/v1/Agents/Count";
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/Count";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1050,7 +687,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsCountGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsCountGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1060,27 +697,28 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Provides a count of agents 
+        /// Provides a Count of AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of int?</returns>
-        public async System.Threading.Tasks.Task<int?> ApiV1AgentsCountGetAsync(string filter = null)
+        public async System.Threading.Tasks.Task<int?> ApiV1AutomationExecutionLogsCountGetAsync(string filter = null)
         {
-            ApiResponse<int?> localVarResponse = await ApiV1AgentsCountGetAsyncWithHttpInfo(filter);
+            ApiResponse<int?> localVarResponse = await ApiV1AutomationExecutionLogsCountGetAsyncWithHttpInfo(filter);
             return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides a count of agents 
+        /// Provides a Count of AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <returns>Task of ApiResponse (int?)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1AgentsCountGetAsyncWithHttpInfo(string filter = null)
+        public async System.Threading.Tasks.Task<ApiResponse<int?>> ApiV1AutomationExecutionLogsCountGetAsyncWithHttpInfo(string filter = null)
         {
-            var localVarPath = "/api/v1/Agents/Count";
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/Count";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1112,7 +750,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsCountGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsCountGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1122,185 +760,33 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates the isConnected field if the disconnect details are correct 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
-        /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AgentsDisconnectPatch(string machineName, string macAddresses, Guid? agentId = null)
-        {
-            ApiResponse<IActionResult> localVarResponse = ApiV1AgentsDisconnectPatchWithHttpInfo(machineName, macAddresses, agentId);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Updates the isConnected field if the disconnect details are correct 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse<IActionResult> ApiV1AgentsDisconnectPatchWithHttpInfo(string machineName, string macAddresses, Guid? agentId = null)
-        {
-            // verify the required parameter 'machineName' is set
-            if (machineName == null)
-                throw new ApiException(400, "Missing required parameter 'machineName' when calling AgentsApi->ApiV1AgentsDisconnectPatch");
-            // verify the required parameter 'macAddresses' is set
-            if (macAddresses == null)
-                throw new ApiException(400, "Missing required parameter 'macAddresses' when calling AgentsApi->ApiV1AgentsDisconnectPatch");
-            
-            var localVarPath = "/api/v1/Agents/Disconnect";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
-            if (localVarHttpHeaderAuthorization != null)
-                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
-
-            if (machineName != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MachineName", machineName)); // query parameter
-            if (macAddresses != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MacAddresses", macAddresses)); // query parameter
-            if (agentId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "AgentId", agentId)); // query parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsDisconnectPatch", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<IActionResult>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
-        }
-
-        /// <summary>
-        /// Updates the isConnected field if the disconnect details are correct 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1AgentsDisconnectPatchAsync(string machineName, string macAddresses, Guid? agentId = null)
-        {
-            ApiResponse<IActionResult> localVarResponse = await ApiV1AgentsDisconnectPatchAsyncWithHttpInfo(machineName, macAddresses, agentId);
-            return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Updates the isConnected field if the disconnect details are correct 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="machineName"></param>
-        /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AgentsDisconnectPatchAsyncWithHttpInfo(string machineName, string macAddresses, Guid? agentId = null)
-        {
-            // verify the required parameter 'machineName' is set
-            if (machineName == null)
-                throw new ApiException(400, "Missing required parameter 'machineName' when calling AgentsApi->ApiV1AgentsDisconnectPatch");
-            // verify the required parameter 'macAddresses' is set
-            if (macAddresses == null)
-                throw new ApiException(400, "Missing required parameter 'macAddresses' when calling AgentsApi->ApiV1AgentsDisconnectPatch");
-            
-            var localVarPath = "/api/v1/Agents/Disconnect";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (machineName != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MachineName", machineName)); // query parameter
-            if (macAddresses != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MacAddresses", macAddresses)); // query parameter
-            if (agentId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "AgentId", agentId)); // query parameter
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsDisconnectPatch", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<IActionResult>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
-        }
-
-        /// <summary>
-        /// Provides a list of all Agents 
+        /// Provides a list of all AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AgentModelPaginatedList</returns>
-        public AgentModelPaginatedList ApiV1AgentsGet(string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>AutomationExecutionLogPaginatedList</returns>
+        public AutomationExecutionLogPaginatedList ApiV1AutomationExecutionLogsGet(string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-            ApiResponse<AgentModelPaginatedList> localVarResponse = ApiV1AgentsGetWithHttpInfo(filter, orderby, top, skip);
+            ApiResponse<AutomationExecutionLogPaginatedList> localVarResponse = ApiV1AutomationExecutionLogsGetWithHttpInfo(filter, orderby, top, skip);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Provides a list of all Agents 
+        /// Provides a list of all AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AgentModelPaginatedList</returns>
-        public ApiResponse<AgentModelPaginatedList> ApiV1AgentsGetWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>ApiResponse of AutomationExecutionLogPaginatedList</returns>
+        public ApiResponse<AutomationExecutionLogPaginatedList> ApiV1AutomationExecutionLogsGetWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-            var localVarPath = "/api/v1/Agents";
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1320,10 +806,6 @@ namespace OpenBots.Service.API.Api
             String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
-            if (localVarHttpHeaderAuthorization != null)
-                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
 
             if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$filter", filter)); // query parameter
             if (orderby != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$orderby", orderby)); // query parameter
@@ -1339,43 +821,44 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentModelPaginatedList>(localVarStatusCode,
+            return new ApiResponse<AutomationExecutionLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentModelPaginatedList)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentModelPaginatedList)));
+                (AutomationExecutionLogPaginatedList)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionLogPaginatedList)));
         }
 
         /// <summary>
-        /// Provides a list of all Agents 
+        /// Provides a list of all AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AgentModelPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AgentModelPaginatedList> ApiV1AgentsGetAsync(string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of AutomationExecutionLogPaginatedList</returns>
+        public async System.Threading.Tasks.Task<AutomationExecutionLogPaginatedList> ApiV1AutomationExecutionLogsGetAsync(string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-            ApiResponse<AgentModelPaginatedList> localVarResponse = await ApiV1AgentsGetAsyncWithHttpInfo(filter, orderby, top, skip);
+            ApiResponse<AutomationExecutionLogPaginatedList> localVarResponse = await ApiV1AutomationExecutionLogsGetAsyncWithHttpInfo(filter, orderby, top, skip);
             return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides a list of all Agents 
+        /// Provides a list of all AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AgentModelPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AgentModelPaginatedList>> ApiV1AgentsGetAsyncWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ApiResponse (AutomationExecutionLogPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<AutomationExecutionLogPaginatedList>> ApiV1AutomationExecutionLogsGetAsyncWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-            var localVarPath = "/api/v1/Agents";
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1410,157 +893,40 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsGet", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentModelPaginatedList>(localVarStatusCode,
+            return new ApiResponse<AutomationExecutionLogPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentModelPaginatedList)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentModelPaginatedList)));
+                (AutomationExecutionLogPaginatedList)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionLogPaginatedList)));
         }
 
         /// <summary>
-        /// Lookup list of all agents 
+        /// Deletes a AutomationExecutionLog with a specified id from the AutomationExecutionLog. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>List&lt;JobAgentsLookup&gt;</returns>
-        public List<JobAgentsLookup> ApiV1AgentsGetLookupGet()
-        {
-            ApiResponse<List<JobAgentsLookup>> localVarResponse = ApiV1AgentsGetLookupGetWithHttpInfo();
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Lookup list of all agents 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>ApiResponse of List&lt;JobAgentsLookup&gt;</returns>
-        public ApiResponse<List<JobAgentsLookup>> ApiV1AgentsGetLookupGetWithHttpInfo()
-        {
-            var localVarPath = "/api/v1/Agents/GetLookup";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsGetLookupGet", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<List<JobAgentsLookup>>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (List<JobAgentsLookup>)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<JobAgentsLookup>)));
-        }
-
-        /// <summary>
-        /// Lookup list of all agents 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of List&lt;JobAgentsLookup&gt;</returns>
-        public async System.Threading.Tasks.Task<List<JobAgentsLookup>> ApiV1AgentsGetLookupGetAsync()
-        {
-            ApiResponse<List<JobAgentsLookup>> localVarResponse = await ApiV1AgentsGetLookupGetAsyncWithHttpInfo();
-            return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Lookup list of all agents 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <returns>Task of ApiResponse (List&lt;JobAgentsLookup&gt;)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<List<JobAgentsLookup>>> ApiV1AgentsGetLookupGetAsyncWithHttpInfo()
-        {
-            var localVarPath = "/api/v1/Agents/GetLookup";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsGetLookupGet", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<List<JobAgentsLookup>>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (List<JobAgentsLookup>)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(List<JobAgentsLookup>)));
-        }
-
-        /// <summary>
-        /// Deletes an agent with a specified id from the agents 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id to be deleted - throws bad request if null or empty Guid</param>
+        /// <param name="id">AutomationExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AgentsIdDelete(string id)
+        public IActionResult ApiV1AutomationExecutionLogsIdDelete(string id)
         {
-            ApiResponse<IActionResult> localVarResponse = ApiV1AgentsIdDeleteWithHttpInfo(id);
+            ApiResponse<IActionResult> localVarResponse = ApiV1AutomationExecutionLogsIdDeleteWithHttpInfo(id);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Deletes an agent with a specified id from the agents 
+        /// Deletes a AutomationExecutionLog with a specified id from the AutomationExecutionLog. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id to be deleted - throws bad request if null or empty Guid</param>
+        /// <param name="id">AutomationExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse<IActionResult> ApiV1AgentsIdDeleteWithHttpInfo(string id)
+        public ApiResponse<IActionResult> ApiV1AutomationExecutionLogsIdDeleteWithHttpInfo(string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AgentsApi->ApiV1AgentsIdDelete");
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsIdDelete");
             
-            var localVarPath = "/api/v1/Agents/{id}";
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1592,7 +958,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsIdDelete", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsIdDelete", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1602,31 +968,31 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Deletes an agent with a specified id from the agents 
+        /// Deletes a AutomationExecutionLog with a specified id from the AutomationExecutionLog. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id to be deleted - throws bad request if null or empty Guid</param>
+        /// <param name="id">AutomationExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1AgentsIdDeleteAsync(string id)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1AutomationExecutionLogsIdDeleteAsync(string id)
         {
-            ApiResponse<IActionResult> localVarResponse = await ApiV1AgentsIdDeleteAsyncWithHttpInfo(id);
+            ApiResponse<IActionResult> localVarResponse = await ApiV1AutomationExecutionLogsIdDeleteAsyncWithHttpInfo(id);
             return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Deletes an agent with a specified id from the agents 
+        /// Deletes a AutomationExecutionLog with a specified id from the AutomationExecutionLog. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id to be deleted - throws bad request if null or empty Guid</param>
+        /// <param name="id">AutomationExecutionLog ID to be deleted- throws BadRequest if null or empty Guid/</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AgentsIdDeleteAsyncWithHttpInfo(string id)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AutomationExecutionLogsIdDeleteAsyncWithHttpInfo(string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AgentsApi->ApiV1AgentsIdDelete");
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsIdDelete");
             
-            var localVarPath = "/api/v1/Agents/{id}";
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1658,7 +1024,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsIdDelete", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsIdDelete", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1668,195 +1034,32 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates partial details of agent 
+        /// Agent is able to update a AutomationExecutionLog End status Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent identifier</param>
-        /// <param name="body">Value of the agent to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AgentsIdPatch(string id, List<Operation> body = null)
+        public IActionResult ApiV1AutomationExecutionLogsIdEndAutomationPut(string id, AutomationExecutionLog body = null)
         {
-            ApiResponse<IActionResult> localVarResponse = ApiV1AgentsIdPatchWithHttpInfo(id, body);
+            ApiResponse<IActionResult> localVarResponse = ApiV1AutomationExecutionLogsIdEndAutomationPutWithHttpInfo(id, body);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Updates partial details of agent 
+        /// Agent is able to update a AutomationExecutionLog End status Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent identifier</param>
-        /// <param name="body">Value of the agent to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse<IActionResult> ApiV1AgentsIdPatchWithHttpInfo(string id, List<Operation> body = null)
+        public ApiResponse<IActionResult> ApiV1AutomationExecutionLogsIdEndAutomationPutWithHttpInfo(string id, AutomationExecutionLog body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AgentsApi->ApiV1AgentsIdPatch");
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsIdEndAutomationPut");
             
-            var localVarPath = "/api/v1/Agents/{id}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
-            if (localVarHttpHeaderAuthorization != null)
-                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
-
-            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
-            if (body != null && body.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = body; // byte array
-            }
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
-                Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsIdPatch", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<IActionResult>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
-        }
-
-        /// <summary>
-        /// Updates partial details of agent 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent identifier</param>
-        /// <param name="body">Value of the agent to be updated (optional)</param>
-        /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1AgentsIdPatchAsync(string id, List<Operation> body = null)
-        {
-            ApiResponse<IActionResult> localVarResponse = await ApiV1AgentsIdPatchAsyncWithHttpInfo(id, body);
-            return localVarResponse.Data;
-
-        }
-
-        /// <summary>
-        /// Updates partial details of agent 
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent identifier</param>
-        /// <param name="body">Value of the agent to be updated (optional)</param>
-        /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AgentsIdPatchAsyncWithHttpInfo(string id, List<Operation> body = null)
-        {
-            // verify the required parameter 'id' is set
-            if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AgentsApi->ApiV1AgentsIdPatch");
-            
-            var localVarPath = "/api/v1/Agents/{id}";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new List<KeyValuePair<String, String>>();
-            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "application/json-patch+json",
-                "application/json",
-                "text/json",
-                "application/_*+json"
-            };
-            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json"
-            };
-            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
-            if (body != null && body.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = body; // byte array
-            }
-
-            // make the HTTP request
-            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
-                Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (ExceptionFactory != null)
-            {
-                Exception exception = ExceptionFactory("ApiV1AgentsIdPatch", localVarResponse);
-                if (exception != null) throw exception;
-            }
-
-            return new ApiResponse<IActionResult>(localVarStatusCode,
-                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (IActionResult)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
-        }
-
-        /// <summary>
-        /// Updates an Agent Provides an action to update an agent, when agent id and the new details of agent are given
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id, produces bad request if id is null or ids don&#x27;t match</param>
-        /// <param name="body">Agent details to be updated (optional)</param>
-        /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AgentsIdPut(string id, AgentModel body = null)
-        {
-            ApiResponse<IActionResult> localVarResponse = ApiV1AgentsIdPutWithHttpInfo(id, body);
-            return localVarResponse.Data;
-        }
-
-        /// <summary>
-        /// Updates an Agent Provides an action to update an agent, when agent id and the new details of agent are given
-        /// </summary>
-        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id, produces bad request if id is null or ids don&#x27;t match</param>
-        /// <param name="body">Agent details to be updated (optional)</param>
-        /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse<IActionResult> ApiV1AgentsIdPutWithHttpInfo(string id, AgentModel body = null)
-        {
-            // verify the required parameter 'id' is set
-            if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AgentsApi->ApiV1AgentsIdPut");
-            
-            var localVarPath = "/api/v1/Agents/{id}";
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}/EndAutomation";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1900,7 +1103,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsIdPut", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsIdEndAutomationPut", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1910,33 +1113,33 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Updates an Agent Provides an action to update an agent, when agent id and the new details of agent are given
+        /// Agent is able to update a AutomationExecutionLog End status Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id, produces bad request if id is null or ids don&#x27;t match</param>
-        /// <param name="body">Agent details to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
         /// <returns>Task of IActionResult</returns>
-        public async System.Threading.Tasks.Task<IActionResult> ApiV1AgentsIdPutAsync(string id, AgentModel body = null)
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1AutomationExecutionLogsIdEndAutomationPutAsync(string id, AutomationExecutionLog body = null)
         {
-            ApiResponse<IActionResult> localVarResponse = await ApiV1AgentsIdPutAsyncWithHttpInfo(id, body);
+            ApiResponse<IActionResult> localVarResponse = await ApiV1AutomationExecutionLogsIdEndAutomationPutAsyncWithHttpInfo(id, body);
             return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Updates an Agent Provides an action to update an agent, when agent id and the new details of agent are given
+        /// Agent is able to update a AutomationExecutionLog End status Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id">Agent id, produces bad request if id is null or ids don&#x27;t match</param>
-        /// <param name="body">Agent details to be updated (optional)</param>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
         /// <returns>Task of ApiResponse (IActionResult)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AgentsIdPutAsyncWithHttpInfo(string id, AgentModel body = null)
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AutomationExecutionLogsIdEndAutomationPutAsyncWithHttpInfo(string id, AutomationExecutionLog body = null)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AgentsApi->ApiV1AgentsIdPut");
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsIdEndAutomationPut");
             
-            var localVarPath = "/api/v1/Agents/{id}";
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}/EndAutomation";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1980,7 +1183,7 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsIdPut", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsIdEndAutomationPut", localVarResponse);
                 if (exception != null) throw exception;
             }
 
@@ -1990,26 +1193,345 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Adds a new agent to the existing agents and create a new agent application user Adds the agent with unique agent id to the existing agents
+        /// Updates partial details of AutomationExecutionLog. 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="body"> (optional)</param>
-        /// <returns>AgentModel</returns>
-        public AgentModel ApiV1AgentsPost(CreateAgentViewModel body = null)
+        /// <param name="id">AutomationExecutionLog identifier</param>
+        /// <param name="body">Value of the AutomationExecutionLog to be updated. (optional)</param>
+        /// <returns>IActionResult</returns>
+        public IActionResult ApiV1AutomationExecutionLogsIdPatch(string id, List<Operation> body = null)
         {
-            ApiResponse<AgentModel> localVarResponse = ApiV1AgentsPostWithHttpInfo(body);
+            ApiResponse<IActionResult> localVarResponse = ApiV1AutomationExecutionLogsIdPatchWithHttpInfo(id, body);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Adds a new agent to the existing agents and create a new agent application user Adds the agent with unique agent id to the existing agents
+        /// Updates partial details of AutomationExecutionLog. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog identifier</param>
+        /// <param name="body">Value of the AutomationExecutionLog to be updated. (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        public ApiResponse<IActionResult> ApiV1AutomationExecutionLogsIdPatchWithHttpInfo(string id, List<Operation> body = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsIdPatch");
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsIdPatch", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<IActionResult>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (IActionResult)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+        }
+
+        /// <summary>
+        /// Updates partial details of AutomationExecutionLog. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog identifier</param>
+        /// <param name="body">Value of the AutomationExecutionLog to be updated. (optional)</param>
+        /// <returns>Task of IActionResult</returns>
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1AutomationExecutionLogsIdPatchAsync(string id, List<Operation> body = null)
+        {
+            ApiResponse<IActionResult> localVarResponse = await ApiV1AutomationExecutionLogsIdPatchAsyncWithHttpInfo(id, body);
+            return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Updates partial details of AutomationExecutionLog. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog identifier</param>
+        /// <param name="body">Value of the AutomationExecutionLog to be updated. (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AutomationExecutionLogsIdPatchAsyncWithHttpInfo(string id, List<Operation> body = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsIdPatch");
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.PATCH, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsIdPatch", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<IActionResult>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (IActionResult)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+        }
+
+        /// <summary>
+        /// Updates a AutomationExecutionLog Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>IActionResult</returns>
+        public IActionResult ApiV1AutomationExecutionLogsIdPut(string id, AutomationExecutionLog body = null)
+        {
+            ApiResponse<IActionResult> localVarResponse = ApiV1AutomationExecutionLogsIdPutWithHttpInfo(id, body);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Updates a AutomationExecutionLog Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>ApiResponse of IActionResult</returns>
+        public ApiResponse<IActionResult> ApiV1AutomationExecutionLogsIdPutWithHttpInfo(string id, AutomationExecutionLog body = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsIdPut");
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsIdPut", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<IActionResult>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (IActionResult)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+        }
+
+        /// <summary>
+        /// Updates a AutomationExecutionLog Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of IActionResult</returns>
+        public async System.Threading.Tasks.Task<IActionResult> ApiV1AutomationExecutionLogsIdPutAsync(string id, AutomationExecutionLog body = null)
+        {
+            ApiResponse<IActionResult> localVarResponse = await ApiV1AutomationExecutionLogsIdPutAsyncWithHttpInfo(id, body);
+            return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Updates a AutomationExecutionLog Provides an action to update a AutomationExecutionLog, when AutomationExecutionLog id and the new details of AutomationExecutionLog are given
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog Id,produces Bad request if Id is null or Id&#x27;s don&#x27;t match</param>
+        /// <param name="body">AutomationExecutionLog details to be updated (optional)</param>
+        /// <returns>Task of ApiResponse (IActionResult)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<IActionResult>> ApiV1AutomationExecutionLogsIdPutAsyncWithHttpInfo(string id, AutomationExecutionLog body = null)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsIdPut");
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.PUT, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsIdPut", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<IActionResult>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (IActionResult)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(IActionResult)));
+        }
+
+        /// <summary>
+        /// Adds a new AutomationExecutionLog to the existing AutomationExecutionLogs Adds the AutomationExecutionLog with unique AutomationExecutionLog Id to the existing AutomationExecutionLogs
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>ApiResponse of AgentModel</returns>
-        public ApiResponse<AgentModel> ApiV1AgentsPostWithHttpInfo(CreateAgentViewModel body = null)
+        /// <returns>AutomationExecutionLog</returns>
+        public AutomationExecutionLog ApiV1AutomationExecutionLogsPost(AutomationExecutionLog body = null)
         {
-            var localVarPath = "/api/v1/Agents";
+            ApiResponse<AutomationExecutionLog> localVarResponse = ApiV1AutomationExecutionLogsPostWithHttpInfo(body);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Adds a new AutomationExecutionLog to the existing AutomationExecutionLogs Adds the AutomationExecutionLog with unique AutomationExecutionLog Id to the existing AutomationExecutionLogs
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of AutomationExecutionLog</returns>
+        public ApiResponse<AutomationExecutionLog> ApiV1AutomationExecutionLogsPostWithHttpInfo(AutomationExecutionLog body = null)
+        {
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -2052,37 +1574,38 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsPost", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsPost", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentModel>(localVarStatusCode,
+            return new ApiResponse<AutomationExecutionLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentModel)));
+                (AutomationExecutionLog)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionLog)));
         }
 
         /// <summary>
-        /// Adds a new agent to the existing agents and create a new agent application user Adds the agent with unique agent id to the existing agents
+        /// Adds a new AutomationExecutionLog to the existing AutomationExecutionLogs Adds the AutomationExecutionLog with unique AutomationExecutionLog Id to the existing AutomationExecutionLogs
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of AgentModel</returns>
-        public async System.Threading.Tasks.Task<AgentModel> ApiV1AgentsPostAsync(CreateAgentViewModel body = null)
+        /// <returns>Task of AutomationExecutionLog</returns>
+        public async System.Threading.Tasks.Task<AutomationExecutionLog> ApiV1AutomationExecutionLogsPostAsync(AutomationExecutionLog body = null)
         {
-            ApiResponse<AgentModel> localVarResponse = await ApiV1AgentsPostAsyncWithHttpInfo(body);
+            ApiResponse<AutomationExecutionLog> localVarResponse = await ApiV1AutomationExecutionLogsPostAsyncWithHttpInfo(body);
             return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Adds a new agent to the existing agents and create a new agent application user Adds the agent with unique agent id to the existing agents
+        /// Adds a new AutomationExecutionLog to the existing AutomationExecutionLogs Adds the AutomationExecutionLog with unique AutomationExecutionLog Id to the existing AutomationExecutionLogs
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="body"> (optional)</param>
-        /// <returns>Task of ApiResponse (AgentModel)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AgentModel>> ApiV1AgentsPostAsyncWithHttpInfo(CreateAgentViewModel body = null)
+        /// <returns>Task of ApiResponse (AutomationExecutionLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<AutomationExecutionLog>> ApiV1AutomationExecutionLogsPostAsyncWithHttpInfo(AutomationExecutionLog body = null)
         {
-            var localVarPath = "/api/v1/Agents";
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -2125,48 +1648,190 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("ApiV1AgentsPost", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsPost", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentModel>(localVarStatusCode,
+            return new ApiResponse<AutomationExecutionLog>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentModel)));
+                (AutomationExecutionLog)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionLog)));
         }
 
         /// <summary>
-        /// Provides a list of heartbeat details for a particular agent id 
+        /// Allows Agent to add a new AutomationExecutionLog to the existing AutomationExecutionLogs Agent is able to Add the AutomationExecutionLog if the Agent is Connected
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent id</param>
-        /// <param name="filter"> (optional)</param>
-        /// <param name="orderby"> (optional)</param>
-        /// <param name="top"> (optional, default to 100)</param>
-        /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>AgentHeartbeatPaginatedList</returns>
-        public AgentHeartbeatPaginatedList GetAgentHeartbeat(string agentId, string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <param name="body"> (optional)</param>
+        /// <returns>AutomationExecutionLog</returns>
+        public AutomationExecutionLog ApiV1AutomationExecutionLogsStartAutomationPost(AutomationExecutionLog body = null)
         {
-            ApiResponse<AgentHeartbeatPaginatedList> localVarResponse = GetAgentHeartbeatWithHttpInfo(agentId, filter, orderby, top, skip);
+            ApiResponse<AutomationExecutionLog> localVarResponse = ApiV1AutomationExecutionLogsStartAutomationPostWithHttpInfo(body);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Provides a list of heartbeat details for a particular agent id 
+        /// Allows Agent to add a new AutomationExecutionLog to the existing AutomationExecutionLogs Agent is able to Add the AutomationExecutionLog if the Agent is Connected
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent id</param>
+        /// <param name="body"> (optional)</param>
+        /// <returns>ApiResponse of AutomationExecutionLog</returns>
+        public ApiResponse<AutomationExecutionLog> ApiV1AutomationExecutionLogsStartAutomationPostWithHttpInfo(AutomationExecutionLog body = null)
+        {
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/StartAutomation";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsStartAutomationPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<AutomationExecutionLog>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (AutomationExecutionLog)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionLog)));
+        }
+
+        /// <summary>
+        /// Allows Agent to add a new AutomationExecutionLog to the existing AutomationExecutionLogs Agent is able to Add the AutomationExecutionLog if the Agent is Connected
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of AutomationExecutionLog</returns>
+        public async System.Threading.Tasks.Task<AutomationExecutionLog> ApiV1AutomationExecutionLogsStartAutomationPostAsync(AutomationExecutionLog body = null)
+        {
+            ApiResponse<AutomationExecutionLog> localVarResponse = await ApiV1AutomationExecutionLogsStartAutomationPostAsyncWithHttpInfo(body);
+            return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Allows Agent to add a new AutomationExecutionLog to the existing AutomationExecutionLogs Agent is able to Add the AutomationExecutionLog if the Agent is Connected
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="body"> (optional)</param>
+        /// <returns>Task of ApiResponse (AutomationExecutionLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<AutomationExecutionLog>> ApiV1AutomationExecutionLogsStartAutomationPostAsyncWithHttpInfo(AutomationExecutionLog body = null)
+        {
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/StartAutomation";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/_*+json"
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (body != null && body.GetType() != typeof(byte[]))
+            {
+                localVarPostBody = this.Configuration.ApiClient.Serialize(body); // http body (model) parameter
+            }
+            else
+            {
+                localVarPostBody = body; // byte array
+            }
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.POST, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsStartAutomationPost", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<AutomationExecutionLog>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (AutomationExecutionLog)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionLog)));
+        }
+
+        /// <summary>
+        /// Provides a viewmodel list of all AutomationExecutionLogs 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>ApiResponse of AgentHeartbeatPaginatedList</returns>
-        public ApiResponse<AgentHeartbeatPaginatedList> GetAgentHeartbeatWithHttpInfo(string agentId, string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>AutomationExecutionViewModelPaginatedList</returns>
+        public AutomationExecutionViewModelPaginatedList ApiV1AutomationExecutionLogsViewGet(string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-            // verify the required parameter 'agentId' is set
-            if (agentId == null)
-                throw new ApiException(400, "Missing required parameter 'agentId' when calling AgentsApi->GetAgentHeartbeat");
+            ApiResponse<AutomationExecutionViewModelPaginatedList> localVarResponse = ApiV1AutomationExecutionLogsViewGetWithHttpInfo(filter, orderby, top, skip);
+            return localVarResponse.Data;
+        }
 
-            var localVarPath = "/api/v1/Agents/{AgentId}/AgentHeartbeats";
+        /// <summary>
+        /// Provides a viewmodel list of all AutomationExecutionLogs 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="filter"> (optional)</param>
+        /// <param name="orderby"> (optional)</param>
+        /// <param name="top"> (optional, default to 100)</param>
+        /// <param name="skip"> (optional, default to 0)</param>
+        /// <returns>ApiResponse of AutomationExecutionViewModelPaginatedList</returns>
+        public ApiResponse<AutomationExecutionViewModelPaginatedList> ApiV1AutomationExecutionLogsViewGetWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null)
+        {
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/view";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -2187,11 +1852,6 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
-            if (localVarHttpHeaderAuthorization != null)
-                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
-
-            if (agentId != null) localVarPathParams.Add("agentId", this.Configuration.ApiClient.ParameterToString(agentId)); // path parameter
             if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$filter", filter)); // query parameter
             if (orderby != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$orderby", orderby)); // query parameter
             if (top != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$top", top)); // query parameter
@@ -2206,48 +1866,44 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetAgentHeartbeat", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsViewGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentHeartbeatPaginatedList>(localVarStatusCode,
+            return new ApiResponse<AutomationExecutionViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentHeartbeatPaginatedList)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentHeartbeatPaginatedList)));
+                (AutomationExecutionViewModelPaginatedList)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionViewModelPaginatedList)));
         }
 
         /// <summary>
-        /// Provides a list of heartbeat details for a particular agent id 
+        /// Provides a viewmodel list of all AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of AgentHeartbeatPaginatedList</returns>
-        public async System.Threading.Tasks.Task<AgentHeartbeatPaginatedList> GetAgentHeartbeatAsync(string agentId, string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of AutomationExecutionViewModelPaginatedList</returns>
+        public async System.Threading.Tasks.Task<AutomationExecutionViewModelPaginatedList> ApiV1AutomationExecutionLogsViewGetAsync(string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-            ApiResponse<AgentHeartbeatPaginatedList> localVarResponse = await GetAgentHeartbeatAsyncWithHttpInfo(agentId, filter, orderby, top, skip);
+            ApiResponse<AutomationExecutionViewModelPaginatedList> localVarResponse = await ApiV1AutomationExecutionLogsViewGetAsyncWithHttpInfo(filter, orderby, top, skip);
             return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Provides a list of heartbeat details for a particular agent id 
+        /// Provides a viewmodel list of all AutomationExecutionLogs 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="agentId">Agent id</param>
         /// <param name="filter"> (optional)</param>
         /// <param name="orderby"> (optional)</param>
         /// <param name="top"> (optional, default to 100)</param>
         /// <param name="skip"> (optional, default to 0)</param>
-        /// <returns>Task of ApiResponse (AgentHeartbeatPaginatedList)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AgentHeartbeatPaginatedList>> GetAgentHeartbeatAsyncWithHttpInfo(string agentId, string filter = null, string orderby = null, int? top = null, int? skip = null)
+        /// <returns>Task of ApiResponse (AutomationExecutionViewModelPaginatedList)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<AutomationExecutionViewModelPaginatedList>> ApiV1AutomationExecutionLogsViewGetAsyncWithHttpInfo(string filter = null, string orderby = null, int? top = null, int? skip = null)
         {
-            // verify the required parameter 'agentId' is set
-            if (agentId == null)
-                throw new ApiException(400, "Missing required parameter 'agentId' when calling AgentsApi->GetAgentHeartbeat");
-
-            var localVarPath = "/api/v1/Agents/{AgentId}/AgentHeartbeats";
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/view";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -2268,7 +1924,6 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            if (agentId != null) localVarPathParams.Add("agentId", this.Configuration.ApiClient.ParameterToString(agentId)); // path parameter
             if (filter != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$filter", filter)); // query parameter
             if (orderby != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$orderby", orderby)); // query parameter
             if (top != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "$top", top)); // query parameter
@@ -2283,40 +1938,40 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetAgentHeartbeat", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsViewGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentHeartbeatPaginatedList>(localVarStatusCode,
+            return new ApiResponse<AutomationExecutionViewModelPaginatedList>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentHeartbeatPaginatedList)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentHeartbeatPaginatedList)));
+                (AutomationExecutionViewModelPaginatedList)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionViewModelPaginatedList)));
         }
 
         /// <summary>
-        ///  
+        /// Provides a AutomationExecution&#x27;s details for a particular AutomationExecution id 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>AgentViewModel</returns>
-        public AgentViewModel GetAgentModel(string id)
+        /// <param name="id">AutomationExecution id</param>
+        /// <returns>AutomationExecutionViewModel</returns>
+        public AutomationExecutionViewModel ApiV1AutomationExecutionLogsViewIdGet(string id)
         {
-            ApiResponse<AgentViewModel> localVarResponse = GetAgentModelWithHttpInfo(id);
+            ApiResponse<AutomationExecutionViewModel> localVarResponse = ApiV1AutomationExecutionLogsViewIdGetWithHttpInfo(id);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        ///  
+        /// Provides a AutomationExecution&#x27;s details for a particular AutomationExecution id 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>ApiResponse of AgentViewModel</returns>
-        public ApiResponse<AgentViewModel> GetAgentModelWithHttpInfo(string id)
+        /// <param name="id">AutomationExecution id</param>
+        /// <returns>ApiResponse of AutomationExecutionViewModel</returns>
+        public ApiResponse<AutomationExecutionViewModel> ApiV1AutomationExecutionLogsViewIdGetWithHttpInfo(string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AgentsApi->GetAgentModel");
-
-            var localVarPath = "/api/v1/Agents/{id}";
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsViewIdGet");
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/View/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -2337,10 +1992,6 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
 
-            String localVarHttpHeaderAuthorization = $"Bearer {this.Configuration.AccessToken}";
-            if (localVarHttpHeaderAuthorization != null)
-                localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
-
             if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
 
             // make the HTTP request
@@ -2352,41 +2003,41 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetAgentModel", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsViewIdGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentViewModel>(localVarStatusCode,
+            return new ApiResponse<AutomationExecutionViewModel>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentViewModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentViewModel)));
+                (AutomationExecutionViewModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionViewModel)));
         }
 
         /// <summary>
-        ///  
+        /// Provides a AutomationExecution&#x27;s details for a particular AutomationExecution id 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>Task of AgentViewModel</returns>
-        public async System.Threading.Tasks.Task<AgentViewModel> GetAgentModelAsync(string id)
+        /// <param name="id">AutomationExecution id</param>
+        /// <returns>Task of AutomationExecutionViewModel</returns>
+        public async System.Threading.Tasks.Task<AutomationExecutionViewModel> ApiV1AutomationExecutionLogsViewIdGetAsync(string id)
         {
-            ApiResponse<AgentViewModel> localVarResponse = await GetAgentModelAsyncWithHttpInfo(id);
+            ApiResponse<AutomationExecutionViewModel> localVarResponse = await ApiV1AutomationExecutionLogsViewIdGetAsyncWithHttpInfo(id);
             return localVarResponse.Data;
 
         }
 
         /// <summary>
-        ///  
+        /// Provides a AutomationExecution&#x27;s details for a particular AutomationExecution id 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="id"></param>
-        /// <returns>Task of ApiResponse (AgentViewModel)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<AgentViewModel>> GetAgentModelAsyncWithHttpInfo(string id)
+        /// <param name="id">AutomationExecution id</param>
+        /// <returns>Task of ApiResponse (AutomationExecutionViewModel)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<AutomationExecutionViewModel>> ApiV1AutomationExecutionLogsViewIdGetAsyncWithHttpInfo(string id)
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling AgentsApi->GetAgentModel");
-
-            var localVarPath = "/api/v1/Agents/{id}";
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->ApiV1AutomationExecutionLogsViewIdGet");
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/View/{id}";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -2418,13 +2069,144 @@ namespace OpenBots.Service.API.Api
 
             if (ExceptionFactory != null)
             {
-                Exception exception = ExceptionFactory("GetAgentModel", localVarResponse);
+                Exception exception = ExceptionFactory("ApiV1AutomationExecutionLogsViewIdGet", localVarResponse);
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentViewModel>(localVarStatusCode,
+            return new ApiResponse<AutomationExecutionViewModel>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentViewModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentViewModel)));
+                (AutomationExecutionViewModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionViewModel)));
+        }
+
+        /// <summary>
+        /// Provides a AutomationExecutionLog&#x27;s details for a particular AutomationExecutionLog Id. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog id</param>
+        /// <returns>AutomationExecutionLog</returns>
+        public AutomationExecutionLog GetAutomationExecutionLog(string id)
+        {
+            ApiResponse<AutomationExecutionLog> localVarResponse = GetAutomationExecutionLogWithHttpInfo(id);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Provides a AutomationExecutionLog&#x27;s details for a particular AutomationExecutionLog Id. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog id</param>
+        /// <returns>ApiResponse of AutomationExecutionLog</returns>
+        public ApiResponse<AutomationExecutionLog> GetAutomationExecutionLogWithHttpInfo(string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->GetAutomationExecutionLog");
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("GetAutomationExecutionLog", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<AutomationExecutionLog>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (AutomationExecutionLog)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionLog)));
+        }
+
+        /// <summary>
+        /// Provides a AutomationExecutionLog&#x27;s details for a particular AutomationExecutionLog Id. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog id</param>
+        /// <returns>Task of AutomationExecutionLog</returns>
+        public async System.Threading.Tasks.Task<AutomationExecutionLog> GetAutomationExecutionLogAsync(string id)
+        {
+            ApiResponse<AutomationExecutionLog> localVarResponse = await GetAutomationExecutionLogAsyncWithHttpInfo(id);
+            return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Provides a AutomationExecutionLog&#x27;s details for a particular AutomationExecutionLog Id. 
+        /// </summary>
+        /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="id">AutomationExecutionLog id</param>
+        /// <returns>Task of ApiResponse (AutomationExecutionLog)</returns>
+        public async System.Threading.Tasks.Task<ApiResponse<AutomationExecutionLog>> GetAutomationExecutionLogAsyncWithHttpInfo(string id)
+        {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling AutomationExecutionLogsApi->GetAutomationExecutionLog");
+            
+            var localVarPath = "/api/v1/AutomationExecutionLogs/{id}";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new List<KeyValuePair<String, String>>();
+            var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+            };
+            String localVarHttpContentType = this.Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json"
+            };
+            String localVarHttpHeaderAccept = this.Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+
+            // make the HTTP request
+            IRestResponse localVarResponse = (IRestResponse)await this.Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("GetAutomationExecutionLog", localVarResponse);
+                if (exception != null) throw exception;
+            }
+
+            return new ApiResponse<AutomationExecutionLog>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
+                (AutomationExecutionLog)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AutomationExecutionLog)));
         }
 
     }

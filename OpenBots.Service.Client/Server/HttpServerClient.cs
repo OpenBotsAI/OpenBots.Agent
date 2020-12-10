@@ -86,9 +86,9 @@ namespace OpenBots.Service.Client.Server
                 int statusCode = AgentsAPIManager.SendAgentHeartBeat(
                     AuthAPIManager.Instance,
                     ConnectionSettingsManager.Instance.ConnectionSettings.AgentId,
-                    new HeartbeatViewModel(DateTime.Now, "", "", "", true));
+                    new AgentHeartbeat(null, null, null, null, null, null, null, null, null, null, DateTime.Now, "", "", "", true));
 
-                if (statusCode != 200)
+                if (statusCode != 201)
                     ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;
             }
             catch (Exception)

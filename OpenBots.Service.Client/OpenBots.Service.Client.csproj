@@ -153,11 +153,11 @@
     <Compile Include="Manager\Execution\ExecutionManager.cs" />
     <Compile Include="Manager\Execution\JobsQueueManager.cs" />
     <Compile Include="Manager\Execution\ProcessLauncher.cs" />
-    <Compile Include="Manager\Execution\ProcessManager.cs" />
+    <Compile Include="Manager\Execution\AutomationManager.cs" />
     <Compile Include="Manager\API\AgentsAPIManager.cs" />
     <Compile Include="Manager\API\AuthAPIManager.cs" />
     <Compile Include="Manager\API\JobsAPIManager.cs" />
-    <Compile Include="Manager\API\ProcessesAPIManager.cs" />
+    <Compile Include="Manager\API\AutomationsAPIManager.cs" />
     <Compile Include="Manager\Execution\JobsPolling.cs" />
     <Compile Include="Manager\Execution\WMIQueries.cs" />
     <Compile Include="Manager\Hub\HubManager.cs" />

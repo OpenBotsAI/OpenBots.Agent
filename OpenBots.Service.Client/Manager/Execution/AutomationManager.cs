@@ -10,32 +10,32 @@ using System.Linq;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
-    public static class ProcessManager
+    public static class AutomationManager
     {
-        public static string DownloadAndExtractProcess(Process process)
+        public static string DownloadAndExtractAutomation(Automation automation)
         {
-            // Check if (Root) Processes Directory Exists (under User's AppData Folder), If Not create it
-            var processesDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariable(), "Processes");
-            if (!Directory.Exists(processesDirectory))
-                Directory.CreateDirectory(processesDirectory);
+            // Check if (Root) Automations Directory Exists (under User's AppData Folder), If Not create it
+            var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariable(), "Automations");
+            if (!Directory.Exists(automationsDirectory))
+                Directory.CreateDirectory(automationsDirectory);
 
-            // Process Directory
-            var processDirectoryPath = Path.Combine(processesDirectory, process.Id.ToString());
+            // Automation Directory
+            var processDirectoryPath = Path.Combine(automationsDirectory, automation.Id.ToString());
 
-            // Create Process Directory named as Process Id If it doesn't exist
+            // Create Automation Directory named as Automation Id If it doesn't exist
             if (!Directory.Exists(processDirectoryPath))
                 Directory.CreateDirectory(processDirectoryPath);
 
-            var processNugetFilePath = Path.Combine(processDirectoryPath, process.Name.ToString() + process.Version.ToString() + ".nuget");
-            var processZipFilePath = Path.Combine(processDirectoryPath, process.Name.ToString() + process.Version.ToString() + ".zip");
+            var processNugetFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".nuget");
+            var processZipFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".zip");
             
-            // Check if Process (.nuget) file exists if Not Download it
+            // Check if Automation (.nuget) file exists if Not Download it
             if (!File.Exists(processNugetFilePath))
             {
-                // Download Process by Id
-                var apiResponse = ProcessesAPIManager.ExportProcess(AuthAPIManager.Instance, process.Id.ToString());
+                // Download Automation by Id
+                var apiResponse = AutomationsAPIManager.ExportAutomation(AuthAPIManager.Instance, automation.Id.ToString());
 
-                // Write Downloaded(.nuget) file in the Process Directory
+                // Write Downloaded(.nuget) file in the Automation Directory
                 File.WriteAllBytes(processNugetFilePath, apiResponse.Data.ToArray());
             }
 
@@ -54,7 +54,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             string configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.config", SearchOption.AllDirectories).First();
             string mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
 
-            // Return "Main" Script File Path of the Process
+            // Return "Main" Script File Path of the Automation
             return Directory.GetFiles(extractToDirectoryPath, mainFileName, SearchOption.AllDirectories).First();
         }
 

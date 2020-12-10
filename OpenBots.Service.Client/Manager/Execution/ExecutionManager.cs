@@ -21,7 +21,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         public bool IsEngineBusy { get; private set; } = false;
         private bool _isSuccessfulExecution = false;
         private Timer _newJobsCheckTimer;
-        private ProcessExecutionLog _executionLog;
+        private AutomationExecutionLog _executionLog;
 
         public event EventHandler JobFinishedEvent;
         public static ExecutionManager Instance
@@ -127,21 +127,22 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to fetch Process Detail");
 
-            // Get Process Info
-            var process = ProcessesAPIManager.GetProcess(AuthAPIManager.Instance, job.ProcessId.ToString());
+            // Get Automation Info
+            var automation = AutomationsAPIManager.GetAutomation(AuthAPIManager.Instance, job.AutomationId.ToString());
 
             // Log Event
-            FileLogger.Instance.LogEvent("Job Execution", "Attempt to download/retrieve Process");
+            FileLogger.Instance.LogEvent("Job Execution", "Attempt to download/retrieve Automation");
 
-            // Download Process and Extract Files
-            var mainScriptFilePath = ProcessManager.DownloadAndExtractProcess(process);
+            // Download Automation and Extract Files
+            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation);
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
 
-            // Create Process Execution Log (Execution Started)
-            _executionLog = ExecutionLogsAPIManager.CreateExecutionLog(AuthAPIManager.Instance, new ProcessExecutionLog(job.Id,
-                job.ProcessId, job.AgentId, DateTime.Now, null, null, null, "Job has started processing"));
+            // Create Automation Execution Log (Execution Started)
+            _executionLog = ExecutionLogsAPIManager.CreateExecutionLog(AuthAPIManager.Instance, new AutomationExecutionLog(
+                null, false, null, DateTime.Now, null, null, null, null, null, job.Id, job.AutomationId, job.AgentId, 
+                DateTime.Now, null, null, null, "Job has started processing"));
 
             // Update Job Status (InProgress)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
@@ -160,11 +161,11 @@ namespace OpenBots.Service.Client.Manager.Execution
             AgentViewModel agent = AgentsAPIManager.GetAgent(AuthAPIManager.Instance, job.AgentId.ToString());
             Credential credential = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
 
-            // Run Process
-            RunProcess(job, process, credential, mainScriptFilePath);
+            // Run Automation
+            RunAutomation(job, automation, credential, mainScriptFilePath);
 
             // Log Event
-            FileLogger.Instance.LogEvent("Job Execution", "Process execution completed");
+            FileLogger.Instance.LogEvent("Job Execution", "Job execution completed");
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Post-execution)");
@@ -176,10 +177,10 @@ namespace OpenBots.Service.Client.Manager.Execution
                     new Operation(){ Op = "replace", Path = "/endTime", Value = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")},
                 });
 
-            // Delete Process Files Directory
+            // Delete Automation Files Directory
             Directory.Delete(Path.GetDirectoryName(mainScriptFilePath), true);
 
-            // Update Process Execution Log (Execution Finished)
+            // Update Automation Execution Log (Execution Finished)
             _executionLog.CompletedOn = DateTime.Now;
             _executionLog.Status = "Job has finished processing";
             ExecutionLogsAPIManager.UpdateExecutionLog(AuthAPIManager.Instance, _executionLog);
@@ -195,11 +196,11 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             _isSuccessfulExecution = true;
         }
-        private void RunProcess(Job job, Process process, Credential machineCredential, string mainScriptFilePath)
+        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath)
         {
             try
             {
-                var executionParams = GetExecutionParams(job, process, mainScriptFilePath);
+                var executionParams = GetExecutionParams(job, automation, mainScriptFilePath);
                 var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
                 var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 
@@ -225,13 +226,13 @@ namespace OpenBots.Service.Client.Manager.Execution
                 JobFinishedEvent?.Invoke(this, e);
         }
 
-        private string GetExecutionParams(Job job, Process process, string mainScriptFilePath)
+        private string GetExecutionParams(Job job, Automation automation, string mainScriptFilePath)
         {
             var executionParams = new JobExecutionParams()
             {
                 JobId = job.Id.ToString(),
-                ProcessId = process.Id.ToString(),
-                ProcessName = process.Name,
+                ProcessId = automation.Id.ToString(),
+                ProcessName = automation.Name,
                 MainFilePath = mainScriptFilePath,
                 ProjectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath),
                 ServerConnectionSettings = ConnectionSettingsManager.Instance.ConnectionSettings

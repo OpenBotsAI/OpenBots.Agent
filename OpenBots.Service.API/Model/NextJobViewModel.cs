@@ -27,30 +27,38 @@ namespace OpenBots.Service.API.Model
     /// NextJobViewModel
     /// </summary>
     [DataContract]
-        public partial class NextJobViewModel :  IEquatable<NextJobViewModel>, IValidatableObject
+    public partial class NextJobViewModel : IEquatable<NextJobViewModel>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NextJobViewModel" /> class.
         /// </summary>
         /// <param name="isJobAvailable">isJobAvailable.</param>
         /// <param name="assignedJob">assignedJob.</param>
-        public NextJobViewModel(bool? isJobAvailable = default(bool?), Job assignedJob = default(Job))
+        /// <param name="jobParameters">jobParameters.</param>
+        public NextJobViewModel(bool? isJobAvailable = default(bool?), Job assignedJob = default(Job), List<JobParameter> jobParameters = default(List<JobParameter>))
         {
             this.IsJobAvailable = isJobAvailable;
             this.AssignedJob = assignedJob;
+            this.JobParameters = jobParameters;
         }
-        
+
         /// <summary>
         /// Gets or Sets IsJobAvailable
         /// </summary>
-        [DataMember(Name="isJobAvailable", EmitDefaultValue=false)]
+        [DataMember(Name = "isJobAvailable", EmitDefaultValue = false)]
         public bool? IsJobAvailable { get; set; }
 
         /// <summary>
         /// Gets or Sets AssignedJob
         /// </summary>
-        [DataMember(Name="assignedJob", EmitDefaultValue=false)]
+        [DataMember(Name = "assignedJob", EmitDefaultValue = false)]
         public Job AssignedJob { get; set; }
+
+        /// <summary>
+        /// Gets or Sets JobParameters
+        /// </summary>
+        [DataMember(Name = "jobParameters", EmitDefaultValue = false)]
+        public List<JobParameter> JobParameters { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -62,10 +70,11 @@ namespace OpenBots.Service.API.Model
             sb.Append("class NextJobViewModel {\n");
             sb.Append("  IsJobAvailable: ").Append(IsJobAvailable).Append("\n");
             sb.Append("  AssignedJob: ").Append(AssignedJob).Append("\n");
+            sb.Append("  JobParameters: ").Append(JobParameters).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
-  
+
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
@@ -95,16 +104,22 @@ namespace OpenBots.Service.API.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.IsJobAvailable == input.IsJobAvailable ||
                     (this.IsJobAvailable != null &&
                     this.IsJobAvailable.Equals(input.IsJobAvailable))
-                ) && 
+                ) &&
                 (
                     this.AssignedJob == input.AssignedJob ||
                     (this.AssignedJob != null &&
                     this.AssignedJob.Equals(input.AssignedJob))
+                ) &&
+                (
+                    this.JobParameters == input.JobParameters ||
+                    this.JobParameters != null &&
+                    input.JobParameters != null &&
+                    this.JobParameters.SequenceEqual(input.JobParameters)
                 );
         }
 
@@ -121,6 +136,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.IsJobAvailable.GetHashCode();
                 if (this.AssignedJob != null)
                     hashCode = hashCode * 59 + this.AssignedJob.GetHashCode();
+                if (this.JobParameters != null)
+                    hashCode = hashCode * 59 + this.JobParameters.GetHashCode();
                 return hashCode;
             }
         }
