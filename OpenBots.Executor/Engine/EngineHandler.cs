@@ -1,38 +1,43 @@
-﻿using OpenBots.Agent.Core.Enums;
+﻿using Autofac;
+using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Executor.Model;
 using Serilog.Core;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace OpenBots.Executor
 {
     public class EngineHandler
     {
+        private IContainer _container;
         private Assembly _engineAssembly;
         private EngineAssemblyInfo _assemblyInfo;
         public EngineHandler()
         {
             _assemblyInfo = new EngineAssemblyInfo();
-            LoadEngineAssembly();
         }
 
-        private void LoadEngineAssembly()
+        public void LoadProjectAssemblies(List<string> projectAssemblies)
         {
-            var engineAssemblyFilePath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, _assemblyInfo.FileName).FirstOrDefault();
-            if (engineAssemblyFilePath != null)
-                _engineAssembly = Assembly.LoadFrom(engineAssemblyFilePath);
-            else
-                throw new Exception($"Assembly path for {_assemblyInfo.FileName} not found.");
+            var builder = AppDomainSetupManager.LoadBuilder(projectAssemblies);
+            _container = builder.Build();
+            //var engineAssemblyFilePath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, _assemblyInfo.FileName).FirstOrDefault();
+            //if (engineAssemblyFilePath != null)
+            //    _engineAssembly = Assembly.LoadFrom(engineAssemblyFilePath);
+            //else
+            //    throw new Exception($"Assembly path for {_assemblyInfo.FileName} not found.");
         }
 
         public void ExecuteScript(JobExecutionParams executionParams)
         {
-            Type t = _engineAssembly.GetType(_assemblyInfo.ClassName);
+            //Type t = _engineAssembly.GetType(_assemblyInfo.ClassName);
+            Type t = AppDomainSetupManager.GetTypeByName(_container, _assemblyInfo.ClassName);
 
             var methodInfo = t.GetMethod(_assemblyInfo.MethodName, new Type[] { typeof(string), typeof(string) });
             if (methodInfo == null)

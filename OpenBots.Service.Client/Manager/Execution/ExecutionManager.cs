@@ -1,6 +1,7 @@
 ﻿
 using Newtonsoft.Json;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
@@ -133,8 +134,12 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to download/retrieve Automation");
 
-            // Download Automation and Extract Files
-            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation);
+            // Download Automation and Extract Files and Return File Paths of ProjectConfig and MainScript 
+            string configFilePath;
+            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, out configFilePath);
+
+            // Install Project Dependencies
+            var assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath);
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
@@ -162,7 +167,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             Credential credential = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
 
             // Run Automation
-            RunAutomation(job, automation, credential, mainScriptFilePath);
+            RunAutomation(job, automation, credential, mainScriptFilePath, assembliesList.Result);
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Job execution completed");
@@ -196,11 +201,12 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             _isSuccessfulExecution = true;
         }
-        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath)
+        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath,
+            List<string> projectDependencies)
         {
             try
             {
-                var executionParams = GetExecutionParams(job, automation, mainScriptFilePath);
+                var executionParams = GetExecutionParams(job, automation, mainScriptFilePath, projectDependencies);
                 var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
                 var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 
@@ -226,7 +232,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 JobFinishedEvent?.Invoke(this, e);
         }
 
-        private string GetExecutionParams(Job job, Automation automation, string mainScriptFilePath)
+        private string GetExecutionParams(Job job, Automation automation, string mainScriptFilePath, List<string> projectDependencies)
         {
             var executionParams = new JobExecutionParams()
             {
@@ -235,6 +241,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ProcessName = automation.Name,
                 MainFilePath = mainScriptFilePath,
                 ProjectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath),
+                ProjectDependencies = projectDependencies,
                 ServerConnectionSettings = ConnectionSettingsManager.Instance.ConnectionSettings
             };
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);

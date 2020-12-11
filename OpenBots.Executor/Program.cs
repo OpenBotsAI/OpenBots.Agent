@@ -18,7 +18,10 @@ namespace OpenBots.Executor
                 var paramsJsonString = Encoding.UTF8.GetString(Convert.FromBase64String(args[0].ToString()));
                 JobExecutionParams executionParams = JsonConvert.DeserializeObject<JobExecutionParams>(paramsJsonString);
 
+                MessageBox.Show(paramsJsonString);
+
                 EngineHandler executor = new EngineHandler();
+                executor.LoadProjectAssemblies(executionParams.ProjectDependencies);
                 executor.ExecuteScript(executionParams);
             }
         }

@@ -12,10 +12,12 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(Automation automation)
+        public static string DownloadAndExtractAutomation(Automation automation, out string configFilePath)
         {
             // Check if (Root) Automations Directory Exists (under User's AppData Folder), If Not create it
-            var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariable(), "Automations");
+            var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariable(), "Automations",
+                (string.IsNullOrEmpty(automation.AutomationEngine)? "OpenBots" : automation.AutomationEngine));
+
             if (!Directory.Exists(automationsDirectory))
                 Directory.CreateDirectory(automationsDirectory);
 
@@ -51,7 +53,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Delete .zip File
             File.Delete(processZipFilePath);
 
-            string configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.config", SearchOption.AllDirectories).First();
+            configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.config", SearchOption.AllDirectories).First();
             string mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
 
             // Return "Main" Script File Path of the Automation

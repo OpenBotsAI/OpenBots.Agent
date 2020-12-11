@@ -81,9 +81,10 @@ namespace OpenBots.Service.Client.Server
 
         private void Heartbeat_Elapsed(object sender, ElapsedEventArgs e)
         {
+            int statusCode = 0;
             try
             {
-                int statusCode = AgentsAPIManager.SendAgentHeartBeat(
+                statusCode = AgentsAPIManager.SendAgentHeartBeat(
                     AuthAPIManager.Instance,
                     ConnectionSettingsManager.Instance.ConnectionSettings.AgentId,
                     new AgentHeartbeat(null, null, null, null, null, null, null, null, null, null, DateTime.Now, "", "", "", true));
@@ -91,8 +92,9 @@ namespace OpenBots.Service.Client.Server
                 if (statusCode != 201)
                     ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                FileLogger.Instance.LogEvent("HeartBeat", $"Status Code: {statusCode} || Exception: {ex.ToString()}", LogEventLevel.Error);
                 ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;
             }
         }
