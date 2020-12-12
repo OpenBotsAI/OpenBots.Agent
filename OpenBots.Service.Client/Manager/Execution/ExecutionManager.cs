@@ -141,7 +141,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, out configFilePath);
 
             // Install Project Dependencies
-            var assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath);
+            var assembliesList = new List<string>();
+            if (automation.AutomationEngine == "OpenBots")
+                assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath).Result;
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
@@ -169,7 +171,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             Credential credential = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
 
             // Run Automation
-            RunAutomation(job, automation, credential, mainScriptFilePath, assembliesList.Result);
+            RunAutomation(job, automation, credential, mainScriptFilePath, assembliesList);
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Job execution completed");
@@ -202,11 +204,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobsQueueManager.Instance.DequeueJob();
 
             _isSuccessfulExecution = true;
-        }
-        
-        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath)
-        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath,
-            List<string> projectDependencies)
+        }      
+        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath, List<string> projectDependencies)
         {
             try
             {
@@ -216,13 +215,12 @@ namespace OpenBots.Service.Client.Manager.Execution
                 switch(automation.AutomationEngine.ToString())
                 {
                     case "OpenBots":
-                        RunOpenBotsAutomation(job, automation, machineCredential, mainScriptFilePath);
+                        RunOpenBotsAutomation(job, automation, machineCredential, mainScriptFilePath, projectDependencies);
                         break;
 
                     case "Python":
                         RunPythonAutomation(job, machineCredential, mainScriptFilePath);
                         break;
-
                     default:
                         throw new NotImplementedException($"Specified execution engine \"{automation.AutomationEngine}\" is not implemented on the OpenBots Agent.");
                 }
@@ -234,9 +232,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
         }
         
-        private void RunOpenBotsAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath)
+        private void RunOpenBotsAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath, List<string> projectDependencies)
         {
-            var executionParams = GetExecutionParams(job, automation, mainScriptFilePath);
+            var executionParams = GetExecutionParams(job, automation, mainScriptFilePath, projectDependencies);
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 

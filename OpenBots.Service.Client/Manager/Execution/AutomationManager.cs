@@ -14,6 +14,8 @@ namespace OpenBots.Service.Client.Manager.Execution
     {
         public static string DownloadAndExtractAutomation(Automation automation, out string configFilePath)
         {
+            configFilePath = "";
+
             // Check if (Root) Automations Directory Exists (under User's AppData Folder), If Not create it
             var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariable(), "Automations",
                 (string.IsNullOrEmpty(automation.AutomationEngine)? "OpenBots" : automation.AutomationEngine));
@@ -59,7 +61,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             switch (automation.AutomationEngine.ToString())
             {
                 case "OpenBots":
-                    string configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.config", SearchOption.AllDirectories).First();
+                    configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.config", SearchOption.AllDirectories).First();
                     mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
                     break;
 
