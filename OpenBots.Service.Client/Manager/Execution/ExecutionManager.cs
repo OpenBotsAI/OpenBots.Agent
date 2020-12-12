@@ -14,6 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using System.Diagnostics;
+using Process = System.Diagnostics.Process;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -201,24 +203,62 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             _isSuccessfulExecution = true;
         }
+        
+        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath)
         private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath,
             List<string> projectDependencies)
         {
             try
             {
-                var executionParams = GetExecutionParams(job, automation, mainScriptFilePath, projectDependencies);
-                var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
-                var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
+                if (automation.AutomationEngine == "")
+                    automation.AutomationEngine = "OpenBots";
 
-                // launch the Executor
-                ProcessLauncher.PROCESS_INFORMATION procInfo;
-                ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+                switch(automation.AutomationEngine.ToString())
+                {
+                    case "OpenBots":
+                        RunOpenBotsAutomation(job, automation, machineCredential, mainScriptFilePath);
+                        break;
+
+                    case "Python":
+                        RunPythonAutomation(job, machineCredential, mainScriptFilePath);
+                        break;
+
+                    default:
+                        throw new NotImplementedException($"Specified execution engine \"{automation.AutomationEngine}\" is not implemented on the OpenBots Agent.");
+                }
+                
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+        
+        private void RunOpenBotsAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath)
+        {
+            var executionParams = GetExecutionParams(job, automation, mainScriptFilePath);
+            var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
+            var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
+
+            // launch the Executor
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            return;
+        }
+        
+        private void RunPythonAutomation(Job job, Credential machineCredential, string mainScriptFilePath)
+        {
+            string result = "";
+            result = ExecuteProcess(@"cmd.exe", "py -0p");
+            string pythonExecutable = result.Split(Environment.NewLine.ToCharArray()).FirstOrDefault();
+            string cmdLine = $"\"Executors\\PythonExecutor.ps1\" \"{pythonExecutable}\" \"{Path.GetDirectoryName(mainScriptFilePath)}\" \"{mainScriptFilePath}\""; ;
+
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+
+            return;
+        }
+        
         private void SetEngineStatus(bool isBusy)
         {
             IsEngineBusy = isBusy;
@@ -246,6 +286,40 @@ namespace OpenBots.Service.Client.Manager.Execution
             };
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(paramsJsonString));
+        }
+
+        private string ExecuteProcess(string executablePath, string arguments)
+        {
+            string result = "";
+
+            try
+            {
+                var info = new ProcessStartInfo($@"{executablePath}")
+                {
+                    Arguments = $"{arguments}",
+                    RedirectStandardInput = false,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (var proc = new Process())
+                {
+                    proc.StartInfo = info;
+                    proc.Start();
+                    proc.WaitForExit();
+                    if (proc.ExitCode == 0)
+                    {
+                        result = proc.StandardOutput.ReadToEnd();
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Script failed: " + result, ex);
+            }
         }
     }
 }
