@@ -16,6 +16,7 @@ using System.Text;
 using System.Timers;
 using Microsoft.Win32;
 using System.Security.Principal;
+using System.Reflection;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -246,10 +247,10 @@ namespace OpenBots.Service.Client.Manager.Execution
         
         private void RunPythonAutomation(Job job, Credential machineCredential, string mainScriptFilePath)
         {
-            string pythonExecutable = GetPythonPath(machineCredential.UserName, "3.9");
-            string command = "/c powershell -Scope LocalMachine -executionpolicy unrestricted";
-            System.Diagnostics.Process.Start("cmd.exe", command);
-            string cmdLine = $"powershell.exe -NoExit \"C:\\Users\\AccelirateAdmin\\source\\repos\\OpenBots.Agent\\OpenBots.Service.Client\\Executors\\PythonExecutor.ps1\" \"{pythonExecutable}\" \"{Path.GetDirectoryName(mainScriptFilePath)}\" \"{mainScriptFilePath}\""; ;
+            string projectDir = Path.GetDirectoryName(mainScriptFilePath);
+            string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string pythonExecutable = GetPythonPath(machineCredential.UserName, "");
+            string cmdLine = $"powershell.exe \"{assemblyPath}\\Executors\\PythonExecutor.ps1\" \'{pythonExecutable}\' \'{projectDir}\' \'{mainScriptFilePath}\'"; ;
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
@@ -345,8 +346,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             if (pythonLocations.Count == 0)
                 throw new Exception("No installed Python versions found.");
 
-            int max = pythonLocations.Max(x => x.Key.CompareTo(Version.Parse(requiredVersion)));
-            requestedVersion = pythonLocations.First(x => x.Key.CompareTo(Version.Parse(requiredVersion)) == max).Key;
+            int max = pythonLocations.Max(x => x.Key.CompareTo(requestedVersion));
+            requestedVersion = pythonLocations.First(x => x.Key.CompareTo(requestedVersion) == max).Key;
 
             if(pythonLocations.ContainsKey(requestedVersion))
             {
@@ -354,7 +355,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
             else
             {
-                throw new Exception($"Required Python version [{requestedVersion}] was not found on the machine.");
+                throw new Exception($"Required Python version [{requiredVersion}] or higher was not found on the machine.");
             }
         }
     }
