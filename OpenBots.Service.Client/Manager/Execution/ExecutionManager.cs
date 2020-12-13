@@ -14,8 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Timers;
-using System.Diagnostics;
-using Process = System.Diagnostics.Process;
+using Microsoft.Win32;
+using System.Security.Principal;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -246,10 +246,10 @@ namespace OpenBots.Service.Client.Manager.Execution
         
         private void RunPythonAutomation(Job job, Credential machineCredential, string mainScriptFilePath)
         {
-            string result = "";
-            result = ExecuteProcess(@"cmd.exe", "py -0p");
-            string pythonExecutable = result.Split(Environment.NewLine.ToCharArray()).FirstOrDefault();
-            string cmdLine = $"\"Executors\\PythonExecutor.ps1\" \"{pythonExecutable}\" \"{Path.GetDirectoryName(mainScriptFilePath)}\" \"{mainScriptFilePath}\""; ;
+            string pythonExecutable = GetPythonPath(machineCredential.UserName, "3.9");
+            string command = "/c powershell -Scope LocalMachine -executionpolicy unrestricted";
+            System.Diagnostics.Process.Start("cmd.exe", command);
+            string cmdLine = $"powershell.exe -NoExit \"C:\\Users\\AccelirateAdmin\\source\\repos\\OpenBots.Agent\\OpenBots.Service.Client\\Executors\\PythonExecutor.ps1\" \"{pythonExecutable}\" \"{Path.GetDirectoryName(mainScriptFilePath)}\" \"{mainScriptFilePath}\""; ;
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
@@ -286,37 +286,75 @@ namespace OpenBots.Service.Client.Manager.Execution
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(paramsJsonString));
         }
 
-        private string ExecuteProcess(string executablePath, string arguments)
+        private static string GetPythonPath(string username, string requiredVersion = "")
         {
-            string result = "";
+            var possiblePythonLocations = new List<string>()
+            { 
+                @"HKLM\SOFTWARE\Python\PythonCore\",
+                @"HKLM\SOFTWARE\Wow6432Node\Python\PythonCore\"
+            };
 
             try
             {
-                var info = new ProcessStartInfo($@"{executablePath}")
-                {
-                    Arguments = $"{arguments}",
-                    RedirectStandardInput = false,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
+                NTAccount f = new NTAccount(username);
+                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                string sidString = s.ToString();
+                possiblePythonLocations.Add($@"HKU\{sidString}\SOFTWARE\Python\PythonCore\");
+            }
+            catch
+            {
+                throw new Exception("Unabled to retrieve SID for provided user credentials.");
+            }
+            
+            Version requestedVersion = new Version(requiredVersion == "" ? "0.0.1" : requiredVersion);   
 
-                using (var proc = new Process())
+            //Version number, install path
+            Dictionary<Version, string> pythonLocations = new Dictionary<Version, string>();
+
+            foreach(string possibleLocation in possiblePythonLocations)
+            {
+                var regVals = possibleLocation.Split(new[] {'\\'}, 2);
+                var rootKey = (regVals[0] == "HKLM" ? RegistryHive.LocalMachine : RegistryHive.Users);
+                var regView = (Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+                var hklm = RegistryKey.OpenBaseKey(rootKey, regView);
+                RegistryKey theValue = hklm.OpenSubKey(regVals[1]);
+
+                if (theValue == null)
+                    continue;
+
+                foreach (var version in theValue.GetSubKeyNames())
                 {
-                    proc.StartInfo = info;
-                    proc.Start();
-                    proc.WaitForExit();
-                    if (proc.ExitCode == 0)
+                    RegistryKey productKey = theValue.OpenSubKey(version);
+                    if (productKey != null)
                     {
-                        result = proc.StandardOutput.ReadToEnd();
+                        try
+                        {
+                            string pythonExePath = productKey.OpenSubKey("InstallPath").GetValue("ExecutablePath").ToString();
+                            if (pythonExePath != null && pythonExePath != "")
+                            {
+                                pythonLocations.Add(Version.Parse(version), pythonExePath);
+                            }
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
-
-                return result;
             }
-            catch (Exception ex)
+
+            if (pythonLocations.Count == 0)
+                throw new Exception("No installed Python versions found.");
+
+            int max = pythonLocations.Max(x => x.Key.CompareTo(Version.Parse(requiredVersion)));
+            requestedVersion = pythonLocations.First(x => x.Key.CompareTo(Version.Parse(requiredVersion)) == max).Key;
+
+            if(pythonLocations.ContainsKey(requestedVersion))
             {
-                throw new Exception("Script failed: " + result, ex);
+                return pythonLocations[requestedVersion];
+            }
+            else
+            {
+                throw new Exception($"Required Python version [{requestedVersion}] was not found on the machine.");
             }
         }
     }

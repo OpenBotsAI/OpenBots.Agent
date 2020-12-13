@@ -66,7 +66,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                     break;
 
                 case "Python":
-                    mainFileName = "main.py";
+                    mainFileName = "__main__.py";
                     break;
 
                 default:

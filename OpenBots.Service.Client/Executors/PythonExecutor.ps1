@@ -10,6 +10,7 @@ $scriptPath = "C:\Users\AccelirateAdmin\Desktop\TestPythonProject2\__main__.py"
 #######################
 
 Write-Output "[2/6] Creating the virtual environment."
+Invoke-Expression "$python -m pip install --upgrade pip"
 Invoke-Expression "$python -m pip install --user virtualenv"
 Invoke-Expression "$python -m venv $projectDir\.env3\"
 Invoke-Expression "$projectDir\.env3\Scripts\activate.ps1"
