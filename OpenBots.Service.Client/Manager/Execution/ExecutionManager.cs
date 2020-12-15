@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Timers;
 
 namespace OpenBots.Service.Client.Manager.Execution
@@ -167,7 +166,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             Credential credential = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
 
             // Run Automation
-            RunAutomation(job, automation, credential, mainScriptFilePath, assembliesList.Result);
+            RunAutomation(job, automation, credential, mainScriptFilePath, assembliesList);
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Job execution completed");
@@ -245,7 +244,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ServerConnectionSettings = ConnectionSettingsManager.Instance.ConnectionSettings
             };
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(paramsJsonString));
+            return ExecutionUtilities.CompressString(paramsJsonString);
         }
     }
 }

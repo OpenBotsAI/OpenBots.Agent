@@ -36,6 +36,18 @@ namespace OpenBots.Agent.Core.MachineRegistry
             }
         }
 
+        public string ServerURL
+        {
+            get
+            {
+                return GetKeyValue(_registryKeys.ServerURLKey);
+            }
+            set
+            {
+                SetKeyValue(_registryKeys.ServerURLKey, value);
+            }
+        }
+
         private string GetKeyValue(string key)
         {
             string keyValue = null;

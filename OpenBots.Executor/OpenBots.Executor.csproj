@@ -125,6 +125,7 @@
     <Compile Include="Engine\EngineHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\AssembliesManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -136,9 +137,7 @@
       <Name>OpenBots.Agent.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="lib\AxInterop.MSTSCLib.dll" />
     <Content Include="lib\BouncyCastle.Crypto.dll" />

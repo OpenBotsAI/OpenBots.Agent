@@ -176,7 +176,7 @@ namespace OpenBots.Agent.Client
                 _connectionSettings = new ServerConnectionSettings()
                 {
                     ServerConnectionEnabled = false,
-                    ServerURL = string.Empty,
+                    ServerURL = _registryManager.ServerURL ?? string.Empty,  // Load Username from User Registry,
                     AgentUsername = _registryManager.AgentUsername ?? string.Empty,  // Load Username from User Registry
                     AgentPassword = _registryManager.AgentPassword ?? string.Empty,  // Load Password from User Registry
                     SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? SinkType.File.ToString() : _agentSettings.SinkType,
@@ -499,10 +499,12 @@ namespace OpenBots.Agent.Client
                             UpdateUIOnConnect();
 
                             //Set Registry Keys if NOT already Set
-                            if (string.IsNullOrEmpty(_registryManager.AgentUsername) || string.IsNullOrEmpty(_registryManager.AgentPassword))
+                            if (string.IsNullOrEmpty(_registryManager.AgentUsername) || string.IsNullOrEmpty(_registryManager.AgentPassword) ||
+                                string.IsNullOrEmpty(_registryManager.ServerURL))
                             {
                                 _registryManager.AgentUsername = _connectionSettings.AgentUsername;
                                 _registryManager.AgentPassword = _connectionSettings.AgentPassword;
+                                _registryManager.ServerURL = _connectionSettings.ServerURL;
 
                                 OnSetRegistryKeys();
                             }
