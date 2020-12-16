@@ -18,7 +18,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Check if (Root) Automations Directory Exists (under User's AppData Folder), If Not create it
             var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariable(), "Automations",
-                (string.IsNullOrEmpty(automation.AutomationEngine)? "OpenBots" : automation.AutomationEngine));
+                automation.AutomationEngine);
 
             if (!Directory.Exists(automationsDirectory))
                 Directory.CreateDirectory(automationsDirectory);
@@ -53,9 +53,6 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Delete .zip File
             File.Delete(processZipFilePath);
-
-            if (automation.AutomationEngine == "")
-                automation.AutomationEngine = "OpenBots";
 
             string mainFileName;
             switch (automation.AutomationEngine.ToString())

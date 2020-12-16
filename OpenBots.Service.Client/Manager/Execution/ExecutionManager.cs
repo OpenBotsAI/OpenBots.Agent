@@ -136,14 +136,16 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to download/retrieve Automation");
 
+
             // Download Automation and Extract Files and Return File Paths of ProjectConfig and MainScript 
+            automation.AutomationEngine = string.IsNullOrEmpty(automation.AutomationEngine) ? "OpenBots" : automation.AutomationEngine;
             string configFilePath;
             var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, out configFilePath);
 
             // Install Project Dependencies
-            var assembliesList = new List<string>();
+            List<string> assembliesList = null;
             if (automation.AutomationEngine == "OpenBots")
-                assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath).Result;
+                assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath);
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
@@ -205,7 +207,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             _isSuccessfulExecution = true;
         }      
-        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath, List<string> projectDependencies)
+        private void RunAutomation(Job job, Automation automation, Credential machineCredential, 
+            string mainScriptFilePath, List<string> projectDependencies)
         {
             try
             {
