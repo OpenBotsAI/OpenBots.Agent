@@ -5,7 +5,7 @@
         /// <summary>
         /// Gets Assembly File Name
         /// </summary>
-        public string AssemblyName { get; } = "OpenBots.Engine";
+        public string AssemblyName { get; } = "OpenBots.Engine.dll";
 
         /// <summary>
         /// Gets Class Name as Type

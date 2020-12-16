@@ -112,7 +112,6 @@ namespace OpenBots.Agent.Core.Nuget
                                     if (!assemblyPaths.Contains(Path.Combine(packagePath, $"{packageToInstall.Id}.{packageToInstall.Version}", path)))
                                         assemblyPaths.Add(Path.Combine(packagePath, $"{packageToInstall.Id}.{packageToInstall.Version}", path));
                                 }
-
                             }
                         }
                     }

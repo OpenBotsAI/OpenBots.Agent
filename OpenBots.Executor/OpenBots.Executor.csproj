@@ -139,82 +139,129 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="lib\AxInterop.MSTSCLib.dll" />
-    <Content Include="lib\BouncyCastle.Crypto.dll" />
-    <Content Include="lib\chromedriver.exe" />
-    <Content Include="lib\geckodriver.exe" />
-    <Content Include="lib\Geckofx-Core.dll" />
-    <Content Include="lib\Geckofx-Winforms.dll" />
-    <Content Include="lib\HtmlAgilityPack.dll" />
-    <Content Include="lib\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="lib\IEDriverServer.exe" />
-    <Content Include="lib\ImapX.dll" />
-    <Content Include="lib\JetBrains.Annotations.dll" />
-    <Content Include="lib\MailKit.dll" />
-    <Content Include="lib\Microsoft.AspNet.SignalR.Client.dll" />
-    <Content Include="lib\Microsoft.AspNet.SignalR.Core.dll" />
-    <Content Include="lib\Microsoft.Extensions.Configuration.Abstractions.dll" />
-    <Content Include="lib\Microsoft.Extensions.Configuration.dll" />
-    <Content Include="lib\Microsoft.Extensions.Primitives.dll" />
-    <Content Include="lib\Microsoft.Office.Interop.Outlook.dll" />
-    <Content Include="lib\Microsoft.Owin.dll" />
-    <Content Include="lib\Microsoft.Owin.Security.dll" />
-    <Content Include="lib\Microsoft.Web.XmlTransform.dll" />
-    <Content Include="lib\Microsoft.Win32.TaskScheduler.dll" />
-    <Content Include="lib\MimeKit.dll" />
-    <Content Include="lib\Newtonsoft.Json.dll" />
-    <Content Include="lib\NuGet.Core.dll" />
-    <Content Include="lib\OneNoteOCRDll.dll" />
-    <Content Include="lib\OpenBots.Commands.API.dll" />
-    <Content Include="lib\OpenBots.Commands.Asset.dll" />
-    <Content Include="lib\OpenBots.Commands.Credential.dll" />
-    <Content Include="lib\OpenBots.Commands.Data.dll" />
-    <Content Include="lib\OpenBots.Commands.Database.dll" />
-    <Content Include="lib\OpenBots.Commands.DataTable.dll" />
-    <Content Include="lib\OpenBots.Commands.Dictionary.dll" />
-    <Content Include="lib\OpenBots.Commands.Email.dll" />
-    <Content Include="lib\OpenBots.Commands.Engine.dll" />
-    <Content Include="lib\OpenBots.Commands.Excel.dll" />
-    <Content Include="lib\OpenBots.Commands.File.dll" />
-    <Content Include="lib\OpenBots.Commands.Folder.dll" />
-    <Content Include="lib\OpenBots.Commands.Input.dll" />
-    <Content Include="lib\OpenBots.Commands.List.dll" />
-    <Content Include="lib\OpenBots.Commands.NLG.dll" />
-    <Content Include="lib\OpenBots.Commands.Outlook.dll" />
-    <Content Include="lib\OpenBots.Commands.Process.dll" />
-    <Content Include="lib\OpenBots.Commands.QueueItem.dll" />
-    <Content Include="lib\OpenBots.Commands.RegEx.dll" />
-    <Content Include="lib\OpenBots.Commands.SecureData.dll" />
-    <Content Include="lib\OpenBots.Commands.Switch.dll" />
-    <Content Include="lib\OpenBots.Commands.System.dll" />
-    <Content Include="lib\OpenBots.Commands.TextFile.dll" />
-    <Content Include="lib\OpenBots.Commands.Variable.dll" />
-    <Content Include="lib\OpenBots.Commands.Window.dll" />
-    <Content Include="lib\OpenBots.Commands.Word.dll" />
-    <Content Include="lib\OpenBots.Core.dll" />
-    <Content Include="lib\OpenBots.Engine.dll" />
-    <Content Include="lib\OpenBots.Studio.exe" />
-    <Content Include="lib\Owin.dll" />
-    <Content Include="lib\RestSharp.dll" />
-    <Content Include="lib\Serilog.dll" />
-    <Content Include="lib\Serilog.Formatting.Compact.dll" />
-    <Content Include="lib\Serilog.Sinks.File.dll" />
-    <Content Include="lib\Serilog.Sinks.Http.dll" />
-    <Content Include="lib\Serilog.Sinks.PeriodicBatching.dll" />
-    <Content Include="lib\Serilog.Sinks.RollingFile.dll" />
-    <Content Include="lib\Serilog.Sinks.SignalR.dll" />
-    <Content Include="lib\SharpSimpleNLG.dll" />
-    <Content Include="lib\stdole.dll" />
-    <Content Include="lib\SuperSocket.ClientEngine.dll" />
-    <Content Include="lib\System.Buffers.dll" />
-    <Content Include="lib\System.ComponentModel.Annotations.dll" />
-    <Content Include="lib\System.Memory.dll" />
-    <Content Include="lib\System.Numerics.Vectors.dll" />
-    <Content Include="lib\System.Runtime.CompilerServices.Unsafe.dll" />
-    <Content Include="lib\WebDriver.dll" />
-    <Content Include="lib\WebDriver.Support.dll" />
-    <Content Include="lib\WebSocket4Net.dll" />
-    <Content Include="lib\WindowsInput.dll" />
+    <Content Include="lib\Autofac.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\BouncyCastle.Crypto.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\ICSharpCode.SharpZipLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.AspNet.SignalR.Client.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.AspNet.SignalR.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.Bcl.AsyncInterfaces.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.Extensions.Configuration.Abstractions.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.Extensions.Configuration.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.Extensions.Primitives.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.Office.Interop.Outlook.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.Owin.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Microsoft.Owin.Security.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\MimeKit.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Newtonsoft.Json.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\NuGet.Common.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\NuGet.Configuration.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\NuGet.Frameworks.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\NuGet.Packaging.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\NuGet.Protocol.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\NuGet.Resolver.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\NuGet.Versioning.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\OpenBots.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\OpenBots.Engine.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Owin.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\RestSharp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Serilog.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Serilog.Formatting.Compact.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Serilog.Sinks.File.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Serilog.Sinks.Http.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Serilog.Sinks.PeriodicBatching.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Serilog.Sinks.RollingFile.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\Serilog.Sinks.SignalR.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\stdole.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\System.Buffers.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\System.Diagnostics.DiagnosticSource.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\System.Memory.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\System.Numerics.Vectors.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\System.Runtime.CompilerServices.Unsafe.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\System.ValueTuple.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\WebDriver.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\WebDriver.Support.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

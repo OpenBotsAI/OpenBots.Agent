@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -10,18 +11,24 @@ namespace OpenBots.Executor.Utilities
     {
         public static List<Assembly> LoadAssemblies(List<string> assemblyPaths)
         {
+            List<string> filteredPaths = new List<string>();
+            foreach (string path in assemblyPaths)
+            {
+                if (filteredPaths.Where(a => a.Contains(path.Split('/').Last()) && FileVersionInfo.GetVersionInfo(a).FileVersion ==
+                                        FileVersionInfo.GetVersionInfo(path).FileVersion).FirstOrDefault() == null)
+                    filteredPaths.Add(path);
+            }
+
             List<Assembly> existingAssemblies = new List<Assembly>();
-            foreach (var path in assemblyPaths)
+            foreach (var path in filteredPaths)
             {
                 try
                 {
-                    var assemblyinfo = AssemblyName.GetAssemblyName(path);
-                    var name = assemblyinfo.Name;
-                    var version = assemblyinfo.Version.ToString();
+                    var name = AssemblyName.GetAssemblyName(path).Name;
 
                     var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                     var existingAssembly = assemblies.Where(x => x.GetName().Name == name &&
-                                                                 x.GetName().Version.ToString() == version)
+                                                                 x.GetName().Version.ToString() == AssemblyName.GetAssemblyName(path).Version.ToString())
                                                      .FirstOrDefault();
 
                     if (existingAssembly == null && name != "OpenBots.Engine" && name != "RestSharp" && name != "WebDriver")
@@ -37,9 +44,6 @@ namespace OpenBots.Executor.Utilities
                     throw ex;
                 }
             }
-            var engineAssemblyPath = assemblyPaths.Where(p => Regex.Matches(p, "OpenBots.Engine").Count > 1).FirstOrDefault();
-            Assembly engineAssembly = Assembly.LoadFrom(engineAssemblyPath);
-            existingAssemblies.Add(engineAssembly);
             return existingAssemblies;
         }
     }

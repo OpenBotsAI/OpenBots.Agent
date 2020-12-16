@@ -27,7 +27,7 @@ namespace OpenBots.Executor
         public void LoadProjectAssemblies(List<string> projectAssemblies)
         {
             var existingAssemblies = AssembliesManager.LoadAssemblies(projectAssemblies);
-            _engineAssembly = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.Contains(_assemblyInfo.AssemblyName)).FirstOrDefault();
+            _engineAssembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _assemblyInfo.AssemblyName));
         }
 
         public void ExecuteScript(JobExecutionParams executionParams)
