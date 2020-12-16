@@ -351,14 +351,14 @@ namespace OpenBots.Service.Client.Manager.Execution
                 }
 
                 // create a new process in the current user's logon session
-                pResult = CreateProcessAsUser(hPToken,            // client's access token
+                pResult = CreateProcessAsUser(hPToken,                  // client's access token
                                                 null,                   // file to execute
                                                 commandLine,            // command line
                                                 ref sa,                 // pointer to process SECURITY_ATTRIBUTES
                                                 ref sa,                 // pointer to thread SECURITY_ATTRIBUTES
                                                 false,                  // handles are not inheritable
                                                 dwCreationFlags,        // creation flags
-                                                envBlock,            // pointer to new environment block 
+                                                envBlock,               // pointer to new environment block 
                                                 null,                   // name of current directory 
                                                 ref si,                 // pointer to STARTUPINFO structure
                                                 out processInfo         // receives information about new process

@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Timers;
+using Microsoft.Win32;
+using System.Security.Principal;
+using System.Reflection;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -138,7 +141,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, out configFilePath);
 
             // Install Project Dependencies
-            var assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath);
+            var assembliesList = new List<string>();
+            if (automation.AutomationEngine == "OpenBots")
+                assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath).Result;
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
@@ -199,25 +204,59 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobsQueueManager.Instance.DequeueJob();
 
             _isSuccessfulExecution = true;
-        }
-        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath,
-            List<string> projectDependencies)
+        }      
+        private void RunAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath, List<string> projectDependencies)
         {
             try
             {
-                var executionParams = GetExecutionParams(job, automation, mainScriptFilePath, projectDependencies);
-                var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
-                var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
+                if (automation.AutomationEngine == "")
+                    automation.AutomationEngine = "OpenBots";
 
-                // launch the Executor
-                ProcessLauncher.PROCESS_INFORMATION procInfo;
-                ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+                switch(automation.AutomationEngine.ToString())
+                {
+                    case "OpenBots":
+                        RunOpenBotsAutomation(job, automation, machineCredential, mainScriptFilePath, projectDependencies);
+                        break;
+
+                    case "Python":
+                        RunPythonAutomation(job, machineCredential, mainScriptFilePath);
+                        break;
+                    default:
+                        throw new NotImplementedException($"Specified execution engine \"{automation.AutomationEngine}\" is not implemented on the OpenBots Agent.");
+                }
+                
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+        
+        private void RunOpenBotsAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath, List<string> projectDependencies)
+        {
+            var executionParams = GetExecutionParams(job, automation, mainScriptFilePath, projectDependencies);
+            var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
+            var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
+
+            // launch the Executor
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            return;
+        }
+        
+        private void RunPythonAutomation(Job job, Credential machineCredential, string mainScriptFilePath)
+        {
+            string projectDir = Path.GetDirectoryName(mainScriptFilePath);
+            string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string pythonExecutable = GetPythonPath(machineCredential.UserName, "");
+            string cmdLine = $"powershell.exe \"{assemblyPath}\\Executors\\PythonExecutor.ps1\" \'{pythonExecutable}\' \'{projectDir}\' \'{mainScriptFilePath}\'"; ;
+
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+
+            return;
+        }
+        
         private void SetEngineStatus(bool isBusy)
         {
             IsEngineBusy = isBusy;
@@ -245,6 +284,78 @@ namespace OpenBots.Service.Client.Manager.Execution
             };
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);
             return ExecutionUtilities.CompressString(paramsJsonString);
+        }
+
+        private static string GetPythonPath(string username, string requiredVersion = "")
+        {
+            var possiblePythonLocations = new List<string>()
+            { 
+                @"HKLM\SOFTWARE\Python\PythonCore\",
+                @"HKLM\SOFTWARE\Wow6432Node\Python\PythonCore\"
+            };
+
+            try
+            {
+                NTAccount f = new NTAccount(username);
+                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                string sidString = s.ToString();
+                possiblePythonLocations.Add($@"HKU\{sidString}\SOFTWARE\Python\PythonCore\");
+            }
+            catch
+            {
+                throw new Exception("Unabled to retrieve SID for provided user credentials.");
+            }
+            
+            Version requestedVersion = new Version(requiredVersion == "" ? "0.0.1" : requiredVersion);   
+
+            //Version number, install path
+            Dictionary<Version, string> pythonLocations = new Dictionary<Version, string>();
+
+            foreach(string possibleLocation in possiblePythonLocations)
+            {
+                var regVals = possibleLocation.Split(new[] {'\\'}, 2);
+                var rootKey = (regVals[0] == "HKLM" ? RegistryHive.LocalMachine : RegistryHive.Users);
+                var regView = (Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+                var hklm = RegistryKey.OpenBaseKey(rootKey, regView);
+                RegistryKey theValue = hklm.OpenSubKey(regVals[1]);
+
+                if (theValue == null)
+                    continue;
+
+                foreach (var version in theValue.GetSubKeyNames())
+                {
+                    RegistryKey productKey = theValue.OpenSubKey(version);
+                    if (productKey != null)
+                    {
+                        try
+                        {
+                            string pythonExePath = productKey.OpenSubKey("InstallPath").GetValue("ExecutablePath").ToString();
+                            if (pythonExePath != null && pythonExePath != "")
+                            {
+                                pythonLocations.Add(Version.Parse(version), pythonExePath);
+                            }
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+            }
+
+            if (pythonLocations.Count == 0)
+                throw new Exception("No installed Python versions found.");
+
+            int max = pythonLocations.Max(x => x.Key.CompareTo(requestedVersion));
+            requestedVersion = pythonLocations.First(x => x.Key.CompareTo(requestedVersion) == max).Key;
+
+            if(pythonLocations.ContainsKey(requestedVersion))
+            {
+                return pythonLocations[requestedVersion];
+            }
+            else
+            {
+                throw new Exception($"Required Python version [{requiredVersion}] or higher was not found on the machine.");
+            }
         }
     }
 }
