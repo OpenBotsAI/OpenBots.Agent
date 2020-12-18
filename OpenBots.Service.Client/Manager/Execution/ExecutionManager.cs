@@ -286,7 +286,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ServerConnectionSettings = ConnectionSettingsManager.Instance.ConnectionSettings
             };
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);
-            return ExecutionUtilities.CompressString(paramsJsonString);
+            return DataFormatter.CompressString(paramsJsonString);
         }
 
         private static string GetPythonPath(string username, string requiredVersion = "")

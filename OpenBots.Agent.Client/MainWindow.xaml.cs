@@ -1,23 +1,23 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OpenBots.Agent.Client.Forms.Dialog;
 using OpenBots.Agent.Client.Utilities;
-using OpenBots.Agent.Core.Model;
-using OpenBots.Agent.Core.MachineRegistry;
 using OpenBots.Agent.Core.Enums;
+using OpenBots.Agent.Core.UserRegistry;
+using OpenBots.Agent.Core.Model;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Drawing = System.Drawing;
 using SystemForms = System.Windows.Forms;
-using System.IO;
-using OpenBots.Agent.Client.Forms.Dialog;
-using System.Security.Principal;
 
 namespace OpenBots.Agent.Client
 {
@@ -176,7 +176,7 @@ namespace OpenBots.Agent.Client
                 _connectionSettings = new ServerConnectionSettings()
                 {
                     ServerConnectionEnabled = false,
-                    ServerURL = _registryManager.ServerURL ?? string.Empty,  // Load Username from User Registry,
+                    ServerURL = _registryManager.ServerURL ?? string.Empty,          // Load Server URL from User Registry,
                     AgentUsername = _registryManager.AgentUsername ?? string.Empty,  // Load Username from User Registry
                     AgentPassword = _registryManager.AgentPassword ?? string.Empty,  // Load Password from User Registry
                     SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? SinkType.File.ToString() : _agentSettings.SinkType,

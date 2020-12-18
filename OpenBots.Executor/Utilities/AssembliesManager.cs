@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Autofac;
+using OpenBots.Core.Command;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace OpenBots.Executor.Utilities
 {
     public static class AssembliesManager
     {
-        public static List<Assembly> LoadAssemblies(List<string> assemblyPaths)
+        public static ContainerBuilder LoadBuilder(List<string> assemblyPaths)
         {
             List<string> filteredPaths = new List<string>();
             foreach (string path in assemblyPaths)
@@ -31,19 +32,26 @@ namespace OpenBots.Executor.Utilities
                                                                  x.GetName().Version.ToString() == AssemblyName.GetAssemblyName(path).Version.ToString())
                                                      .FirstOrDefault();
 
-                    if (existingAssembly == null && name != "OpenBots.Engine" && name != "OpenBots.Core" &&
-                        name != "RestSharp" && name != "WebDriver")
+                    if (existingAssembly == null && name != "RestSharp" && name != "WebDriver")
                     {
                         var assembly = Assembly.LoadFrom(path);
                         existingAssemblies.Add(assembly);
                     }
+                    else if (name != "RestSharp" && name != "WebDriver")
+                        existingAssemblies.Add(existingAssembly);
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
             }
-            return existingAssemblies;
+            ContainerBuilder builder = new ContainerBuilder();
+
+            builder.RegisterAssemblyTypes(existingAssemblies.ToArray())
+                                                   .Where(t => t.IsAssignableTo<ScriptCommand>())
+                                                   .Named<ScriptCommand>(t => t.Name)
+                                                   .AsImplementedInterfaces();
+            return builder;
         }
     }
 }
