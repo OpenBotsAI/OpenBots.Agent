@@ -53,10 +53,11 @@ namespace OpenBots.Service.API.Api
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentID"></param>
         /// <param name="machineName"></param>
         /// <param name="macAddresses"></param>
         /// <returns>ConnectedViewModel</returns>
-        ConnectedViewModel ApiV1AgentsConnectPatch(string machineName, string macAddresses);
+        ConnectedViewModel ApiV1AgentsConnectPatch(string agentID, string machineName, string macAddresses);
 
         /// <summary>
         /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field
@@ -65,10 +66,11 @@ namespace OpenBots.Service.API.Api
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentID"></param>
         /// <param name="machineName"></param>
         /// <param name="macAddresses"></param>
         /// <returns>ApiResponse of ConnectedViewModel</returns>
-        ApiResponse<ConnectedViewModel> ApiV1AgentsConnectPatchWithHttpInfo(string machineName, string macAddresses);
+        ApiResponse<ConnectedViewModel> ApiV1AgentsConnectPatchWithHttpInfo(string agentID, string machineName, string macAddresses);
         /// <summary>
         /// Provides a count of agents
         /// </summary>
@@ -97,11 +99,11 @@ namespace OpenBots.Service.API.Api
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentID"></param>
         /// <param name="machineName"></param>
         /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
         /// <returns>IActionResult</returns>
-        IActionResult ApiV1AgentsDisconnectPatch(string machineName, string macAddresses, Guid? agentId = null);
+        IActionResult ApiV1AgentsDisconnectPatch(string agentID, string machineName, string macAddresses);
 
         /// <summary>
         /// Updates the isConnected field if the disconnect details are correct
@@ -110,11 +112,11 @@ namespace OpenBots.Service.API.Api
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentID"></param>
         /// <param name="machineName"></param>
         /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        ApiResponse<IActionResult> ApiV1AgentsDisconnectPatchWithHttpInfo(string machineName, string macAddresses, Guid? agentId = null);
+        ApiResponse<IActionResult> ApiV1AgentsDisconnectPatchWithHttpInfo(string agentID, string machineName, string macAddresses);
         /// <summary>
         /// Provides a list of all Agents
         /// </summary>
@@ -855,12 +857,13 @@ namespace OpenBots.Service.API.Api
         /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentID"></param>
         /// <param name="machineName"></param>
         /// <param name="macAddresses"></param>
         /// <returns>ConnectedViewModel</returns>
-        public ConnectedViewModel ApiV1AgentsConnectPatch(string machineName, string macAddresses)
+        public ConnectedViewModel ApiV1AgentsConnectPatch(string agentID, string machineName, string macAddresses)
         {
-            ApiResponse<ConnectedViewModel> localVarResponse = ApiV1AgentsConnectPatchWithHttpInfo(machineName, macAddresses);
+            ApiResponse<ConnectedViewModel> localVarResponse = ApiV1AgentsConnectPatchWithHttpInfo(agentID, machineName, macAddresses);
             return localVarResponse.Data;
         }
 
@@ -868,11 +871,15 @@ namespace OpenBots.Service.API.Api
         /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentID"></param>
         /// <param name="machineName"></param>
         /// <param name="macAddresses"></param>
         /// <returns>ApiResponse of ConnectedViewModel</returns>
-        public ApiResponse<ConnectedViewModel> ApiV1AgentsConnectPatchWithHttpInfo(string machineName, string macAddresses)
+        public ApiResponse<ConnectedViewModel> ApiV1AgentsConnectPatchWithHttpInfo(string agentID, string machineName, string macAddresses)
         {
+            // verify the required parameter 'agentID' is set
+            if (agentID == null)
+                throw new ApiException(400, "Missing required parameter 'agentID' when calling AgentsApi->ApiV1AgentsConnectPatch");
             // verify the required parameter 'machineName' is set
             if (machineName == null)
                 throw new ApiException(400, "Missing required parameter 'machineName' when calling AgentsApi->ApiV1AgentsConnectPatch");
@@ -880,7 +887,7 @@ namespace OpenBots.Service.API.Api
             if (macAddresses == null)
                 throw new ApiException(400, "Missing required parameter 'macAddresses' when calling AgentsApi->ApiV1AgentsConnectPatch");
             
-            var localVarPath = "/api/v1/Agents/Connect";
+            var localVarPath = "/api/v1/Agents/{agentID}/Connect";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -905,6 +912,7 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAuthorization != null)
                 localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
 
+            if (agentID != null) localVarPathParams.Add("agentID", this.Configuration.ApiClient.ParameterToString(agentID)); // path parameter
             if (machineName != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MachineName", machineName)); // query parameter
             if (macAddresses != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MacAddresses", macAddresses)); // query parameter
 
@@ -1125,13 +1133,13 @@ namespace OpenBots.Service.API.Api
         /// Updates the isConnected field if the disconnect details are correct 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentID"></param>
         /// <param name="machineName"></param>
         /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
         /// <returns>IActionResult</returns>
-        public IActionResult ApiV1AgentsDisconnectPatch(string machineName, string macAddresses, Guid? agentId = null)
+        public IActionResult ApiV1AgentsDisconnectPatch(string agentID, string machineName, string macAddresses)
         {
-            ApiResponse<IActionResult> localVarResponse = ApiV1AgentsDisconnectPatchWithHttpInfo(machineName, macAddresses, agentId);
+            ApiResponse<IActionResult> localVarResponse = ApiV1AgentsDisconnectPatchWithHttpInfo(agentID, machineName, macAddresses);
             return localVarResponse.Data;
         }
 
@@ -1139,12 +1147,15 @@ namespace OpenBots.Service.API.Api
         /// Updates the isConnected field if the disconnect details are correct 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="agentID"></param>
         /// <param name="machineName"></param>
         /// <param name="macAddresses"></param>
-        /// <param name="agentId"> (optional)</param>
         /// <returns>ApiResponse of IActionResult</returns>
-        public ApiResponse<IActionResult> ApiV1AgentsDisconnectPatchWithHttpInfo(string machineName, string macAddresses, Guid? agentId = null)
+        public ApiResponse<IActionResult> ApiV1AgentsDisconnectPatchWithHttpInfo(string agentID, string machineName, string macAddresses)
         {
+            // verify the required parameter 'agentID' is set
+            if (agentID == null)
+                throw new ApiException(400, "Missing required parameter 'agentID' when calling AgentsApi->ApiV1AgentsDisconnectPatch");
             // verify the required parameter 'machineName' is set
             if (machineName == null)
                 throw new ApiException(400, "Missing required parameter 'machineName' when calling AgentsApi->ApiV1AgentsDisconnectPatch");
@@ -1152,7 +1163,7 @@ namespace OpenBots.Service.API.Api
             if (macAddresses == null)
                 throw new ApiException(400, "Missing required parameter 'macAddresses' when calling AgentsApi->ApiV1AgentsDisconnectPatch");
             
-            var localVarPath = "/api/v1/Agents/Disconnect";
+            var localVarPath = "/api/v1/Agents/{agentID}/Disconnect";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
             var localVarHeaderParams = new Dictionary<String, String>(this.Configuration.DefaultHeader);
@@ -1177,9 +1188,9 @@ namespace OpenBots.Service.API.Api
             if (localVarHttpHeaderAuthorization != null)
                 localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
 
+            if (agentID != null) localVarPathParams.Add("agentID", this.Configuration.ApiClient.ParameterToString(agentID)); // path parameter
             if (machineName != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MachineName", machineName)); // query parameter
             if (macAddresses != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "MacAddresses", macAddresses)); // query parameter
-            if (agentId != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "AgentId", agentId)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,

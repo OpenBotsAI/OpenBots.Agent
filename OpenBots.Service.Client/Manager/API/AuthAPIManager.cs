@@ -2,6 +2,7 @@
 using OpenBots.Service.API.Api;
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
+using OpenBots.Service.Client.Server;
 using System;
 
 namespace OpenBots.Service.Client.Manager
@@ -42,7 +43,8 @@ namespace OpenBots.Service.Client.Manager
         {
             AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
             var apiResponse = authAPI.ApiV1AuthTokenPostWithHttpInfo(new LoginModel(ServerSettings.AgentUsername, ServerSettings.AgentPassword));
-
+            
+            ConnectionSettingsManager.Instance.ConnectionSettings.AgentId = apiResponse.Data.AgentId;
             return (Configuration.AccessToken = apiResponse.Data.Token.ToString());
         }
 
