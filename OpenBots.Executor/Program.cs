@@ -15,12 +15,9 @@ namespace OpenBots.Executor
         {
             if (args.Length > 0)
             {
-                MessageBox.Show("Test Run");
-
                 // Get Execution Parameters
                 var paramsJsonString = DataFormatter.DecompressString(args[0].ToString());
                 JobExecutionParams executionParams = JsonConvert.DeserializeObject<JobExecutionParams>(paramsJsonString);
-
 
                 EngineHandler executor = new EngineHandler();
                 executor.LoadProjectAssemblies(executionParams.ProjectDependencies);
