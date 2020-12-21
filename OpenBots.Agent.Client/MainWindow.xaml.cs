@@ -508,6 +508,11 @@ namespace OpenBots.Agent.Client
 
                                 OnSetRegistryKeys();
                             }
+                            else if(_registryManager.ServerURL != _connectionSettings.ServerURL)
+                            {
+                                // If Server URL is updated
+                                _registryManager.ServerURL = _connectionSettings.ServerURL;
+                            }
 
                             // Update OpenBots.settings file
                             SettingsManager.Instance.UpdateSettings(_agentSettings);
