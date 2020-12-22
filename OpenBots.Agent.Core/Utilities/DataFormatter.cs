@@ -103,28 +103,35 @@ namespace OpenBots.Agent.Core.Utilities
         /// <returns></returns>
         public static string DecryptText(string encryptedText)
         {
-            byte[] toEncryptArray = Convert.FromBase64String(encryptedText);
-            MD5CryptoServiceProvider objMD5CryptoService = new MD5CryptoServiceProvider();
+            try
+            {
+                byte[] toEncryptArray = Convert.FromBase64String(encryptedText);
+                MD5CryptoServiceProvider objMD5CryptoService = new MD5CryptoServiceProvider();
 
-            //Getting bytes from the Security Key and passing it to compute the corresponding Hash Value.
-            byte[] securityKeyArray = objMD5CryptoService.ComputeHash(UTF8Encoding.UTF8.GetBytes(SecurityKey));
-            objMD5CryptoService.Clear();
+                //Getting bytes from the Security Key and passing it to compute the corresponding Hash Value.
+                byte[] securityKeyArray = objMD5CryptoService.ComputeHash(UTF8Encoding.UTF8.GetBytes(SecurityKey));
+                objMD5CryptoService.Clear();
 
-            var objTripleDESCryptoService = new TripleDESCryptoServiceProvider();
-            //Assigning the Security Key to the TripleDES Service Provider.
-            objTripleDESCryptoService.Key = securityKeyArray;
-            //Mode of the Crypto service is Electronic Code Book.
-            objTripleDESCryptoService.Mode = CipherMode.ECB;
-            //Padding Mode is PKCS7 if there is any extra byte added.
-            objTripleDESCryptoService.Padding = PaddingMode.PKCS7;
+                var objTripleDESCryptoService = new TripleDESCryptoServiceProvider();
+                //Assigning the Security Key to the TripleDES Service Provider.
+                objTripleDESCryptoService.Key = securityKeyArray;
+                //Mode of the Crypto service is Electronic Code Book.
+                objTripleDESCryptoService.Mode = CipherMode.ECB;
+                //Padding Mode is PKCS7 if there is any extra byte added.
+                objTripleDESCryptoService.Padding = PaddingMode.PKCS7;
 
-            var objCrytpoTransform = objTripleDESCryptoService.CreateDecryptor();
-            //Transform the bytes array to resultArray
-            byte[] resultArray = objCrytpoTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-            objTripleDESCryptoService.Clear();
+                var objCrytpoTransform = objTripleDESCryptoService.CreateDecryptor();
+                //Transform the bytes array to resultArray
+                byte[] resultArray = objCrytpoTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+                objTripleDESCryptoService.Clear();
 
-            //Convert and return the decrypted data/byte into string format.
-            return UTF8Encoding.UTF8.GetString(resultArray);
+                //Convert and return the decrypted data/byte into string format.
+                return UTF8Encoding.UTF8.GetString(resultArray);
+            }
+            catch
+            {
+                return encryptedText;
+            }
         }
         #endregion Data Encryption
     }

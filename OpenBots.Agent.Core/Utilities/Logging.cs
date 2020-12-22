@@ -41,8 +41,8 @@ namespace OpenBots.Agent.Core.Utilities
 
                 return new LoggerConfiguration()
                         .Enrich.WithProperty("JobId", executionParams.JobId)
-                        .Enrich.WithProperty("ProcessId", executionParams.ProcessId)
-                        .Enrich.WithProperty("ProcessName", executionParams.ProcessName)
+                        .Enrich.WithProperty("AutomationId", executionParams.AutomationId)
+                        .Enrich.WithProperty("AutomationName", executionParams.AutomationName)
                         .Enrich.WithProperty("AgentId", executionParams.ServerConnectionSettings.AgentId)
                         .Enrich.WithProperty("AgentName", executionParams.ServerConnectionSettings.AgentName)
                         .Enrich.WithProperty("MachineName", executionParams.ServerConnectionSettings.DNSHost)
@@ -66,8 +66,8 @@ namespace OpenBots.Agent.Core.Utilities
 
                 return new LoggerConfiguration()
                         .Enrich.WithProperty("JobId", executionParams.JobId)
-                        .Enrich.WithProperty("ProcessId", executionParams.ProcessId)
-                        .Enrich.WithProperty("ProcessName", executionParams.ProcessName)
+                        .Enrich.WithProperty("AutomationId", executionParams.AutomationId)
+                        .Enrich.WithProperty("AutomationName", executionParams.AutomationName)
                         .Enrich.WithProperty("AgentId", executionParams.ServerConnectionSettings.AgentId)
                         .Enrich.WithProperty("AgentName", executionParams.ServerConnectionSettings.AgentName)
                         .Enrich.WithProperty("MachineName", executionParams.ServerConnectionSettings.DNSHost)

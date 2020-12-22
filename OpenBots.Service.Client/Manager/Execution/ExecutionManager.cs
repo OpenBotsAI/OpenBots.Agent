@@ -88,7 +88,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 {
                     var job = JobsQueueManager.Instance.DequeueJob();
 
-                    // Update Process Execution Log (Execution Failure)
+                    // Update Automation Execution Log (Execution Failure)
                     if (_executionLog != null)
                     {
                         _executionLog.Status = "Job has failed";
@@ -128,7 +128,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             var job = JobsQueueManager.Instance.PeekJob();
 
             // Log Event
-            FileLogger.Instance.LogEvent("Job Execution", "Attempt to fetch Process Detail");
+            FileLogger.Instance.LogEvent("Job Execution", "Attempt to fetch Automation Detail");
 
             // Get Automation Info
             var automation = AutomationsAPIManager.GetAutomation(AuthAPIManager.Instance, job.AutomationId.ToString());
@@ -278,8 +278,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             var executionParams = new JobExecutionParams()
             {
                 JobId = job.Id.ToString(),
-                ProcessId = automation.Id.ToString(),
-                ProcessName = automation.Name,
+                AutomationId = automation.Id.ToString(),
+                AutomationName = automation.Name,
                 MainFilePath = mainScriptFilePath,
                 ProjectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath),
                 ProjectDependencies = projectDependencies,
