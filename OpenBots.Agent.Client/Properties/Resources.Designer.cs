@@ -63,6 +63,26 @@ namespace OpenBots.Agent.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap close_black {
+            get {
+                object obj = ResourceManager.GetObject("close_black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap close_red {
+            get {
+                object obj = ResourceManager.GetObject("close_red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap copy_black_color_512 {
             get {
                 object obj = ResourceManager.GetObject("copy_black_color_512", resourceCulture);
@@ -76,6 +96,36 @@ namespace OpenBots.Agent.Client.Properties {
         public static System.Drawing.Bitmap copy_gray_color_512 {
             get {
                 object obj = ResourceManager.GetObject("copy_gray_color_512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap gear_hollow {
+            get {
+                object obj = ResourceManager.GetObject("gear_hollow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap gear_solid {
+            get {
+                object obj = ResourceManager.GetObject("gear_solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap OpenBots {
+            get {
+                object obj = ResourceManager.GetObject("OpenBots", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

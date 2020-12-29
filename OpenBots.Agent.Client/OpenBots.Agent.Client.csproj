@@ -154,5 +154,14 @@
   <ItemGroup>
     <Resource Include="resources\copy_gray_color_512.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\close_black.png" />
+    <Resource Include="resources\close_red.png" />
+    <Resource Include="resources\gear_hollow.png" />
+    <Resource Include="resources\gear_solid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\OpenBots.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

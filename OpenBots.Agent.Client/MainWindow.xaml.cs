@@ -33,14 +33,10 @@ namespace OpenBots.Agent.Client
 
         private SystemForms.NotifyIcon _notifyIcon = null;
         private Dictionary<string, Drawing.Icon> _iconHandles = null;
-        private SystemForms.ContextMenu _contextMenuTrayIcon;
-        private SystemForms.MenuItem _menuItemExit;
-        private SystemForms.MenuItem _menuItemClearCredentials;
-        private SystemForms.MenuItem _menuItemMachineInfo;
+        private ContextMenu _contextMenuTrayIcon;
 
         private bool _minimizeToTray = true;
         private bool _isServiceUP = false;
-        private bool _windowHeightReduced = false;
         private bool _logInfoChanged = false;
 
         public MainWindow()
@@ -55,36 +51,9 @@ namespace OpenBots.Agent.Client
             // Initialize Registry Manager
             _registryManager = new RegistryManager();
 
-            // Create ContextMenu
-            _contextMenuTrayIcon = new SystemForms.ContextMenu();
-            _menuItemExit = new SystemForms.MenuItem();
-            _menuItemClearCredentials = new SystemForms.MenuItem();
-            _menuItemMachineInfo = new SystemForms.MenuItem();
-
-            // Initialize contextMenu
-            _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[]
-            {
-                _menuItemMachineInfo,
-                _menuItemClearCredentials,
-                _menuItemExit
-            });
-
-            // Initialize _menuItemMachineInfo
-            _menuItemMachineInfo.Text = "Machine Info";
-            _menuItemMachineInfo.Click += menuItemMachineInfo_Click;
-
-            // Initialize _menuItemClearCredentials
-            _menuItemClearCredentials.Text = "Clear Credentials";
-            _menuItemClearCredentials.Click += menuItemClearCredentials_Click;
-
-            // Initialize _menuItemExit
-            _menuItemExit.Text = "Exit";
-            _menuItemExit.Click += menuItemExit_Click;
-
             _iconHandles = new Dictionary<string, Drawing.Icon>();
             _iconHandles.Add("QuickLaunch", new Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"OpenBots.ico")));
             _notifyIcon = new SystemForms.NotifyIcon();
-            _notifyIcon.ContextMenu = _contextMenuTrayIcon;
             _notifyIcon.Click += notifyIcon_Click;
             _notifyIcon.DoubleClick += notifyIcon_DoubleClick;
             _notifyIcon.Icon = _iconHandles["QuickLaunch"];
@@ -331,30 +300,6 @@ namespace OpenBots.Agent.Client
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
         }
-        private void menuItemMachineInfo_Click(object Sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(txt_ServerURL.Text.Trim()))
-            {
-                _connectionSettings.ServerURL = txt_ServerURL.Text.Trim();
-
-                var serverResponse = PipeProxy.Instance.PingServer(_connectionSettings);
-                if (serverResponse?.Data != null)
-                {
-                    _connectionSettings.ServerIPAddress = (string)serverResponse.Data;
-                    ShowMachineInfoDialog(_connectionSettings.ServerIPAddress);
-                }
-                else
-                {
-                    ShowErrorDialog("An error occurred while pinging the server",
-                        serverResponse.StatusCode,
-                        serverResponse.Message,
-                        Application.Current.MainWindow);
-                }
-            }
-            else
-                ShowMachineInfoDialog(string.Empty);
-        }
-
         private void ShowMachineInfoDialog(string serverIP)
         {
             MachineInfo machineInfoDialog = new MachineInfo(
@@ -367,38 +312,8 @@ namespace OpenBots.Agent.Client
             machineInfoDialog.Owner = Application.Current.MainWindow;
             machineInfoDialog.ShowDialog();
         }
-        private void menuItemClearCredentials_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(_registryManager.AgentUsername))
-            {
-                ClearCredentials();
-                LoadConnectionSettings();
-
-                // Clear TextBoxes
-                txt_Username.Text = string.Empty;
-                txt_Password.Password = string.Empty;
-
-                MessageDialog messageDialog = new MessageDialog(
-                    "Credentials Cleared",
-                    "OpenBots Agent Credentials have been cleared.");
-
-                messageDialog.Owner = Application.Current.MainWindow;
-                messageDialog.ShowDialog();
-            }
-        }
-        private void menuItemExit_Click(object Sender, EventArgs e)
-        {
-            // Close the application.
-            ExitApplication();
-        }
         private void ExitApplication()
         {
-            if (_menuItemExit != null)
-                _menuItemExit.Dispose();
-
-            if (_contextMenuTrayIcon != null)
-                _contextMenuTrayIcon.Dispose();
-
             ShutDownApplication();
         }
         private void ShutDownApplication()
@@ -635,7 +550,7 @@ namespace OpenBots.Agent.Client
             cmb_SinkType.IsEnabled = false;
             txt_SinkType_Logging1.IsEnabled = false;
 
-            // Disable and Hide _menuItemClearCredentials
+            // Disable and Hide menuItemClearCredentials
             UpdateClearCredentialsUI();
         }
         private void UpdateUIOnDisconnect()
@@ -652,20 +567,20 @@ namespace OpenBots.Agent.Client
             cmb_SinkType.IsEnabled = true;
             txt_SinkType_Logging1.IsEnabled = true;
 
-            // Enable and Show _menuItemClearCredentials
+            // Enable and Show menuItemClearCredentials
             UpdateClearCredentialsUI();
         }
         private void UpdateClearCredentialsUI()
         {
             if (!string.IsNullOrEmpty(_registryManager.AgentUsername))
             {
-                _menuItemClearCredentials.Enabled = true;
-                _menuItemClearCredentials.Visible = true;
+                menuItemClearCredentials.IsEnabled = true;
+                menuItemClearCredentials.Visibility = Visibility.Visible;
             }
             else
             {
-                _menuItemClearCredentials.Enabled = false;
-                _menuItemClearCredentials.Visible = false;
+                menuItemClearCredentials.IsEnabled = false;
+                menuItemClearCredentials.Visibility = Visibility.Collapsed;
             }
 
 
@@ -743,6 +658,77 @@ namespace OpenBots.Agent.Client
             if (parentWindow != null)
                 errorDialog.Owner = parentWindow;
             errorDialog.ShowDialog();
+        }
+        #endregion
+
+        #region Top MenuBar Controls Events
+        private void OnClick_MachineInfo(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txt_ServerURL.Text.Trim()))
+            {
+                try
+                {
+                    _connectionSettings.ServerURL = txt_ServerURL.Text.Trim();
+
+                    var serverResponse = PipeProxy.Instance.PingServer(_connectionSettings);
+                    if (serverResponse?.Data != null)
+                    {
+                        _connectionSettings.ServerIPAddress = (string)serverResponse.Data;
+                        ShowMachineInfoDialog(_connectionSettings.ServerIPAddress);
+                    }
+                    else
+                    {
+                        ShowErrorDialog("An error occurred while pinging the server",
+                            serverResponse.StatusCode,
+                            serverResponse.Message,
+                            Application.Current.MainWindow);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorDialog("An error occurred while pinging the server",
+                            "",
+                            ex.Message,
+                            Application.Current.MainWindow);
+                }
+            }
+            else
+                ShowMachineInfoDialog(string.Empty);
+        }
+        private void OnClick_ClearCredentials(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(_registryManager.AgentUsername))
+            {
+                ClearCredentials();
+                LoadConnectionSettings();
+
+                // Clear TextBoxes
+                txt_Username.Text = string.Empty;
+                txt_Password.Password = string.Empty;
+
+                MessageDialog messageDialog = new MessageDialog(
+                    "Credentials Cleared",
+                    "OpenBots Agent Credentials have been cleared.");
+
+                messageDialog.Owner = Application.Current.MainWindow;
+                messageDialog.ShowDialog();
+            }
+        }
+        private void OnClick_Quit(object sender, RoutedEventArgs e)
+        {
+            // Close the application.
+            ExitApplication();
+        }
+        private void OnClick_Settings(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Image image = sender as Image;
+            _contextMenuTrayIcon = image.ContextMenu;
+            _contextMenuTrayIcon.PlacementTarget = image;
+            _contextMenuTrayIcon.IsOpen = true;
+        }
+        private void OnClick_Close(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.Close();
         }
         #endregion
     }
