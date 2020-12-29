@@ -17,7 +17,6 @@ namespace OpenBots.Agent.Core.Enums
     public enum SinkType
     {
         File,
-        Http,
-        SignalR
+        Http
     }
 }

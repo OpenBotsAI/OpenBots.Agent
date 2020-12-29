@@ -479,9 +479,6 @@ namespace OpenBots.Agent.Client
                 _connectionSettings.TracingLevel = cmb_LogLevel.Text;
                 _connectionSettings.SinkType = cmb_SinkType.Text;
                 _connectionSettings.LoggingValue1 = txt_SinkType_Logging1.Text;
-                _connectionSettings.LoggingValue2 = txt_SinkType_Logging2.Text;
-                _connectionSettings.LoggingValue3 = txt_SinkType_Logging3.Text;
-                _connectionSettings.LoggingValue4 = txt_SinkType_Logging4.Text;
 
                 try
                 {
@@ -606,44 +603,11 @@ namespace OpenBots.Agent.Client
             SetToolTip(txt_SinkType_Logging1);
             UpdateSaveButtonState();
         }
-        private void OnTextChange_Logging2(object sender, TextChangedEventArgs e)
-        {
-            if (!_agentSettings.LoggingValue2.Equals(txt_SinkType_Logging2.Text))
-                _logInfoChanged = true;
-            else
-                _logInfoChanged = false;
-
-            SetToolTip(txt_SinkType_Logging2);
-            UpdateSaveButtonState();
-        }
-        private void OnTextChange_Logging3(object sender, TextChangedEventArgs e)
-        {
-            if (!_agentSettings.LoggingValue3.Equals(txt_SinkType_Logging3.Text))
-                _logInfoChanged = true;
-            else
-                _logInfoChanged = false;
-
-            SetToolTip(txt_SinkType_Logging3);
-            UpdateSaveButtonState();
-        }
-        private void OnTextChange_Logging4(object sender, TextChangedEventArgs e)
-        {
-            if (!_agentSettings.LoggingValue4.Equals(txt_SinkType_Logging4.Text))
-                _logInfoChanged = true;
-            else
-                _logInfoChanged = false;
-
-            SetToolTip(txt_SinkType_Logging4);
-            UpdateSaveButtonState();
-        }
         private void OnClick_SaveBtn(object sender, RoutedEventArgs e)
         {
             _agentSettings.TracingLevel = cmb_LogLevel.Text;
             _agentSettings.SinkType = cmb_SinkType.Text;
             _agentSettings.LoggingValue1 = txt_SinkType_Logging1.Text;
-            _agentSettings.LoggingValue2 = txt_SinkType_Logging2.Text;
-            _agentSettings.LoggingValue3 = txt_SinkType_Logging3.Text;
-            _agentSettings.LoggingValue4 = txt_SinkType_Logging4.Text;
 
             SettingsManager.Instance.UpdateSettings(_agentSettings);
             _logInfoChanged = false;
@@ -670,9 +634,6 @@ namespace OpenBots.Agent.Client
             cmb_LogLevel.IsEnabled = false;
             cmb_SinkType.IsEnabled = false;
             txt_SinkType_Logging1.IsEnabled = false;
-            txt_SinkType_Logging2.IsEnabled = false;
-            txt_SinkType_Logging3.IsEnabled = false;
-            txt_SinkType_Logging4.IsEnabled = false;
 
             // Disable and Hide _menuItemClearCredentials
             UpdateClearCredentialsUI();
@@ -690,9 +651,6 @@ namespace OpenBots.Agent.Client
             cmb_LogLevel.IsEnabled = true;
             cmb_SinkType.IsEnabled = true;
             txt_SinkType_Logging1.IsEnabled = true;
-            txt_SinkType_Logging2.IsEnabled = true;
-            txt_SinkType_Logging3.IsEnabled = true;
-            txt_SinkType_Logging4.IsEnabled = true;
 
             // Enable and Show _menuItemClearCredentials
             UpdateClearCredentialsUI();
@@ -727,10 +685,6 @@ namespace OpenBots.Agent.Client
                 btn_Save.IsEnabled = true;
             else if (_logInfoChanged && _agentSettings.SinkType.Equals("Http") && !string.IsNullOrEmpty(txt_SinkType_Logging1.Text))
                 btn_Save.IsEnabled = true;
-            else if (_logInfoChanged && _agentSettings.SinkType.Equals("SignalR") && !string.IsNullOrEmpty(txt_SinkType_Logging1.Text)
-                && !string.IsNullOrEmpty(txt_SinkType_Logging2.Text) && !string.IsNullOrEmpty(txt_SinkType_Logging3.Text)
-                && !string.IsNullOrEmpty(txt_SinkType_Logging4.Text))
-                btn_Save.IsEnabled = true;
             else
                 btn_Save.IsEnabled = false;
 
@@ -745,19 +699,6 @@ namespace OpenBots.Agent.Client
                     lbl_SinkType_Logging1.Content = "File Path";
                     lbl_SinkType_Logging1.ToolTip = "File Path to write logs to";
 
-                    // Hide Logging2, Logging3, Logging4
-                    pnl_SinkType_Logging2.Visibility = Visibility.Hidden;
-                    pnl_SinkType_Logging3.Visibility = Visibility.Hidden;
-                    pnl_SinkType_Logging4.Visibility = Visibility.Hidden;
-
-                    // Shrink Window Size
-                    if (!_windowHeightReduced)
-                    {
-                        wndMain.Height -= (pnl_SinkType_Logging1.ActualHeight + pnl_SinkType_Logging2.ActualHeight +
-                                           pnl_SinkType_Logging3.ActualHeight + pnl_SinkType_Logging4.ActualHeight);
-                        _windowHeightReduced = true;
-                    }
-
                     // Update UI for SinkType_Save Button
                     pnl_SinkType_Save.SetValue(Grid.RowProperty, 2);
 
@@ -769,66 +710,10 @@ namespace OpenBots.Agent.Client
                     lbl_SinkType_Logging1.Content = "URI";
                     lbl_SinkType_Logging1.ToolTip = "URI to send logs to";
 
-                    // Hide Logging2, Logging3, Logging4
-                    pnl_SinkType_Logging2.Visibility = Visibility.Hidden;
-                    pnl_SinkType_Logging3.Visibility = Visibility.Hidden;
-                    pnl_SinkType_Logging4.Visibility = Visibility.Hidden;
-
-                    // Shrink Window Size
-                    if (!_windowHeightReduced)
-                    {
-                        wndMain.Height -= (pnl_SinkType_Logging1.ActualHeight + pnl_SinkType_Logging2.ActualHeight +
-                                           pnl_SinkType_Logging3.ActualHeight + pnl_SinkType_Logging4.ActualHeight);
-                        _windowHeightReduced = true;
-                    }
-
                     // Update UI for SinkType_Save Button
                     pnl_SinkType_Save.SetValue(Grid.RowProperty, 2);
 
                     txt_SinkType_Logging1.Text = _agentSettings.SinkType.Equals("Http") ? _agentSettings.LoggingValue1 : string.Empty;
-
-                    break;
-                case "SignalR":
-                    // Update Labels Properties
-                    lbl_SinkType_Logging1.Content = "URL";
-                    lbl_SinkType_Logging2.Content = "Hub";
-                    lbl_SinkType_Logging3.Content = "Group Names";
-                    lbl_SinkType_Logging4.Content = "User IDs";
-                    lbl_SinkType_Logging1.ClearValue(Label.ToolTipProperty);
-                    lbl_SinkType_Logging2.ClearValue(Label.ToolTipProperty);
-                    lbl_SinkType_Logging3.ClearValue(Label.ToolTipProperty);
-                    lbl_SinkType_Logging4.ClearValue(Label.ToolTipProperty);
-
-                    // Show Logging2, Logging3, Logging4
-                    pnl_SinkType_Logging2.Visibility = Visibility.Visible;
-                    pnl_SinkType_Logging3.Visibility = Visibility.Visible;
-                    pnl_SinkType_Logging4.Visibility = Visibility.Visible;
-
-                    // Expand Window Size
-                    if (_windowHeightReduced)
-                    {
-                        wndMain.Height += (pnl_SinkType_Logging1.ActualHeight + pnl_SinkType_Logging2.ActualHeight +
-                                       pnl_SinkType_Logging3.ActualHeight + pnl_SinkType_Logging4.ActualHeight);
-                        _windowHeightReduced = false;
-                    }
-
-                    // Update UI for SinkType_Save Button
-                    pnl_SinkType_Save.SetValue(Grid.RowProperty, 5);
-
-                    if (_agentSettings.SinkType.Equals("SignalR"))
-                    {
-                        txt_SinkType_Logging1.Text = _agentSettings.LoggingValue1;
-                        txt_SinkType_Logging2.Text = _agentSettings.LoggingValue2;
-                        txt_SinkType_Logging3.Text = _agentSettings.LoggingValue3;
-                        txt_SinkType_Logging4.Text = _agentSettings.LoggingValue4;
-                    }
-                    else
-                    {
-                        txt_SinkType_Logging1.Text = string.Empty;
-                        txt_SinkType_Logging2.Text = string.Empty;
-                        txt_SinkType_Logging3.Text = string.Empty;
-                        txt_SinkType_Logging4.Text = string.Empty;
-                    }
 
                     break;
             }

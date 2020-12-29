@@ -43,9 +43,6 @@ namespace OpenBots.Agent.Client
                 TracingLevel = "Information",
                 SinkType = "Http",
                 LoggingValue1 = "/api/v1/Logger/Agent",
-                LoggingValue2 = "",
-                LoggingValue3 = "",
-                LoggingValue4 = "",
                 OpenBotsServerUrl = "",
                 AgentId = "",
                 AgentName = ""

@@ -56,34 +56,6 @@ namespace OpenBots.Agent.Core.Utilities
             }
         }
 
-        public Logger CreateSignalRLogger(JobExecutionParams executionParams, string url, string logHub = "LogHub", string[] logGroupNames = null,
-            string[] logUserIds = null, LogEventLevel minLogLevel = LogEventLevel.Verbose)
-        {
-            try
-            {
-                var levelSwitch = new LoggingLevelSwitch();
-                levelSwitch.MinimumLevel = minLogLevel;
-
-                return new LoggerConfiguration()
-                        .Enrich.WithProperty("JobId", executionParams.JobId)
-                        .Enrich.WithProperty("AutomationId", executionParams.AutomationId)
-                        .Enrich.WithProperty("AutomationName", executionParams.AutomationName)
-                        .Enrich.WithProperty("AgentId", executionParams.ServerConnectionSettings.AgentId)
-                        .Enrich.WithProperty("AgentName", executionParams.ServerConnectionSettings.AgentName)
-                        .Enrich.WithProperty("MachineName", executionParams.ServerConnectionSettings.DNSHost)
-                        .MinimumLevel.ControlledBy(levelSwitch)
-                        .WriteTo.SignalRClient(url,
-                                               hub: logHub, // default is LogHub
-                                               groupNames: logGroupNames, // default is null
-                                               userIds: logUserIds)// default is null
-                        .CreateLogger();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
         public Logger CreateJsonFileLogger(string jsonFilePath, RollingInterval logInterval,
             LogEventLevel minLogLevel = LogEventLevel.Verbose)
         {

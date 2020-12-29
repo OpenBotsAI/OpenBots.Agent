@@ -39,7 +39,7 @@ namespace OpenBots.Executor
             LogEventLevel minLogLevel;
             Enum.TryParse(executionParams.ServerConnectionSettings.TracingLevel, out minLogLevel);
 
-            // Get Log Sink Type (File, HTTP, SignalR)
+            // Get Log Sink Type (File, HTTP)
             SinkType sinkType;
             Enum.TryParse(executionParams.ServerConnectionSettings.SinkType, out sinkType);
 
@@ -53,16 +53,6 @@ namespace OpenBots.Executor
                 case SinkType.Http:
                     logger = new Logging().CreateHTTPLogger(executionParams,
                         executionParams.ServerConnectionSettings.LoggingValue1, minLogLevel);
-
-                    break;
-                case SinkType.SignalR:
-
-                    logger = new Logging().CreateSignalRLogger(executionParams,
-                        executionParams.ServerConnectionSettings.LoggingValue1,
-                        executionParams.ServerConnectionSettings.LoggingValue2,
-                        executionParams.ServerConnectionSettings.LoggingValue3.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                        executionParams.ServerConnectionSettings.LoggingValue4.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                        minLogLevel);
 
                     break;
             }
