@@ -689,12 +689,9 @@ namespace OpenBots.Agent.Client
                             Application.Current.MainWindow);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    ShowErrorDialog("An error occurred while pinging the server",
-                            "",
-                            ex.Message,
-                            Application.Current.MainWindow);
+                    ShowMachineInfoDialog(string.Empty);
                 }
             }
             else

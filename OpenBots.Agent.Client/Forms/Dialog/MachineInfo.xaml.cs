@@ -18,7 +18,7 @@ namespace OpenBots.Agent.Client.Forms.Dialog
             lbl_MachineInfo_MachineName.Content = machineName;
             lbl_MachineInfo_MACAddress.Content = macAddress;
             lbl_MachineInfo_IPAddress.Content = ipAddress;
-            lbl_MachineInfo_ServerIPAddress.Content = string.IsNullOrEmpty(serverGeneratedIP) ? "No URL Provided" : serverGeneratedIP;
+            lbl_MachineInfo_ServerIPAddress.Content = string.IsNullOrEmpty(serverGeneratedIP) ? "Not Available" : serverGeneratedIP;
             lbl_MachineInfo_ServerIPAddress.Foreground = string.IsNullOrEmpty(serverGeneratedIP) ? Brushes.Red : Brushes.Black;
 
             //Create a timer with interval of 2 secs
