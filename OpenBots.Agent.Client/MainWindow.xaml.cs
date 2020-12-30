@@ -123,6 +123,11 @@ namespace OpenBots.Agent.Client
             {
             }
         }
+        private void OnMouseLeftButtonDown_TitleBar(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
         private void LoadConnectionSettings()
         {
             // Load settings from "OpenBots.Settings" (Config File)
@@ -730,6 +735,7 @@ namespace OpenBots.Agent.Client
         {
             this.Close();
         }
+
         #endregion
     }
 }

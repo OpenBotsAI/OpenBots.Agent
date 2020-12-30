@@ -73,9 +73,9 @@ namespace OpenBots.Agent.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap close_red {
+        public static System.Drawing.Bitmap close_gray {
             get {
-                object obj = ResourceManager.GetObject("close_red", resourceCulture);
+                object obj = ResourceManager.GetObject("close_gray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace OpenBots.Agent.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap gear_hollow {
+        public static System.Drawing.Bitmap gear_black {
             get {
-                object obj = ResourceManager.GetObject("gear_hollow", resourceCulture);
+                object obj = ResourceManager.GetObject("gear_black", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace OpenBots.Agent.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap gear_solid {
+        public static System.Drawing.Bitmap gear_gray {
             get {
-                object obj = ResourceManager.GetObject("gear_solid", resourceCulture);
+                object obj = ResourceManager.GetObject("gear_gray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

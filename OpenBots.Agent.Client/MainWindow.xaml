@@ -5,54 +5,68 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client"
         mc:Ignorable="d"
-        Title="OpenBots Agent" Name="wndMain" Height="545" Width="488" Loaded="OnLoad" ResizeMode="NoResize" WindowStyle="None"
+        Title="OpenBots Agent" Name="wndMain" Height="530" Width="488" Loaded="OnLoad" ResizeMode="NoResize" WindowStyle="None"
         Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed" 
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" BorderThickness="2" UseLayoutRounding="True">
     <Window.Resources>
+        <Style x:Key="GearImage" TargetType="{x:Type Image}">
+            <Setter Property="Source" Value="/resources/gear_gray.png"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="ToolTip" Value="Settings"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="/resources/gear_black.png"/>
+                    <!--<Setter Property="BitmapEffect">
+                        <Setter.Value>
+                            <DropShadowBitmapEffect Color="LightGray" ShadowDepth="1" Direction="315" Opacity="0.4"></DropShadowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>-->
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="CloseImage" TargetType="{x:Type Image}">
-            <Setter Property="Source" Value="/resources/close_black.png"/>
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="Source" Value="/resources/close_gray.png"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="ToolTip" Value="Minimize to System Tray"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Source" Value="/resources/close_red.png"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="GearImage" TargetType="{x:Type Image}">
-            <Setter Property="Source" Value="/resources/gear_hollow.png"/>
-            <Setter Property="Height" Value="25"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="ToolTip" Value="Setting"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Source" Value="/resources/gear_solid.png"/>
+                    <Setter Property="Source" Value="/resources/close_black.png"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    <Window.BorderBrush>
+        <RadialGradientBrush>
+            <GradientStop Color="#FF020202"/>
+            <GradientStop Color="#FFD4D4D4" Offset="0.626"/>
+        </RadialGradientBrush>
+    </Window.BorderBrush>
     <Grid Name="mainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="37"/>
-            <RowDefinition Height="295"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="288"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StatusBar Name="CustomBar" Margin="5,3,5,0" Background="Transparent">
-            <Grid Name="grd_CustomMenuBar_Title" Margin="2,0,0,0">
+        <StatusBar Name="CustomBar" Margin="5,0,5,0" Background="Transparent" Grid.Row="0">
+            <Grid Name="grd_CustomMenuBar" Margin="2,0,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25"/>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="295"/>
+                    <ColumnDefinition Width="420"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Image Source="/resources/OpenBots.png" HorizontalAlignment="Left" Stretch="Uniform"/>
-                <Label Content="OpenBots Agent" Grid.Column="1" FontWeight="DemiBold" HorizontalAlignment="Left"/>
-                <Grid Name="grd_CustomMenuBar_Controls" Grid.Column="2" HorizontalAlignment="Right">
+                <Grid Name="grd_TitleBar" Grid.Column="0" MouseLeftButtonDown="OnMouseLeftButtonDown_TitleBar">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Name="img_settings" Style="{StaticResource GearImage}" Stretch="Uniform" Margin="3,0,10,0" MouseLeftButtonUp="OnClick_Settings">
+                    <Image Source="/resources/OpenBots.png" HorizontalAlignment="Left" Width="20" Height="20" Grid.Column="0"/>
+                    <Label Content="OpenBots Agent" FontSize="12" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Calibri" Grid.Column="1"/>
+                </Grid>
+                <Grid Name="grd_CustomControls" HorizontalAlignment="Right" Grid.Column="1" Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="23"/>
+                        <ColumnDefinition Width="22"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Name="img_settings" Style="{StaticResource GearImage}" RenderOptions.BitmapScalingMode="HighQuality" Height="19" MouseLeftButtonUp="OnClick_Settings" Grid.Column="0" Margin="0">
                         <Image.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Machine Info" Click="OnClick_MachineInfo"/>
@@ -61,11 +75,11 @@
                             </ContextMenu>
                         </Image.ContextMenu>
                     </Image>
-                    <Image Style="{StaticResource CloseImage}" Grid.Column="1" Margin="0,0,5,0" MouseLeftButtonDown="OnClick_Close" />
+                    <Image Style="{StaticResource CloseImage}" Height="15" Grid.Column="1" MouseLeftButtonDown="OnClick_Close" />
                 </Grid>
             </Grid>
         </StatusBar>
-        <GroupBox Header="Server Configuration" FontSize="14" Margin="10" BorderThickness="2,2,2,2" Grid.Row="1">
+        <GroupBox Header="Server Configuration" FontSize="14" Margin="10,5,10,10" BorderThickness="2,2,2,2" Grid.Row="1">
             <StackPanel x:Name="pnl_ServerConfiguration" Margin="0,10,0,0">
                 <Label Content="User Name" FontWeight="Bold" x:Name="lbl_Username"></Label>
                 <TextBox x:Name="txt_Username" FontSize="16" Margin="5,0,10,0" Height="29" VerticalContentAlignment="Center" TextChanged="OnTextChange_AgentUsername"/>
