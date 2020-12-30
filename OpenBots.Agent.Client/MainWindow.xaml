@@ -16,11 +16,6 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Source" Value="/resources/gear_black.png"/>
-                    <!--<Setter Property="BitmapEffect">
-                        <Setter.Value>
-                            <DropShadowBitmapEffect Color="LightGray" ShadowDepth="1" Direction="315" Opacity="0.4"></DropShadowBitmapEffect>
-                        </Setter.Value>
-                    </Setter>-->
                 </Trigger>
             </Style.Triggers>
         </Style>
