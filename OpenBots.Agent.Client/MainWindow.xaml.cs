@@ -70,6 +70,7 @@ namespace OpenBots.Agent.Client
             UpdateSaveButtonState();
             StartServiceHeartBeatTimer();
 
+            OpenUpInBottomRight();
             this.WindowState = WindowState.Minimized;
         }
         private void OnUnload(object sender, RoutedEventArgs e)
@@ -127,6 +128,13 @@ namespace OpenBots.Agent.Client
         {
             base.OnMouseLeftButtonDown(e);
             this.DragMove();
+        }
+
+        private void OpenUpInBottomRight()
+        {
+            var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
+            this.Left = desktopWorkingArea.Right - this.Width;
+            this.Top = desktopWorkingArea.Bottom - this.Height;
         }
         private void LoadConnectionSettings()
         {
@@ -683,10 +691,7 @@ namespace OpenBots.Agent.Client
                     }
                     else
                     {
-                        ShowErrorDialog("An error occurred while pinging the server",
-                            serverResponse.StatusCode,
-                            serverResponse.Message,
-                            Application.Current.MainWindow);
+                        ShowMachineInfoDialog(string.Empty);
                     }
                 }
                 catch (Exception)

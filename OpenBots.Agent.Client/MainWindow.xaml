@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:OpenBots.Agent.Client"
         mc:Ignorable="d"
         Title="OpenBots Agent" Name="wndMain" Height="530" Width="488" Loaded="OnLoad" ResizeMode="NoResize" WindowStyle="None"
-        Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed" 
-        WindowStartupLocation="CenterScreen" BorderThickness="2" UseLayoutRounding="True">
+        Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed"
+        BorderThickness="2" UseLayoutRounding="True">
     <Window.Resources>
         <Style x:Key="GearImage" TargetType="{x:Type Image}">
             <Setter Property="Source" Value="/resources/gear_gray.png"/>
