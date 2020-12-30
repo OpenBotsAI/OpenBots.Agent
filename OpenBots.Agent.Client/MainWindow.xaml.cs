@@ -70,7 +70,6 @@ namespace OpenBots.Agent.Client
             UpdateSaveButtonState();
             StartServiceHeartBeatTimer();
 
-            OpenUpInBottomRight();
             this.WindowState = WindowState.Minimized;
         }
         private void OnUnload(object sender, RoutedEventArgs e)
@@ -308,6 +307,7 @@ namespace OpenBots.Agent.Client
             {
                 this.WindowState = WindowState.Normal;
             }
+            OpenUpInBottomRight();
             this.Show();
         }
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
