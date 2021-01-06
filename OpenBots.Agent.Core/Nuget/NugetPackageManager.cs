@@ -123,7 +123,7 @@ namespace OpenBots.Agent.Core.Nuget
                     exceptionsList.Add($"Unable to load {packagePath}\\{dependency.Key}.{dependency.Value}");
                 }
             });
-            if(exceptionsList.Count>0)
+            if (exceptionsList.Count > 0)
             {
                 exceptionsList.Add("Please install this package using the OpenBots Studio Package Manager");
                 throw new Exception(string.Join("\n", exceptionsList));
@@ -152,12 +152,9 @@ namespace OpenBots.Agent.Core.Nuget
                 var repositories = new List<SourceRepository>();
                 foreach (var packageSource in packageSources)
                 {
-                    if (packageSource.Enabled == true)
-                    {
-                        var sourceRepo = sourceRepositoryProvider.CreateRepository(
-                            new PackageSource(packageSource.PackageSource, packageSource.PackageName, true));
-                        repositories.Add(sourceRepo);
-                    }
+                    var sourceRepo = sourceRepositoryProvider.CreateRepository(
+                        new PackageSource(packageSource.PackageSource, packageSource.PackageName, true));
+                    repositories.Add(sourceRepo);
                 }
 
                 var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
@@ -223,7 +220,7 @@ namespace OpenBots.Agent.Core.Nuget
                 }
             }
         }
-        public static async void InstallProjectDependencies(string configPath)
+        public static void InstallProjectDependencies(string configPath)
         {
             var dependencies = JsonConvert.DeserializeObject<Project.Project>(File.ReadAllText(configPath)).Dependencies;
             string appDataPath = new EnvironmentSettings().GetEnvironmentVariable();
@@ -236,7 +233,7 @@ namespace OpenBots.Agent.Core.Nuget
                 {
                     try
                     {
-                        await InstallPackage(dependency.Key, dependency.Value, dependencies);
+                        Task.Run(async () => await InstallPackage(dependency.Key, dependency.Value, new Dictionary<string, string>())).GetAwaiter().GetResult();
                     }
                     catch (Exception excep)
                     {
