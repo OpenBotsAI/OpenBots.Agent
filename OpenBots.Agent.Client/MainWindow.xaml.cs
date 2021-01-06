@@ -2,10 +2,10 @@
 using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Client.Forms;
 using OpenBots.Agent.Client.Forms.Dialog;
-using OpenBots.Agent.Client.Utilities;
 using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.UserRegistry;
+using OpenBots.Agent.Core.Utilities;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -167,7 +167,7 @@ namespace OpenBots.Agent.Client
                     WhoAmI = WindowsIdentity.GetCurrent().Name.ToLower(),
                     MachineName = Environment.MachineName,
                     AgentId = string.Empty,
-                    MACAddress = AgentHelper.GetMacAddress(),
+                    MACAddress = SystemInfo.GetMacAddress(),
                     IPAddress = new WebClient().DownloadString("https://ipv4.icanhazip.com/").Trim()
                 };
             }

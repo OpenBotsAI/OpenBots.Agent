@@ -30,11 +30,11 @@ namespace OpenBots.Agent.Core.UserRegistry
             get
             {
                 string password = GetKeyValue(_registryKeys.PasswordKey);
-                return string.IsNullOrEmpty(password) ? "" : DataFormatter.DecryptText(password);
+                return string.IsNullOrEmpty(password) ? "" : DataFormatter.DecryptText(password, SystemInfo.GetMacAddress());
             }
             set
             {
-                SetKeyValue(_registryKeys.PasswordKey, DataFormatter.EncryptText(value));
+                SetKeyValue(_registryKeys.PasswordKey, DataFormatter.EncryptText(value, SystemInfo.GetMacAddress()));
             }
         }
 
