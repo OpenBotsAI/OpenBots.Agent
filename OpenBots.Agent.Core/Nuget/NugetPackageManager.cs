@@ -1,10 +1,12 @@
 ﻿using Autofac;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
+using NuGet.Packaging.Signing;
 using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
 using NuGet.Versioning;
@@ -127,6 +129,121 @@ namespace OpenBots.Agent.Core.Nuget
                 throw new Exception(string.Join("\n", exceptionsList));
             }
             return assemblyPaths;
+        }
+        public static async Task InstallPackage(string packageId, string version, Dictionary<string, string> projectDependenciesDict)
+        {
+            string appDataPath = Directory.GetParent(new EnvironmentSettings().GetEnvironmentVariable()).Parent.FullName;
+            string appSettingsFilePath = Path.Combine(appDataPath, "AppSettings.json");
+
+            if (!File.Exists(appSettingsFilePath))
+                throw new FileNotFoundException($"OpenBots AppSettings file \"{appSettingsFilePath}\" not found");
+
+            var appSettings = File.ReadAllText(appSettingsFilePath);
+            var packageSources = ((JArray)JObject.Parse(appSettings)["ClientSettings"]["PackageSourceDT"]).ToObject<List<NugetPackageSource>>();
+            packageSources = packageSources.Where(x => x.Enabled == true).ToList();
+
+            var packageVersion = NuGetVersion.Parse(version);
+            var nuGetFramework = NuGetFramework.ParseFolder("net48");
+            var settings = NuGet.Configuration.Settings.LoadDefaultSettings(root: null);
+            var sourceRepositoryProvider = new SourceRepositoryProvider(new PackageSourceProvider(settings), Repository.Provider.GetCoreV3());
+
+            using (var cacheContext = new SourceCacheContext())
+            {
+                var repositories = new List<SourceRepository>();
+                foreach (var packageSource in packageSources)
+                {
+                    if (packageSource.Enabled == true)
+                    {
+                        var sourceRepo = sourceRepositoryProvider.CreateRepository(
+                            new PackageSource(packageSource.PackageSource, packageSource.PackageName, true));
+                        repositories.Add(sourceRepo);
+                    }
+                }
+
+                var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
+                await GetPackageDependencies(
+                    new PackageIdentity(packageId, packageVersion),
+                    nuGetFramework, cacheContext, NullLogger.Instance, repositories, availablePackages);
+
+                var resolverContext = new PackageResolverContext(
+                    DependencyBehavior.Lowest,
+                    new[] { packageId },
+                    Enumerable.Empty<string>(),
+                    Enumerable.Empty<PackageReference>(),
+                    Enumerable.Empty<PackageIdentity>(),
+                    availablePackages,
+                    sourceRepositoryProvider.GetRepositories().Select(s => s.PackageSource),
+                    NullLogger.Instance);
+
+                var resolver = new PackageResolver();
+                var packagesToInstall = resolver.Resolve(resolverContext, CancellationToken.None)
+                    .Select(p => availablePackages.Single(x => PackageIdentityComparer.Default.Equals(x, p)));
+                var packagePathResolver = new PackagePathResolver(Path.Combine(appDataPath, "packages"));
+                var packageExtractionContext = new PackageExtractionContext(
+                    PackageSaveMode.Defaultv3,
+                    XmlDocFileSaveMode.None,
+                    ClientPolicyContext.GetClientPolicy(settings, NullLogger.Instance),
+                    NullLogger.Instance);
+
+                var frameworkReducer = new FrameworkReducer();
+                PackageReaderBase packageReader;
+                PackageDownloadContext downloadContext = new PackageDownloadContext(cacheContext);
+
+                foreach (var packageToInstall in packagesToInstall)
+                {
+                    var installedPath = packagePathResolver.GetInstalledPath(packageToInstall);
+                    if (installedPath == null)
+                    {
+                        var downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None);
+                        var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
+                            packageToInstall,
+                            downloadContext,
+                            SettingsUtility.GetGlobalPackagesFolder(settings),
+                            NullLogger.Instance, CancellationToken.None);
+
+                        await PackageExtractor.ExtractPackageAsync(
+                            downloadResult.PackageSource,
+                            downloadResult.PackageStream,
+                            packagePathResolver,
+                            packageExtractionContext,
+                            CancellationToken.None);
+
+                        packageReader = downloadResult.PackageReader;
+                    }
+                    else
+                        packageReader = new PackageFolderReader(installedPath);
+
+                    if (packageToInstall.Id == packageId)
+                    {
+                        if (projectDependenciesDict.ContainsKey(packageToInstall.Id))
+                            projectDependenciesDict[packageToInstall.Id] = packageToInstall.Version.ToString();
+                        else
+                            projectDependenciesDict.Add(packageToInstall.Id, packageToInstall.Version.ToString());
+                    }
+                }
+            }
+        }
+        public static async void InstallProjectDependencies(string configPath)
+        {
+            var dependencies = JsonConvert.DeserializeObject<Project.Project>(File.ReadAllText(configPath)).Dependencies;
+            string appDataPath = new EnvironmentSettings().GetEnvironmentVariable();
+            string packagesFolderPath = Path.Combine(Directory.GetParent(appDataPath).Parent.FullName, "packages");
+
+            // Install Project Dependencies
+            foreach (var dependency in dependencies)
+            {
+                if (!Directory.Exists(Path.Combine(packagesFolderPath, $"{dependency.Key}.{dependency.Value}")))
+                {
+                    try
+                    {
+                        await InstallPackage(dependency.Key, dependency.Value, dependencies);
+                    }
+                    catch (Exception excep)
+                    {
+                        throw excep;
+                    }
+                }
+            }
         }
     }
 }
