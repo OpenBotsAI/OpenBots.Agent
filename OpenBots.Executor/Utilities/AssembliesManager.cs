@@ -25,7 +25,7 @@ namespace OpenBots.Executor.Utilities
                                                                  x.GetName().Version.ToString() == AssemblyName.GetAssemblyName(path).Version.ToString())
                                                      .FirstOrDefault();
 
-                    if (existingAssembly == null && name != "RestSharp" && name != "WebDriver")
+                    if (existingAssembly == null && name != "RestSharp" && name != "WebDriver" && name != "OpenBots.Core")
                     {
                         var assembly = Assembly.LoadFile(path);
                         existingAssemblies.Add(assembly);
