@@ -145,7 +145,10 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Install Project Dependencies
             List<string> assembliesList = null;
             if (automation.AutomationEngine == "OpenBots")
+            {
+                NugetPackageManager.InstallProjectDependencies(configFilePath);
                 assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath);
+            }
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
