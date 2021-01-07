@@ -6,6 +6,7 @@ using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.UserRegistry;
 using OpenBots.Agent.Core.Utilities;
+using OpenBots.Core.Settings;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -706,29 +707,20 @@ namespace OpenBots.Agent.Client
         private void OnClick_NugetFeedManager(object sender, RoutedEventArgs e)
         {
             string appDataPath = new EnvironmentSettings().GetEnvironmentVariable();
-            string appSettingsPath = Path.Combine(Directory.GetParent(appDataPath).Parent.FullName, "AppSettings.json");
+            string appSettingsDirPath = Path.Combine(Directory.GetParent(appDataPath).Parent.FullName);
 
-            if (File.Exists(appSettingsPath))
+            var appSettings = new ApplicationSettings().GetOrCreateApplicationSettings(appSettingsDirPath);
+            var packageSourcesDT = appSettings.ClientSettings.PackageSourceDT;
+
+            NugetFeedManager nugetFeedManager = new NugetFeedManager(packageSourcesDT);
+            nugetFeedManager.Owner = this;
+            nugetFeedManager.ShowDialog();
+
+            if (nugetFeedManager.isDataUpdated)
             {
-                var appSettings = JObject.Parse(File.ReadAllText(appSettingsPath));
-                var packageSourcesJArray = (JArray)appSettings["ClientSettings"]["PackageSourceDT"];
-                var packageSourcesList = packageSourcesJArray.ToObject<List<NugetPackageSource>>();
-                NugetFeedManager nugetFeedManager = new NugetFeedManager(packageSourcesList);
-                nugetFeedManager.Owner = this;
-                nugetFeedManager.ShowDialog();
-
-                if (nugetFeedManager.isDataUpdated)
-                {
-                    var updatedPackageSources = nugetFeedManager.GetPackageSourcesData();
-                    appSettings["ClientSettings"]["PackageSourceDT"] = JArray.FromObject(updatedPackageSources);
-                    File.WriteAllText(appSettingsPath, appSettings.ToString(Formatting.Indented));
-                }
+                appSettings.ClientSettings.PackageSourceDT = nugetFeedManager.GetPackageSourcesData();
+                appSettings.Save(appSettings, appSettingsDirPath);
             }
-            else
-                ShowErrorDialog("An error occurred while retrieving the App Settings",
-                                string.Empty,
-                                $"App Settings file not found at the specified path \"{appSettingsPath}\".",
-                                Application.Current.MainWindow);
         }
         private void OnClick_ClearCredentials(object sender, RoutedEventArgs e)
         {

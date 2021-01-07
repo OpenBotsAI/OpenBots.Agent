@@ -18,7 +18,7 @@
                    Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type StackPanel}}, Path=ActualHeight}"/>
         </StackPanel>
         <StackPanel Name="pnl_DataGrid" Grid.Row="1" Margin="10,5,10,5">
-            <DataGrid x:Name="dtGrd_NugetSources" AlternatingRowBackground="LightBlue" AlternationCount="2" AutoGenerateColumns="False" BorderBrush="#FF688CAF">
+            <DataGrid x:Name="dtGrd_NugetSources" ItemsSource="{Binding}" AlternatingRowBackground="LightBlue" AlternationCount="2" BorderBrush="#FF688CAF">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="FontWeight" Value="DemiBold"/>
@@ -27,11 +27,6 @@
                         <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
                     </Style>
                 </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="Enabled" Width="*" Binding="{Binding Enabled}"></DataGridCheckBoxColumn>
-                    <DataGridTextColumn Header="Package Name" Width="2*" Binding="{Binding PackageName}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Package Source" Width="8*" Binding="{Binding PackageSource}"></DataGridTextColumn>
-                </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
         <StackPanel Grid.Row="2" Margin="0,0,5,10">

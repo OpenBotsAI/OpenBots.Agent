@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+    <title>Please Provide Information</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <h1 style="color:black">OpenBots Studio</h1>
+        <h3 style="color:steelblue">Open Source Automation for All</h3>
+    </nav>
+    <hr />
+    <div class="container">
+        <p>
+            <b>Directions:</b> This a sample data collection form that can be presented to a user.  You can add and implement as many fields as you need or
+            choose standard form inputs. Note, each field will require a <b>v_OutputUserVariableName</b> attribute specifying which variable should contain the
+            respective value for the input field.
+        </p>
+        <form>
+            <div class="form-group">
+                <label for="inputEmail4">Email</label>
+                <input type="email" class="form-control" id="inputEmail4" v_OutputUserVariableName="{vInput}" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="inputPassword4">Password</label>
+                <input type="password" class="form-control" id="inputPassword4" v_OutputUserVariableName="{vPass}" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" class="form-control" id="inputAddress" v_OutputUserVariableName="{vAddress}" placeholder="1234 Main St">
+            </div>
+            <div class="form-group">
+                <label for="inputCity">City</label>
+                <input type="text" class="form-control" id="inputCity" v_OutputUserVariableName="{vCity}">
+            </div>
+            <div class="form-group">
+                <label for="inputState">State</label>
+                <input type="text" class="form-control" id="inputState" v_OutputUserVariableName="{vState}">
+            </div>
+            <div class="form-group">
+                <label for="inputZip">Zip</label>
+                <input type="text" class="form-control" id="inputZip" v_OutputUserVariableName="{vZip}">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Gender</label>
+                <select class="form-dropdown" id="exampleFormControlSelect1" v_OutputUserVariableName="{vSelected}">
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="form-checkbox">
+                    <input class="form-checkbox-input" type="checkbox" id="gridCheck" v_OutputUserVariableName="{vCheck}">
+                    <label class="form-checkbox-label" for="gridCheck"> Send me news and updates </label>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

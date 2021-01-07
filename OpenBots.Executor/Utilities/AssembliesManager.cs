@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using OpenBots.Core.Settings;
 
 namespace OpenBots.Executor.Utilities
 {
@@ -19,6 +20,8 @@ namespace OpenBots.Executor.Utilities
                                         FileVersionInfo.GetVersionInfo(path).FileVersion).FirstOrDefault() == null)
                     filteredPaths.Add(path);
             }
+
+            var appSettings = new ApplicationSettings().GetOrCreateApplicationSettings();
 
             List<Assembly> existingAssemblies = new List<Assembly>();
             foreach (var path in filteredPaths)

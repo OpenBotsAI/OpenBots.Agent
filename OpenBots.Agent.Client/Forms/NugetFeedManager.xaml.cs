@@ -1,4 +1,5 @@
 ﻿using OpenBots.Agent.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -14,15 +15,17 @@ namespace OpenBots.Agent.Client.Forms
     public partial class NugetFeedManager : Window
     {
         public bool isDataUpdated { get; private set; } = false;
-        public NugetFeedManager(List<NugetPackageSource> packageSources)
+        public NugetFeedManager(DataTable packageSourcesDataTable)
         {
             InitializeComponent();
-            dtGrd_NugetSources.ItemsSource = packageSources;
+            packageSourcesDataTable = UpdateDataTableColumnType(packageSourcesDataTable, typeof(bool));
+            dtGrd_NugetSources.DataContext = packageSourcesDataTable.DefaultView;
         }
 
-        public List<NugetPackageSource> GetPackageSourcesData()
+        public DataTable GetPackageSourcesData()
         {
-            var packageSources = dtGrd_NugetSources.ItemsSource.Cast<NugetPackageSource>().ToList();
+            var packageSources = ((DataView)dtGrd_NugetSources.DataContext).ToTable();
+            packageSources = UpdateDataTableColumnType(packageSources, typeof(string));
             return packageSources;
         }
 
@@ -36,6 +39,18 @@ namespace OpenBots.Agent.Client.Forms
         {
             isDataUpdated = false;
             this.Close();
+        }
+
+        private DataTable UpdateDataTableColumnType(DataTable dataTable, Type type)
+        {
+            DataTable dtCloned = dataTable.Clone();
+            dtCloned.Columns[0].DataType = type;
+            foreach (DataRow row in dataTable.Rows)
+            {
+                dtCloned.ImportRow(row);
+            }
+
+            return dtCloned;
         }
     }
 }
