@@ -707,7 +707,7 @@ namespace OpenBots.Agent.Client
         private void OnClick_NugetFeedManager(object sender, RoutedEventArgs e)
         {
             string appDataPath = new EnvironmentSettings().GetEnvironmentVariable();
-            string appSettingsDirPath = Path.Combine(Directory.GetParent(appDataPath).Parent.FullName);
+            string appSettingsDirPath = Directory.GetParent(appDataPath).Parent.FullName;
 
             var appSettings = new ApplicationSettings().GetOrCreateApplicationSettings(appSettingsDirPath);
             var packageSourcesDT = appSettings.ClientSettings.PackageSourceDT;

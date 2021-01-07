@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client.Forms"
         mc:Ignorable="d"
-        Title="NugetFeedManager" SizeToContent="Height" Width="630" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="NugetFeedManager" SizeToContent="Height" Width="673" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     
     <Grid Name="grd_main">
         <Grid.RowDefinitions>
@@ -17,8 +17,8 @@
             <Label Content="Package Sources" Margin="5,0,5,0" FontSize="18" 
                    Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type StackPanel}}, Path=ActualHeight}"/>
         </StackPanel>
-        <StackPanel Name="pnl_DataGrid" Grid.Row="1" Margin="10,5,10,5">
-            <DataGrid x:Name="dtGrd_NugetSources" ItemsSource="{Binding}" AlternatingRowBackground="LightBlue" AlternationCount="2" BorderBrush="#FF688CAF">
+        <StackPanel Name="pnl_DataGrid" Grid.Row="1" Margin="10,5,10,5" HorizontalAlignment="Center">
+            <DataGrid x:Name="dtGrd_NugetSources" ItemsSource="{Binding}" AutoGenerateColumns="True" AlternatingRowBackground="LightBlue" AlternationCount="2" BorderBrush="#FF688CAF">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="FontWeight" Value="DemiBold"/>
