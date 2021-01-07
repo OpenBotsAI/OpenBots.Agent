@@ -15,6 +15,7 @@ using OpenBots.Core.Settings;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -129,7 +130,16 @@ namespace OpenBots.Agent.Core.Nuget
                 exceptionsList.Add("Please install this package using the OpenBots Studio Package Manager");
                 throw new Exception(string.Join("\n", exceptionsList));
             }
-            return assemblyPaths;
+
+            List<string> filteredPaths = new List<string>();
+            foreach (string path in assemblyPaths)
+            {
+                if (filteredPaths.Where(a => a.Contains(path.Split('/').Last()) && FileVersionInfo.GetVersionInfo(a).FileVersion ==
+                                        FileVersionInfo.GetVersionInfo(path).FileVersion).FirstOrDefault() == null)
+                    filteredPaths.Add(path);
+            }
+
+            return filteredPaths;
         }
         public static async Task InstallPackage(string packageId, string version, Dictionary<string, string> projectDependenciesDict)
         {
