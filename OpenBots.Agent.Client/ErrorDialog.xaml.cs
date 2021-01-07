@@ -11,7 +11,13 @@ namespace OpenBots.Agent.Client
         {
             InitializeComponent();
             txtBlock_GeneralErrorMsg.Text = generalError;
-            lbl_StatusCodeValue.Content = statusCode;
+            if(string.IsNullOrEmpty(statusCode))
+            {
+                lbl_StatusCode.Visibility = Visibility.Collapsed;
+                lbl_StatusCodeValue.Visibility = Visibility.Collapsed;
+            }
+            else
+                lbl_StatusCodeValue.Content = statusCode;
             txtBlock_ErrorMessage.Text = detailedErrorMessage;
         }
 

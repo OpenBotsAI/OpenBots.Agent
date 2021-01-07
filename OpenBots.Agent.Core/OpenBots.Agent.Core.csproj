@@ -151,6 +151,7 @@
     <Compile Include="Infrastructure\IWindowsServiceEndPoint.cs" />
     <Compile Include="Model\EnvironmentSettings.cs" />
     <Compile Include="Model\JobExecutionParams.cs" />
+    <Compile Include="Model\NugetPackageSource.cs" />
     <Compile Include="Model\ServerConnectionSettings.cs" />
     <Compile Include="Model\ServerResponse.cs" />
     <Compile Include="Nuget\NugetPackageManager.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Utilities\ExceptionSerializer.cs" />
     <Compile Include="Utilities\DataFormatter.cs" />
     <Compile Include="Utilities\Logging.cs" />
+    <Compile Include="Utilities\SystemInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

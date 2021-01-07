@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client"
         mc:Ignorable="d"
-        Title="OpenBots Agent Error" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="CenterScreen" Width="380">
+        Title="OpenBots Agent Error" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="CenterOwner" Width="380">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

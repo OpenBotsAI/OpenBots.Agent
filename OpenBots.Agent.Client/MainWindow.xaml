@@ -5,13 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client"
         mc:Ignorable="d"
-        Title="OpenBots Agent" Name="wndMain" Height="540" Width="488" Loaded="OnLoad" ResizeMode="NoResize" Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed" WindowStartupLocation="CenterScreen">
+        Title="OpenBots Agent" Name="wndMain" Height="530" Width="488" Loaded="OnLoad" ResizeMode="NoResize" WindowStyle="None"
+        Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed"
+        BorderThickness="2" UseLayoutRounding="True">
+    <Window.Resources>
+        <Style x:Key="GearImage" TargetType="{x:Type Image}">
+            <Setter Property="Source" Value="/resources/gear_gray.png"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="ToolTip" Value="Settings"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="/resources/gear_black.png"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CloseImage" TargetType="{x:Type Image}">
+            <Setter Property="Source" Value="/resources/close_gray.png"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="ToolTip" Value="Minimize to System Tray"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="/resources/close_black.png"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Window.BorderBrush>
+        <RadialGradientBrush>
+            <GradientStop Color="#FF020202"/>
+            <GradientStop Color="#FFD4D4D4" Offset="0.626"/>
+        </RadialGradientBrush>
+    </Window.BorderBrush>
     <Grid Name="mainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="295"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="288"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Server Configuration" FontSize="14" Margin="10" BorderThickness="2,2,2,2">
+        <StatusBar Name="CustomBar" Margin="5,0,5,0" Background="Transparent" Grid.Row="0">
+            <Grid Name="grd_CustomMenuBar" Margin="2,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="420"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Name="grd_TitleBar" Grid.Column="0" MouseLeftButtonDown="OnMouseLeftButtonDown_TitleBar">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/resources/OpenBots.png" HorizontalAlignment="Left" Width="20" Height="20" Grid.Column="0"/>
+                    <Label Content="OpenBots Agent" FontSize="12" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Calibri" Grid.Column="1"/>
+                </Grid>
+                <Grid Name="grd_CustomControls" HorizontalAlignment="Right" Grid.Column="1" Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="23"/>
+                        <ColumnDefinition Width="22"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Name="img_settings" Style="{StaticResource GearImage}" RenderOptions.BitmapScalingMode="HighQuality" Height="19" MouseLeftButtonUp="OnClick_Settings" Grid.Column="0" Margin="0">
+                        <Image.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Machine Info" Click="OnClick_MachineInfo"/>
+                                <MenuItem Name="menuItemClearCredentials" Header="Clear Credentials" Click="OnClick_ClearCredentials"/>
+                                <MenuItem Name="menuItemNugetFeedManager" Header="Nuget Feed Manager" Click="OnClick_NugetFeedManager"/>
+                                <MenuItem Header="Quit" Click="OnClick_Quit"/>
+                            </ContextMenu>
+                        </Image.ContextMenu>
+                    </Image>
+                    <Image Style="{StaticResource CloseImage}" Height="15" Grid.Column="1" MouseLeftButtonDown="OnClick_Close" />
+                </Grid>
+            </Grid>
+        </StatusBar>
+        <GroupBox Header="Server Configuration" FontSize="14" Margin="10,5,10,10" BorderThickness="2,2,2,2" Grid.Row="1">
             <StackPanel x:Name="pnl_ServerConfiguration" Margin="0,10,0,0">
                 <Label Content="User Name" FontWeight="Bold" x:Name="lbl_Username"></Label>
                 <TextBox x:Name="txt_Username" FontSize="16" Margin="5,0,10,0" Height="29" VerticalContentAlignment="Center" TextChanged="OnTextChange_AgentUsername"/>
@@ -31,7 +95,7 @@
                 </Grid>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Logging" FontSize="14" BorderThickness="2,2,2,2" Margin="10,0,10,10" Grid.Row="1">
+        <GroupBox Header="Logging" FontSize="14" BorderThickness="2,2,2,2" Margin="10,0,10,10" Grid.Row="2">
             <Grid Margin="0,10,0,0" x:Name="loggingGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
@@ -77,13 +141,13 @@
                                 <TextBox Name="txt_SinkType_Logging1" FontSize="16" Grid.Column="1" VerticalContentAlignment="Center" TextChanged="OnTextChange_Logging1"/>
                             </Grid>
                         </StackPanel>
-                        <StackPanel Name="pnl_SinkType_Save" Grid.Row="2" Margin="0,13,0,0" Height="29">
+                        <StackPanel Name="pnl_SinkType_Save" Grid.Row="2" Margin="0,13,0,5" Height="29">
                             <Grid Name="grd_SinkType_Save">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Content="Save" Name="btn_Save" Margin="0,0,10,0"  Grid.Column="1" HorizontalAlignment="Right" FontSize="16" VerticalContentAlignment="Center" Background="White" Height="29" Width="100" Click="OnClick_SaveBtn"/>
+                                <Button Content="Save" Name="btn_Save" Margin="0,0,10,5"  Grid.Column="1" HorizontalAlignment="Right" FontSize="16" VerticalContentAlignment="Center" Background="White" Height="29" Width="100" Click="OnClick_SaveBtn"/>
                             </Grid>
                         </StackPanel>
                     </Grid>

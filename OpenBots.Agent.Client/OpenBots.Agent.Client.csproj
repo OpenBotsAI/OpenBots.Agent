@@ -76,10 +76,17 @@
     <Compile Include="Forms\Dialog\MessageDialog.xaml.cs">
       <DependentUpon>MessageDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\NugetFeedManager.xaml.cs">
+      <DependentUpon>NugetFeedManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceProxy\PipeProxy.cs" />
     <Compile Include="Settings\OpenBotsSettings.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
-    <Compile Include="Utilities\AgentHelper.cs" />
     <Compile Include="Utilities\WindowHelper.cs" />
     <Page Include="ErrorDialog.xaml">
       <SubType>Designer</SubType>
@@ -90,6 +97,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Dialog\MessageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\NugetFeedManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -110,11 +121,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -122,8 +128,8 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="OpenBots.settings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -153,6 +159,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\copy_gray_color_512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\close_gray.png" />
+    <Resource Include="resources\close_black.png" />
+    <Resource Include="resources\gear_gray.png" />
+    <Resource Include="resources\gear_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\OpenBots.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

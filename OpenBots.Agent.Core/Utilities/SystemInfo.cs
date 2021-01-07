@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Net.NetworkInformation;
 
-namespace OpenBots.Agent.Client.Utilities
+namespace OpenBots.Agent.Core.Utilities
 {
-    public static class AgentHelper
+    public static class SystemInfo
     {
         public static string GetMacAddress()
         {
@@ -13,7 +13,6 @@ namespace OpenBots.Agent.Client.Utilities
 
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-
                 string tempMac = nic.GetPhysicalAddress().ToString();
                 if (nic.Speed > maxSpeed &&
                     !string.IsNullOrEmpty(tempMac) &&
