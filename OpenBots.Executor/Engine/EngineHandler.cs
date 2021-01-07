@@ -27,7 +27,7 @@ namespace OpenBots.Executor
 
         public void ExecuteScript(JobExecutionParams executionParams)
         {
-            var engine = new AutomationEngineInstance(GetLogger(executionParams));
+            var engine = new AutomationEngineInstance(GetLogger(executionParams), _container);
             engine.ExecuteScriptSync(executionParams.MainFilePath, executionParams.ProjectDirectoryPath);
         }
 
