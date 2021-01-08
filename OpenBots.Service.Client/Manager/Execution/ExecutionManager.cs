@@ -255,7 +255,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             string projectDir = Path.GetDirectoryName(mainScriptFilePath);
             string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string pythonExecutable = GetPythonPath(machineCredential.UserName, "");
-            string cmdLine = $"powershell.exe \"{assemblyPath}\\Executors\\PythonExecutor.ps1\" \'{pythonExecutable}\' \'{projectDir}\' \'{mainScriptFilePath}\'"; ;
+            string cmdLine = $"powershell.exe -File \"{assemblyPath}\\Executors\\PythonExecutor.ps1\" \"{pythonExecutable}\" \"{projectDir}\" \"{mainScriptFilePath}\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
