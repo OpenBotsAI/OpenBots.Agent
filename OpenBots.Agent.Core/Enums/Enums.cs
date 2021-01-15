@@ -19,4 +19,10 @@ namespace OpenBots.Agent.Core.Enums
         File,
         Http
     }
+
+    public enum AgentStatus
+    {
+        Available,
+        Busy
+    }
 }

@@ -16,6 +16,7 @@ using System.Timers;
 using Microsoft.Win32;
 using System.Security.Principal;
 using System.Reflection;
+using OpenBots.Agent.Core.Enums;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -115,6 +116,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                     throw;
                 }
                 _isSuccessfulExecution = false;
+                HeartBeatManager.Instance.Heartbeat.LastReportedMessage = "Automation execution failed";
                 SetEngineStatus(false);
             }
         }
@@ -132,6 +134,10 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Get Automation Info
             var automation = AutomationsAPIManager.GetAutomation(AuthAPIManager.Instance, job.AutomationId.ToString());
+
+            // Update LastReportedMessage and LastReportedWork
+            HeartBeatManager.Instance.Heartbeat.LastReportedMessage = "Automation execution started";
+            HeartBeatManager.Instance.Heartbeat.LastReportedWork = automation.Name;
 
             // Log Event
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to download/retrieve Automation");
@@ -155,8 +161,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Create Automation Execution Log (Execution Started)
             _executionLog = ExecutionLogsAPIManager.CreateExecutionLog(AuthAPIManager.Instance, new AutomationExecutionLog(
-                null, false, null, DateTime.Now, null, null, null, null, null, job.Id, job.AutomationId, job.AgentId, 
-                DateTime.Now, null, null, null, "Job has started processing"));
+                null, false, null, DateTime.UtcNow, null, null, null, null, null, job.Id, job.AutomationId, job.AgentId, 
+                DateTime.UtcNow, null, null, null, "Job has started processing"));
 
             // Update Job Status (InProgress)
             JobsAPIManager.UpdateJobStatus(AuthAPIManager.Instance, job.AgentId.ToString(), job.Id.ToString(),
@@ -166,7 +172,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobsAPIManager.UpdateJobPatch(AuthAPIManager.Instance, job.Id.ToString(),
                 new List<Operation>()
                 {
-                    new Operation(){ Op = "replace", Path = "/startTime", Value = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")}
+                    new Operation(){ Op = "replace", Path = "/startTime", Value = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")}
                 });
 
             // Log Event
@@ -188,14 +194,14 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobsAPIManager.UpdateJobPatch(AuthAPIManager.Instance, job.Id.ToString(),
                 new List<Operation>()
                 {
-                    new Operation(){ Op = "replace", Path = "/endTime", Value = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")},
+                    new Operation(){ Op = "replace", Path = "/endTime", Value = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")},
                 });
 
             // Delete Automation Files Directory
             Directory.Delete(Path.GetDirectoryName(mainScriptFilePath), true);
 
             // Update Automation Execution Log (Execution Finished)
-            _executionLog.CompletedOn = DateTime.Now;
+            _executionLog.CompletedOn = DateTime.UtcNow;
             _executionLog.Status = "Job has finished processing";
             ExecutionLogsAPIManager.UpdateExecutionLog(AuthAPIManager.Instance, _executionLog);
 
@@ -209,6 +215,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobsQueueManager.Instance.DequeueJob();
 
             _isSuccessfulExecution = true;
+            HeartBeatManager.Instance.Heartbeat.LastReportedMessage = "Automation execution completed";
         }      
         private void RunAutomation(Job job, Automation automation, Credential machineCredential, 
             string mainScriptFilePath, List<string> projectDependencies)
@@ -266,8 +273,13 @@ namespace OpenBots.Service.Client.Manager.Execution
         public void SetEngineStatus(bool isBusy)
         {
             IsEngineBusy = isBusy;
-            if (!IsEngineBusy)
+            if (IsEngineBusy)
+                HeartBeatManager.Instance.Heartbeat.LastReportedStatus = AgentStatus.Busy.ToString();
+            else
+            {
+                HeartBeatManager.Instance.Heartbeat.LastReportedStatus = AgentStatus.Available.ToString();
                 OnJobFinishedEvent(EventArgs.Empty);
+            }
         }
 
         protected virtual void OnJobFinishedEvent(EventArgs e)

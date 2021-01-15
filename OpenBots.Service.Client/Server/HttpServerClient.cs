@@ -63,6 +63,8 @@ namespace OpenBots.Service.Client.Server
                 _heartbeatTimer.Interval = 30000;
                 _heartbeatTimer.Elapsed += Heartbeat_Elapsed;
                 _heartbeatTimer.Enabled = true;
+
+                HeartBeatManager.Instance.Initialize(ConnectionSettingsManager.Instance.ConnectionSettings.AgentId);
             }
         }
 
@@ -80,10 +82,14 @@ namespace OpenBots.Service.Client.Server
             int statusCode = 0;
             try
             {
+                // Update LastReportedOn
+                HeartBeatManager.Instance.Heartbeat.LastReportedOn = DateTime.UtcNow;
+
+                // Send HeartBeat to the Server
                 statusCode = AgentsAPIManager.SendAgentHeartBeat(
                     AuthAPIManager.Instance,
                     ConnectionSettingsManager.Instance.ConnectionSettings.AgentId,
-                    new AgentHeartbeat(null, null, null, null, null, null, null, null, null, null, DateTime.Now, "", "", "", true));
+                    HeartBeatManager.Instance.Heartbeat);
 
                 if (statusCode != 201)
                     ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled = false;

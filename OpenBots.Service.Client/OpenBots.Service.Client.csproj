@@ -225,6 +225,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\HeartBeatManager.cs" />
     <Compile Include="Server\ConnectionSettingsManager.cs" />
     <Compile Include="Server\HttpServerClient.cs" />
     <Compile Include="WCF\ServiceController.cs" />
