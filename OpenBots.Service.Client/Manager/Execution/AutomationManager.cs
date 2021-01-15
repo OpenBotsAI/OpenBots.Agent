@@ -88,11 +88,12 @@ namespace OpenBots.Service.Client.Manager.Execution
             {
                 if (!zipEntry.IsFile)
                 {
-                    // Ignore directories
+                    // Ignore directories but create them in case they're empty
+                    Directory.CreateDirectory(Path.Combine(targetDirectory, Uri.UnescapeDataString(zipEntry.Name)));
                     continue;
                 }
 
-                string entryFileName = zipEntry.Name;
+                string entryFileName = Uri.UnescapeDataString(zipEntry.Name);
 
                 // 4K is optimum
                 byte[] buffer = new byte[4096];
