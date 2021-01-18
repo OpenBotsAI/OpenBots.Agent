@@ -29,12 +29,6 @@ namespace OpenBots.Service.API.Model
     [DataContract]
         public partial class Credential :  IEquatable<Credential>, IValidatableObject
     {
-        public Credential(string domain, string userName)
-        {
-            Domain = domain;
-            UserName = userName;
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Credential" /> class.
         /// </summary>

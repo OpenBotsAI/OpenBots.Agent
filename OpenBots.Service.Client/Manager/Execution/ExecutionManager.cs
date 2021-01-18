@@ -22,7 +22,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public class ExecutionManager
     {
-        public bool IsEngineBusy { get; private set; } = false;
+        public bool IsEngineBusy { get; set; } = false;
         private bool _isSuccessfulExecution = false;
         private Timer _newJobsCheckTimer;
         private AutomationExecutionLog _executionLog;
@@ -39,7 +39,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
         }
         private static ExecutionManager instance;
-        
+
         private ExecutionManager()
         {
         }
@@ -72,7 +72,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             try
             {
                 // If Jobs Queue is not Empty & No (Server or Attended) Job is being executed
-                if(!JobsQueueManager.Instance.IsQueueEmpty() && !IsEngineBusy && !AttendedExecutionManager.Instance.IsAttendedJobRunning)
+                if (!JobsQueueManager.Instance.IsQueueEmpty() && !IsEngineBusy)
                 {
                     SetEngineStatus(true);
                     ExecuteJob();
@@ -80,9 +80,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                 }
             }
             catch (Exception ex)
-            {   
+            {
                 // Log Event
-                FileLogger.Instance.LogEvent("Job Execution", $"Error occurred while executing the job; ErrorMessage = {ex.ToString()}", 
+                FileLogger.Instance.LogEvent("Job Execution", $"Error occurred while executing the job; ErrorMessage = {ex.ToString()}",
                     LogEventLevel.Error);
 
                 try
@@ -161,7 +161,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Create Automation Execution Log (Execution Started)
             _executionLog = ExecutionLogsAPIManager.CreateExecutionLog(AuthAPIManager.Instance, new AutomationExecutionLog(
-                null, false, null, DateTime.UtcNow, null, null, null, null, null, job.Id, job.AutomationId, job.AgentId, 
+                null, false, null, DateTime.UtcNow, null, null, null, null, null, job.Id, job.AutomationId, job.AgentId,
                 DateTime.UtcNow, null, null, null, "Job has started processing"));
 
             // Update Job Status (InProgress)
@@ -179,7 +179,14 @@ namespace OpenBots.Service.Client.Manager.Execution
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to execute process");
 
             AgentViewModel agent = AgentsAPIManager.GetAgent(AuthAPIManager.Instance, job.AgentId.ToString());
-            Credential credential = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
+            var userCredential = CredentialsAPIManager.GetCredentials(AuthAPIManager.Instance, agent.CredentialId.ToString());
+            MachineCredential credential = new MachineCredential
+            {
+                Name = userCredential.Name,
+                Domain = userCredential.Domain,
+                UserName = userCredential.UserName,
+                PasswordSecret = userCredential.PasswordSecret
+            };
 
             // Run Automation
             RunAutomation(job, automation, credential, mainScriptFilePath, assembliesList);
@@ -216,8 +223,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             _isSuccessfulExecution = true;
             HeartBeatManager.Instance.Heartbeat.LastReportedMessage = "Automation execution completed";
-        }      
-        private void RunAutomation(Job job, Automation automation, Credential machineCredential, 
+        }
+        private void RunAutomation(Job job, Automation automation, MachineCredential machineCredential,
             string mainScriptFilePath, List<string> projectDependencies)
         {
             try
@@ -225,7 +232,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 if (automation.AutomationEngine == "")
                     automation.AutomationEngine = "OpenBots";
 
-                switch(automation.AutomationEngine.ToString())
+                switch (automation.AutomationEngine.ToString())
                 {
                     case "OpenBots":
                         RunOpenBotsAutomation(job, automation, machineCredential, mainScriptFilePath, projectDependencies);
@@ -237,15 +244,15 @@ namespace OpenBots.Service.Client.Manager.Execution
                     default:
                         throw new NotImplementedException($"Specified execution engine \"{automation.AutomationEngine}\" is not implemented on the OpenBots Agent.");
                 }
-                
+
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        
-        private void RunOpenBotsAutomation(Job job, Automation automation, Credential machineCredential, string mainScriptFilePath, List<string> projectDependencies)
+
+        private void RunOpenBotsAutomation(Job job, Automation automation, MachineCredential machineCredential, string mainScriptFilePath, List<string> projectDependencies)
         {
             var executionParams = GetExecutionParams(job, automation, mainScriptFilePath, projectDependencies);
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
@@ -256,8 +263,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
             return;
         }
-        
-        private void RunPythonAutomation(Job job, Credential machineCredential, string mainScriptFilePath)
+
+        private void RunPythonAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
         {
             string projectDir = Path.GetDirectoryName(mainScriptFilePath);
             string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -269,7 +276,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             return;
         }
-        
+
         public void SetEngineStatus(bool isBusy)
         {
             IsEngineBusy = isBusy;
@@ -284,7 +291,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         protected virtual void OnJobFinishedEvent(EventArgs e)
         {
-            if(_isSuccessfulExecution)
+            if (_isSuccessfulExecution)
                 JobFinishedEvent?.Invoke(this, e);
         }
 
@@ -307,7 +314,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         private static string GetPythonPath(string username, string requiredVersion = "")
         {
             var possiblePythonLocations = new List<string>()
-            { 
+            {
                 @"HKLM\SOFTWARE\Python\PythonCore\",
                 @"HKLM\SOFTWARE\Wow6432Node\Python\PythonCore\"
             };
@@ -323,15 +330,15 @@ namespace OpenBots.Service.Client.Manager.Execution
             {
                 throw new Exception("Unabled to retrieve SID for provided user credentials.");
             }
-            
-            Version requestedVersion = new Version(requiredVersion == "" ? "0.0.1" : requiredVersion);   
+
+            Version requestedVersion = new Version(requiredVersion == "" ? "0.0.1" : requiredVersion);
 
             //Version number, install path
             Dictionary<Version, string> pythonLocations = new Dictionary<Version, string>();
 
-            foreach(string possibleLocation in possiblePythonLocations)
+            foreach (string possibleLocation in possiblePythonLocations)
             {
-                var regVals = possibleLocation.Split(new[] {'\\'}, 2);
+                var regVals = possibleLocation.Split(new[] { '\\' }, 2);
                 var rootKey = (regVals[0] == "HKLM" ? RegistryHive.LocalMachine : RegistryHive.Users);
                 var regView = (Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
                 var hklm = RegistryKey.OpenBaseKey(rootKey, regView);
@@ -366,7 +373,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             int max = pythonLocations.Max(x => x.Key.CompareTo(requestedVersion));
             requestedVersion = pythonLocations.First(x => x.Key.CompareTo(requestedVersion) == max).Key;
 
-            if(pythonLocations.ContainsKey(requestedVersion))
+            if (pythonLocations.ContainsKey(requestedVersion))
             {
                 return pythonLocations[requestedVersion];
             }
