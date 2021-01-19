@@ -32,9 +32,12 @@ namespace OpenBots.Agent.Client
         {
             try
             {
-                ChannelFactory<IWindowsServiceEndPoint> pipeFactory =
-                      new ChannelFactory<IWindowsServiceEndPoint>(
-                        new NetNamedPipeBinding(),
+                // Create NamedPipe Binding and Set SendTimeout
+                var namedPipeBinding = new NetNamedPipeBinding();
+                namedPipeBinding.SendTimeout = new TimeSpan(24, 0, 0);
+
+                ChannelFactory<IWindowsServiceEndPoint> pipeFactory = new ChannelFactory<IWindowsServiceEndPoint>(
+                        namedPipeBinding,
                         new EndpointAddress("net.pipe://localhost/OpenBots/WindowsServiceEndPoint"));
 
                 _pipeProxy = pipeFactory.CreateChannel();
@@ -91,8 +94,15 @@ namespace OpenBots.Agent.Client
 
         public async void ExecuteAttendedTask(string projectPackagePath, ServerConnectionSettings settings)
         {
-            var task = _pipeProxy.ExecuteAttendedTask(projectPackagePath, settings);
-            await task.ContinueWith(e => TaskFinishedEvent?.Invoke(this, task.Result));
+            try
+            {
+                var task = _pipeProxy.ExecuteAttendedTask(projectPackagePath, settings);
+                await task.ContinueWith(e => TaskFinishedEvent?.Invoke(this, task.Result));
+            }
+            catch (TimeoutException ex)
+            {
+                throw ex;
+            }
         }
 
         public bool IsEngineBusy()
