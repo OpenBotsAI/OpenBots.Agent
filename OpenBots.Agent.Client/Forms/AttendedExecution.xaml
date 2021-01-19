@@ -5,29 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client.Forms"
         mc:Ignorable="d"
-        Title="AttendedExecution" SizeToContent="Height" Width="600" ResizeMode="NoResize" Loaded="OnLoad">
+        Title="AttendedExecution" SizeToContent="Height" Width="550" ResizeMode="NoResize" Loaded="OnLoad">
     <Grid Name="grdMain" Margin="10,10,15,15">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="pnlProjects" Grid.Row="0">
+        <StackPanel x:Name="pnlSource" Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Published Projects" FontWeight="DemiBold" Name="lbl_PublishedProjects" Grid.Column="0"/>
+                <Label Content="Source" FontWeight="DemiBold" Name="lbl_Source" Grid.Column="0"/>
+                <ComboBox Name="cmb_Source" Grid.Column="1" Height="29" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_Source"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="pnlProjects" Grid.Row="1" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Automations" FontWeight="DemiBold" Name="lbl_PublishedProjects" Grid.Column="0"/>
                 <ComboBox Name="cmb_PublishedProjects" Grid.Column="1" Height="29" VerticalContentAlignment="Center"/>
             </Grid>
         </StackPanel>
-        <StackPanel x:Name="pnlBtns" Grid.Row="1" Margin="0,10,0,0">
+        <StackPanel x:Name="pnlBtns" Grid.Row="2" Margin="0,10,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="" FontWeight="Normal" Foreground="Green" Name="lbl_ExecutionStatus" Grid.Column="0"/>
+                <Label Content="" FontWeight="Normal" Foreground="Green" Name="lbl_Status" Grid.Column="0"/>
                 <Button Content="Run" Name="btn_Run" Grid.Column="1" HorizontalAlignment="Right" FontSize="16" Height="26" Width="80" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="White" Click="OnClick_RunBtn">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">

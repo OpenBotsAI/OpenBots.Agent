@@ -25,4 +25,11 @@ namespace OpenBots.Agent.Core.Enums
         Available,
         Busy
     }
+
+    // Source of Automations
+    public enum AutomationSource
+    {
+        Local,
+        Server
+    }
 }

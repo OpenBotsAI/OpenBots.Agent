@@ -1,9 +1,12 @@
 ﻿using OpenBots.Agent.Core.Infrastructure;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Service.Client.Manager;
+using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.Execution;
 using OpenBots.Service.Client.Server;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OpenBots.Service.Client
@@ -21,13 +24,24 @@ namespace OpenBots.Service.Client
             return HttpServerClient.Instance.Disconnect(settings);
         }
 
-        public async Task<bool> ExecuteAttendedTask(string projectPath, ServerConnectionSettings settings)
+        public async Task<bool> ExecuteAttendedTask(string projectPackage, ServerConnectionSettings settings, bool isServerAutomation)
         {
             var task = Task.Factory.StartNew(()=>
             {
-                return AttendedExecutionManager.Instance.ExecuteTask(projectPath, settings);
+                return AttendedExecutionManager.Instance.ExecuteTask(projectPackage, settings, isServerAutomation);
             });
             return await task.ConfigureAwait(false);
+        }
+
+        public List<string> GetAutomations()
+        {
+            var automationsList = AutomationsAPIManager.GetAutomations(AuthAPIManager.Instance);
+            var automationPackageNames = automationsList.Items.Where(
+                a => !string.IsNullOrEmpty(a.OriginalPackageName) &&
+                a.OriginalPackageName.EndsWith(".nupkg") &&
+                a.AutomationEngine.Equals("OpenBots")
+                ).Select(a => a.OriginalPackageName).ToList();
+            return automationPackageNames;
         }
 
         public ServerConnectionSettings GetConnectionSettings()

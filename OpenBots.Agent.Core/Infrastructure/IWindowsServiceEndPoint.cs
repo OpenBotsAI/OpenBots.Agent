@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using OpenBots.Agent.Core.Model;
@@ -35,6 +36,9 @@ namespace OpenBots.Agent.Core.Infrastructure
         bool IsEngineBusy();
 
         [OperationContract]
-        Task<bool> ExecuteAttendedTask(string projectPath, ServerConnectionSettings settings);
+        Task<bool> ExecuteAttendedTask(string projectPath, ServerConnectionSettings settings, bool isServerAutomation);
+
+        [OperationContract]
+        List<string> GetAutomations();
     }
 }

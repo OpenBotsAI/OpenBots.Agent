@@ -49,5 +49,26 @@ namespace OpenBots.Service.Client.Manager.API
                 throw ex;
             }
         }
+
+        public static AutomationPaginatedList GetAutomations(AuthAPIManager apiManager, string filter = null)
+        {
+            AutomationsApi automationsApi = new AutomationsApi(apiManager.Configuration);
+
+            try
+            {
+                return automationsApi.ApiV1AutomationsGet(filter);
+            }
+            catch (Exception ex)
+            {
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    automationsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return automationsApi.ApiV1AutomationsGet(filter);
+                }
+                throw ex;
+            }
+        }
     }
 }

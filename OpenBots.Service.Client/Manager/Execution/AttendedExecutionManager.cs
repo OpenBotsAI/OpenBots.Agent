@@ -3,6 +3,7 @@ using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Service.API.Model;
+using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Server;
 using System;
 using System.Collections.Generic;
@@ -33,19 +34,30 @@ namespace OpenBots.Service.Client.Manager.Execution
         {
         }
 
-        public bool ExecuteTask(string projectPackagePath, ServerConnectionSettings settings)
+        public bool ExecuteTask(string projectPackage, ServerConnectionSettings settings, bool isServerAutomation)
         {
             if (!ExecutionManager.Instance.IsEngineBusy)
             {
                 bool isSuccessful;
-                string projectDirectoryPath = string.Empty;
+                string projectDirectoryPath, configFilePath, mainScriptFilePath;
+                projectDirectoryPath = configFilePath = mainScriptFilePath = string.Empty;
                 try
                 {
                     ExecutionManager.Instance.SetEngineStatus(true);
-                    string configFilePath;
-                    string mainScriptFilePath = AutomationManager.GetMainScriptFilePath(projectPackagePath, out configFilePath);
+                    if (isServerAutomation)
+                    {
+                        // projectPackage is "Name" of the Project Package here
+                        string filter = $"originalPackageName eq '{projectPackage}'";
+                        var automation = AutomationsAPIManager.GetAutomations(AuthAPIManager.Instance, filter).Items.FirstOrDefault();
+                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, out configFilePath);
+                    }
+                    else
+                    {
+                        // projectPackage is "Path" of the Project Package here
+                        mainScriptFilePath = AutomationManager.GetMainScriptFilePath(projectPackage, out configFilePath);
+                    }
+                    
                     projectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath);
-
                     NugetPackageManager.InstallProjectDependencies(configFilePath);
                     var assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath);
 
@@ -76,7 +88,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             var executionParams = GetExecutionParams(mainScriptFilePath, settings, projectDependencies);
             var userInfo = new MachineCredential
             {
-                Domain = settings.DNSHost, 
+                Domain = settings.DNSHost,
                 UserName = settings.UserName
             };
 

@@ -243,6 +243,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ServiceProxy\PipeProxy.cs" />
+    <Compile Include="Settings\ConnectionSettingsManager.cs" />
     <Compile Include="Settings\OpenBotsSettings.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="Utilities\WindowHelper.cs" />
