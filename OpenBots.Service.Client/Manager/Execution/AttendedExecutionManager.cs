@@ -17,7 +17,6 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public class AttendedExecutionManager
     {
-        //public bool IsAttendedJobRunning { get; set; } = false;
         public static AttendedExecutionManager Instance
         {
             get

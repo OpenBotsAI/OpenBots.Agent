@@ -735,7 +735,7 @@ namespace OpenBots.Agent.Client
         {
             if(_attendedExecutionWindow == null)
             {
-                _attendedExecutionWindow = new AttendedExecution(false);
+                _attendedExecutionWindow = new AttendedExecution();
                 _attendedExecutionWindow.Closed += (s, args) => this._attendedExecutionWindow = null;
                 _attendedExecutionWindow.Show();
             }

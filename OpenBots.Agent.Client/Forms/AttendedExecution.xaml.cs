@@ -27,11 +27,10 @@ namespace OpenBots.Agent.Client.Forms
         private ServerConnectionSettings _connectionSettings;
         private string _automationSource;
 
-        public AttendedExecution(bool isEngineBusy)
+        public AttendedExecution()
         {
             InitializeComponent();
             _publishedProjectsWatcher = new FileSystemWatcher();
-            _isEngineBusy = isEngineBusy;
 
             _connectionSettings = new ServerConnectionSettings()
             {
@@ -88,6 +87,7 @@ namespace OpenBots.Agent.Client.Forms
                     LoadServerAutomations();
                     break;
             }
+            UpdateStatusOnSourceSelection();
         }
 
         private void OpenUpInBottomRight()
@@ -116,7 +116,13 @@ namespace OpenBots.Agent.Client.Forms
             LoadLocalAutomations();
         }
 
-        private async void OnClick_RunBtn(object sender, RoutedEventArgs e)
+        private void OnClick_RunBtn(object sender, RoutedEventArgs e)
+        {
+            if (!IsEngineBusy())
+                RunTask();
+        }
+
+        private async void RunTask()
         {
             string projectPackage = string.Empty;
             switch (_automationSource)
@@ -129,10 +135,14 @@ namespace OpenBots.Agent.Client.Forms
                     projectPackage = _lastTask = cmb_PublishedProjects.SelectedItem.ToString();
                     break;
             }
-            
-            PipeProxy.Instance.TaskFinishedEvent += OnAttendedTaskFinished;
-            await Task.Run(()=>PipeProxy.Instance.ExecuteAttendedTask(projectPackage, _connectionSettings, projectPackage.Equals(_lastTask)));
 
+            PipeProxy.Instance.TaskFinishedEvent += OnAttendedTaskFinished;
+            await Task.Run(() => PipeProxy.Instance.ExecuteAttendedTask(projectPackage, _connectionSettings, projectPackage.Equals(_lastTask)));
+
+            _isEngineBusy = true;
+            UpdateRunButtonState();
+
+            // Update Execution Status
             string executionStatus = "Running {0} . . .";
             lbl_Status.Content = string.Format(executionStatus, $"\"{_lastTask}\"");
             lbl_Status.Visibility = Visibility.Visible;
@@ -140,8 +150,11 @@ namespace OpenBots.Agent.Client.Forms
 
         private void OnAttendedTaskFinished(object sender, bool isJobSuccessful)
         {
-            Dispatcher.Invoke(() => 
+            Dispatcher.Invoke(() =>
             {
+                _isEngineBusy = false;
+                UpdateRunButtonState();
+
                 string lastRunStatus = "Last Run: {0} - Status: {1}";
                 if (isJobSuccessful)
                     lbl_Status.Content = string.Format(lastRunStatus, _lastTask, "Successful");
@@ -178,15 +191,14 @@ namespace OpenBots.Agent.Client.Forms
         private void OnDropDownClosed_Source(object sender, EventArgs e)
         {
             // Update Automations List on Source Selection Change
-            if(_automationSource != cmb_Source.SelectedItem.ToString())
+            if (_automationSource != cmb_Source.SelectedItem.ToString())
             {
                 _automationSource = cmb_Source.SelectedItem.ToString();
-                UpdateStatus();
                 LoadAutomations();
             }
         }
 
-        private void UpdateStatus()
+        private void UpdateStatusOnSourceSelection()
         {
             if (!ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled && _automationSource == "Server")
             {
@@ -199,6 +211,32 @@ namespace OpenBots.Agent.Client.Forms
                 lbl_Status.Foreground = new SolidColorBrush(Colors.Green);
                 lbl_Status.Visibility = Visibility.Collapsed;
             }
+
+            UpdateRunButtonState();
+        }
+
+        private void UpdateRunButtonState()
+        {
+            if (cmb_PublishedProjects.Items.Count == 0)
+            {
+                btn_Run.IsEnabled = false;
+            }
+            else if (IsEngineBusy())
+            {
+                btn_Run.IsEnabled = false;
+                lbl_Status.Content = "An automation is being executed. Please wait until it completes.";
+                lbl_Status.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btn_Run.IsEnabled = true;
+            }
+        }
+
+        private bool IsEngineBusy()
+        {
+            _isEngineBusy = PipeProxy.Instance.IsEngineBusy();
+            return _isEngineBusy;
         }
     }
 }
