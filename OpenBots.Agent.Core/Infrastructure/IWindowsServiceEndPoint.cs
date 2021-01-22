@@ -1,4 +1,4 @@
-﻿using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Model;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
