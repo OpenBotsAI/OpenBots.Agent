@@ -1,4 +1,4 @@
-﻿using AgentEnums = OpenBots.Agent.Core.Enums;
+﻿using OpenBots.Agent.Client.Settings;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Core.Enums;
 using OpenBots.Core.IO;
@@ -7,11 +7,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using OpenBots.Agent.Client.Settings;
+using AgentEnums = OpenBots.Agent.Core.Enums;
 
 namespace OpenBots.Agent.Client.Forms
 {
@@ -36,7 +35,7 @@ namespace OpenBots.Agent.Client.Forms
             {
                 SinkType = SinkType.File.ToString(),
                 TracingLevel = LogEventLevel.Information.ToString(),
-                LoggingValue1 = Path.Combine(new EnvironmentSettings().GetEnvironmentVariable(), "Logs", "Attended Execution", "log.txt"),
+                LoggingValue1 = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(), "Logs", "Attended Execution", "log.txt"),
                 DNSHost = Dns.GetHostName(),
                 UserName = Environment.UserName
             };
@@ -122,7 +121,7 @@ namespace OpenBots.Agent.Client.Forms
                 RunTask();
         }
 
-        private async void RunTask()
+        private void RunTask()
         {
             string projectPackage = string.Empty;
             switch (_automationSource)
@@ -137,7 +136,7 @@ namespace OpenBots.Agent.Client.Forms
             }
 
             PipeProxy.Instance.TaskFinishedEvent += OnAttendedTaskFinished;
-            await Task.Run(() => PipeProxy.Instance.ExecuteAttendedTask(projectPackage, _connectionSettings, projectPackage.Equals(_lastTask)));
+            Task.Run(() => PipeProxy.Instance.ExecuteAttendedTask(projectPackage, _connectionSettings, projectPackage.Equals(_lastTask)));
 
             _isEngineBusy = true;
             UpdateRunButtonState();

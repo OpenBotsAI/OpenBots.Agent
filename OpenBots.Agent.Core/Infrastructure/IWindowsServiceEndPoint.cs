@@ -1,8 +1,7 @@
-﻿using System;
+﻿using OpenBots.Agent.Core.Model;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using OpenBots.Agent.Core.Model;
 
 namespace OpenBots.Agent.Core.Infrastructure
 {
@@ -18,27 +17,24 @@ namespace OpenBots.Agent.Core.Infrastructure
         ServerResponse DisconnectFromServer(ServerConnectionSettings settings);
 
         [OperationContract]
-        bool IsConnected();
+        bool IsConnected(string userName);
 
         [OperationContract]
         bool IsAlive();
 
         [OperationContract]
-        ServerConnectionSettings GetConnectionSettings();
-
-        [OperationContract]
-        void SetEnvironmentVariable(string environmentVariable, string settingsFilePath);
+        ServerConnectionSettings GetConnectionSettings(string userName);
 
         [OperationContract]
         ServerResponse PingServer(ServerConnectionSettings settings);
 
         [OperationContract]
-        bool IsEngineBusy();
+        bool IsEngineBusy(string userName);
 
         [OperationContract]
         Task<bool> ExecuteAttendedTask(string projectPath, ServerConnectionSettings settings, bool isServerAutomation);
 
         [OperationContract]
-        List<string> GetAutomations();
+        List<string> GetAutomations(string userName);
     }
 }

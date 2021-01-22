@@ -59,9 +59,25 @@ namespace OpenBots.Agent.Client
             return agentSettings;
         }
 
+        public void CreateAgentSettingsFile()
+        {
+            try
+            {
+                if (!File.Exists(GetSettingsFilePath()))
+                {
+                    var agentSettings = GetDefaultSettings();
+                    UpdateSettings(agentSettings);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public string GetSettingsFilePath()
         {
-            return Path.Combine(EnvironmentSettings.EnvironmentVariableValue, EnvironmentSettings.SettingsFileName);
+            return Path.Combine(EnvironmentSettings.EnvironmentVariablePath, EnvironmentSettings.SettingsFileName);
         }
     }
 }

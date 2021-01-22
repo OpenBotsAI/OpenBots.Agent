@@ -13,28 +13,44 @@ namespace OpenBots.Service.Client
 {
     public class WindowsServiceEndPoint : IWindowsServiceEndPoint
     {
-        
+
         public ServerResponse ConnectToServer(ServerConnectionSettings settings)
         {
+            // User validation check
+            if (!ServiceController.Instance.IsValidUser(settings.UserName))
+                return InvalidUserResponse();
+
             return HttpServerClient.Instance.Connect(settings);
         }
 
         public ServerResponse DisconnectFromServer(ServerConnectionSettings settings)
         {
+            // User validation check
+            if (!ServiceController.Instance.IsValidUser(settings.UserName))
+                return InvalidUserResponse();
+
             return HttpServerClient.Instance.Disconnect(settings);
         }
 
         public async Task<bool> ExecuteAttendedTask(string projectPackage, ServerConnectionSettings settings, bool isServerAutomation)
         {
-            var task = Task.Factory.StartNew(()=>
+            var task = Task.Factory.StartNew(() =>
             {
+                // User validation check
+                if (!ServiceController.Instance.IsValidUser(settings.UserName))
+                    return false;
+
                 return AttendedExecutionManager.Instance.ExecuteTask(projectPackage, settings, isServerAutomation);
             });
             return await task.ConfigureAwait(false);
         }
 
-        public List<string> GetAutomations()
+        public List<string> GetAutomations(string userName)
         {
+            // User validation check
+            if (!ServiceController.Instance.IsValidUser(userName))
+                return null;
+
             var automationsList = AutomationsAPIManager.GetAutomations(AuthAPIManager.Instance);
             var automationPackageNames = automationsList.Items.Where(
                 a => !string.IsNullOrEmpty(a.OriginalPackageName) &&
@@ -44,8 +60,12 @@ namespace OpenBots.Service.Client
             return automationPackageNames;
         }
 
-        public ServerConnectionSettings GetConnectionSettings()
+        public ServerConnectionSettings GetConnectionSettings(string userName)
         {
+            // User validation check
+            if (!ServiceController.Instance.IsValidUser(userName))
+                return null;
+
             return ConnectionSettingsManager.Instance?.ConnectionSettings ?? null;
         }
 
@@ -54,13 +74,21 @@ namespace OpenBots.Service.Client
             return ServiceController.Instance.IsServiceAlive;
         }
 
-        public bool IsConnected()
+        public bool IsConnected(string userName)
         {
+            // User validation check
+            if (!ServiceController.Instance.IsValidUser(userName))
+                return false;
+
             return ConnectionSettingsManager.Instance?.ConnectionSettings?.ServerConnectionEnabled ?? false;
         }
 
-        public bool IsEngineBusy()
+        public bool IsEngineBusy(string userName)
         {
+            // User validation check
+            if (!ServiceController.Instance.IsValidUser(userName))
+                return true;
+
             return ExecutionManager.Instance?.IsEngineBusy ?? false;
         }
 
@@ -68,6 +96,10 @@ namespace OpenBots.Service.Client
         {
             try
             {
+                // User validation check
+                if (!ServiceController.Instance.IsValidUser(serverSettings.UserName))
+                    return InvalidUserResponse();
+
                 AuthAPIManager.Instance.Initialize(serverSettings);
                 var serverIP = AuthAPIManager.Instance.Ping();
                 AuthAPIManager.Instance.UnInitialize();
@@ -84,16 +116,9 @@ namespace OpenBots.Service.Client
             }
         }
 
-        public void SetEnvironmentVariable(string environmentVariable, string settingsFilePath)
+        private ServerResponse InvalidUserResponse()
         {
-            try
-            {
-                Environment.SetEnvironmentVariable(environmentVariable, settingsFilePath, EnvironmentVariableTarget.Machine);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return new ServerResponse(null, null, $"Environment variable doesn't exist for the current user.");
         }
     }
 }

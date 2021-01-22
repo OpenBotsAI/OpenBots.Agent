@@ -2,12 +2,11 @@
 using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Client.Forms;
 using OpenBots.Agent.Client.Forms.Dialog;
+using OpenBots.Agent.Client.Settings;
 using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.UserRegistry;
 using OpenBots.Agent.Core.Utilities;
-using CoreEnums = OpenBots.Core.Enums;
-using OpenBots.Core.IO;
 using OpenBots.Core.Settings;
 using Serilog.Events;
 using System;
@@ -22,7 +21,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Drawing = System.Drawing;
 using SystemForms = System.Windows.Forms;
-using OpenBots.Agent.Client.Settings;
 
 namespace OpenBots.Agent.Client
 {
@@ -70,7 +68,7 @@ namespace OpenBots.Agent.Client
 
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-            SetConfigFilePath();
+            SetAgentEnvironment();
             LoadConnectionSettings();
             UpdateConnectButtonState();
             UpdateSaveButtonState();
@@ -199,48 +197,56 @@ namespace OpenBots.Agent.Client
                 UpdateUIOnConnect();
             }
         }
-        private void SetConfigFilePath()
+
+        private void SetEnvironmentVariable()
         {
-            if (_isServiceUP)
+            try
             {
-                try
+                // Get Agent's User Environment Variable Path
+                string environmentVariablePath = SettingsManager.Instance.EnvironmentSettings.GetEnvironmentVariablePath();
+
+                // Create Environment Variable if It doesn't exist 
+                // or Update the existing one it is not valid for the current user
+                if (string.IsNullOrEmpty(environmentVariablePath) ||
+                    !SettingsManager.Instance.EnvironmentSettings.isValidEnvironmentVariable())
                 {
-                    // Get Settings file Path from Environment Variable
-                    string environmentVariableValue = SettingsManager.Instance.EnvironmentSettings.GetEnvironmentVariable();
-
-                    // Create Environment Variable if It doesn't exist
-                    if (string.IsNullOrEmpty(environmentVariableValue))
-                    {
-                        string settingsFilePath = SettingsManager.Instance.GetSettingsFilePath();
-
-                        if (File.Exists(settingsFilePath))
-                            PipeProxy.Instance.SetConfigFilePath(SettingsManager.Instance.EnvironmentSettings.EnvironmentVariableName, settingsFilePath);
-                        else
-                            throw new FileNotFoundException($"OpenBots Agent Settings file not found at \"{settingsFilePath}\"");
-                    }
-                }
-                catch (FileNotFoundException ex)
-                {
-                    ShowErrorDialog("An error occurred while setting up OpenBots Agent Settings File Path " +
-                        "to an Environment Variable.",
-                        "",
-                        ex.Message,
-                        Application.Current.MainWindow);
-
-                    ShutDownApplication();
-                }
-                catch (Exception ex)
-                {
-                    ShowErrorDialog("An error occurred while setting up OpenBots.Settings (Config File Path)" +
-                        $"to an Environment Variable. Please add the variable \"{SettingsManager.Instance.EnvironmentSettings.EnvironmentVariableName}\" " +
-                        "manually and re-run the agent.",
-                        "",
-                        ex.Message,
-                        Application.Current.MainWindow);
-
-                    ShutDownApplication();
+                    SettingsManager.Instance.EnvironmentSettings.SetEnvironmentVariablePath();
                 }
             }
+            catch (Exception ex)
+            {
+                ShowErrorDialog("An error occurred while setting up OpenBots Agent Environment Variable.",
+                    "",
+                    ex.Message,
+                    Application.Current.MainWindow);
+
+                ShutDownApplication();
+            }
+        }
+
+        private void CreateSettingsFile()
+        {
+            try
+            {
+                SettingsManager.Instance.CreateAgentSettingsFile();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorDialog("An error occurred while creating Agent's Settings File.",
+                        "",
+                        ex.Message,
+                        Application.Current.MainWindow);
+
+                ShutDownApplication();
+            }
+        }
+        private void SetAgentEnvironment()
+        {
+            // Set Environment Variable Path
+            SetEnvironmentVariable();
+
+            // Create Settings File
+            CreateSettingsFile();
         }
         private void ConnectToService()
         {
@@ -443,7 +449,7 @@ namespace OpenBots.Agent.Client
 
                                 OnSetRegistryKeys();
                             }
-                            else if(_registryManager.ServerURL != ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL)
+                            else if (_registryManager.ServerURL != ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL)
                             {
                                 // If Server URL is updated
                                 _registryManager.ServerURL = ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL;
@@ -715,8 +721,8 @@ namespace OpenBots.Agent.Client
         }
         private void OnClick_NugetFeedManager(object sender, RoutedEventArgs e)
         {
-            string appDataPath = new EnvironmentSettings().GetEnvironmentVariable();
-            string appSettingsDirPath = Directory.GetParent(appDataPath).Parent.FullName;
+            string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath();
+            string appSettingsDirPath = Directory.GetParent(appDataPath).FullName;
 
             var appSettings = new ApplicationSettings().GetOrCreateApplicationSettings(appSettingsDirPath);
             var packageSourcesDT = appSettings.ClientSettings.PackageSourceDT;
@@ -733,7 +739,7 @@ namespace OpenBots.Agent.Client
         }
         private void OnClick_AttendedExecution(object sender, RoutedEventArgs e)
         {
-            if(_attendedExecutionWindow == null)
+            if (_attendedExecutionWindow == null)
             {
                 _attendedExecutionWindow = new AttendedExecution();
                 _attendedExecutionWindow.Closed += (s, args) => this._attendedExecutionWindow = null;
@@ -782,6 +788,6 @@ namespace OpenBots.Agent.Client
         }
         #endregion
 
-        
+
     }
 }
