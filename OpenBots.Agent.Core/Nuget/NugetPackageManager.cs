@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
@@ -18,8 +17,10 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using AgentProject = OpenBots.Agent.Core.Project;
 
 namespace OpenBots.Agent.Core.Nuget
 {
@@ -141,9 +142,9 @@ namespace OpenBots.Agent.Core.Nuget
 
             return filteredPaths;
         }
-        public static async Task InstallPackage(string packageId, string version, Dictionary<string, string> projectDependenciesDict, string userName)
+        public static async Task InstallPackage(string packageId, string version, Dictionary<string, string> projectDependenciesDict, string userName, string installDefaultSource = "")
         {
-            string appSettingsDirPath = Directory.GetParent(new EnvironmentSettings().GetEnvironmentVariablePath(userName)).Parent.FullName;
+            string appSettingsDirPath = Directory.GetParent(new EnvironmentSettings().GetEnvironmentVariablePath(userName)).FullName;
             var appSettings = new ApplicationSettings().GetOrCreateApplicationSettings(appSettingsDirPath);
             var packageSources = appSettings.ClientSettings.PackageSourceDT.AsEnumerable()
                             .Where(r => r.Field<string>(0) == "True")
@@ -157,10 +158,18 @@ namespace OpenBots.Agent.Core.Nuget
             using (var cacheContext = new SourceCacheContext())
             {
                 var repositories = new List<SourceRepository>();
-                foreach (DataRow row in packageSources.Rows)
+                if (!string.IsNullOrEmpty(installDefaultSource))
                 {
-                    var sourceRepo = sourceRepositoryProvider.CreateRepository(new PackageSource(row[2].ToString(), row[1].ToString(), true));
+                    var sourceRepo = sourceRepositoryProvider.CreateRepository(new PackageSource(installDefaultSource, "Default Packages Source", true));
                     repositories.Add(sourceRepo);
+                }
+                else
+                {
+                    foreach (DataRow row in packageSources.Rows)
+                    {
+                        var sourceRepo = sourceRepositoryProvider.CreateRepository(new PackageSource(row[2].ToString(), row[1].ToString(), true));
+                        repositories.Add(sourceRepo);
+                    }
                 }
 
                 var availablePackages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
@@ -245,6 +254,33 @@ namespace OpenBots.Agent.Core.Nuget
                     {
                         throw excep;
                     }
+                }
+            }
+        }
+
+        public static void SetupFirstTimeUserEnvironment(string userName, string productVersion)
+        {
+            // TODO : Update this method according to the Studio when OpenBots.Core 1.3.0 is available on Gallery
+            string packagesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OpenBots Inc", "packages");
+            string programPackagesSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "OpenBots Inc", "packages", productVersion);
+
+            if (!Directory.Exists(programPackagesSource))
+                throw new DirectoryNotFoundException($"Unable to find '{programPackagesSource}'.");
+
+            var commandVersion = Regex.Matches(productVersion, @"\d+\.\d+\.\d+")[0].ToString();
+
+            Dictionary<string, string> dependencies = AgentProject.Project.DefaultCommands.ToDictionary(x => $"OpenBots.Commands.{x}", x => commandVersion);
+
+            List<string> existingOpenBotsPackages = Directory.GetDirectories(packagesPath)
+                                                             .Where(x => new DirectoryInfo(x).Name.StartsWith("OpenBots"))
+                                                             .ToList();
+            foreach (var dep in dependencies)
+            {
+                string existingDirectory = existingOpenBotsPackages.Where(x => new DirectoryInfo(x).Name.StartsWith(dep.Key))
+                                                                   .FirstOrDefault();
+                if (existingDirectory == null)
+                {
+                    Task.Run(async () => await InstallPackage(dep.Key, dep.Value, new Dictionary<string, string>(), userName, programPackagesSource)).GetAwaiter().GetResult();
                 }
             }
         }

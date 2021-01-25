@@ -5,6 +5,7 @@ using OpenBots.Agent.Client.Forms.Dialog;
 using OpenBots.Agent.Client.Settings;
 using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.UserRegistry;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Core.Settings;
@@ -29,7 +30,6 @@ namespace OpenBots.Agent.Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private ServerConnectionSettings _connectionSettings;
         private OpenBotsSettings _agentSettings;
         private Timer _serviceHeartBeat;
         private RegistryManager _registryManager;
@@ -68,13 +68,13 @@ namespace OpenBots.Agent.Client
 
         private void OnLoad(object sender, RoutedEventArgs e)
         {
+            this.WindowState = WindowState.Minimized;
+
             SetAgentEnvironment();
             LoadConnectionSettings();
             UpdateConnectButtonState();
             UpdateSaveButtonState();
             StartServiceHeartBeatTimer();
-
-            this.WindowState = WindowState.Minimized;
         }
         private void OnUnload(object sender, RoutedEventArgs e)
         {
@@ -242,11 +242,25 @@ namespace OpenBots.Agent.Client
         }
         private void SetAgentEnvironment()
         {
+            MessageDialog messageDialog = new MessageDialog(
+                "Environment Setup",
+                "Please wait while the environment is being set up for the Agent.",
+                false);
+
+            messageDialog.Topmost = true;
+            messageDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            messageDialog.Show();
+
             // Set Environment Variable Path
             SetEnvironmentVariable();
 
             // Create Settings File
             CreateSettingsFile();
+
+            // Install Default Packages for the First Time
+            NugetPackageManager.SetupFirstTimeUserEnvironment(Environment.UserName, SystemForms.Application.ProductVersion);
+            messageDialog.CloseManually = true;
+            messageDialog.Close();
         }
         private void ConnectToService()
         {
@@ -764,7 +778,8 @@ namespace OpenBots.Agent.Client
 
                 MessageDialog messageDialog = new MessageDialog(
                     "Credentials Cleared",
-                    "OpenBots Agent Credentials have been cleared.");
+                    "OpenBots Agent Credentials have been cleared.",
+                    true);
 
                 messageDialog.Owner = Application.Current.MainWindow;
                 messageDialog.ShowDialog();
