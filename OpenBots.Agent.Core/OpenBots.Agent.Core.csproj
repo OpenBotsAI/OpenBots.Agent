@@ -214,7 +214,6 @@
     <Compile Include="Model\ServerConnectionSettings.cs" />
     <Compile Include="Model\ServerResponse.cs" />
     <Compile Include="Nuget\NugetPackageManager.cs" />
-    <Compile Include="Project\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserRegistry\RegistryKeys.cs" />
     <Compile Include="UserRegistry\RegistryManager.cs" />
