@@ -2,6 +2,7 @@
 using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Utilities;
+using OpenBots.Core.Model.EngineModel;
 using OpenBots.Engine;
 using OpenBots.Executor.Utilities;
 using Serilog.Core;
@@ -27,8 +28,9 @@ namespace OpenBots.Executor
 
         public void ExecuteScript(JobExecutionParams executionParams)
         {
-            var engine = new AutomationEngineInstance(GetLogger(executionParams), _container);
-            engine.ExecuteScriptSync(executionParams.MainFilePath, executionParams.ProjectDirectoryPath);
+            var engineContext = GetEngineContext(executionParams);
+            var engine = new AutomationEngineInstance(engineContext);
+            engine.ExecuteScriptSync();
         }
 
         private Logger GetLogger(JobExecutionParams executionParams)
@@ -58,6 +60,17 @@ namespace OpenBots.Executor
             }
 
             return logger;
+        }
+
+        private EngineContext GetEngineContext(JobExecutionParams executionParams)
+        {
+            return new EngineContext
+            {
+                FilePath = executionParams.MainFilePath,
+                ProjectPath = executionParams.ProjectDirectoryPath,
+                EngineLogger = GetLogger(executionParams),
+                Container = _container,
+            };
         }
     }
 }

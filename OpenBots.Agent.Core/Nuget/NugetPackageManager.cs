@@ -10,6 +10,9 @@ using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
 using NuGet.Versioning;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Core.Enums;
+using OpenBots.Core.IO;
+using OpenBots.Core.Project;
 using OpenBots.Core.Settings;
 using System;
 using System.Collections.Generic;
@@ -20,7 +23,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using AgentProject = OpenBots.Agent.Core.Project;
 
 namespace OpenBots.Agent.Core.Nuget
 {
@@ -57,7 +59,7 @@ namespace OpenBots.Agent.Core.Nuget
         {
             List<string> assemblyPaths = new List<string>();
             List<string> exceptionsList = new List<string>();
-            var dependencies = JsonConvert.DeserializeObject<Project.Project>(File.ReadAllText(configPath)).Dependencies;
+            var dependencies = JsonConvert.DeserializeObject<Project>(File.ReadAllText(configPath)).Dependencies;
 
             string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath(userName);
             string packagePath = Path.Combine(Directory.GetParent(appDataPath).FullName, "packages");
@@ -237,7 +239,7 @@ namespace OpenBots.Agent.Core.Nuget
         }
         public static void InstallProjectDependencies(string configPath, string userName)
         {
-            var dependencies = JsonConvert.DeserializeObject<Project.Project>(File.ReadAllText(configPath)).Dependencies;
+            var dependencies = JsonConvert.DeserializeObject<Project>(File.ReadAllText(configPath)).Dependencies;
             string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath(userName);
             string packagesFolderPath = Path.Combine(Directory.GetParent(appDataPath).FullName, "packages");
 
@@ -260,16 +262,15 @@ namespace OpenBots.Agent.Core.Nuget
 
         public static void SetupFirstTimeUserEnvironment(string userName, string productVersion)
         {
-            // TODO : Update this method according to the Studio when OpenBots.Core 1.3.0 is available on Gallery
-            string packagesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OpenBots Inc", "packages");
-            string programPackagesSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "OpenBots Inc", "packages", productVersion);
+            string packagesPath = Folders.GetFolder(FolderType.LocalAppDataPackagesFolder);
+            string programPackagesSource = Folders.GetFolder(FolderType.ProgramFilesPackagesFolder);
 
             if (!Directory.Exists(programPackagesSource))
                 throw new DirectoryNotFoundException($"Unable to find '{programPackagesSource}' during installation of commands packages.");
 
             var commandVersion = Regex.Matches(productVersion, @"\d+\.\d+\.\d+")[0].ToString();
 
-            Dictionary<string, string> dependencies = AgentProject.Project.DefaultCommands.ToDictionary(x => $"OpenBots.Commands.{x}", x => commandVersion);
+            Dictionary<string, string> dependencies = Project.DefaultCommands.ToDictionary(x => $"OpenBots.Commands.{x}", x => commandVersion);
 
             List<string> existingOpenBotsPackages = Directory.GetDirectories(packagesPath)
                                                              .Where(x => new DirectoryInfo(x).Name.StartsWith("OpenBots"))
