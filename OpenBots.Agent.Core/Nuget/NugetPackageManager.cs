@@ -265,7 +265,7 @@ namespace OpenBots.Agent.Core.Nuget
             string programPackagesSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "OpenBots Inc", "packages", productVersion);
 
             if (!Directory.Exists(programPackagesSource))
-                throw new DirectoryNotFoundException($"Unable to find '{programPackagesSource}'.");
+                throw new DirectoryNotFoundException($"Unable to find '{programPackagesSource}' during installation of commands packages.");
 
             var commandVersion = Regex.Matches(productVersion, @"\d+\.\d+\.\d+")[0].ToString();
 

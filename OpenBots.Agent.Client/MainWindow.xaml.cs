@@ -243,24 +243,39 @@ namespace OpenBots.Agent.Client
         private void SetAgentEnvironment()
         {
             MessageDialog messageDialog = new MessageDialog(
-                "Environment Setup",
-                "Please wait while the environment is being set up for the Agent.",
-                false);
+                        "Environment Setup",
+                        "Please wait while the environment is being set up for the Agent.",
+                        false);
+            try
+            {
+                messageDialog.Topmost = true;
+                messageDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                messageDialog.Show();
 
-            messageDialog.Topmost = true;
-            messageDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            messageDialog.Show();
+                // Set Environment Variable Path
+                SetEnvironmentVariable();
 
-            // Set Environment Variable Path
-            SetEnvironmentVariable();
+                // Create Settings File
+                CreateSettingsFile();
 
-            // Create Settings File
-            CreateSettingsFile();
+                // Install Default Packages for the First Time
+                NugetPackageManager.SetupFirstTimeUserEnvironment(Environment.UserName, SystemForms.Application.ProductVersion);
+                
+                messageDialog.CloseManually = true;
+                messageDialog.Close();
+            }
+            catch (Exception ex)
+            {
+                messageDialog.CloseManually = true;
+                messageDialog.Close();
 
-            // Install Default Packages for the First Time
-            NugetPackageManager.SetupFirstTimeUserEnvironment(Environment.UserName, SystemForms.Application.ProductVersion);
-            messageDialog.CloseManually = true;
-            messageDialog.Close();
+                ShowErrorDialog("An error occurred while setting up environment for the Agent.",
+                        "",
+                        ex.Message,
+                        Application.Current.MainWindow);
+
+                ShutDownApplication();
+            }
         }
         private void ConnectToService()
         {
