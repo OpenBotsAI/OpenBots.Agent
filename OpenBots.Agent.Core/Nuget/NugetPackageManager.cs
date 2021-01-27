@@ -270,7 +270,7 @@ namespace OpenBots.Agent.Core.Nuget
 
             var commandVersion = Regex.Matches(productVersion, @"\d+\.\d+\.\d+")[0].ToString();
 
-            Dictionary<string, string> dependencies = Project.DefaultCommands.ToDictionary(x => $"OpenBots.Commands.{x}", x => commandVersion);
+            Dictionary<string, string> dependencies = Project.DefaultCommandGroups.ToDictionary(x => $"OpenBots.Commands.{x}", x => commandVersion);
 
             List<string> existingOpenBotsPackages = Directory.GetDirectories(packagesPath)
                                                              .Where(x => new DirectoryInfo(x).Name.StartsWith("OpenBots"))

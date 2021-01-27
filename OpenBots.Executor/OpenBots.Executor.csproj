@@ -95,26 +95,26 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenBots.Engine.1.3.0\lib\net48\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Common, Version=5.8.0.6930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Core.1.3.0\lib\net48\NuGet.Common.dll</HintPath>
+    <Reference Include="NuGet.Common, Version=5.8.1.7021, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Common.5.8.1\lib\net472\NuGet.Common.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Configuration, Version=5.8.0.6930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Core.1.3.0\lib\net48\NuGet.Configuration.dll</HintPath>
+    <Reference Include="NuGet.Configuration, Version=5.8.1.7021, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Configuration.5.8.1\lib\net472\NuGet.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Frameworks, Version=5.8.0.6930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Core.1.3.0\lib\net48\NuGet.Frameworks.dll</HintPath>
+    <Reference Include="NuGet.Frameworks, Version=5.8.1.7021, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Frameworks.5.8.1\lib\net472\NuGet.Frameworks.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Packaging, Version=5.8.0.6930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Core.1.3.0\lib\net48\NuGet.Packaging.dll</HintPath>
+    <Reference Include="NuGet.Packaging, Version=5.8.1.7021, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Packaging.5.8.1\lib\net472\NuGet.Packaging.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Protocol, Version=5.8.0.6930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Core.1.3.0\lib\net48\NuGet.Protocol.dll</HintPath>
+    <Reference Include="NuGet.Protocol, Version=5.8.1.7021, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Protocol.5.8.1\lib\net472\NuGet.Protocol.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Resolver, Version=5.8.0.6930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Core.1.3.0\lib\net48\NuGet.Resolver.dll</HintPath>
+    <Reference Include="NuGet.Resolver, Version=5.8.1.7021, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Resolver.5.8.1\lib\net472\NuGet.Resolver.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Versioning, Version=5.8.0.6930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Core.1.3.0\lib\net48\NuGet.Versioning.dll</HintPath>
+    <Reference Include="NuGet.Versioning, Version=5.8.1.7021, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Versioning.5.8.1\lib\net472\NuGet.Versioning.dll</HintPath>
     </Reference>
     <Reference Include="OpenBots.Core, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenBots.Engine.1.3.0\lib\net48\OpenBots.Core.dll</HintPath>
@@ -158,10 +158,12 @@
       <HintPath>..\packages\OpenBots.Engine.1.3.0\lib\net48\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Engine.1.3.0\lib\net48\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.5.0.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenBots.Engine.1.3.0\lib\net48\System.Memory.dll</HintPath>
     </Reference>
@@ -177,6 +179,7 @@
     <Reference Include="System.Security.Cryptography.ProtectedData, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenBots.Core.1.3.0\lib\net48\System.Security.Cryptography.ProtectedData.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenBots.Engine.1.3.0\lib\net48\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -292,11 +295,11 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Geckofx45.45.0.34\build\Geckofx45.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Geckofx45.45.0.34\build\Geckofx45.targets'))" />
-    <Error Condition="!Exists('..\packages\Selenium.WebDriver.ChromeDriver.87.0.4280.8800\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.ChromeDriver.87.0.4280.8800\build\Selenium.WebDriver.ChromeDriver.targets'))" />
-    <Error Condition="!Exists('..\packages\Selenium.WebDriver.GeckoDriver.0.28.0\build\Selenium.WebDriver.GeckoDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.GeckoDriver.0.28.0\build\Selenium.WebDriver.GeckoDriver.targets'))" />
     <Error Condition="!Exists('..\packages\Selenium.WebDriver.IEDriver.3.150.1.2\build\Selenium.WebDriver.IEDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.IEDriver.3.150.1.2\build\Selenium.WebDriver.IEDriver.targets'))" />
+    <Error Condition="!Exists('..\packages\Selenium.WebDriver.GeckoDriver.0.29.0\build\Selenium.WebDriver.GeckoDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.GeckoDriver.0.29.0\build\Selenium.WebDriver.GeckoDriver.targets'))" />
+    <Error Condition="!Exists('..\packages\Selenium.WebDriver.ChromeDriver.88.0.4324.9600\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.ChromeDriver.88.0.4324.9600\build\Selenium.WebDriver.ChromeDriver.targets'))" />
   </Target>
-  <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.87.0.4280.8800\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.87.0.4280.8800\build\Selenium.WebDriver.ChromeDriver.targets')" />
-  <Import Project="..\packages\Selenium.WebDriver.GeckoDriver.0.28.0\build\Selenium.WebDriver.GeckoDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.GeckoDriver.0.28.0\build\Selenium.WebDriver.GeckoDriver.targets')" />
   <Import Project="..\packages\Selenium.WebDriver.IEDriver.3.150.1.2\build\Selenium.WebDriver.IEDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.IEDriver.3.150.1.2\build\Selenium.WebDriver.IEDriver.targets')" />
+  <Import Project="..\packages\Selenium.WebDriver.GeckoDriver.0.29.0\build\Selenium.WebDriver.GeckoDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.GeckoDriver.0.29.0\build\Selenium.WebDriver.GeckoDriver.targets')" />
+  <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.88.0.4324.9600\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.88.0.4324.9600\build\Selenium.WebDriver.ChromeDriver.targets')" />
 </Project>
