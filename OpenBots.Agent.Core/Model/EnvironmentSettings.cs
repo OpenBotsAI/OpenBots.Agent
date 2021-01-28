@@ -63,7 +63,8 @@ namespace OpenBots.Agent.Core.Model
 
                 var regView = (Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
                 var baseKey = RegistryKey.OpenBaseKey(RegistryHive.Users, regView);
-                var environmentKey = baseKey.OpenSubKey($"{sidString}\\Environment");
+                var baseKeyPath = Path.Combine(sidString, "Environment");
+                var environmentKey = baseKey.OpenSubKey(baseKeyPath);
                 var envVariable = environmentKey.GetValue(EnvironmentVariableName);
                 if(envVariable != null)
                 {
@@ -72,7 +73,7 @@ namespace OpenBots.Agent.Core.Model
                 }
                 return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
