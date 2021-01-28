@@ -263,7 +263,7 @@ namespace OpenBots.Agent.Core.Nuget
         public static void SetupFirstTimeUserEnvironment(string userName, string productVersion)
         {
             string packagesPath = Folders.GetFolder(FolderType.LocalAppDataPackagesFolder);
-            string programPackagesSource = Folders.GetFolder(FolderType.ProgramFilesPackagesFolder);
+            string programPackagesSource = Path.Combine(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName, "packages", productVersion);
 
             if (!Directory.Exists(programPackagesSource))
                 throw new DirectoryNotFoundException($"Unable to find '{programPackagesSource}' during installation of commands packages.");
