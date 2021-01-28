@@ -70,10 +70,12 @@ namespace OpenBots.Agent.Core.Model
                     EnvironmentVariableValue = envVariable.ToString();
                     return true;
                 }
+                File.WriteAllText(@"C:\AgentLogs.txt", $"Environment Variable not found for the User '{userName}' with sId '{sidString}'");
                 return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                File.WriteAllText(@"C:\AgentLogs.txt", $"Exception occurred while finding user '{userName}':\n {ex.ToString()}");
                 return false;
             }
         }
