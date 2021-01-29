@@ -361,7 +361,7 @@ namespace OpenBots.Agent.Client
         {
             MachineInfo machineInfoDialog = new MachineInfo(
                     ConnectionSettingsManager.Instance.ConnectionSettings.WhoAmI,
-                    ConnectionSettingsManager.Instance.ConnectionSettings.DNSHost,
+                    ConnectionSettingsManager.Instance.ConnectionSettings.MachineName,
                     ConnectionSettingsManager.Instance.ConnectionSettings.MACAddress,
                     ConnectionSettingsManager.Instance.ConnectionSettings.IPAddress,
                     serverIP);

@@ -36,7 +36,7 @@ namespace OpenBots.Service.Client.Manager.API
 
             try
             {
-                return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.DNSHost, serverSettings.MACAddress);
+                return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.DNSHost, serverSettings.MACAddress);
+                    return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
                 }
                 throw ex;
             }
@@ -56,7 +56,7 @@ namespace OpenBots.Service.Client.Manager.API
             AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
             try
             {
-                return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.DNSHost, serverSettings.MACAddress);
+                return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.DNSHost, serverSettings.MACAddress);
+                    return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
                 }
                 throw ex;
             }

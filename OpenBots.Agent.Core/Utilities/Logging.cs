@@ -45,7 +45,7 @@ namespace OpenBots.Agent.Core.Utilities
                         .Enrich.WithProperty("AutomationName", executionParams.AutomationName)
                         .Enrich.WithProperty("AgentId", executionParams.ServerConnectionSettings.AgentId)
                         .Enrich.WithProperty("AgentName", executionParams.ServerConnectionSettings.AgentName)
-                        .Enrich.WithProperty("MachineName", executionParams.ServerConnectionSettings.DNSHost)
+                        .Enrich.WithProperty("MachineName", executionParams.ServerConnectionSettings.MachineName)
                         .MinimumLevel.ControlledBy(levelSwitch)
                         .WriteTo.Http(uri)
                         .CreateLogger();
