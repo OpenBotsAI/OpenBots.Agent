@@ -120,7 +120,7 @@ namespace OpenBots.Service.Client.Server
         public ServerResponse Connect(ServerConnectionSettings connectionSettings)
         {
             // Initialize File Logger for Debug Purpose
-            FileLogger.Instance.Initialize(new EnvironmentSettings().GetEnvironmentVariablePath(connectionSettings.UserName));
+            FileLogger.Instance.Initialize(new EnvironmentSettings().GetEnvironmentVariablePath(connectionSettings.DNSHost, connectionSettings.UserName));
 
             // Log Event
             FileLogger.Instance.LogEvent("Connect", "Attempt to connect to the Server");

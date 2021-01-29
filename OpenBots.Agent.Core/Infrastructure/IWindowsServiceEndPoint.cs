@@ -17,24 +17,24 @@ namespace OpenBots.Agent.Core.Infrastructure
         ServerResponse DisconnectFromServer(ServerConnectionSettings settings);
 
         [OperationContract]
-        bool IsConnected(string userName);
+        bool IsConnected(string domainName, string userName);
 
         [OperationContract]
         bool IsAlive();
 
         [OperationContract]
-        ServerConnectionSettings GetConnectionSettings(string userName);
+        ServerConnectionSettings GetConnectionSettings(string domainName, string userName);
 
         [OperationContract]
         ServerResponse PingServer(ServerConnectionSettings settings);
 
         [OperationContract]
-        bool IsEngineBusy(string userName);
+        bool IsEngineBusy(string domainName, string userName);
 
         [OperationContract]
         Task<bool> ExecuteAttendedTask(string projectPath, ServerConnectionSettings settings, bool isServerAutomation);
 
         [OperationContract]
-        List<string> GetAutomations(string userName);
+        List<string> GetAutomations(string domainName, string userName);
     }
 }

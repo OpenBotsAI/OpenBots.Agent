@@ -19,12 +19,12 @@ namespace OpenBots.Agent.Core.Model
         {
         }
 
-        public string GetEnvironmentVariablePath(string userName = "")
+        public string GetEnvironmentVariablePath(string domainName = "", string userName = "")
         {
             try
             {
                 if(!string.IsNullOrEmpty(userName))
-                    return EnvironmentVariableExists(userName) ? EnvironmentVariableValue : string.Empty;
+                    return EnvironmentVariableExists(domainName, userName) ? EnvironmentVariableValue : string.Empty;
 
                 return Environment.GetEnvironmentVariable(EnvironmentVariableName, EnvironmentVariableTarget.User);
             }
@@ -53,11 +53,11 @@ namespace OpenBots.Agent.Core.Model
         }
 
         // To check if the required environment variable exists for the given User Name
-        public bool EnvironmentVariableExists(string userName)
+        public bool EnvironmentVariableExists(string domainName, string userName)
         {
             try
             {
-                NTAccount f = new NTAccount(userName);
+                NTAccount f = new NTAccount(domainName, userName);
                 SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
                 string sidString = s.ToString();
 

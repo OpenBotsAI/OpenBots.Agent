@@ -17,7 +17,7 @@ namespace OpenBots.Service.Client
         public ServerResponse ConnectToServer(ServerConnectionSettings settings)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(settings.UserName))
+            if (!ServiceController.Instance.IsValidUser(settings.DNSHost, settings.UserName))
                 return InvalidUserResponse();
 
             return HttpServerClient.Instance.Connect(settings);
@@ -26,7 +26,7 @@ namespace OpenBots.Service.Client
         public ServerResponse DisconnectFromServer(ServerConnectionSettings settings)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(settings.UserName))
+            if (!ServiceController.Instance.IsValidUser(settings.DNSHost, settings.UserName))
                 return InvalidUserResponse();
 
             return HttpServerClient.Instance.Disconnect(settings);
@@ -37,7 +37,7 @@ namespace OpenBots.Service.Client
             var task = Task.Factory.StartNew(() =>
             {
                 // User validation check
-                if (!ServiceController.Instance.IsValidUser(settings.UserName))
+                if (!ServiceController.Instance.IsValidUser(settings.DNSHost, settings.UserName))
                     return false;
 
                 return AttendedExecutionManager.Instance.ExecuteTask(projectPackage, settings, isServerAutomation);
@@ -45,10 +45,10 @@ namespace OpenBots.Service.Client
             return await task.ConfigureAwait(false);
         }
 
-        public List<string> GetAutomations(string userName)
+        public List<string> GetAutomations(string domainName, string userName)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(userName))
+            if (!ServiceController.Instance.IsValidUser(domainName, userName))
                 return null;
 
             var automationsList = AutomationsAPIManager.GetAutomations(AuthAPIManager.Instance);
@@ -60,10 +60,10 @@ namespace OpenBots.Service.Client
             return automationPackageNames;
         }
 
-        public ServerConnectionSettings GetConnectionSettings(string userName)
+        public ServerConnectionSettings GetConnectionSettings(string domainName, string userName)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(userName))
+            if (!ServiceController.Instance.IsValidUser(domainName, userName))
                 return null;
 
             return ConnectionSettingsManager.Instance?.ConnectionSettings ?? null;
@@ -74,19 +74,19 @@ namespace OpenBots.Service.Client
             return ServiceController.Instance.IsServiceAlive;
         }
 
-        public bool IsConnected(string userName)
+        public bool IsConnected(string domainName, string userName)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(userName))
+            if (!ServiceController.Instance.IsValidUser(domainName, userName))
                 return false;
 
             return ConnectionSettingsManager.Instance?.ConnectionSettings?.ServerConnectionEnabled ?? false;
         }
 
-        public bool IsEngineBusy(string userName)
+        public bool IsEngineBusy(string domainName, string userName)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(userName))
+            if (!ServiceController.Instance.IsValidUser(domainName, userName))
                 return true;
 
             return ExecutionManager.Instance?.IsEngineBusy ?? false;
@@ -97,7 +97,7 @@ namespace OpenBots.Service.Client
             try
             {
                 // User validation check
-                if (!ServiceController.Instance.IsValidUser(serverSettings.UserName))
+                if (!ServiceController.Instance.IsValidUser(serverSettings.DNSHost, serverSettings.UserName))
                     return InvalidUserResponse();
 
                 AuthAPIManager.Instance.Initialize(serverSettings);

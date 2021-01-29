@@ -143,18 +143,19 @@ namespace OpenBots.Service.Client.Manager.Execution
             FileLogger.Instance.LogEvent("Job Execution", "Attempt to download/retrieve Automation");
 
             string connectedUserName = ConnectionSettingsManager.Instance.ConnectionSettings.UserName;
+            string userDomainName = ConnectionSettingsManager.Instance.ConnectionSettings.DNSHost;
 
             // Download Automation and Extract Files and Return File Paths of ProjectConfig and MainScript 
             automation.AutomationEngine = string.IsNullOrEmpty(automation.AutomationEngine) ? "OpenBots" : automation.AutomationEngine;
             string configFilePath;
-            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, connectedUserName, out configFilePath);
+            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, userDomainName, connectedUserName, out configFilePath);
 
             // Install Project Dependencies
             List<string> assembliesList = null;
             if (automation.AutomationEngine == "OpenBots")
             {
-                NugetPackageManager.InstallProjectDependencies(configFilePath, connectedUserName);
-                assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath, connectedUserName);
+                NugetPackageManager.InstallProjectDependencies(configFilePath, userDomainName, connectedUserName);
+                assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath, userDomainName, connectedUserName);
             }
 
             // Log Event

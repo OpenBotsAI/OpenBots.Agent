@@ -166,7 +166,7 @@ namespace OpenBots.Agent.Client
                     AgentPassword = _registryManager.AgentPassword ?? string.Empty,  // Load Password from User Registry
                     SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? SinkType.File.ToString() : _agentSettings.SinkType,
                     TracingLevel = string.IsNullOrEmpty(_agentSettings.TracingLevel) ? LogEventLevel.Information.ToString() : _agentSettings.TracingLevel,
-                    DNSHost = Dns.GetHostName(),
+                    DNSHost = Dns.GetHostName().ToLower() == Environment.UserDomainName.ToLower() ? Dns.GetHostName() : Environment.UserDomainName,
                     UserName = Environment.UserName,
                     WhoAmI = WindowsIdentity.GetCurrent().Name.ToLower(),
                     MachineName = Environment.MachineName,
@@ -260,7 +260,7 @@ namespace OpenBots.Agent.Client
 
                 // Install Default Packages for the First Time
                 NugetPackageManager.SetupFirstTimeUserEnvironment(Environment.UserName, SystemForms.Application.ProductVersion);
-                
+
                 messageDialog.CloseManually = true;
                 messageDialog.Close();
             }

@@ -12,12 +12,12 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(Automation automation, string userName, out string configFilePath)
+        public static string DownloadAndExtractAutomation(Automation automation, string domainName, string userName, out string configFilePath)
         {
             configFilePath = "";
 
             // Check if (Root) Automations Directory Exists (under User's AppData Folder), If Not create it
-            var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(userName), "Automations",
+            var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(domainName, userName), "Automations",
                 automation.AutomationEngine);
 
             if (!Directory.Exists(automationsDirectory))

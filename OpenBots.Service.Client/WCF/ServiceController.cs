@@ -52,9 +52,9 @@ namespace OpenBots.Service.Client
             _serviceHost.Open();
         }
 
-        public bool IsValidUser(string userName)
+        public bool IsValidUser(string domainName, string userName)
         {
-            return _environmentSettings.EnvironmentVariableExists(userName);
+            return _environmentSettings.EnvironmentVariableExists(domainName, userName);
         }
     }
 }

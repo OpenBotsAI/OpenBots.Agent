@@ -48,7 +48,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                         // projectPackage is "Name" of the Project Package here
                         string filter = $"originalPackageName eq '{projectPackage}'";
                         var automation = AutomationsAPIManager.GetAutomations(AuthAPIManager.Instance, filter).Items.FirstOrDefault();
-                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, settings.UserName, out configFilePath);
+                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, settings.DNSHost, settings.UserName, out configFilePath);
                     }
                     else
                     {
@@ -57,8 +57,8 @@ namespace OpenBots.Service.Client.Manager.Execution
                     }
                     
                     projectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath);
-                    NugetPackageManager.InstallProjectDependencies(configFilePath, settings.UserName);
-                    var assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath, settings.UserName);
+                    NugetPackageManager.InstallProjectDependencies(configFilePath, settings.DNSHost, settings.UserName);
+                    var assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath, settings.DNSHost, settings.UserName);
 
                     RunAttendedAutomation(mainScriptFilePath, settings, assembliesList);
 

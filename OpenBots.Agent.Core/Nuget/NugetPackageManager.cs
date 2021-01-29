@@ -55,13 +55,13 @@ namespace OpenBots.Agent.Core.Nuget
             }
         }
 
-        public static List<string> LoadPackageAssemblies(string configPath, string userName)
+        public static List<string> LoadPackageAssemblies(string configPath, string domainName, string userName)
         {
             List<string> assemblyPaths = new List<string>();
             List<string> exceptionsList = new List<string>();
             var dependencies = JsonConvert.DeserializeObject<Project>(File.ReadAllText(configPath)).Dependencies;
 
-            string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath(userName);
+            string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath(domainName, userName);
             string packagePath = Path.Combine(Directory.GetParent(appDataPath).FullName, "packages");
             var packagePathResolver = new PackagePathResolver(packagePath);
 
@@ -144,9 +144,9 @@ namespace OpenBots.Agent.Core.Nuget
 
             return filteredPaths;
         }
-        public static async Task InstallPackage(string packageId, string version, Dictionary<string, string> projectDependenciesDict, string userName, string installDefaultSource = "")
+        public static async Task InstallPackage(string packageId, string version, Dictionary<string, string> projectDependenciesDict, string domainName, string userName, string installDefaultSource = "")
         {
-            string appSettingsDirPath = Directory.GetParent(new EnvironmentSettings().GetEnvironmentVariablePath(userName)).FullName;
+            string appSettingsDirPath = Directory.GetParent(new EnvironmentSettings().GetEnvironmentVariablePath(domainName, userName)).FullName;
             var appSettings = new ApplicationSettings().GetOrCreateApplicationSettings(appSettingsDirPath);
             var packageSources = appSettings.ClientSettings.PackageSourceDT.AsEnumerable()
                             .Where(r => r.Field<string>(0) == "True")
@@ -237,10 +237,10 @@ namespace OpenBots.Agent.Core.Nuget
                 }
             }
         }
-        public static void InstallProjectDependencies(string configPath, string userName)
+        public static void InstallProjectDependencies(string configPath, string domainName, string userName)
         {
             var dependencies = JsonConvert.DeserializeObject<Project>(File.ReadAllText(configPath)).Dependencies;
-            string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath(userName);
+            string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath(domainName, userName);
             string packagesFolderPath = Path.Combine(Directory.GetParent(appDataPath).FullName, "packages");
 
             // Install Project Dependencies
@@ -250,7 +250,7 @@ namespace OpenBots.Agent.Core.Nuget
                 {
                     try
                     {
-                        Task.Run(async () => await InstallPackage(dependency.Key, dependency.Value, new Dictionary<string, string>(), userName)).GetAwaiter().GetResult();
+                        Task.Run(async () => await InstallPackage(dependency.Key, dependency.Value, new Dictionary<string, string>(), domainName, userName)).GetAwaiter().GetResult();
                     }
                     catch (Exception excep)
                     {
