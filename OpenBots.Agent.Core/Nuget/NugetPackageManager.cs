@@ -260,7 +260,7 @@ namespace OpenBots.Agent.Core.Nuget
             }
         }
 
-        public static void SetupFirstTimeUserEnvironment(string userName, string productVersion)
+        public static void SetupFirstTimeUserEnvironment(string domainName, string userName, string productVersion)
         {
             string packagesPath = Folders.GetFolder(FolderType.LocalAppDataPackagesFolder);
             string programPackagesSource = Path.Combine(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName, "packages", productVersion);
@@ -281,7 +281,7 @@ namespace OpenBots.Agent.Core.Nuget
                                                                    .FirstOrDefault();
                 if (existingDirectory == null)
                 {
-                    Task.Run(async () => await InstallPackage(dep.Key, dep.Value, new Dictionary<string, string>(), userName, programPackagesSource)).GetAwaiter().GetResult();
+                    Task.Run(async () => await InstallPackage(dep.Key, dep.Value, new Dictionary<string, string>(), domainName, userName, programPackagesSource)).GetAwaiter().GetResult();
                 }
             }
         }

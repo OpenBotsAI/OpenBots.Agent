@@ -259,7 +259,7 @@ namespace OpenBots.Agent.Client
                 CreateSettingsFile();
 
                 // Install Default Packages for the First Time
-                NugetPackageManager.SetupFirstTimeUserEnvironment(Environment.UserName, SystemForms.Application.ProductVersion);
+                NugetPackageManager.SetupFirstTimeUserEnvironment(Environment.UserDomainName, Environment.UserName, SystemForms.Application.ProductVersion);
 
                 messageDialog.CloseManually = true;
                 messageDialog.Close();
