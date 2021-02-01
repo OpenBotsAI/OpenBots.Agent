@@ -204,6 +204,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 new List<Operation>()
                 {
                     new Operation(){ Op = "replace", Path = "/endTime", Value = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")},
+                    new Operation(){ Op = "replace", Path = "/isSuccessful", Value = true}
                 });
 
             // Delete Automation Files Directory
