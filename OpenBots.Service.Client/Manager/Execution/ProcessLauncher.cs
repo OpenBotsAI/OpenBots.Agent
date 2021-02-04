@@ -1,5 +1,4 @@
 ﻿using OpenBots.Agent.Core.Model;
-using OpenBots.Service.API.Model;
 using System;
 using System.Runtime.InteropServices;
 

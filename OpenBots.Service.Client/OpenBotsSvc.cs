@@ -1,4 +1,4 @@
-﻿using OpenBots.Service.Client.Server;
+﻿using OpenBots.Service.Client.Manager.Agents;
 using System.ServiceProcess;
 
 namespace OpenBots.Service.Client
@@ -12,14 +12,13 @@ namespace OpenBots.Service.Client
 
         protected override void OnStart(string[] args)
         {
-            HttpServerClient.Instance.Initialize();
-            ServiceController.Instance.StartService();
+            ServiceController.StartService();
         }
 
         protected override void OnStop()
         {
-            ServiceController.Instance.StopService();
-            HttpServerClient.Instance.UnInitialize();
+            ServiceController.StopService();
+            AgentsManager.UninitializeAgents();
         }
     }
 }

@@ -1,41 +1,21 @@
 ﻿using OpenBots.Agent.Core.Model;
-using System;
 using System.ServiceModel;
 
 namespace OpenBots.Service.Client
 {
-    public class ServiceController
+    public static class ServiceController
     {
-        private ServiceHost _serviceHost;
-        private EnvironmentSettings _environmentSettings;
-        public static ServiceController Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new ServiceController();
+        private static ServiceHost _serviceHost;
+        private static EnvironmentSettings _environmentSettings;
 
-                return instance;
-            }
-        }
-        private static ServiceController instance;
-
-        private ServiceController()
+        public static bool IsServiceAlive()
         {
-            _environmentSettings = new EnvironmentSettings();
+            return _serviceHost != null && _serviceHost.State == CommunicationState.Opened;
         }
 
-        public Boolean IsServiceAlive
+        public static void StopService()
         {
-            get
-            {
-                return _serviceHost != null && _serviceHost.State == CommunicationState.Opened;
-            }
-        }
-
-        public void StopService()
-        {
-            if (IsServiceAlive)
+            if (IsServiceAlive())
             {
                 _serviceHost.Close();
                 _serviceHost = null;
@@ -45,14 +25,18 @@ namespace OpenBots.Service.Client
                 _serviceHost = null;
             }
         }
-        public void StartService()
+        public static void StartService()
         {
+            // Starting WCF Service
             StopService();
             _serviceHost = new ServiceHost(typeof(WindowsServiceEndPoint));
             _serviceHost.Open();
+
+            // Initializing EnvironmentSettings
+            _environmentSettings = new EnvironmentSettings();
         }
 
-        public bool IsValidUser(string domainName, string userName)
+        public static bool IsValidUser(string domainName, string userName)
         {
             return _environmentSettings.EnvironmentVariableExists(domainName, userName);
         }

@@ -2,53 +2,48 @@
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.Utilities;
-using OpenBots.Service.API.Model;
+using OpenBots.Service.API.Client;
 using OpenBots.Service.Client.Manager.API;
-using OpenBots.Service.Client.Server;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
     public class AttendedExecutionManager
     {
-        public static AttendedExecutionManager Instance
+        private ExecutionManager _executionManager;
+        private AuthAPIManager _authAPIManager;
+        public AttendedExecutionManager(ExecutionManager executionManager, AuthAPIManager authAPIManager)
         {
-            get
-            {
-                if (instance == null)
-                    instance = new AttendedExecutionManager();
+            _executionManager = executionManager;
+            _authAPIManager = authAPIManager;
 
-                return instance;
-            }
+            _authAPIManager.ConfigurationUpdatedEvent += OnConfigurationUpdate; 
         }
-        private static AttendedExecutionManager instance;
 
-        private AttendedExecutionManager()
+        private void OnConfigurationUpdate(object sender, Configuration configuration)
         {
+            _authAPIManager.Configuration = configuration;
         }
 
         public bool ExecuteTask(string projectPackage, ServerConnectionSettings settings, bool isServerAutomation)
         {
-            if (!ExecutionManager.Instance.IsEngineBusy)
+            if (!_executionManager.IsEngineBusy)
             {
                 bool isSuccessful;
                 string projectDirectoryPath, configFilePath, mainScriptFilePath;
                 projectDirectoryPath = configFilePath = mainScriptFilePath = string.Empty;
                 try
                 {
-                    ExecutionManager.Instance.SetEngineStatus(true);
+                    _executionManager.SetEngineStatus(true);
                     if (isServerAutomation)
                     {
                         // projectPackage is "Name" of the Project Package here
                         string filter = $"originalPackageName eq '{projectPackage}'";
-                        var automation = AutomationsAPIManager.GetAutomations(AuthAPIManager.Instance, filter).Items.FirstOrDefault();
-                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(automation, settings.DNSHost, settings.UserName, out configFilePath);
+                        var automation = AutomationsAPIManager.GetAutomations(_authAPIManager, filter).Items.FirstOrDefault();
+                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, settings.DNSHost, settings.UserName, out configFilePath);
                     }
                     else
                     {
@@ -74,7 +69,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                     if (Directory.Exists(projectDirectoryPath))
                         Directory.Delete(projectDirectoryPath, true);
 
-                    ExecutionManager.Instance.SetEngineStatus(false);
+                    _executionManager.SetEngineStatus(false);
                 }
 
                 return isSuccessful;

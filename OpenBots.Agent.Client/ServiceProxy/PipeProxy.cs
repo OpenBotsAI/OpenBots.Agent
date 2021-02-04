@@ -1,6 +1,7 @@
 ﻿using OpenBots.Agent.Client.Settings;
 using OpenBots.Agent.Core.Infrastructure;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -48,6 +49,11 @@ namespace OpenBots.Agent.Client
             {
                 return false;
             }
+        }
+
+        public bool AddAgent()
+        {
+            return _pipeProxy.AddAgent(SystemInfo.GetUserDomainName(), Environment.UserName);
         }
 
         public ServerResponse ConnectToServer()

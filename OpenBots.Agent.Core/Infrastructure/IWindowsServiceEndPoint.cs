@@ -9,6 +9,9 @@ namespace OpenBots.Agent.Core.Infrastructure
     public interface IWindowsServiceEndPoint
     {
         [OperationContract]
+        bool AddAgent(string domainName, string userName);
+
+        [OperationContract]
         [ServiceKnownType(typeof(ServerConnectionSettings))]
         ServerResponse ConnectToServer(ServerConnectionSettings settings);
 

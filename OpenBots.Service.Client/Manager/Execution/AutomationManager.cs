@@ -12,7 +12,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(Automation automation, string domainName, string userName, out string configFilePath)
+        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string domainName, string userName, out string configFilePath)
         {
             configFilePath = "";
 
@@ -36,7 +36,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             if (!File.Exists(processNugetFilePath))
             {
                 // Download Automation by Id
-                var apiResponse = AutomationsAPIManager.ExportAutomation(AuthAPIManager.Instance, automation.Id.ToString());
+                var apiResponse = AutomationsAPIManager.ExportAutomation(authAPIManager, automation.Id.ToString());
 
                 // Write Downloaded(.nuget) file in the Automation Directory
                 File.WriteAllBytes(processNugetFilePath, apiResponse.Data.ToArray());
