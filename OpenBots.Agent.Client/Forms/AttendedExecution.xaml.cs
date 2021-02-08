@@ -1,12 +1,12 @@
 using OpenBots.Agent.Client.Settings;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Utilities;
 using OpenBots.Core.Enums;
 using OpenBots.Core.IO;
 using Serilog.Events;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -36,7 +36,7 @@ namespace OpenBots.Agent.Client.Forms
                 SinkType = SinkType.File.ToString(),
                 TracingLevel = LogEventLevel.Information.ToString(),
                 LoggingValue1 = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(), "Logs", "Attended Execution", "log.txt"),
-                DNSHost = Dns.GetHostName(),
+                DNSHost = SystemInfo.GetUserDomainName(),
                 UserName = Environment.UserName
             };
         }
@@ -138,13 +138,13 @@ namespace OpenBots.Agent.Client.Forms
             PipeProxy.Instance.TaskFinishedEvent += OnAttendedTaskFinished;
             Task.Run(() => PipeProxy.Instance.ExecuteAttendedTask(projectPackage, _connectionSettings, projectPackage.Equals(_lastTask)));
 
-            _isEngineBusy = true;
-            UpdateRunButtonState();
-
             // Update Execution Status
             string executionStatus = "Running {0} . . .";
             lbl_Status.Content = string.Format(executionStatus, $"\"{_lastTask}\"");
             lbl_Status.Visibility = Visibility.Visible;
+
+            _isEngineBusy = true;
+            btn_Run.IsEnabled = false;
         }
 
         private void OnAttendedTaskFinished(object sender, bool isJobSuccessful)
