@@ -4,7 +4,6 @@ using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.ServiceModel;
 
 namespace OpenBots.Agent.Client
@@ -75,7 +74,7 @@ namespace OpenBots.Agent.Client
         {
             try
             {
-                return _pipeProxy.IsConnected(ConnectionSettingsManager.Instance.ConnectionSettings.DNSHost, Environment.UserName);
+                return _pipeProxy.IsConnected(SystemInfo.GetUserDomainName(), Environment.UserName);
             }
             catch (Exception)
             {
@@ -85,7 +84,7 @@ namespace OpenBots.Agent.Client
 
         public ServerConnectionSettings GetConnectionHistory()
         {
-            return _pipeProxy.GetConnectionSettings(ConnectionSettingsManager.Instance.ConnectionSettings.DNSHost, Environment.UserName);
+            return _pipeProxy.GetConnectionSettings(SystemInfo.GetUserDomainName(), Environment.UserName);
         }
 
         public ServerResponse PingServer()
@@ -108,12 +107,12 @@ namespace OpenBots.Agent.Client
 
         public List<string> GetAutomations()
         {
-            return _pipeProxy.GetAutomations(ConnectionSettingsManager.Instance.ConnectionSettings.DNSHost, Environment.UserName);
+            return _pipeProxy.GetAutomations(SystemInfo.GetUserDomainName(), Environment.UserName);
         }
 
         public bool IsEngineBusy()
         {
-            return _pipeProxy.IsEngineBusy(ConnectionSettingsManager.Instance.ConnectionSettings.DNSHost, Environment.UserName);
+            return _pipeProxy.IsEngineBusy(SystemInfo.GetUserDomainName(), Environment.UserName);
         }
     }
 }

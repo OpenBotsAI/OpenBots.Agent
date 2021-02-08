@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace OpenBots.Agent.Core.Enums
+﻿namespace OpenBots.Agent.Core.Enums
 {
     public enum JobStatus
     {

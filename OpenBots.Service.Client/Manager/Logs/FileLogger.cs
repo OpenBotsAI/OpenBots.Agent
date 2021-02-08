@@ -1,7 +1,6 @@
 ﻿using OpenBots.Agent.Core.Utilities;
 using Serilog.Core;
 using Serilog.Events;
-using System;
 using System.IO;
 
 namespace OpenBots.Service.Client.Manager.Logs

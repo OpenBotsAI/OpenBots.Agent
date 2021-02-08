@@ -3,7 +3,6 @@ using OpenBots.Service.API.Client;
 using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.HeartBeat;
 using OpenBots.Service.Client.Manager.Hub;
-using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
 using System;
 using System.Timers;

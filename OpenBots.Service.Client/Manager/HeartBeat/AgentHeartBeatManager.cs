@@ -1,5 +1,4 @@
 ﻿using OpenBots.Agent.Core.Enums;
-using OpenBots.Agent.Core.Model;
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;

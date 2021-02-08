@@ -2,10 +2,8 @@
 using OpenBots.Core.Command;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using OpenBots.Core.Settings;
 
 namespace OpenBots.Executor.Utilities
 {

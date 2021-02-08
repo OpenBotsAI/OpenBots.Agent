@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
@@ -9,7 +8,6 @@ using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.HeartBeat;
-using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,6 @@
 ﻿using OpenBots.Agent.Core.Infrastructure;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Service.Client.Manager.Agents;
-using OpenBots.Service.Client.Manager.Execution;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
