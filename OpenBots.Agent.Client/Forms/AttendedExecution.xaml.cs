@@ -48,6 +48,10 @@ namespace OpenBots.Agent.Client.Forms
 
             // Published Projects Directory Watcher
             var publishedProjectsDir = Folders.GetFolder(FolderType.PublishedFolder);
+
+            if (!Directory.Exists(publishedProjectsDir))
+                Directory.CreateDirectory(publishedProjectsDir);
+
             _publishedProjectsWatcher.Path = publishedProjectsDir;
             _publishedProjectsWatcher.Filter = "*.nupkg";
             _publishedProjectsWatcher.Changed += new FileSystemEventHandler(OnFileChanged);

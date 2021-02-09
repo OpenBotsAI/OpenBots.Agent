@@ -77,6 +77,10 @@ namespace OpenBots.Agent.Client
 
         public string GetSettingsFilePath()
         {
+            // If "...\OpenBots Inc\OpenBots Agent\" Directory doesn't exist
+            if (!Directory.Exists(EnvironmentSettings.EnvironmentVariablePath))
+                Directory.CreateDirectory(EnvironmentSettings.EnvironmentVariablePath);
+
             return Path.Combine(EnvironmentSettings.EnvironmentVariablePath, EnvironmentSettings.SettingsFileName);
         }
     }
