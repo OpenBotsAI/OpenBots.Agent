@@ -3,7 +3,9 @@ using OpenBots.Service.API.Client;
 using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.Execution;
 using OpenBots.Service.Client.Manager.HeartBeat;
+using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,7 @@ namespace OpenBots.Service.Client.Manager.Agents
         private AgentHeartBeatManager _agentHeartBeatManager;
         private JobsPolling _jobsPolling;
         private AttendedExecutionManager _attendedExecutionManager;
+        private FileLogger _fileLogger;
 
         public Agent()
         {
@@ -25,6 +28,7 @@ namespace OpenBots.Service.Client.Manager.Agents
             _agentHeartBeatManager = new AgentHeartBeatManager();
             _jobsPolling = new JobsPolling(_agentHeartBeatManager);
             _attendedExecutionManager = new AttendedExecutionManager(_jobsPolling.ExecutionManager, _authAPIManager);
+            _fileLogger = new FileLogger();
 
             _connectionSettingsManager.ConnectionSettingsUpdatedEvent += OnConnectionSettingsUpdate;
             _authAPIManager.ConfigurationUpdatedEvent += OnConfigurationUpdate;
@@ -36,10 +40,10 @@ namespace OpenBots.Service.Client.Manager.Agents
         public ServerResponse Connect(ServerConnectionSettings connectionSettings)
         {
             // Initialize File Logger for Debug Purpose
-            //FileLogger.Instance.Initialize(new EnvironmentSettings().GetEnvironmentVariablePath(connectionSettings.DNSHost, connectionSettings.UserName));
+            _fileLogger.Initialize(new EnvironmentSettings().GetEnvironmentVariablePath(connectionSettings.DNSHost, connectionSettings.UserName));
 
-            //// Log Event
-            //FileLogger.Instance.LogEvent("Connect", "Attempt to connect to the Server");
+            // Log Event
+            _fileLogger.LogEvent("Connect", "Attempt to connect to the Server");
 
             _connectionSettingsManager.ConnectionSettings = connectionSettings;
 
@@ -78,8 +82,8 @@ namespace OpenBots.Service.Client.Manager.Agents
                 errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? ex.Message;
 
                 // Log Event (Error)
-                //FileLogger.Instance.LogEvent("Connect", $"Error occurred while connecting to the Server; " +
-                //    $"Error Code = {errorCode}; Error Message = {errorMessage}", LogEventLevel.Error);
+                _fileLogger.LogEvent("Connect", $"Error occurred while connecting to the Server; " +
+                    $"Error Code = {errorCode}; Error Message = {errorMessage}", LogEventLevel.Error);
 
                 // Send Response to Agent
                 return new ServerResponse(null, errorCode, errorMessage);
@@ -88,7 +92,7 @@ namespace OpenBots.Service.Client.Manager.Agents
         public ServerResponse Disconnect(ServerConnectionSettings connectionSettings)
         {
             // Log Event
-            //FileLogger.Instance.LogEvent("Disconnect", "Attempt to disconnect from the Server");
+            _fileLogger.LogEvent("Disconnect", "Attempt to disconnect from the Server");
 
             try
             {
@@ -115,8 +119,8 @@ namespace OpenBots.Service.Client.Manager.Agents
                 var errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? ex.Message;
 
                 // Log Event (Error)
-                //FileLogger.Instance.LogEvent("Disconnect", $"Error occurred while disconnecting from the Server; " +
-                //    $"Error Code = {errorCode}; Error Message = {errorMessage}", LogEventLevel.Error);
+                _fileLogger.LogEvent("Disconnect", $"Error occurred while disconnecting from the Server; " +
+                    $"Error Code = {errorCode}; Error Message = {errorMessage}", LogEventLevel.Error);
 
                 // Form Server Response
                 return new ServerResponse(null, errorCode, errorMessage);
@@ -179,10 +183,10 @@ namespace OpenBots.Service.Client.Manager.Agents
         public void StartServerCommunication()
         {
             // Start Heartbeat Timer
-            _agentHeartBeatManager.StartHeartBeatTimer(_connectionSettingsManager, _authAPIManager);
+            _agentHeartBeatManager.StartHeartBeatTimer(_connectionSettingsManager, _authAPIManager, _fileLogger);
 
             // Start Jobs Polling
-            _jobsPolling.StartJobsPolling(_connectionSettingsManager, _authAPIManager);
+            _jobsPolling.StartJobsPolling(_connectionSettingsManager, _authAPIManager, _fileLogger);
         }
         public void StopServerCommunication()
         {

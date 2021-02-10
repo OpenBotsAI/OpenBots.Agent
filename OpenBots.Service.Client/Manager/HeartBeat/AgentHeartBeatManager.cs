@@ -2,7 +2,9 @@
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
+using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
+using Serilog.Events;
 using System;
 using System.Timers;
 
@@ -13,6 +15,7 @@ namespace OpenBots.Service.Client.Manager.HeartBeat
         private Timer _heartbeatTimer;
         private AuthAPIManager _authAPIManager;
         private ConnectionSettingsManager _connectionSettingsManager;
+        private FileLogger _fileLogger;
         public AgentHeartbeat Heartbeat { get; set; }
 
         public event EventHandler ServerConnectionLostEvent;
@@ -22,10 +25,11 @@ namespace OpenBots.Service.Client.Manager.HeartBeat
             Heartbeat = new AgentHeartbeat();
         }
 
-        private void Initialize(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager)
+        private void Initialize(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
         {
             _connectionSettingsManager = connectionSettingsManager;
             _authAPIManager = authAPIManager;
+            _fileLogger = fileLogger;
             _authAPIManager.ConfigurationUpdatedEvent += OnConfigurationUpdate;
         }
 
@@ -35,9 +39,9 @@ namespace OpenBots.Service.Client.Manager.HeartBeat
                 _authAPIManager.ConfigurationUpdatedEvent -= OnConfigurationUpdate;
         }
 
-        public void StartHeartBeatTimer(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager)
+        public void StartHeartBeatTimer(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
         {
-            Initialize(connectionSettingsManager, authAPIManager);
+            Initialize(connectionSettingsManager, authAPIManager, fileLogger);
 
             if (_connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled)
             {
@@ -63,6 +67,8 @@ namespace OpenBots.Service.Client.Manager.HeartBeat
             {
                 _heartbeatTimer.Enabled = false;
                 _heartbeatTimer.Elapsed -= Heartbeat_Elapsed;
+
+                UnInitialize();
             }
         }
 
@@ -88,7 +94,7 @@ namespace OpenBots.Service.Client.Manager.HeartBeat
             }
             catch (Exception ex)
             {
-                //FileLogger.Instance.LogEvent("HeartBeat", $"Status Code: {statusCode} || Exception: {ex.ToString()}", LogEventLevel.Error);
+                _fileLogger.LogEvent("HeartBeat", $"Status Code: {statusCode} || Exception: {ex.ToString()}", LogEventLevel.Error);
                 _connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled = false;
                 _connectionSettingsManager.UpdateConnectionSettings(_connectionSettingsManager.ConnectionSettings);
 

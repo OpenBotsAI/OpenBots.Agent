@@ -8,7 +8,9 @@ using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.HeartBeat;
+using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +30,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         private ConnectionSettingsManager _connectionSettingsManager;
         private AuthAPIManager _authAPIManager;
         private AgentHeartBeatManager _agentHeartBeatManager;
+        private FileLogger _fileLogger;
 
         public JobsQueueManager JobsQueueManager { get; set; }
         public event EventHandler JobFinishedEvent;
@@ -38,9 +41,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             _agentHeartBeatManager = agentHeartBeatManager;
         }
 
-        public void StartNewJobsCheckTimer(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager)
+        public void StartNewJobsCheckTimer(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
         {
-            Initialize(connectionSettingsManager, authAPIManager);
+            Initialize(connectionSettingsManager, authAPIManager, fileLogger);
 
             //handle for reinitialization
             if (_newJobsCheckTimer != null)
@@ -80,8 +83,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             catch (Exception ex)
             {
                 // Log Event
-                //FileLogger.Instance.LogEvent("Job Execution", $"Error occurred while executing the job; ErrorMessage = {ex.ToString()}",
-                //    LogEventLevel.Error);
+                _fileLogger.LogEvent("Job Execution", $"Error occurred while executing the job; ErrorMessage = {ex.ToString()}",
+                    LogEventLevel.Error);
 
                 try
                 {
@@ -108,10 +111,8 @@ namespace OpenBots.Service.Client.Manager.Execution
                 catch (Exception exception)
                 {
                     // Log Event
-                    //FileLogger.Instance.LogEvent("Job Execution", $"Error occurred while updating status on job failure; " +
-                    //    $"ErrorMessage = {exception}", LogEventLevel.Error);
-
-                    throw;
+                    _fileLogger.LogEvent("Job Execution", $"Error occurred while updating status on job failure; " +
+                        $"ErrorMessage = {exception}", LogEventLevel.Error);
                 }
                 _isSuccessfulExecution = false;
                 _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Automation execution failed";
@@ -122,13 +123,13 @@ namespace OpenBots.Service.Client.Manager.Execution
         private void ExecuteJob()
         {
             // Log Event
-            //FileLogger.Instance.LogEvent("Job Execution", "Job execution started");
+            _fileLogger.LogEvent("Job Execution", "Job execution started");
 
             // Peek Job
             var job = JobsQueueManager.PeekJob();
 
             // Log Event
-            //FileLogger.Instance.LogEvent("Job Execution", "Attempt to fetch Automation Detail");
+            _fileLogger.LogEvent("Job Execution", "Attempt to fetch Automation Detail");
 
             // Get Automation Info
             var automation = AutomationsAPIManager.GetAutomation(_authAPIManager, job.AutomationId.ToString());
@@ -138,7 +139,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             _agentHeartBeatManager.Heartbeat.LastReportedWork = automation.Name;
 
             // Log Event
-            //FileLogger.Instance.LogEvent("Job Execution", "Attempt to download/retrieve Automation");
+            _fileLogger.LogEvent("Job Execution", "Attempt to download/retrieve Automation");
 
             string connectedUserName = _connectionSettingsManager.ConnectionSettings.UserName;
             string userDomainName = _connectionSettingsManager.ConnectionSettings.DNSHost;
@@ -157,7 +158,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
 
             // Log Event
-            //FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
+            _fileLogger.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
 
             // Create Automation Execution Log (Execution Started)
             _executionLog = ExecutionLogsAPIManager.CreateExecutionLog(_authAPIManager, new AutomationExecutionLog(
@@ -176,7 +177,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 });
 
             // Log Event
-            //FileLogger.Instance.LogEvent("Job Execution", "Attempt to execute process");
+            _fileLogger.LogEvent("Job Execution", "Attempt to execute process");
 
             AgentViewModel agent = AgentsAPIManager.GetAgent(_authAPIManager, job.AgentId.ToString());
             var userCredential = CredentialsAPIManager.GetCredentials(_authAPIManager, agent.CredentialId.ToString());
@@ -192,10 +193,10 @@ namespace OpenBots.Service.Client.Manager.Execution
             RunAutomation(job, automation, credential, mainScriptFilePath, assembliesList);
 
             // Log Event
-            //FileLogger.Instance.LogEvent("Job Execution", "Job execution completed");
+            _fileLogger.LogEvent("Job Execution", "Job execution completed");
 
             // Log Event
-            //FileLogger.Instance.LogEvent("Job Execution", "Attempt to update Job Status (Post-execution)");
+            _fileLogger.LogEvent("Job Execution", "Attempt to update Job Status (Post-execution)");
 
             // Update Job End Time
             JobsAPIManager.UpdateJobPatch(_authAPIManager, job.Id.ToString(),
@@ -217,7 +218,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobsAPIManager.UpdateJobStatus(_authAPIManager, job.AgentId.ToString(), job.Id.ToString(),
                 JobStatusType.Completed, new JobErrorViewModel());
 
-            //FileLogger.Instance.LogEvent("Job Execution", "Job status updated. Removing from queue.");
+            _fileLogger.LogEvent("Job Execution", "Job status updated. Removing from queue.");
 
             // Dequeue the Job
             JobsQueueManager.DequeueJob();
@@ -384,10 +385,11 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
         }
 
-        private void Initialize(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager)
+        private void Initialize(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
         {
             _connectionSettingsManager = connectionSettingsManager;
             _authAPIManager = authAPIManager;
+            _fileLogger = fileLogger;
 
             _connectionSettingsManager.ConnectionSettingsUpdatedEvent += OnConnectionSettingsUpdate;
             _authAPIManager.ConfigurationUpdatedEvent += OnConfigurationUpdate;
