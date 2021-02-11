@@ -115,7 +115,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                         $"ErrorMessage = {exception}", LogEventLevel.Error);
                 }
                 _isSuccessfulExecution = false;
-                _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Automation execution failed";
+                _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Job execution failed";
                 SetEngineStatus(false);
             }
         }
@@ -135,7 +135,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             var automation = AutomationsAPIManager.GetAutomation(_authAPIManager, job.AutomationId.ToString());
 
             // Update LastReportedMessage and LastReportedWork
-            _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Automation execution started";
+            _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Job execution started";
             _agentHeartBeatManager.Heartbeat.LastReportedWork = automation.Name;
 
             // Log Event
@@ -147,7 +147,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Download Automation and Extract Files and Return File Paths of ProjectConfig and MainScript 
             automation.AutomationEngine = string.IsNullOrEmpty(automation.AutomationEngine) ? "OpenBots" : automation.AutomationEngine;
             string configFilePath;
-            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, userDomainName, connectedUserName, out configFilePath);
+            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, job.Id.ToString(), userDomainName, connectedUserName, out configFilePath);
 
             // Install Project Dependencies
             List<string> assembliesList = null;
@@ -206,8 +206,8 @@ namespace OpenBots.Service.Client.Manager.Execution
                     new Operation(){ Op = "replace", Path = "/isSuccessful", Value = true}
                 });
 
-            // Delete Automation Files Directory
-            Directory.Delete(Path.GetDirectoryName(mainScriptFilePath), true);
+            // Delete Job Directory
+            Directory.Delete(Directory.GetParent(mainScriptFilePath).Parent.FullName, true);
 
             // Update Automation Execution Log (Execution Finished)
             _executionLog.CompletedOn = DateTime.UtcNow;
@@ -224,7 +224,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobsQueueManager.DequeueJob();
 
             _isSuccessfulExecution = true;
-            _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Automation execution completed";
+            _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Job execution completed";
         }
         private void RunAutomation(Job job, Automation automation, MachineCredential machineCredential,
             string mainScriptFilePath, List<string> projectDependencies)

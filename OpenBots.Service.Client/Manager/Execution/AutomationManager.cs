@@ -12,7 +12,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string domainName, string userName, out string configFilePath)
+        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string jobId, string domainName, string userName, out string configFilePath)
         {
             configFilePath = "";
 
@@ -24,7 +24,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 Directory.CreateDirectory(automationsDirectory);
 
             // Automation Directory
-            var processDirectoryPath = Path.Combine(automationsDirectory, automation.Id.ToString());
+            var processDirectoryPath = Path.Combine(automationsDirectory, string.IsNullOrEmpty(jobId) ? automation.Id.ToString() : jobId);
 
             // Create Automation Directory named as Automation Id If it doesn't exist
             if (!Directory.Exists(processDirectoryPath))
