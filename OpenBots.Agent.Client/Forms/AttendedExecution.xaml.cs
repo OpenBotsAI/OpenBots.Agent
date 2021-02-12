@@ -132,7 +132,7 @@ namespace OpenBots.Agent.Client.Forms
             {
                 case "Local":
                     _lastTask = cmb_PublishedProjects.SelectedItem.ToString();
-                    projectPackage = _automationProjects.Where(x => x.EndsWith(_lastTask)).FirstOrDefault();
+                    projectPackage = _automationProjects.Where(x => x.EndsWith($"\\{_lastTask}")).FirstOrDefault();
                     break;
                 case "Server":
                     projectPackage = _lastTask = cmb_PublishedProjects.SelectedItem.ToString();
