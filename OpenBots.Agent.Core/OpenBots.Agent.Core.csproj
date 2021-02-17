@@ -224,6 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="nuget.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
