@@ -24,13 +24,22 @@ namespace OpenBots.Service.Client.Manager.Execution
                 Directory.CreateDirectory(automationsDirectory);
 
             // Automation Directory
-            var processDirectoryPath = Path.Combine(automationsDirectory, string.IsNullOrEmpty(jobId) ? automation.Id.ToString() : jobId);
+            var processDirectoryPath = Path.Combine(automationsDirectory, automation.Id.ToString());
+            
 
             // Create Automation Directory named as Automation Id If it doesn't exist
             if (!Directory.Exists(processDirectoryPath))
                 Directory.CreateDirectory(processDirectoryPath);
+
+            // Automation Nuget Package Path
             var processNugetFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".nuget");
-            var processZipFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".zip");
+
+            // Execution Directory Path
+            var executionDirectoryPath = Path.Combine(processDirectoryPath, string.IsNullOrEmpty(jobId) ? new Guid().ToString() : jobId);
+            if (!Directory.Exists(executionDirectoryPath))
+                Directory.CreateDirectory(executionDirectoryPath);
+
+            var processZipFilePath = Path.Combine(executionDirectoryPath, automation.Name.ToString() + ".zip");
             
             // Check if Automation (.nuget) file exists if Not Download it
             if (!File.Exists(processNugetFilePath))
