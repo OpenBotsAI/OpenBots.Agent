@@ -105,7 +105,7 @@ namespace OpenBots.Agent.Client
             }
         }
 
-        public List<string> GetAutomations()
+        public ServerResponse GetAutomations()
         {
             return _pipeProxy.GetAutomations(SystemInfo.GetUserDomainName(), Environment.UserName);
         }

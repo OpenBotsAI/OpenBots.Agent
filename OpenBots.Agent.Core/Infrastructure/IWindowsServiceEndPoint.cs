@@ -38,6 +38,6 @@ namespace OpenBots.Agent.Core.Infrastructure
         Task<bool> ExecuteAttendedTask(string projectPath, ServerConnectionSettings settings, bool isServerAutomation);
 
         [OperationContract]
-        List<string> GetAutomations(string domainName, string userName);
+        ServerResponse GetAutomations(string domainName, string userName);
     }
 }

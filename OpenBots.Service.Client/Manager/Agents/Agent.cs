@@ -127,15 +127,31 @@ namespace OpenBots.Service.Client.Manager.Agents
             }
         }
 
-        public List<string> GetAutomations()
+        public ServerResponse GetAutomations()
         {
-            var automationsList = AutomationsAPIManager.GetAutomations(_authAPIManager);
-            var automationPackageNames = automationsList.Items.Where(
-                a => !string.IsNullOrEmpty(a.OriginalPackageName) &&
-                a.OriginalPackageName.EndsWith(".nupkg") &&
-                a.AutomationEngine.Equals("OpenBots")
-                ).Select(a => a.OriginalPackageName).ToList();
-            return automationPackageNames;
+            try
+            {
+                var apiResponse = AutomationsAPIManager.GetAutomations(_authAPIManager);
+                var automationPackageNames = apiResponse.Data.Items.Where(
+                    a => !string.IsNullOrEmpty(a.OriginalPackageName) &&
+                    a.OriginalPackageName.EndsWith(".nupkg") &&
+                    a.AutomationEngine.Equals("OpenBots")
+                    ).Select(a => a.OriginalPackageName).ToList();
+                return new ServerResponse(automationPackageNames, apiResponse.StatusCode.ToString());
+            }
+            catch (Exception ex)
+            {
+                var errorCode = ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty;
+                var errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? ex.Message;
+
+                // Log Event (Error)
+                _fileLogger.LogEvent("Get Automations", $"Error occurred while getting automations from the Server; " +
+                    $"Error Code = {errorCode}; Error Message = {errorMessage}", LogEventLevel.Error);
+
+                // Form Server Response
+                return new ServerResponse(null, errorCode, errorMessage);
+            }
+
         }
         public ServerConnectionSettings GetConnectionSettings()
         {

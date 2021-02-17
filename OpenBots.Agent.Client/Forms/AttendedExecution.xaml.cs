@@ -5,6 +5,7 @@ using OpenBots.Core.Enums;
 using OpenBots.Core.IO;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -184,10 +185,21 @@ namespace OpenBots.Agent.Client.Forms
             if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
             {
                 // Fetch Server Automations
-                var automationNames = PipeProxy.Instance.GetAutomations();
+                var serverResponse = PipeProxy.Instance.GetAutomations();
+                if(serverResponse.Data != null)
+                {
+                    cmb_PublishedProjects.ItemsSource = (List<string>)serverResponse.Data;
+                    cmb_PublishedProjects.SelectedIndex = 0;
+                }
+                else
+                {
+                    ErrorDialog errorDialog = new ErrorDialog("An error occurred while getting automations from the server.",
+                        serverResponse.StatusCode, 
+                        serverResponse.Message);
 
-                cmb_PublishedProjects.ItemsSource = automationNames;
-                cmb_PublishedProjects.SelectedIndex = 0;
+                    errorDialog.Owner = this;
+                    errorDialog.ShowDialog();
+                }
             }
         }
 

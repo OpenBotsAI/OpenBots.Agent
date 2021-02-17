@@ -50,13 +50,13 @@ namespace OpenBots.Service.Client.Manager.API
             }
         }
 
-        public static AutomationPaginatedList GetAutomations(AuthAPIManager apiManager, string filter = null)
+        public static ApiResponse<AutomationPaginatedList> GetAutomations(AuthAPIManager apiManager, string filter = null)
         {
             AutomationsApi automationsApi = new AutomationsApi(apiManager.Configuration);
 
             try
             {
-                return automationsApi.ApiV1AutomationsGet(filter);
+                return automationsApi.ApiV1AutomationsGetWithHttpInfo(filter);
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     automationsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return automationsApi.ApiV1AutomationsGet(filter);
+                    return automationsApi.ApiV1AutomationsGetWithHttpInfo(filter);
                 }
                 throw ex;
             }
