@@ -42,7 +42,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                     {
                         // projectPackage is "Name" of the Project Package here
                         string filter = $"originalPackageName eq '{projectPackage}'";
-                        var automation = AutomationsAPIManager.GetAutomations(_authAPIManager, filter).Items.FirstOrDefault();
+                        var automation = AutomationsAPIManager.GetAutomations(_authAPIManager, filter).Data?.Items.FirstOrDefault();
                         mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, string.Empty, settings.DNSHost, settings.UserName, out configFilePath);
                     }
                     else

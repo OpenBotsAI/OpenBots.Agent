@@ -1602,7 +1602,7 @@ namespace OpenBots.Service.API.Api
             //if (versionId != null) localVarFormParams.Add("VersionId", this.Configuration.ApiClient.ParameterToString(versionId)); // form parameter
             //if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
             //if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
-            //if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
+            //if (fileId != null) localVarFormParams.Add("FileId", this.Configuration.ApiClient.ParameterToString(fileId)); // form parameter
             //if (originalPackageName != null) localVarFormParams.Add("OriginalPackageName", this.Configuration.ApiClient.ParameterToString(originalPackageName)); // form parameter
             //if (publishedBy != null) localVarFormParams.Add("PublishedBy", this.Configuration.ApiClient.ParameterToString(publishedBy)); // form parameter
             //if (publishedOnUTC != null) localVarFormParams.Add("PublishedOnUTC", this.Configuration.ApiClient.ParameterToString(publishedOnUTC)); // form parameter
@@ -1688,7 +1688,7 @@ namespace OpenBots.Service.API.Api
             //if (versionId != null) localVarFormParams.Add("VersionId", this.Configuration.ApiClient.ParameterToString(versionId)); // form parameter
             //if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
             //if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
-            //if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
+            //if (fileId != null) localVarFormParams.Add("FileId", this.Configuration.ApiClient.ParameterToString(fileId)); // form parameter
             //if (originalPackageName != null) localVarFormParams.Add("OriginalPackageName", this.Configuration.ApiClient.ParameterToString(originalPackageName)); // form parameter
             //if (publishedBy != null) localVarFormParams.Add("PublishedBy", this.Configuration.ApiClient.ParameterToString(publishedBy)); // form parameter
             //if (publishedOnUTC != null) localVarFormParams.Add("PublishedOnUTC", this.Configuration.ApiClient.ParameterToString(publishedOnUTC)); // form parameter

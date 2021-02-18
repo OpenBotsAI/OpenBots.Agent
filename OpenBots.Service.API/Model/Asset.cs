@@ -36,7 +36,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="textValue">textValue.</param>
         /// <param name="numberValue">numberValue.</param>
         /// <param name="jsonValue">jsonValue.</param>
-        /// <param name="binaryObjectID">binaryObjectID.</param>
+        /// <param name="fileID">fileID.</param>
         /// <param name="name">name (required).</param>
         /// <param name="id">id.</param>
         /// <param name="isDeleted">isDeleted (default to false).</param>
@@ -47,7 +47,7 @@ namespace OpenBots.Service.API.Model
         /// <param name="timestamp">timestamp.</param>
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
-        public Asset(string type = default(string), string textValue = default(string), double? numberValue = default(double?), string jsonValue = default(string), Guid? binaryObjectID = default(Guid?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
+        public Asset(string type = default(string), string textValue = default(string), double? numberValue = default(double?), string jsonValue = default(string), Guid? fileID = default(Guid?), string name = default(string), Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string))
         {
             // to ensure "type" is required (not null)
             if (type == null)
@@ -70,7 +70,7 @@ namespace OpenBots.Service.API.Model
             this.TextValue = textValue;
             this.NumberValue = numberValue;
             this.JsonValue = jsonValue;
-            this.BinaryObjectID = binaryObjectID;
+            this.FileID = fileID;
             this.Id = id;
             // use default value if no "isDeleted" provided
             if (isDeleted == null)
@@ -115,10 +115,10 @@ namespace OpenBots.Service.API.Model
         public string JsonValue { get; set; }
 
         /// <summary>
-        /// Gets or Sets BinaryObjectID
+        /// Gets or Sets FileID
         /// </summary>
-        [DataMember(Name="binaryObjectID", EmitDefaultValue=false)]
-        public Guid? BinaryObjectID { get; set; }
+        [DataMember(Name="fileID", EmitDefaultValue=false)]
+        public Guid? FileID { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -192,7 +192,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  TextValue: ").Append(TextValue).Append("\n");
             sb.Append("  NumberValue: ").Append(NumberValue).Append("\n");
             sb.Append("  JsonValue: ").Append(JsonValue).Append("\n");
-            sb.Append("  BinaryObjectID: ").Append(BinaryObjectID).Append("\n");
+            sb.Append("  FileID: ").Append(FileID).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  IsDeleted: ").Append(IsDeleted).Append("\n");
@@ -258,9 +258,9 @@ namespace OpenBots.Service.API.Model
                     this.JsonValue.Equals(input.JsonValue))
                 ) && 
                 (
-                    this.BinaryObjectID == input.BinaryObjectID ||
-                    (this.BinaryObjectID != null &&
-                    this.BinaryObjectID.Equals(input.BinaryObjectID))
+                    this.FileID == input.FileID ||
+                    (this.FileID != null &&
+                    this.FileID.Equals(input.FileID))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -331,8 +331,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.NumberValue.GetHashCode();
                 if (this.JsonValue != null)
                     hashCode = hashCode * 59 + this.JsonValue.GetHashCode();
-                if (this.BinaryObjectID != null)
-                    hashCode = hashCode * 59 + this.BinaryObjectID.GetHashCode();
+                if (this.FileID != null)
+                    hashCode = hashCode * 59 + this.FileID.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Id != null)

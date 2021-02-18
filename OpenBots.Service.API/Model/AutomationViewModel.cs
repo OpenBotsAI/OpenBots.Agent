@@ -46,12 +46,12 @@ namespace OpenBots.Service.API.Model
         /// <param name="versionId">versionId.</param>
         /// <param name="status">status.</param>
         /// <param name="_file">_file.</param>
-        /// <param name="binaryObjectId">binaryObjectId.</param>
+        /// <param name="fileId">fileId.</param>
         /// <param name="originalPackageName">originalPackageName.</param>
         /// <param name="publishedBy">publishedBy.</param>
         /// <param name="publishedOnUTC">publishedOnUTC.</param>
         /// <param name="automationEngine">automationEngine.</param>
-        public AutomationViewModel(Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string), string name = default(string), int? versionNumber = default(int?), Guid? versionId = default(Guid?), string status = default(string), byte[] _file = default(byte[]), Guid? binaryObjectId = default(Guid?), string originalPackageName = default(string), string publishedBy = default(string), DateTime? publishedOnUTC = default(DateTime?), string automationEngine = default(string))
+        public AutomationViewModel(Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string), string name = default(string), int? versionNumber = default(int?), Guid? versionId = default(Guid?), string status = default(string), byte[] _file = default(byte[]), Guid? fileId = default(Guid?), string originalPackageName = default(string), string publishedBy = default(string), DateTime? publishedOnUTC = default(DateTime?), string automationEngine = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -83,7 +83,7 @@ namespace OpenBots.Service.API.Model
             this.VersionId = versionId;
             this.Status = status;
             this.File = _file;
-            this.BinaryObjectId = binaryObjectId;
+            this.FileId = fileId;
             this.OriginalPackageName = originalPackageName;
             this.PublishedBy = publishedBy;
             this.PublishedOnUTC = publishedOnUTC;
@@ -175,10 +175,10 @@ namespace OpenBots.Service.API.Model
         public byte[] File { get; set; }
 
         /// <summary>
-        /// Gets or Sets BinaryObjectId
+        /// Gets or Sets FileId
         /// </summary>
-        [DataMember(Name="binaryObjectId", EmitDefaultValue=false)]
-        public Guid? BinaryObjectId { get; set; }
+        [DataMember(Name= "fileId", EmitDefaultValue=false)]
+        public Guid? FileId { get; set; }
 
         /// <summary>
         /// Gets or Sets OriginalPackageName
@@ -226,7 +226,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  VersionId: ").Append(VersionId).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  File: ").Append(File).Append("\n");
-            sb.Append("  BinaryObjectId: ").Append(BinaryObjectId).Append("\n");
+            sb.Append("  FileId: ").Append(FileId).Append("\n");
             sb.Append("  OriginalPackageName: ").Append(OriginalPackageName).Append("\n");
             sb.Append("  PublishedBy: ").Append(PublishedBy).Append("\n");
             sb.Append("  PublishedOnUTC: ").Append(PublishedOnUTC).Append("\n");
@@ -336,9 +336,9 @@ namespace OpenBots.Service.API.Model
                     this.File.Equals(input.File))
                 ) && 
                 (
-                    this.BinaryObjectId == input.BinaryObjectId ||
-                    (this.BinaryObjectId != null &&
-                    this.BinaryObjectId.Equals(input.BinaryObjectId))
+                    this.FileId == input.FileId ||
+                    (this.FileId != null &&
+                    this.FileId.Equals(input.FileId))
                 ) && 
                 (
                     this.OriginalPackageName == input.OriginalPackageName ||
@@ -399,8 +399,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Status.GetHashCode();
                 if (this.File != null)
                     hashCode = hashCode * 59 + this.File.GetHashCode();
-                if (this.BinaryObjectId != null)
-                    hashCode = hashCode * 59 + this.BinaryObjectId.GetHashCode();
+                if (this.FileId != null)
+                    hashCode = hashCode * 59 + this.FileId.GetHashCode();
                 if (this.OriginalPackageName != null)
                     hashCode = hashCode * 59 + this.OriginalPackageName.GetHashCode();
                 if (this.PublishedBy != null)

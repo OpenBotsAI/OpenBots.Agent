@@ -109,10 +109,6 @@
     <Reference Include="NuGet.Versioning, Version=5.8.1.7021, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\NuGet.Versioning.5.8.1\lib\net472\NuGet.Versioning.dll</HintPath>
     </Reference>
-    <Reference Include="office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenBots.Core.1.2.1\lib\net48\office.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="OpenBots.Core, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenBots.Core.1.3.1\lib\net48\OpenBots.Core.dll</HintPath>
     </Reference>

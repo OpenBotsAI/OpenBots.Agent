@@ -38,10 +38,10 @@ namespace OpenBots.Service.API.Model
         /// <param name="textValue">textValue.</param>
         /// <param name="numberValue">numberValue.</param>
         /// <param name="jsonValue">jsonValue.</param>
-        /// <param name="binaryObjectID">binaryObjectID.</param>
+        /// <param name="fileID">fileID.</param>
         /// <param name="_file">_file.</param>
         /// <param name="organizationId">organizationId.</param>
-        public Body(Guid? id = default(Guid?), string name = default(string), string type = default(string), string textValue = default(string), double? numberValue = default(double?), string jsonValue = default(string), Guid? binaryObjectID = default(Guid?), byte[] _file = default(byte[]), Guid? organizationId = default(Guid?))
+        public Body(Guid? id = default(Guid?), string name = default(string), string type = default(string), string textValue = default(string), double? numberValue = default(double?), string jsonValue = default(string), Guid? fileID = default(Guid?), byte[] _file = default(byte[]), Guid? organizationId = default(Guid?))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -65,7 +65,7 @@ namespace OpenBots.Service.API.Model
             this.TextValue = textValue;
             this.NumberValue = numberValue;
             this.JsonValue = jsonValue;
-            this.BinaryObjectID = binaryObjectID;
+            this.FileID = fileID;
             this.File = _file;
             this.OrganizationId = organizationId;
         }
@@ -107,10 +107,10 @@ namespace OpenBots.Service.API.Model
         public string JsonValue { get; set; }
 
         /// <summary>
-        /// Gets or Sets BinaryObjectID
+        /// Gets or Sets FileID
         /// </summary>
-        [DataMember(Name="BinaryObjectID", EmitDefaultValue=false)]
-        public Guid? BinaryObjectID { get; set; }
+        [DataMember(Name= "FileID", EmitDefaultValue=false)]
+        public Guid? FileID { get; set; }
 
         /// <summary>
         /// Gets or Sets File
@@ -138,7 +138,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  TextValue: ").Append(TextValue).Append("\n");
             sb.Append("  NumberValue: ").Append(NumberValue).Append("\n");
             sb.Append("  JsonValue: ").Append(JsonValue).Append("\n");
-            sb.Append("  BinaryObjectID: ").Append(BinaryObjectID).Append("\n");
+            sb.Append("  FileID: ").Append(FileID).Append("\n");
             sb.Append("  File: ").Append(File).Append("\n");
             sb.Append("  OrganizationId: ").Append(OrganizationId).Append("\n");
             sb.Append("}\n");
@@ -206,9 +206,9 @@ namespace OpenBots.Service.API.Model
                     this.JsonValue.Equals(input.JsonValue))
                 ) && 
                 (
-                    this.BinaryObjectID == input.BinaryObjectID ||
-                    (this.BinaryObjectID != null &&
-                    this.BinaryObjectID.Equals(input.BinaryObjectID))
+                    this.FileID == input.FileID ||
+                    (this.FileID != null &&
+                    this.FileID.Equals(input.FileID))
                 ) && 
                 (
                     this.File == input.File ||
@@ -243,8 +243,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.NumberValue.GetHashCode();
                 if (this.JsonValue != null)
                     hashCode = hashCode * 59 + this.JsonValue.GetHashCode();
-                if (this.BinaryObjectID != null)
-                    hashCode = hashCode * 59 + this.BinaryObjectID.GetHashCode();
+                if (this.FileID != null)
+                    hashCode = hashCode * 59 + this.FileID.GetHashCode();
                 if (this.File != null)
                     hashCode = hashCode * 59 + this.File.GetHashCode();
                 if (this.OrganizationId != null)

@@ -1460,7 +1460,7 @@ namespace OpenBots.Service.API.Api
             //////if (createdBy != null) localVarFormParams.Add("CreatedBy", this.Configuration.ApiClient.ParameterToString(createdBy)); // form parameter
             //////if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
             //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
-            //////if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
+            //////if (fileId != null) localVarFormParams.Add("FileId", this.Configuration.ApiClient.ParameterToString(fileId)); // form parameter
             //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
 
             // make the HTTP request
@@ -1537,7 +1537,7 @@ namespace OpenBots.Service.API.Api
             //////if (createdBy != null) localVarFormParams.Add("CreatedBy", this.Configuration.ApiClient.ParameterToString(createdBy)); // form parameter
             //////if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
             //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
-            //////if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
+            //////if (fileId != null) localVarFormParams.Add("FileId", this.Configuration.ApiClient.ParameterToString(fileId)); // form parameter
             //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
 
             // make the HTTP request
@@ -1607,7 +1607,7 @@ namespace OpenBots.Service.API.Api
             //////if (createdBy != null) localVarFormParams.Add("CreatedBy", this.Configuration.ApiClient.ParameterToString(createdBy)); // form parameter
             //////if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
             //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
-            //////if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
+            //////if (fileId != null) localVarFormParams.Add("FileId", this.Configuration.ApiClient.ParameterToString(fileId)); // form parameter
             //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
 
             // make the HTTP request
@@ -1678,7 +1678,7 @@ namespace OpenBots.Service.API.Api
             //////if (createdBy != null) localVarFormParams.Add("CreatedBy", this.Configuration.ApiClient.ParameterToString(createdBy)); // form parameter
             //////if (status != null) localVarFormParams.Add("Status", this.Configuration.ApiClient.ParameterToString(status)); // form parameter
             //////if (_file != null) localVarFileParams.Add("File", this.Configuration.ApiClient.ParameterToFile("File", _file));
-            //////if (binaryObjectId != null) localVarFormParams.Add("BinaryObjectId", this.Configuration.ApiClient.ParameterToString(binaryObjectId)); // form parameter
+            //////if (fileId != null) localVarFormParams.Add("FileId", this.Configuration.ApiClient.ParameterToString(fileId)); // form parameter
             //////if (organizationId != null) localVarFormParams.Add("OrganizationId", this.Configuration.ApiClient.ParameterToString(organizationId)); // form parameter
 
             // make the HTTP request
