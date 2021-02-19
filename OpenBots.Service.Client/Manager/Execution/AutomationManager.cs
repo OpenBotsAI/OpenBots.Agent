@@ -32,7 +32,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 Directory.CreateDirectory(processDirectoryPath);
 
             // Automation Nuget Package Path
-            var processNugetFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".nuget");
+            var processNugetFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".nupkg");
 
             // Execution Directory Path
             var executionDirectoryPath = Path.Combine(processDirectoryPath, string.IsNullOrEmpty(jobId) ? new Guid().ToString() : jobId);
@@ -40,14 +40,14 @@ namespace OpenBots.Service.Client.Manager.Execution
                 Directory.CreateDirectory(executionDirectoryPath);
 
             var processZipFilePath = Path.Combine(executionDirectoryPath, automation.Name.ToString() + ".zip");
-            
-            // Check if Automation (.nuget) file exists if Not Download it
+
+            // Check if Automation (.nupkg) file exists if Not Download it
             if (!File.Exists(processNugetFilePath))
             {
                 // Download Automation by Id
                 var apiResponse = AutomationsAPIManager.ExportAutomation(authAPIManager, automation.Id.ToString());
 
-                // Write Downloaded(.nuget) file in the Automation Directory
+                // Write Downloaded(.nupkg) file in the Automation Directory
                 File.WriteAllBytes(processNugetFilePath, apiResponse.Data.ToArray());
             }
 
@@ -103,6 +103,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                 }
 
                 string entryFileName = Uri.UnescapeDataString(zipEntry.Name);
+
+                if (Path.GetExtension(entryFileName).Equals(".psmdcp"))
+                    continue;
 
                 // 4K is optimum
                 byte[] buffer = new byte[4096];

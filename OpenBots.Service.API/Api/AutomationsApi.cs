@@ -270,26 +270,28 @@ namespace OpenBots.Service.API.Api
         /// <returns>ApiResponse of AutomationViewModel</returns>
         ApiResponse<AutomationViewModel> ApiV1AutomationsViewIdGetWithHttpInfo(string id);
         /// <summary>
-        /// Export/download a automation
+        /// Export/download an automation
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
+        /// <param name="driveName"> (optional)</param>
         /// <returns>MemoryStream</returns>
-        SystemIO.MemoryStream ExportAutomation(string id);
+        SystemIO.MemoryStream ExportAutomation(string id, string driveName = null);
 
         /// <summary>
-        /// Export/download a automation
+        /// Export/download an automation
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
+        /// <param name="driveName"> (optional)</param>
         /// <returns>ApiResponse of MemoryStream</returns>
-        ApiResponse<SystemIO.MemoryStream> ExportAutomationWithHttpInfo(string id);
+        ApiResponse<SystemIO.MemoryStream> ExportAutomationWithHttpInfo(string id, string driveName = "Files");
         /// <summary>
         /// Get automation by id
         /// </summary>
@@ -2289,29 +2291,31 @@ namespace OpenBots.Service.API.Api
         }
 
         /// <summary>
-        /// Export/download a automation 
+        /// Export/download an automation 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
+        /// <param name="driveName"> (optional)</param>
         /// <returns>MemoryStream</returns>
-        public SystemIO.MemoryStream ExportAutomation(string id)
+        public SystemIO.MemoryStream ExportAutomation(string id, string driveName = null)
         {
-            ApiResponse<SystemIO.MemoryStream> localVarResponse = ExportAutomationWithHttpInfo(id);
+            ApiResponse<SystemIO.MemoryStream> localVarResponse = ExportAutomationWithHttpInfo(id, driveName);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Export/download a automation 
+        /// Export/download an automation 
         /// </summary>
         /// <exception cref="OpenBots.Service.API.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id"></param>
+        /// <param name="driveName"> (optional)</param>
         /// <returns>ApiResponse of MemoryStream</returns>
-        public ApiResponse<SystemIO.MemoryStream> ExportAutomationWithHttpInfo(string id)
+        public ApiResponse<SystemIO.MemoryStream> ExportAutomationWithHttpInfo(string id, string driveName = "Files")
         {
             // verify the required parameter 'id' is set
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling AutomationsApi->ExportAutomation");
-
+            
             var localVarPath = "/api/v1/Automations/{id}/Export";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new List<KeyValuePair<String, String>>();
@@ -2338,6 +2342,7 @@ namespace OpenBots.Service.API.Api
                 localVarHeaderParams.Add("Authorization", localVarHttpHeaderAuthorization);
 
             if (id != null) localVarPathParams.Add("id", this.Configuration.ApiClient.ParameterToString(id)); // path parameter
+            if (driveName != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "driveName", driveName)); // query parameter
 
             // make the HTTP request
             IRestResponse localVarResponse = (IRestResponse)this.Configuration.ApiClient.CallApi(localVarPath,
