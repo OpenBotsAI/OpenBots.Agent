@@ -28,8 +28,8 @@ namespace OpenBots.Agent.Client.Forms
             updown_PollingInterval.Minimum = minInterval;
             updown_PollingInterval.ValueChanged += OnPollingIntervalChanged;
 
-            cmb_HighDensityAgent.ItemsSource = Enum.GetValues(typeof(AgentEnums.BooleanAlias));
-            cmb_HighDensityAgent.SelectedIndex = Array.IndexOf((Array)cmb_HighDensityAgent.ItemsSource, Enum.Parse(typeof(AgentEnums.BooleanAlias), GetEnumAliasOfBool(OBSettings.HighDensityAgent)));
+            //cmb_HighDensityAgent.ItemsSource = Enum.GetValues(typeof(AgentEnums.BooleanAlias));
+            //cmb_HighDensityAgent.SelectedIndex = Array.IndexOf((Array)cmb_HighDensityAgent.ItemsSource, Enum.Parse(typeof(AgentEnums.BooleanAlias), GetEnumAliasOfBool(OBSettings.HighDensityAgent)));
 
             cmb_SSLCertificateVerification.ItemsSource = Enum.GetValues(typeof(AgentEnums.BooleanAlias));
             cmb_SSLCertificateVerification.SelectedIndex = Array.IndexOf((Array)cmb_SSLCertificateVerification.ItemsSource, Enum.Parse(typeof(AgentEnums.BooleanAlias), GetEnumAliasOfBool(OBSettings.SSLCertificateVerification)));
@@ -71,7 +71,7 @@ namespace OpenBots.Agent.Client.Forms
         {
             if (updown_HeartbeatInterval.Value != ((double)OBSettings.HeartbeatInterval) ||
                 updown_PollingInterval.Value != ((double)OBSettings.JobsPollingInterval) ||
-                !(OBSettings.HighDensityAgent == GetBoolAliasOfEnum(cmb_HighDensityAgent.Text)) ||
+                //!(OBSettings.HighDensityAgent == GetBoolAliasOfEnum(cmb_HighDensityAgent.Text)) ||
                 !(OBSettings.SSLCertificateVerification == GetBoolAliasOfEnum(cmb_SSLCertificateVerification.Text)))
                 _settingsChanged = true;
             else
@@ -92,7 +92,7 @@ namespace OpenBots.Agent.Client.Forms
         {
             OBSettings.HeartbeatInterval = (int)updown_HeartbeatInterval.Value;
             OBSettings.JobsPollingInterval = (int)updown_PollingInterval.Value;
-            OBSettings.HighDensityAgent = GetBoolAliasOfEnum(cmb_HighDensityAgent.Text);
+            //OBSettings.HighDensityAgent = GetBoolAliasOfEnum(cmb_HighDensityAgent.Text);
             OBSettings.SSLCertificateVerification = GetBoolAliasOfEnum(cmb_SSLCertificateVerification.Text);
 
             SettingsManager.Instance.UpdateSettings(OBSettings);

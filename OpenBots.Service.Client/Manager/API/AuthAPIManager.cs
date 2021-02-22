@@ -21,6 +21,7 @@ namespace OpenBots.Service.Client.Manager
         {
             ConnectionSettings = connectionSettings;
             Configuration.BasePath = ConnectionSettings.ServerURL;
+            Configuration.SSLCertificateVerification = ConnectionSettings.SSLCertificateVerification;
         }
 
         public void UnInitialize()
