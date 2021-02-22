@@ -27,20 +27,22 @@ namespace OpenBots.Service.API.Model
     /// JobViewModel
     /// </summary>
     [DataContract]
-        public partial class JobViewModel :  IEquatable<JobViewModel>, IValidatableObject
+    public partial class JobViewModel : IEquatable<JobViewModel>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JobViewModel" /> class.
         /// </summary>
         /// <param name="id">id.</param>
         /// <param name="agentName">agentName.</param>
-        /// <param name="processName">processName.</param>
-        /// <param name="agentId">agentId.</param>
+        /// <param name="automationName">automationName.</param>
+        /// <param name="agentId">agentId (required).</param>
         /// <param name="startTime">startTime.</param>
         /// <param name="endTime">endTime.</param>
         /// <param name="enqueueTime">enqueueTime.</param>
         /// <param name="dequeueTime">dequeueTime.</param>
-        /// <param name="processId">processId.</param>
+        /// <param name="automationId">automationId (required).</param>
+        /// <param name="automationVersion">automationVersion (required).</param>
+        /// <param name="automationVersionId">automationVersionId (required).</param>
         /// <param name="jobStatus">jobStatus.</param>
         /// <param name="message">message.</param>
         /// <param name="isSuccessful">isSuccessful.</param>
@@ -49,17 +51,52 @@ namespace OpenBots.Service.API.Model
         /// <param name="errorReason">errorReason.</param>
         /// <param name="errorCode">errorCode.</param>
         /// <param name="serializedErrorString">serializedErrorString.</param>
-        public JobViewModel(Guid? id = default(Guid?), string agentName = default(string), string processName = default(string), Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? processId = default(Guid?), JobStatusType jobStatus = default(JobStatusType), string message = default(string), bool? isSuccessful = default(bool?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string))
+        /// <param name="jobParameters">jobParameters.</param>
+        public JobViewModel(Guid? id = default(Guid?), string agentName = default(string), string automationName = default(string), Guid? agentId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? automationId = default(Guid?), int? automationVersion = default(int?), Guid? automationVersionId = default(Guid?), JobStatusType jobStatus = default(JobStatusType), string message = default(string), bool? isSuccessful = default(bool?), DateTime? createdOn = default(DateTime?), string createdBy = default(string), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string), List<JobParameter> jobParameters = default(List<JobParameter>))
         {
+            // to ensure "agentId" is required (not null)
+            if (agentId == null)
+            {
+                throw new InvalidDataException("agentId is a required property for JobViewModel and cannot be null");
+            }
+            else
+            {
+                this.AgentId = agentId;
+            }
+            // to ensure "automationId" is required (not null)
+            if (automationId == null)
+            {
+                throw new InvalidDataException("automationId is a required property for JobViewModel and cannot be null");
+            }
+            else
+            {
+                this.AutomationId = automationId;
+            }
+            // to ensure "automationVersion" is required (not null)
+            if (automationVersion == null)
+            {
+                throw new InvalidDataException("automationVersion is a required property for JobViewModel and cannot be null");
+            }
+            else
+            {
+                this.AutomationVersion = automationVersion;
+            }
+            // to ensure "automationVersionId" is required (not null)
+            if (automationVersionId == null)
+            {
+                throw new InvalidDataException("automationVersionId is a required property for JobViewModel and cannot be null");
+            }
+            else
+            {
+                this.AutomationVersionId = automationVersionId;
+            }
             this.Id = id;
             this.AgentName = agentName;
-            this.ProcessName = processName;
-            this.AgentId = agentId;
+            this.AutomationName = automationName;
             this.StartTime = startTime;
             this.EndTime = endTime;
             this.EnqueueTime = enqueueTime;
             this.DequeueTime = dequeueTime;
-            this.ProcessId = processId;
             this.JobStatus = jobStatus;
             this.Message = message;
             this.IsSuccessful = isSuccessful;
@@ -68,109 +105,128 @@ namespace OpenBots.Service.API.Model
             this.ErrorReason = errorReason;
             this.ErrorCode = errorCode;
             this.SerializedErrorString = serializedErrorString;
+            this.JobParameters = jobParameters;
         }
-        
+
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name="id", EmitDefaultValue=false)]
+        [DataMember(Name = "id", EmitDefaultValue = false)]
         public Guid? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets AgentName
         /// </summary>
-        [DataMember(Name="agentName", EmitDefaultValue=false)]
+        [DataMember(Name = "agentName", EmitDefaultValue = false)]
         public string AgentName { get; set; }
 
         /// <summary>
-        /// Gets or Sets ProcessName
+        /// Gets or Sets AutomationName
         /// </summary>
-        [DataMember(Name="processName", EmitDefaultValue=false)]
-        public string ProcessName { get; set; }
+        [DataMember(Name = "automationName", EmitDefaultValue = false)]
+        public string AutomationName { get; set; }
 
         /// <summary>
         /// Gets or Sets AgentId
         /// </summary>
-        [DataMember(Name="agentId", EmitDefaultValue=false)]
+        [DataMember(Name = "agentId", EmitDefaultValue = false)]
         public Guid? AgentId { get; set; }
 
         /// <summary>
         /// Gets or Sets StartTime
         /// </summary>
-        [DataMember(Name="startTime", EmitDefaultValue=false)]
+        [DataMember(Name = "startTime", EmitDefaultValue = false)]
         public DateTime? StartTime { get; set; }
 
         /// <summary>
         /// Gets or Sets EndTime
         /// </summary>
-        [DataMember(Name="endTime", EmitDefaultValue=false)]
+        [DataMember(Name = "endTime", EmitDefaultValue = false)]
         public DateTime? EndTime { get; set; }
 
         /// <summary>
         /// Gets or Sets EnqueueTime
         /// </summary>
-        [DataMember(Name="enqueueTime", EmitDefaultValue=false)]
+        [DataMember(Name = "enqueueTime", EmitDefaultValue = false)]
         public DateTime? EnqueueTime { get; set; }
 
         /// <summary>
         /// Gets or Sets DequeueTime
         /// </summary>
-        [DataMember(Name="dequeueTime", EmitDefaultValue=false)]
+        [DataMember(Name = "dequeueTime", EmitDefaultValue = false)]
         public DateTime? DequeueTime { get; set; }
 
         /// <summary>
-        /// Gets or Sets ProcessId
+        /// Gets or Sets AutomationId
         /// </summary>
-        [DataMember(Name="processId", EmitDefaultValue=false)]
-        public Guid? ProcessId { get; set; }
+        [DataMember(Name = "automationId", EmitDefaultValue = false)]
+        public Guid? AutomationId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AutomationVersion
+        /// </summary>
+        [DataMember(Name = "automationVersion", EmitDefaultValue = false)]
+        public int? AutomationVersion { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AutomationVersionId
+        /// </summary>
+        [DataMember(Name = "automationVersionId", EmitDefaultValue = false)]
+        public Guid? AutomationVersionId { get; set; }
 
         /// <summary>
         /// Gets or Sets JobStatus
         /// </summary>
-        [DataMember(Name="jobStatus", EmitDefaultValue=false)]
+        [DataMember(Name = "jobStatus", EmitDefaultValue = false)]
         public JobStatusType JobStatus { get; set; }
 
         /// <summary>
         /// Gets or Sets Message
         /// </summary>
-        [DataMember(Name="message", EmitDefaultValue=false)]
+        [DataMember(Name = "message", EmitDefaultValue = false)]
         public string Message { get; set; }
 
         /// <summary>
         /// Gets or Sets IsSuccessful
         /// </summary>
-        [DataMember(Name="isSuccessful", EmitDefaultValue=false)]
+        [DataMember(Name = "isSuccessful", EmitDefaultValue = false)]
         public bool? IsSuccessful { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedOn
         /// </summary>
-        [DataMember(Name="createdOn", EmitDefaultValue=false)]
+        [DataMember(Name = "createdOn", EmitDefaultValue = false)]
         public DateTime? CreatedOn { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedBy
         /// </summary>
-        [DataMember(Name="createdBy", EmitDefaultValue=false)]
+        [DataMember(Name = "createdBy", EmitDefaultValue = false)]
         public string CreatedBy { get; set; }
 
         /// <summary>
         /// Gets or Sets ErrorReason
         /// </summary>
-        [DataMember(Name="errorReason", EmitDefaultValue=false)]
+        [DataMember(Name = "errorReason", EmitDefaultValue = false)]
         public string ErrorReason { get; set; }
 
         /// <summary>
         /// Gets or Sets ErrorCode
         /// </summary>
-        [DataMember(Name="errorCode", EmitDefaultValue=false)]
+        [DataMember(Name = "errorCode", EmitDefaultValue = false)]
         public string ErrorCode { get; set; }
 
         /// <summary>
         /// Gets or Sets SerializedErrorString
         /// </summary>
-        [DataMember(Name="serializedErrorString", EmitDefaultValue=false)]
+        [DataMember(Name = "serializedErrorString", EmitDefaultValue = false)]
         public string SerializedErrorString { get; set; }
+
+        /// <summary>
+        /// Gets or Sets JobParameters
+        /// </summary>
+        [DataMember(Name = "jobParameters", EmitDefaultValue = false)]
+        public List<JobParameter> JobParameters { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -182,13 +238,15 @@ namespace OpenBots.Service.API.Model
             sb.Append("class JobViewModel {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  AgentName: ").Append(AgentName).Append("\n");
-            sb.Append("  ProcessName: ").Append(ProcessName).Append("\n");
+            sb.Append("  AutomationName: ").Append(AutomationName).Append("\n");
             sb.Append("  AgentId: ").Append(AgentId).Append("\n");
             sb.Append("  StartTime: ").Append(StartTime).Append("\n");
             sb.Append("  EndTime: ").Append(EndTime).Append("\n");
             sb.Append("  EnqueueTime: ").Append(EnqueueTime).Append("\n");
             sb.Append("  DequeueTime: ").Append(DequeueTime).Append("\n");
-            sb.Append("  ProcessId: ").Append(ProcessId).Append("\n");
+            sb.Append("  AutomationId: ").Append(AutomationId).Append("\n");
+            sb.Append("  AutomationVersion: ").Append(AutomationVersion).Append("\n");
+            sb.Append("  AutomationVersionId: ").Append(AutomationVersionId).Append("\n");
             sb.Append("  JobStatus: ").Append(JobStatus).Append("\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
             sb.Append("  IsSuccessful: ").Append(IsSuccessful).Append("\n");
@@ -197,10 +255,11 @@ namespace OpenBots.Service.API.Model
             sb.Append("  ErrorReason: ").Append(ErrorReason).Append("\n");
             sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
             sb.Append("  SerializedErrorString: ").Append(SerializedErrorString).Append("\n");
+            sb.Append("  JobParameters: ").Append(JobParameters).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
-  
+
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
@@ -230,91 +289,107 @@ namespace OpenBots.Service.API.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
-                ) && 
+                ) &&
                 (
                     this.AgentName == input.AgentName ||
                     (this.AgentName != null &&
                     this.AgentName.Equals(input.AgentName))
-                ) && 
+                ) &&
                 (
-                    this.ProcessName == input.ProcessName ||
-                    (this.ProcessName != null &&
-                    this.ProcessName.Equals(input.ProcessName))
-                ) && 
+                    this.AutomationName == input.AutomationName ||
+                    (this.AutomationName != null &&
+                    this.AutomationName.Equals(input.AutomationName))
+                ) &&
                 (
                     this.AgentId == input.AgentId ||
                     (this.AgentId != null &&
                     this.AgentId.Equals(input.AgentId))
-                ) && 
+                ) &&
                 (
                     this.StartTime == input.StartTime ||
                     (this.StartTime != null &&
                     this.StartTime.Equals(input.StartTime))
-                ) && 
+                ) &&
                 (
                     this.EndTime == input.EndTime ||
                     (this.EndTime != null &&
                     this.EndTime.Equals(input.EndTime))
-                ) && 
+                ) &&
                 (
                     this.EnqueueTime == input.EnqueueTime ||
                     (this.EnqueueTime != null &&
                     this.EnqueueTime.Equals(input.EnqueueTime))
-                ) && 
+                ) &&
                 (
                     this.DequeueTime == input.DequeueTime ||
                     (this.DequeueTime != null &&
                     this.DequeueTime.Equals(input.DequeueTime))
-                ) && 
+                ) &&
                 (
-                    this.ProcessId == input.ProcessId ||
-                    (this.ProcessId != null &&
-                    this.ProcessId.Equals(input.ProcessId))
-                ) && 
+                    this.AutomationId == input.AutomationId ||
+                    (this.AutomationId != null &&
+                    this.AutomationId.Equals(input.AutomationId))
+                ) &&
+                (
+                    this.AutomationVersion == input.AutomationVersion ||
+                    (this.AutomationVersion != null &&
+                    this.AutomationVersion.Equals(input.AutomationVersion))
+                ) &&
+                (
+                    this.AutomationVersionId == input.AutomationVersionId ||
+                    (this.AutomationVersionId != null &&
+                    this.AutomationVersionId.Equals(input.AutomationVersionId))
+                ) &&
                 (
                     this.JobStatus == input.JobStatus ||
                     (this.JobStatus != null &&
                     this.JobStatus.Equals(input.JobStatus))
-                ) && 
+                ) &&
                 (
                     this.Message == input.Message ||
                     (this.Message != null &&
                     this.Message.Equals(input.Message))
-                ) && 
+                ) &&
                 (
                     this.IsSuccessful == input.IsSuccessful ||
                     (this.IsSuccessful != null &&
                     this.IsSuccessful.Equals(input.IsSuccessful))
-                ) && 
+                ) &&
                 (
                     this.CreatedOn == input.CreatedOn ||
                     (this.CreatedOn != null &&
                     this.CreatedOn.Equals(input.CreatedOn))
-                ) && 
+                ) &&
                 (
                     this.CreatedBy == input.CreatedBy ||
                     (this.CreatedBy != null &&
                     this.CreatedBy.Equals(input.CreatedBy))
-                ) && 
+                ) &&
                 (
                     this.ErrorReason == input.ErrorReason ||
                     (this.ErrorReason != null &&
                     this.ErrorReason.Equals(input.ErrorReason))
-                ) && 
+                ) &&
                 (
                     this.ErrorCode == input.ErrorCode ||
                     (this.ErrorCode != null &&
                     this.ErrorCode.Equals(input.ErrorCode))
-                ) && 
+                ) &&
                 (
                     this.SerializedErrorString == input.SerializedErrorString ||
                     (this.SerializedErrorString != null &&
                     this.SerializedErrorString.Equals(input.SerializedErrorString))
+                ) &&
+                (
+                    this.JobParameters == input.JobParameters ||
+                    this.JobParameters != null &&
+                    input.JobParameters != null &&
+                    this.JobParameters.SequenceEqual(input.JobParameters)
                 );
         }
 
@@ -331,8 +406,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.AgentName != null)
                     hashCode = hashCode * 59 + this.AgentName.GetHashCode();
-                if (this.ProcessName != null)
-                    hashCode = hashCode * 59 + this.ProcessName.GetHashCode();
+                if (this.AutomationName != null)
+                    hashCode = hashCode * 59 + this.AutomationName.GetHashCode();
                 if (this.AgentId != null)
                     hashCode = hashCode * 59 + this.AgentId.GetHashCode();
                 if (this.StartTime != null)
@@ -343,8 +418,12 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.EnqueueTime.GetHashCode();
                 if (this.DequeueTime != null)
                     hashCode = hashCode * 59 + this.DequeueTime.GetHashCode();
-                if (this.ProcessId != null)
-                    hashCode = hashCode * 59 + this.ProcessId.GetHashCode();
+                if (this.AutomationId != null)
+                    hashCode = hashCode * 59 + this.AutomationId.GetHashCode();
+                if (this.AutomationVersion != null)
+                    hashCode = hashCode * 59 + this.AutomationVersion.GetHashCode();
+                if (this.AutomationVersionId != null)
+                    hashCode = hashCode * 59 + this.AutomationVersionId.GetHashCode();
                 if (this.JobStatus != null)
                     hashCode = hashCode * 59 + this.JobStatus.GetHashCode();
                 if (this.Message != null)
@@ -361,6 +440,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.ErrorCode.GetHashCode();
                 if (this.SerializedErrorString != null)
                     hashCode = hashCode * 59 + this.SerializedErrorString.GetHashCode();
+                if (this.JobParameters != null)
+                    hashCode = hashCode * 59 + this.JobParameters.GetHashCode();
                 return hashCode;
             }
         }

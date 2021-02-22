@@ -205,6 +205,7 @@
     <Compile Include="Infrastructure\IWindowsServiceEndPoint.cs" />
     <Compile Include="Model\EnvironmentSettings.cs" />
     <Compile Include="Model\JobExecutionParams.cs" />
+    <Compile Include="Model\JobParameter.cs" />
     <Compile Include="Model\MachineCredentials.cs" />
     <Compile Include="Model\NugetPackageSource.cs" />
     <Compile Include="Model\ServerConnectionSettings.cs" />

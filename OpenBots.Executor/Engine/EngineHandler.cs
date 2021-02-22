@@ -3,6 +3,7 @@ using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Core.Model.EngineModel;
+using OpenBots.Core.Script;
 using OpenBots.Engine;
 using OpenBots.Executor.Utilities;
 using Serilog.Core;
@@ -10,6 +11,7 @@ using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace OpenBots.Executor
 {
@@ -70,6 +72,12 @@ namespace OpenBots.Executor
                 ProjectPath = executionParams.ProjectDirectoryPath,
                 EngineLogger = GetLogger(executionParams),
                 Container = _container,
+                Arguments = executionParams.JobParameters?.Select(arg =>
+                new ScriptArgument
+                {
+                    ArgumentName = arg.Name,
+                    ArgumentValue = arg.Value
+                }).ToList()
             };
         }
     }

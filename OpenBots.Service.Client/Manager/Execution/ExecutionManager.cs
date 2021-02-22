@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using System.Timers;
+using JobParameter = OpenBots.Agent.Core.Model.JobParameter;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -306,11 +307,26 @@ namespace OpenBots.Service.Client.Manager.Execution
                 AutomationName = automation.Name,
                 MainFilePath = mainScriptFilePath,
                 ProjectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath),
+                JobParameters = GetJobParameters(job.Id.ToString()),
                 ProjectDependencies = projectDependencies,
                 ServerConnectionSettings = _connectionSettingsManager.ConnectionSettings
             };
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);
             return DataFormatter.CompressString(paramsJsonString);
+        }
+
+        private List<JobParameter> GetJobParameters(string jobId)
+        {
+            var jobViewModel = JobsAPIManager.GetJobViewModel(_authAPIManager, jobId);
+            var jobParams = jobViewModel.JobParameters?.Where(p => p.IsDeleted == false)?.Select(p =>
+            new JobParameter
+            {
+                Name = p.Name,
+                DataType = p.DataType,
+                Value = p.Value
+            }).ToList();
+
+            return jobParams;
         }
 
         private static string GetPythonPath(string username, string requiredVersion = "")

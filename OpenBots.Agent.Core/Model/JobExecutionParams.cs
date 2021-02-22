@@ -9,6 +9,7 @@ namespace OpenBots.Agent.Core.Model
         public string AutomationName { get; set; }
         public string MainFilePath { get; set; }
         public string ProjectDirectoryPath { get; set; }
+        public List<JobParameter> JobParameters { get; set; }
         public List<string> ProjectDependencies { get; set; }
         public ServerConnectionSettings ServerConnectionSettings { get; set; }
     }
