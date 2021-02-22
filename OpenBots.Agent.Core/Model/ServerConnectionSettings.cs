@@ -42,6 +42,16 @@ namespace OpenBots.Agent.Core.Model
         [DataMember]
         public string LoggingValue4 { get; set; }
         [DataMember]
+        public int HeartbeatInterval { get; set; }
+        [DataMember]
+        public int JobsPollingInterval { get; set; }
+        [DataMember]
+        public bool HighDensityAgent { get; set; }
+        [DataMember]
+        public bool SingleSessionExecution { get; set; }
+        [DataMember]
+        public bool SSLCertificateVerification { get; set; }
+        [DataMember]
         public bool ServerConnectionEnabled { get; set; }
     }
 }

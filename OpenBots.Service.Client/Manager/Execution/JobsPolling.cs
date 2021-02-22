@@ -90,7 +90,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                 //setup heartbeat to the server
                 _newJobsFetchTimer = new Timer();
-                _newJobsFetchTimer.Interval = 300000;
+                _newJobsFetchTimer.Interval = (_connectionSettingsManager.ConnectionSettings.JobsPollingInterval * 1000);
                 _newJobsFetchTimer.Elapsed += JobsFetchTimer_Elapsed;
                 _newJobsFetchTimer.Enabled = true;
             }

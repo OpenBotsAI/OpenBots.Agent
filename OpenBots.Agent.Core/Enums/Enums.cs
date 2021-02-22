@@ -30,4 +30,11 @@
         Local,
         Server
     }
+
+    // Boolean Alias
+    public enum BooleanAlias
+    {
+        Yes,
+        No
+    }
 }
