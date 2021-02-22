@@ -17,6 +17,8 @@ using Microsoft.Win32;
 using System.Security.Principal;
 using System.Reflection;
 using OpenBots.Agent.Core.Enums;
+using System.Text;
+using System.Runtime.InteropServices;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -26,6 +28,11 @@ namespace OpenBots.Service.Client.Manager.Execution
         private bool _isSuccessfulExecution = false;
         private Timer _newJobsCheckTimer;
         private AutomationExecutionLog _executionLog;
+        private const int MAX_PATH = 260;
+
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
+
 
         public event EventHandler JobFinishedEvent;
         public static ExecutionManager Instance
@@ -244,6 +251,15 @@ namespace OpenBots.Service.Client.Manager.Execution
                     case "Python":
                         RunPythonAutomation(job, machineCredential, mainScriptFilePath);
                         break;
+
+                    case "TagUI":
+                        RunTagUIAutomation(job, machineCredential, mainScriptFilePath);
+                        break;
+
+                    case "C#":
+                        RunCSharpAutomation(job, machineCredential, mainScriptFilePath);
+                        break;
+
                     default:
                         throw new NotImplementedException($"Specified execution engine \"{automation.AutomationEngine}\" is not implemented on the OpenBots Agent.");
                 }
@@ -273,6 +289,31 @@ namespace OpenBots.Service.Client.Manager.Execution
             string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string pythonExecutable = GetPythonPath(machineCredential.UserName, "");
             string cmdLine = $"powershell.exe -File \"{assemblyPath}\\Executors\\PythonExecutor.ps1\" \"{pythonExecutable}\" \"{projectDir}\" \"{mainScriptFilePath}\"";
+
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+
+            return;
+        }
+
+        private void RunTagUIAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
+        {
+            if (GetFullPathFromWindows("tagui") == null)
+                throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
+            string cmdLine = $"tagui \"{mainScriptFilePath}\"";
+
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+
+            return;
+        }
+
+        private void RunCSharpAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
+        {
+            if (GetFullPathFromWindows("cscs") == null)
+                throw new Exception("CS-Script installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
+
+            string cmdLine = $"cscs \"{mainScriptFilePath}\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
@@ -385,5 +426,16 @@ namespace OpenBots.Service.Client.Manager.Execution
                 throw new Exception($"Required Python version [{requiredVersion}] or higher was not found on the machine.");
             }
         }
+
+        public static string GetFullPathFromWindows(string exeName)
+        {
+            if (exeName.Length >= MAX_PATH)
+                throw new ArgumentException($"The executable name '{exeName}' must have less than {MAX_PATH} characters.",
+                    nameof(exeName));
+
+            StringBuilder sb = new StringBuilder(exeName, MAX_PATH);
+            return PathFindOnPath(sb, null) ? sb.ToString() : null;
+        }
+
     }
 }
