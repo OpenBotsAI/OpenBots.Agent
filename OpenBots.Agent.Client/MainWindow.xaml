@@ -64,12 +64,12 @@
                     <Image Name="img_settings" Style="{StaticResource GearImage}" RenderOptions.BitmapScalingMode="HighQuality" Height="19" MouseLeftButtonUp="OnClick_Settings" Grid.Column="0" Margin="0">
                         <Image.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Machine Info" Click="OnClick_MachineInfo"/>
+                                <MenuItem Name="menuItemMachineInfo" Header="Machine Info" Click="OnClick_MachineInfo"/>
                                 <MenuItem Name="menuItemAgentSettings" Header="Agent Settings" Click="OnClick_AgentSettings"/>
                                 <MenuItem Name="menuItemClearCredentials" Header="Clear Credentials" Click="OnClick_ClearCredentials"/>
                                 <MenuItem Name="menuItemNugetFeedManager" Header="Nuget Feed Manager" Click="OnClick_NugetFeedManager"/>
                                 <MenuItem Name="menuItemAttendedExecution" Header="Launch Attended Mode" Click="OnClick_AttendedExecution"/>
-                                <MenuItem Header="Quit" Click="OnClick_Quit"/>
+                                <MenuItem Name="menuItemQuit" Header="Quit" Click="OnClick_Quit"/>
                             </ContextMenu>
                         </Image.ContextMenu>
                     </Image>
