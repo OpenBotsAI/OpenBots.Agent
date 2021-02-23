@@ -65,6 +65,7 @@
                         <Image.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Machine Info" Click="OnClick_MachineInfo"/>
+                                <MenuItem Name="menuItemAgentSettings" Header="Agent Settings" Click="OnClick_AgentSettings"/>
                                 <MenuItem Name="menuItemClearCredentials" Header="Clear Credentials" Click="OnClick_ClearCredentials"/>
                                 <MenuItem Name="menuItemNugetFeedManager" Header="Nuget Feed Manager" Click="OnClick_NugetFeedManager"/>
                                 <MenuItem Name="menuItemAttendedExecution" Header="Launch Attended Mode" Click="OnClick_AttendedExecution"/>

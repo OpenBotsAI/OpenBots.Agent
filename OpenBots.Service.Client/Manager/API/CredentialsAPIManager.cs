@@ -1,8 +1,6 @@
 ﻿using OpenBots.Service.API.Api;
-using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
 using System;
-using System.Collections.Generic;
 
 namespace OpenBots.Service.Client.Manager.API
 {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace OpenBots.Agent.Core.Enums
+﻿namespace OpenBots.Agent.Core.Enums
 {
     public enum JobStatus
     {
@@ -31,5 +29,12 @@ namespace OpenBots.Agent.Core.Enums
     {
         Local,
         Server
+    }
+
+    // Boolean Alias
+    public enum BooleanAlias
+    {
+        Yes,
+        No
     }
 }

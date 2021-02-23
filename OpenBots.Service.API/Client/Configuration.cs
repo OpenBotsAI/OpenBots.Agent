@@ -314,6 +314,12 @@ namespace OpenBots.Service.API.Client
         public virtual string AccessToken { get; set; }
 
         /// <summary>
+        /// Gets or sets the access token for OAuth2 authentication.
+        /// </summary>
+        /// <value>The access token.</value>
+        public virtual bool SSLCertificateVerification { get; set; }
+
+        /// <summary>
         /// Gets or sets the temporary folder path to store the files downloaded from the server.
         /// </summary>
         /// <value>Folder path.</value>
@@ -429,7 +435,7 @@ namespace OpenBots.Service.API.Client
         /// <returns></returns>
         public ApiClient CreateApiClient()
         {
-            return new ApiClient(BasePath) { Configuration = this };
+            return new ApiClient(BasePath, SSLCertificateVerification) { Configuration = this };
         }
 
 

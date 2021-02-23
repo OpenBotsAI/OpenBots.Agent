@@ -45,7 +45,12 @@ namespace OpenBots.Agent.Client
                 LoggingValue1 = "/api/v1/Logger/Agent",
                 OpenBotsServerUrl = "",
                 AgentId = "",
-                AgentName = ""
+                AgentName = "",
+                HeartbeatInterval = 60,
+                JobsPollingInterval = 60,
+                HighDensityAgent = false,
+                SingleSessionExecution = false,
+                SSLCertificateVerification = false
             };
         }
 
@@ -77,6 +82,10 @@ namespace OpenBots.Agent.Client
 
         public string GetSettingsFilePath()
         {
+            // If "...\OpenBots Inc\OpenBots Agent\" Directory doesn't exist
+            if (!Directory.Exists(EnvironmentSettings.EnvironmentVariablePath))
+                Directory.CreateDirectory(EnvironmentSettings.EnvironmentVariablePath);
+
             return Path.Combine(EnvironmentSettings.EnvironmentVariablePath, EnvironmentSettings.SettingsFileName);
         }
     }

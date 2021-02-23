@@ -196,6 +196,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Manager\Agents\Agent.cs" />
+    <Compile Include="Manager\Agents\AgentsManager.cs" />
     <Compile Include="Manager\API\ExecutionLogsAPIManager.cs" />
     <Compile Include="Manager\API\CredentialsAPIManager.cs" />
     <Compile Include="Manager\Execution\AttendedExecutionManager.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="Manager\API\AutomationsAPIManager.cs" />
     <Compile Include="Manager\Execution\JobsPolling.cs" />
     <Compile Include="Manager\Execution\WMIQueries.cs" />
+    <Compile Include="Manager\HeartBeat\AgentHeartBeatManager.cs" />
     <Compile Include="Manager\Hub\HubManager.cs" />
     <Compile Include="Manager\Logs\FileLogger.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -225,9 +228,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\HeartBeatManager.cs" />
-    <Compile Include="Server\ConnectionSettingsManager.cs" />
-    <Compile Include="Server\HttpServerClient.cs" />
+    <Compile Include="Manager\Settings\ConnectionSettingsManager.cs" />
     <Compile Include="WCF\ServiceController.cs" />
     <Compile Include="WCF\WindowsServiceEndPoint.cs" />
   </ItemGroup>

@@ -70,5 +70,26 @@ namespace OpenBots.Service.Client.Manager.API
                 throw ex;
             }
         }
+
+        public static JobViewModel GetJobViewModel(AuthAPIManager apiManager, string jobId)
+        {
+            JobsApi jobsApi = new JobsApi(apiManager.Configuration);
+
+            try
+            {
+                return jobsApi.ApiV1JobsViewIdGet(jobId);
+            }
+            catch (Exception ex)
+            {
+                // In case of Unauthorized request
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
+                {
+                    // Refresh Token and Call API
+                    jobsApi.Configuration.AccessToken = apiManager.GetToken();
+                    return jobsApi.ApiV1JobsViewIdGet(jobId);
+                }
+                throw ex;
+            }
+        }
     }
 }

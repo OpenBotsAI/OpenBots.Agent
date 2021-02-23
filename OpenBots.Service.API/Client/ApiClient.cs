@@ -84,6 +84,24 @@ namespace OpenBots.Service.API.Client
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ApiClient" /> class
+        /// with default configuration.
+        /// </summary>
+        /// <param name="basePath">The base path.</param>
+        /// <param name="sslCertificateVerification">SSL Certification Verification.</param>
+        public ApiClient(String basePath = "/", Boolean sslCertificateVerification = false)
+        {
+            if (String.IsNullOrEmpty(basePath))
+                throw new ArgumentException("basePath cannot be empty");
+
+            RestClient = new RestClient(basePath);
+            if(!sslCertificateVerification)
+                RestClient.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+
+            Configuration = Client.Configuration.Default;
+        }
+
+        /// <summary>
         /// Gets or sets the default API client for making HTTP calls.
         /// </summary>
         /// <value>The default API client.</value>

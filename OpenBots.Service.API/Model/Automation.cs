@@ -42,10 +42,10 @@ namespace OpenBots.Service.API.Model
         /// <param name="updatedOn">updatedOn.</param>
         /// <param name="updatedBy">updatedBy.</param>
         /// <param name="name">name (required).</param>
-        /// <param name="binaryObjectId">Id linked to Binary Object data table.</param>
+        /// <param name="fileId">Id linked to Binary Object data table.</param>
         /// <param name="originalPackageName">Original name of file.</param>
         /// <param name="automationEngine">Type of automation that will be executed (i.e. OpenBots, Python, etc.).</param>
-        public Automation(Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string), string name = default(string), Guid? binaryObjectId = default(Guid?), string originalPackageName = default(string), string automationEngine = default(string))
+        public Automation(Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string), string name = default(string), Guid? fileId = default(Guid?), string originalPackageName = default(string), string automationEngine = default(string))
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -73,7 +73,7 @@ namespace OpenBots.Service.API.Model
             this.Timestamp = timestamp;
             this.UpdatedOn = updatedOn;
             this.UpdatedBy = updatedBy;
-            this.BinaryObjectId = binaryObjectId;
+            this.FileId = fileId;
             this.OriginalPackageName = originalPackageName;
             this.AutomationEngine = automationEngine;
         }
@@ -142,8 +142,8 @@ namespace OpenBots.Service.API.Model
         /// Id linked to Binary Object data table
         /// </summary>
         /// <value>Id linked to Binary Object data table</value>
-        [DataMember(Name="binaryObjectId", EmitDefaultValue=false)]
-        public Guid? BinaryObjectId { get; set; }
+        [DataMember(Name= "fileId", EmitDefaultValue=false)]
+        public Guid? FileId { get; set; }
 
         /// <summary>
         /// Original name of file
@@ -177,7 +177,7 @@ namespace OpenBots.Service.API.Model
             sb.Append("  UpdatedOn: ").Append(UpdatedOn).Append("\n");
             sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  BinaryObjectId: ").Append(BinaryObjectId).Append("\n");
+            sb.Append("  FileId: ").Append(FileId).Append("\n");
             sb.Append("  OriginalPackageName: ").Append(OriginalPackageName).Append("\n");
             sb.Append("  AutomationEngine: ").Append(AutomationEngine).Append("\n");
             sb.Append("}\n");
@@ -265,9 +265,9 @@ namespace OpenBots.Service.API.Model
                     this.Name.Equals(input.Name))
                 ) && 
                 (
-                    this.BinaryObjectId == input.BinaryObjectId ||
-                    (this.BinaryObjectId != null &&
-                    this.BinaryObjectId.Equals(input.BinaryObjectId))
+                    this.FileId == input.FileId ||
+                    (this.FileId != null &&
+                    this.FileId.Equals(input.FileId))
                 ) && 
                 (
                     this.OriginalPackageName == input.OriginalPackageName ||
@@ -310,8 +310,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.UpdatedBy.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
-                if (this.BinaryObjectId != null)
-                    hashCode = hashCode * 59 + this.BinaryObjectId.GetHashCode();
+                if (this.FileId != null)
+                    hashCode = hashCode * 59 + this.FileId.GetHashCode();
                 if (this.OriginalPackageName != null)
                     hashCode = hashCode * 59 + this.OriginalPackageName.GetHashCode();
                 if (this.AutomationEngine != null)

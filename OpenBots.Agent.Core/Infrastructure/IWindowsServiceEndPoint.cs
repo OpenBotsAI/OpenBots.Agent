@@ -9,6 +9,9 @@ namespace OpenBots.Agent.Core.Infrastructure
     public interface IWindowsServiceEndPoint
     {
         [OperationContract]
+        bool AddAgent(string domainName, string userName);
+
+        [OperationContract]
         [ServiceKnownType(typeof(ServerConnectionSettings))]
         ServerResponse ConnectToServer(ServerConnectionSettings settings);
 
@@ -35,6 +38,7 @@ namespace OpenBots.Agent.Core.Infrastructure
         Task<bool> ExecuteAttendedTask(string projectPath, ServerConnectionSettings settings, bool isServerAutomation);
 
         [OperationContract]
-        List<string> GetAutomations(string domainName, string userName);
+        [ServiceKnownType(typeof(List<string>))]
+        ServerResponse GetAutomations(string domainName, string userName);
     }
 }

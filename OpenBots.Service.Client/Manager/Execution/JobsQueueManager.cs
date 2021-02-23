@@ -8,19 +8,7 @@ namespace OpenBots.Service.Client.Manager.Execution
     {
         private Queue<Job> _jobsQueue;
 
-        public static JobsQueueManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new JobsQueueManager();
-
-                return instance;
-            }
-        }
-        private static JobsQueueManager instance;
-
-        private JobsQueueManager()
+        public JobsQueueManager()
         {
             _jobsQueue = new Queue<Job>();
         }

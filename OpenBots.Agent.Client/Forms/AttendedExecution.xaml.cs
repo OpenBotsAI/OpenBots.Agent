@@ -1,12 +1,13 @@
 using OpenBots.Agent.Client.Settings;
 using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Utilities;
 using OpenBots.Core.Enums;
 using OpenBots.Core.IO;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -36,7 +37,7 @@ namespace OpenBots.Agent.Client.Forms
                 SinkType = SinkType.File.ToString(),
                 TracingLevel = LogEventLevel.Information.ToString(),
                 LoggingValue1 = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(), "Logs", "Attended Execution", "log.txt"),
-                DNSHost = Dns.GetHostName(),
+                DNSHost = SystemInfo.GetUserDomainName(),
                 UserName = Environment.UserName
             };
         }
@@ -48,6 +49,10 @@ namespace OpenBots.Agent.Client.Forms
 
             // Published Projects Directory Watcher
             var publishedProjectsDir = Folders.GetFolder(FolderType.PublishedFolder);
+
+            if (!Directory.Exists(publishedProjectsDir))
+                Directory.CreateDirectory(publishedProjectsDir);
+
             _publishedProjectsWatcher.Path = publishedProjectsDir;
             _publishedProjectsWatcher.Filter = "*.nupkg";
             _publishedProjectsWatcher.Changed += new FileSystemEventHandler(OnFileChanged);
@@ -128,7 +133,7 @@ namespace OpenBots.Agent.Client.Forms
             {
                 case "Local":
                     _lastTask = cmb_PublishedProjects.SelectedItem.ToString();
-                    projectPackage = _automationProjects.Where(x => x.EndsWith(_lastTask)).FirstOrDefault();
+                    projectPackage = _automationProjects.Where(x => x.EndsWith($"\\{_lastTask}")).FirstOrDefault();
                     break;
                 case "Server":
                     projectPackage = _lastTask = cmb_PublishedProjects.SelectedItem.ToString();
@@ -138,13 +143,13 @@ namespace OpenBots.Agent.Client.Forms
             PipeProxy.Instance.TaskFinishedEvent += OnAttendedTaskFinished;
             Task.Run(() => PipeProxy.Instance.ExecuteAttendedTask(projectPackage, _connectionSettings, projectPackage.Equals(_lastTask)));
 
-            _isEngineBusy = true;
-            UpdateRunButtonState();
-
             // Update Execution Status
             string executionStatus = "Running {0} . . .";
             lbl_Status.Content = string.Format(executionStatus, $"\"{_lastTask}\"");
             lbl_Status.Visibility = Visibility.Visible;
+
+            _isEngineBusy = true;
+            btn_Run.IsEnabled = false;
         }
 
         private void OnAttendedTaskFinished(object sender, bool isJobSuccessful)
@@ -180,10 +185,21 @@ namespace OpenBots.Agent.Client.Forms
             if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
             {
                 // Fetch Server Automations
-                var automationNames = PipeProxy.Instance.GetAutomations();
+                var serverResponse = PipeProxy.Instance.GetAutomations();
+                if(serverResponse.Data != null)
+                {
+                    cmb_PublishedProjects.ItemsSource = (List<string>)serverResponse.Data;
+                    cmb_PublishedProjects.SelectedIndex = 0;
+                }
+                else
+                {
+                    ErrorDialog errorDialog = new ErrorDialog("An error occurred while getting automations from the server.",
+                        serverResponse.StatusCode, 
+                        serverResponse.Message);
 
-                cmb_PublishedProjects.ItemsSource = automationNames;
-                cmb_PublishedProjects.SelectedIndex = 0;
+                    errorDialog.Owner = this;
+                    errorDialog.ShowDialog();
+                }
             }
         }
 

@@ -2,36 +2,26 @@
 using OpenBots.Service.API.Api;
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
-using OpenBots.Service.Client.Server;
 using System;
 
 namespace OpenBots.Service.Client.Manager
 {
     public class AuthAPIManager
     {
-        public Configuration Configuration { get; private set; }
-        public ServerConnectionSettings ServerSettings { get; private set; }
-        public static AuthAPIManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new AuthAPIManager();
+        public Configuration Configuration { get; set; }
+        public ServerConnectionSettings ConnectionSettings { get; set; }
 
-                return instance;
-            }
-        }
-        private static AuthAPIManager instance;
-
-        private AuthAPIManager()
+        public event EventHandler<Configuration> ConfigurationUpdatedEvent;
+        public AuthAPIManager()
         {
             Configuration = new Configuration();
         }
 
-        public void Initialize(ServerConnectionSettings serverSettings)
+        public void Initialize(ServerConnectionSettings connectionSettings)
         {
-            ServerSettings = serverSettings;
-            Configuration.BasePath = ServerSettings.ServerURL;
+            ConnectionSettings = connectionSettings;
+            Configuration.BasePath = ConnectionSettings.ServerURL;
+            Configuration.SSLCertificateVerification = ConnectionSettings.SSLCertificateVerification;
         }
 
         public void UnInitialize()
@@ -41,20 +31,14 @@ namespace OpenBots.Service.Client.Manager
 
         public string GetToken()
         {
-            AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
-            var apiResponse = authAPI.ApiV1AuthTokenPostWithHttpInfo(new LoginModel(ServerSettings.AgentUsername, ServerSettings.AgentPassword));
-            
-            ConnectionSettingsManager.Instance.ConnectionSettings.AgentId = apiResponse.Data.AgentId;
-            return (Configuration.AccessToken = apiResponse.Data.Token.ToString());
-        }
+            AuthApi authAPI = new AuthApi(ConnectionSettings.ServerURL);
+            var apiResponse = authAPI.ApiV1AuthTokenPostWithHttpInfo(new LoginModel(ConnectionSettings.AgentUsername, ConnectionSettings.AgentPassword));
 
-        public void RegisterAgentUser()
-        {
-            AuthApi authAPI = new AuthApi(ServerSettings.ServerURL);
-            var signupModel = new SignUpViewModel(ServerSettings.AgentUsername, null, null, null,
-                ServerSettings.AgentPassword, false, null, null, null, null, null, null, null);
+            Configuration.AccessToken = apiResponse.Data.Token.ToString();
+            ConfigurationUpdatedEvent?.Invoke(this, Configuration);
 
-            var apiResponse = authAPI.ApiV1AuthRegisterPostWithHttpInfo(signupModel);
+            ConnectionSettings.AgentId = apiResponse.Data.AgentId;
+            return Configuration.AccessToken;
         }
 
         public string Ping()

@@ -12,7 +12,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(Automation automation, string domainName, string userName, out string configFilePath)
+        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string jobId, string domainName, string userName, out string configFilePath)
         {
             configFilePath = "";
 
@@ -25,20 +25,29 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Automation Directory
             var processDirectoryPath = Path.Combine(automationsDirectory, automation.Id.ToString());
+            
 
             // Create Automation Directory named as Automation Id If it doesn't exist
             if (!Directory.Exists(processDirectoryPath))
                 Directory.CreateDirectory(processDirectoryPath);
-            var processNugetFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".nuget");
-            var processZipFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".zip");
-            
-            // Check if Automation (.nuget) file exists if Not Download it
+
+            // Automation Nuget Package Path
+            var processNugetFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".nupkg");
+
+            // Execution Directory Path
+            var executionDirectoryPath = Path.Combine(processDirectoryPath, string.IsNullOrEmpty(jobId) ? new Guid().ToString() : jobId);
+            if (!Directory.Exists(executionDirectoryPath))
+                Directory.CreateDirectory(executionDirectoryPath);
+
+            var processZipFilePath = Path.Combine(executionDirectoryPath, automation.Name.ToString() + ".zip");
+
+            // Check if Automation (.nupkg) file exists if Not Download it
             if (!File.Exists(processNugetFilePath))
             {
                 // Download Automation by Id
-                var apiResponse = AutomationsAPIManager.ExportAutomation(AuthAPIManager.Instance, automation.Id.ToString());
+                var apiResponse = AutomationsAPIManager.ExportAutomation(authAPIManager, automation.Id.ToString());
 
-                // Write Downloaded(.nuget) file in the Automation Directory
+                // Write Downloaded(.nupkg) file in the Automation Directory
                 File.WriteAllBytes(processNugetFilePath, apiResponse.Data.ToArray());
             }
 
@@ -81,6 +90,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                 }
 
                 string entryFileName = Uri.UnescapeDataString(zipEntry.Name);
+
+                if (Path.GetExtension(entryFileName).Equals(".psmdcp"))
+                    continue;
 
                 // 4K is optimum
                 byte[] buffer = new byte[4096];

@@ -1,0 +1,104 @@
+﻿using System;
+using System.Windows;
+using AgentEnums = OpenBots.Agent.Core.Enums;
+
+namespace OpenBots.Agent.Client.Forms
+{
+    /// <summary>
+    /// Interaction logic for AgentSettings.xaml
+    /// </summary>
+    public partial class AgentSettings : Window
+    {
+        public OpenBotsSettings OBSettings { get; private set; }
+        public bool ChangesSaved { get; private set; } = false;
+        private bool _settingsChanged = false;
+        private const int minInterval = 60;
+        public AgentSettings(OpenBotsSettings openBotsSettings)
+        {
+            InitializeComponent();
+            OBSettings = openBotsSettings;
+        }
+
+        private void OnLoad(object sender, RoutedEventArgs e)
+        {
+            updown_HeartbeatInterval.Value = OBSettings.HeartbeatInterval;
+            updown_HeartbeatInterval.Minimum = minInterval;
+            updown_HeartbeatInterval.ValueChanged += OnHeartbeatIntervalChanged;
+            updown_PollingInterval.Value = OBSettings.JobsPollingInterval;
+            updown_PollingInterval.Minimum = minInterval;
+            updown_PollingInterval.ValueChanged += OnPollingIntervalChanged;
+
+            //cmb_HighDensityAgent.ItemsSource = Enum.GetValues(typeof(AgentEnums.BooleanAlias));
+            //cmb_HighDensityAgent.SelectedIndex = Array.IndexOf((Array)cmb_HighDensityAgent.ItemsSource, Enum.Parse(typeof(AgentEnums.BooleanAlias), GetEnumAliasOfBool(OBSettings.HighDensityAgent)));
+
+            cmb_SSLCertificateVerification.ItemsSource = Enum.GetValues(typeof(AgentEnums.BooleanAlias));
+            cmb_SSLCertificateVerification.SelectedIndex = Array.IndexOf((Array)cmb_SSLCertificateVerification.ItemsSource, Enum.Parse(typeof(AgentEnums.BooleanAlias), GetEnumAliasOfBool(OBSettings.SSLCertificateVerification)));
+
+            UpdateSaveButtonState();
+        }
+
+        private void OnPollingIntervalChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            CheckSettingsChange();
+        }
+
+        private void OnHeartbeatIntervalChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            CheckSettingsChange();
+        }
+
+        private string GetEnumAliasOfBool(bool isTrue)
+        {
+            return (isTrue ? AgentEnums.BooleanAlias.Yes : AgentEnums.BooleanAlias.No).ToString();
+        }
+
+        private bool GetBoolAliasOfEnum(string enumAlias)
+        {
+            return (AgentEnums.BooleanAlias.Yes.ToString().Equals(enumAlias) ? true : false);
+        }
+
+        private void OnDropDownClosed_HighDensityAgent(object sender, EventArgs e)
+        {
+            CheckSettingsChange();
+        }
+
+        private void OnDropDownClosed_SSLCertificateVerification(object sender, EventArgs e)
+        {
+            CheckSettingsChange();
+        }
+
+        private void CheckSettingsChange()
+        {
+            if (updown_HeartbeatInterval.Value != ((double)OBSettings.HeartbeatInterval) ||
+                updown_PollingInterval.Value != ((double)OBSettings.JobsPollingInterval) ||
+                //!(OBSettings.HighDensityAgent == GetBoolAliasOfEnum(cmb_HighDensityAgent.Text)) ||
+                !(OBSettings.SSLCertificateVerification == GetBoolAliasOfEnum(cmb_SSLCertificateVerification.Text)))
+                _settingsChanged = true;
+            else
+                _settingsChanged = false;
+
+            UpdateSaveButtonState();
+        }
+
+        private void UpdateSaveButtonState()
+        {
+            if (_settingsChanged)
+                btn_Save.IsEnabled = true;
+            else
+                btn_Save.IsEnabled = false;
+        }
+
+        private void OnClick_SaveBtn(object sender, RoutedEventArgs e)
+        {
+            OBSettings.HeartbeatInterval = (int)updown_HeartbeatInterval.Value;
+            OBSettings.JobsPollingInterval = (int)updown_PollingInterval.Value;
+            //OBSettings.HighDensityAgent = GetBoolAliasOfEnum(cmb_HighDensityAgent.Text);
+            OBSettings.SSLCertificateVerification = GetBoolAliasOfEnum(cmb_SSLCertificateVerification.Text);
+
+            SettingsManager.Instance.UpdateSettings(OBSettings);
+            _settingsChanged = false;
+            ChangesSaved = true;
+            UpdateSaveButtonState();
+        }
+    }
+}

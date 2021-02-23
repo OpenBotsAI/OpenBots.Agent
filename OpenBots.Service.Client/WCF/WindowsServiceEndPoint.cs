@@ -1,35 +1,39 @@
 ﻿using OpenBots.Agent.Core.Infrastructure;
 using OpenBots.Agent.Core.Model;
-using OpenBots.Service.Client.Manager;
-using OpenBots.Service.Client.Manager.API;
-using OpenBots.Service.Client.Manager.Execution;
-using OpenBots.Service.Client.Server;
-using System;
+using OpenBots.Service.Client.Manager.Agents;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OpenBots.Service.Client
 {
     public class WindowsServiceEndPoint : IWindowsServiceEndPoint
     {
+        public bool AddAgent(string domainName, string userName)
+        {
+            // User validation check
+            if (!ServiceController.IsValidUser(domainName, userName))
+                return false;
+
+            AgentsManager.AddAgent(userName);
+            return true;
+        }
 
         public ServerResponse ConnectToServer(ServerConnectionSettings settings)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(settings.DNSHost, settings.UserName))
+            if (!ServiceController.IsValidUser(settings.DNSHost, settings.UserName))
                 return InvalidUserResponse();
 
-            return HttpServerClient.Instance.Connect(settings);
+            return AgentsManager.GetAgent(settings.UserName).Connect(settings);
         }
 
         public ServerResponse DisconnectFromServer(ServerConnectionSettings settings)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(settings.DNSHost, settings.UserName))
+            if (!ServiceController.IsValidUser(settings.DNSHost, settings.UserName))
                 return InvalidUserResponse();
 
-            return HttpServerClient.Instance.Disconnect(settings);
+            return AgentsManager.GetAgent(settings.UserName).Disconnect(settings);
         }
 
         public async Task<bool> ExecuteAttendedTask(string projectPackage, ServerConnectionSettings settings, bool isServerAutomation)
@@ -37,83 +41,62 @@ namespace OpenBots.Service.Client
             var task = Task.Factory.StartNew(() =>
             {
                 // User validation check
-                if (!ServiceController.Instance.IsValidUser(settings.DNSHost, settings.UserName))
+                if (!ServiceController.IsValidUser(settings.DNSHost, settings.UserName))
                     return false;
 
-                return AttendedExecutionManager.Instance.ExecuteTask(projectPackage, settings, isServerAutomation);
+                return AgentsManager.GetAgent(settings.UserName).ExecuteAttendedTask(projectPackage, settings, isServerAutomation);
             });
             return await task.ConfigureAwait(false);
         }
 
-        public List<string> GetAutomations(string domainName, string userName)
+        public ServerResponse GetAutomations(string domainName, string userName)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(domainName, userName))
+            if (!ServiceController.IsValidUser(domainName, userName))
                 return null;
 
-            var automationsList = AutomationsAPIManager.GetAutomations(AuthAPIManager.Instance);
-            var automationPackageNames = automationsList.Items.Where(
-                a => !string.IsNullOrEmpty(a.OriginalPackageName) &&
-                a.OriginalPackageName.EndsWith(".nupkg") &&
-                a.AutomationEngine.Equals("OpenBots")
-                ).Select(a => a.OriginalPackageName).ToList();
-            return automationPackageNames;
+            return AgentsManager.GetAgent(userName).GetAutomations();
         }
 
         public ServerConnectionSettings GetConnectionSettings(string domainName, string userName)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(domainName, userName))
+            if (!ServiceController.IsValidUser(domainName, userName))
                 return null;
 
-            return ConnectionSettingsManager.Instance?.ConnectionSettings ?? null;
+            return AgentsManager.GetAgent(userName).GetConnectionSettings();
         }
 
         public bool IsAlive()
         {
-            return ServiceController.Instance.IsServiceAlive;
+            return ServiceController.IsServiceAlive();
         }
 
         public bool IsConnected(string domainName, string userName)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(domainName, userName))
+            if (!ServiceController.IsValidUser(domainName, userName))
                 return false;
 
-            return ConnectionSettingsManager.Instance?.ConnectionSettings?.ServerConnectionEnabled ?? false;
+            return AgentsManager.GetAgent(userName).IsConnectedToServer();
         }
 
         public bool IsEngineBusy(string domainName, string userName)
         {
             // User validation check
-            if (!ServiceController.Instance.IsValidUser(domainName, userName))
+            if (!ServiceController.IsValidUser(domainName, userName))
                 return true;
 
-            return ExecutionManager.Instance?.IsEngineBusy ?? false;
+            return AgentsManager.GetAgent(userName).IsEngineBusy();
         }
 
         public ServerResponse PingServer(ServerConnectionSettings serverSettings)
         {
-            try
-            {
-                // User validation check
-                if (!ServiceController.Instance.IsValidUser(serverSettings.DNSHost, serverSettings.UserName))
-                    return InvalidUserResponse();
+            // User validation check
+            if (!ServiceController.IsValidUser(serverSettings.DNSHost, serverSettings.UserName))
+                return InvalidUserResponse();
 
-                AuthAPIManager.Instance.Initialize(serverSettings);
-                var serverIP = AuthAPIManager.Instance.Ping();
-                AuthAPIManager.Instance.UnInitialize();
-
-                return new ServerResponse(serverIP);
-            }
-            catch (Exception ex)
-            {
-                var errorCode = ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty;
-                var errorMessage = ex.GetType().GetProperty("ErrorContent")?.GetValue(ex, null)?.ToString() ?? ex.Message;
-
-                // Send Response to Agent
-                return new ServerResponse(null, errorCode, errorMessage);
-            }
+            return AgentsManager.GetAgent(serverSettings.UserName).PingServer(serverSettings);
         }
 
         private ServerResponse InvalidUserResponse()

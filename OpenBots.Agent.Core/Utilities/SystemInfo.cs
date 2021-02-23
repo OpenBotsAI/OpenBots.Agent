@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 
 namespace OpenBots.Agent.Core.Utilities
@@ -24,6 +26,11 @@ namespace OpenBots.Agent.Core.Utilities
             }
 
             return string.Join("-", Enumerable.Range(0, 6).Select(i => macAddress.Substring(i * 2, 2)));
+        }
+
+        public static string GetUserDomainName()
+        {
+            return Dns.GetHostName().ToLower() == Environment.UserDomainName.ToLower() ? Dns.GetHostName() : Environment.UserDomainName;
         }
     }
 }

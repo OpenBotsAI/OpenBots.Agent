@@ -263,6 +263,10 @@ namespace OpenBots.Agent.Core.Nuget
         public static void SetupFirstTimeUserEnvironment(string domainName, string userName, string productVersion)
         {
             string packagesPath = Folders.GetFolder(FolderType.LocalAppDataPackagesFolder);
+
+            if (!Directory.Exists(packagesPath))
+                Directory.CreateDirectory(packagesPath);
+
             string programPackagesSource = Path.Combine(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName, "packages", productVersion);
 
             if (!Directory.Exists(programPackagesSource))
