@@ -9,6 +9,26 @@
         Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed"
         BorderThickness="2" UseLayoutRounding="True">
     <Window.Resources>
+        <Style x:Key="MachineInfoImage" TargetType="{x:Type Image}">
+            <Setter Property="Source" Value="/resources/machine_info_gray.png" />
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="ToolTip" Value="Machine Info"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="/resources/machine_info_black.png"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="UnlockImage" TargetType="{x:Type Image}">
+            <Setter Property="Source" Value="/resources/clear_credential_gray.png" />
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="ToolTip" Value="Clear Credentials"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="/resources/clear_credential_black.png"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="GearImage" TargetType="{x:Type Image}">
             <Setter Property="Source" Value="/resources/gear_gray.png"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -45,7 +65,7 @@
         <StatusBar Name="CustomBar" Margin="5,0,5,0" Background="Transparent" Grid.Row="0">
             <Grid Name="grd_CustomMenuBar" Margin="2,0,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="420"/>
+                    <ColumnDefinition Width="367"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Name="grd_TitleBar" Grid.Column="0" MouseLeftButtonDown="OnMouseLeftButtonDown_TitleBar">
@@ -54,26 +74,28 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Image Source="/resources/OpenBots.png" HorizontalAlignment="Left" Width="20" Height="20" Grid.Column="0"/>
-                    <Label Content="OpenBots Agent" FontSize="12" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Calibri" Grid.Column="1"/>
+                    <Label Content="OpenBots Agent" FontSize="12" Width="347" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Calibri" Grid.Column="1"/>
                 </Grid>
                 <Grid Name="grd_CustomControls" HorizontalAlignment="Right" Grid.Column="1" Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="23"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="27"/>
                         <ColumnDefinition Width="22"/>
                     </Grid.ColumnDefinitions>
-                    <Image Name="img_settings" Style="{StaticResource GearImage}" RenderOptions.BitmapScalingMode="HighQuality" Height="19" MouseLeftButtonUp="OnClick_Settings" Grid.Column="0" Margin="0">
+                    <Image Name="img_settings" Style="{StaticResource GearImage}" RenderOptions.BitmapScalingMode="HighQuality" MouseLeftButtonUp="OnClick_Settings" Grid.Column="0" Margin="0,2" Width="19">
                         <Image.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Name="menuItemMachineInfo" Header="Machine Info" Click="OnClick_MachineInfo"/>
                                 <MenuItem Name="menuItemAgentSettings" Header="Agent Settings" Click="OnClick_AgentSettings"/>
-                                <MenuItem Name="menuItemClearCredentials" Header="Clear Credentials" Click="OnClick_ClearCredentials"/>
                                 <MenuItem Name="menuItemNugetFeedManager" Header="Nuget Feed Manager" Click="OnClick_NugetFeedManager"/>
                                 <MenuItem Name="menuItemAttendedExecution" Header="Launch Attended Mode" Click="OnClick_AttendedExecution"/>
                                 <MenuItem Name="menuItemQuit" Header="Quit" Click="OnClick_Quit"/>
                             </ContextMenu>
                         </Image.ContextMenu>
                     </Image>
-                    <Image Style="{StaticResource CloseImage}" Height="15" Grid.Column="1" MouseLeftButtonDown="OnClick_Close" />
+                    <Image Name="img_MachineInfo" Style="{StaticResource MachineInfoImage}" Grid.Column="1" Margin="0,0,1,2" Width="21" MouseLeftButtonDown="OnClick_MachineInfo"/>
+                    <Image Name="img_ClearCredentials" Style="{StaticResource UnlockImage}" Grid.Column="2" Width="19" MouseLeftButtonDown="OnClick_ClearCredentials"/>
+                    <Image Name="img_CloseApp" Style="{StaticResource CloseImage}" Grid.Column="3" MouseLeftButtonDown="OnClick_Close" Margin="0,4" Width="15" />
                 </Grid>
             </Grid>
         </StatusBar>

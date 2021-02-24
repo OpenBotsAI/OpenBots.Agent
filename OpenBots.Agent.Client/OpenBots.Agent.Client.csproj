@@ -405,6 +405,10 @@
     <Resource Include="resources\Icons\Commands\command-web.png" />
     <Resource Include="resources\Icons\Commands\command-window-close.png" />
     <Resource Include="resources\Icons\Commands\command-window.png" />
+    <Resource Include="resources\clear_credential_black.png" />
+    <Resource Include="resources\clear_credential_gray.png" />
+    <Resource Include="resources\machine_info_black.png" />
+    <Resource Include="resources\machine_info_gray.png" />
     <Content Include="resources\Samples\HTMLInputSample.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

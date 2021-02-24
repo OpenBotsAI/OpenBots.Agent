@@ -40,10 +40,8 @@ namespace OpenBots.Agent.Client
         private SystemForms.ContextMenu _contextMenuTrayIcon;
         private SystemForms.MenuItem _menuItemQuit;
         private SystemForms.MenuItem _menuItemAgentSettings;
-        private SystemForms.MenuItem _menuItemClearCredentials;
         private SystemForms.MenuItem _menuItemNugetFeedManager;
         private SystemForms.MenuItem _menuItemAttendedExecution;
-        private SystemForms.MenuItem _menuItemMachineInfo;
         
         private bool _minimizeToTray = true;
         private bool _isServiceUP = false;
@@ -152,9 +150,7 @@ namespace OpenBots.Agent.Client
         private void InitializeTrayContextMenu()
         {
             _contextMenuTrayIcon = new SystemForms.ContextMenu();
-            _menuItemMachineInfo = new SystemForms.MenuItem();
             _menuItemAgentSettings = new SystemForms.MenuItem();
-            _menuItemClearCredentials = new SystemForms.MenuItem();
             _menuItemNugetFeedManager = new SystemForms.MenuItem();
             _menuItemAttendedExecution = new SystemForms.MenuItem();
             _menuItemQuit = new SystemForms.MenuItem();
@@ -162,25 +158,15 @@ namespace OpenBots.Agent.Client
             // Initialize contextMenu
             _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[]
             {
-                _menuItemMachineInfo,
                 _menuItemAgentSettings,
-                _menuItemClearCredentials,
                 _menuItemNugetFeedManager,
                 _menuItemAttendedExecution,
                 _menuItemQuit
             });
 
-            // Initialize _menuItemMachineInfo
-            _menuItemMachineInfo.Text = menuItemMachineInfo.Header.ToString();
-            _menuItemMachineInfo.Click += OnClick_TrayMachineInfo;
-
             // Initialize _menuItemAgentSettings
             _menuItemAgentSettings.Text = menuItemAgentSettings.Header.ToString();
             _menuItemAgentSettings.Click += OnClick_TrayAgentSettings;
-
-            // Initialize _menuItemClearCredentials
-            _menuItemClearCredentials.Text = menuItemClearCredentials.Header.ToString();
-            _menuItemClearCredentials.Click += OnClick_TrayClearCredentials;
 
             // Initialize _menuItemQuit
             _menuItemNugetFeedManager.Text = menuItemNugetFeedManager.Header.ToString();
@@ -822,15 +808,11 @@ namespace OpenBots.Agent.Client
             if (!string.IsNullOrEmpty(_registryManager.AgentUsername) && 
                 !ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
             {
-                menuItemClearCredentials.IsEnabled = _menuItemClearCredentials.Enabled = true;
-                menuItemClearCredentials.Visibility = Visibility.Visible;
-                _menuItemClearCredentials.Visible = true;
+                img_ClearCredentials.IsEnabled = true;
             }
             else
             {
-                menuItemClearCredentials.IsEnabled = _menuItemClearCredentials.Enabled = false;
-                menuItemClearCredentials.Visibility = Visibility.Collapsed;
-                _menuItemClearCredentials.Visible = false;
+                img_ClearCredentials.IsEnabled = false;
             }
         }
         private void UpdateAgentSettingsUI()
@@ -925,7 +907,7 @@ namespace OpenBots.Agent.Client
         #endregion
 
         #region Top MenuBar Controls Events
-        private void OnClick_MachineInfo(object sender, RoutedEventArgs e)
+        private void OnClick_MachineInfo(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             ShowMachineInfoWindow();
         }
@@ -941,7 +923,7 @@ namespace OpenBots.Agent.Client
         {
             ShowAttendedExecutionWindow();
         }
-        private void OnClick_ClearCredentials(object sender, RoutedEventArgs e)
+        private void OnClick_ClearCredentials(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             ClearCredentials();
         }
@@ -962,8 +944,7 @@ namespace OpenBots.Agent.Client
             this.Close();
         }
 
-        #endregion
 
-        
+        #endregion
     }
 }
