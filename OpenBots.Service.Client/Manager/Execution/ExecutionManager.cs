@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using OpenBots.Agent.Core.Enums;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -258,7 +257,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                         RunTagUIAutomation(job, machineCredential, mainScriptFilePath);
                         break;
 
-                    case "C#":
+                    case "CS-Script":
                         RunCSharpAutomation(job, machineCredential, mainScriptFilePath);
                         break;
 
@@ -300,9 +299,10 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void RunTagUIAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
         {
-            if (GetFullPathFromWindows("tagui") == null)
+            string exePath = GetFullPathFromWindows("tagui");
+            if (exePath == null)
                 throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
-            string cmdLine = $"tagui \"{mainScriptFilePath}\"";
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptFilePath}\" > \"%USERPROFILE%\\Desktop\\tag.txt\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
@@ -312,10 +312,11 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void RunCSharpAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
         {
-            if (GetFullPathFromWindows("cscs") == null)
+            string exePath = GetFullPathFromWindows("cscs.exe");
+            if (exePath == null)
                 throw new Exception("CS-Script installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
 
-            string cmdLine = $"cscs \"{mainScriptFilePath}\"";
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" > \"%USERPROFILE%\\Desktop\\cscs.txt\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
