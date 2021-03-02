@@ -47,7 +47,7 @@ namespace OpenBots.Agent.Core.Utilities
                         .Enrich.WithProperty("AgentName", executionParams.ServerConnectionSettings.AgentName)
                         .Enrich.WithProperty("MachineName", executionParams.ServerConnectionSettings.MachineName)
                         .MinimumLevel.ControlledBy(levelSwitch)
-                        .WriteTo.Http(uri)
+                        .WriteTo.Http(requestUri: uri, period: TimeSpan.FromSeconds((double)executionParams.ServerConnectionSettings.JobsLoggingInterval))
                         .CreateLogger();
             }
             catch (Exception)

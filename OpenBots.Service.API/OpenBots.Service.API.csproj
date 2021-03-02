@@ -90,6 +90,10 @@
     <Compile Include="Client\IApiAccessor.cs" />
     <Compile Include="Client\IReadableConfiguration.cs" />
     <Compile Include="Client\SwaggerDateConverter.cs" />
+    <Compile Include="Model\AgentGroup.cs" />
+    <Compile Include="Model\AgentGroupMember.cs" />
+    <Compile Include="Model\AgentGroupMemberPaginatedList.cs" />
+    <Compile Include="Model\AgentGroupPaginatedList.cs" />
     <Compile Include="Model\AgentHeartbeat.cs" />
     <Compile Include="Model\AgentHeartbeatPaginatedList.cs" />
     <Compile Include="Model\AgentViewModel.cs" />

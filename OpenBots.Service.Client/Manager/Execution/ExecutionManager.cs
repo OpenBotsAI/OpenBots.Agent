@@ -7,7 +7,6 @@ using OpenBots.Agent.Core.Utilities;
 using OpenBots.Service.API.Client;
 using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
-using OpenBots.Service.Client.Manager.HeartBeat;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
 using Serilog.Events;
@@ -30,16 +29,16 @@ namespace OpenBots.Service.Client.Manager.Execution
         private AutomationExecutionLog _executionLog;
         private ConnectionSettingsManager _connectionSettingsManager;
         private AuthAPIManager _authAPIManager;
-        private AgentHeartBeatManager _agentHeartBeatManager;
+        private HeartbeatViewModel _agentHeartbeat;
         private FileLogger _fileLogger;
 
         public JobsQueueManager JobsQueueManager { get; set; }
         public event EventHandler JobFinishedEvent;
 
-        public ExecutionManager(AgentHeartBeatManager agentHeartBeatManager)
+        public ExecutionManager(HeartbeatViewModel agentHeartbeat)
         {
             JobsQueueManager = new JobsQueueManager();
-            _agentHeartBeatManager = agentHeartBeatManager;
+            _agentHeartbeat = agentHeartbeat;
         }
 
         public void StartNewJobsCheckTimer(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
@@ -116,7 +115,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                         $"ErrorMessage = {exception}", LogEventLevel.Error);
                 }
                 _isSuccessfulExecution = false;
-                _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Job execution failed";
+                _agentHeartbeat.LastReportedMessage = "Job execution failed";
                 SetEngineStatus(false);
             }
         }
@@ -136,8 +135,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             var automation = AutomationsAPIManager.GetAutomation(_authAPIManager, job.AutomationId.ToString());
 
             // Update LastReportedMessage and LastReportedWork
-            _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Job execution started";
-            _agentHeartBeatManager.Heartbeat.LastReportedWork = automation.Name;
+            _agentHeartbeat.LastReportedMessage = "Job execution started";
+            _agentHeartbeat.LastReportedWork = automation.Name;
 
             // Log Event
             _fileLogger.LogEvent("Job Execution", "Attempt to download/retrieve Automation");
@@ -225,7 +224,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             JobsQueueManager.DequeueJob();
 
             _isSuccessfulExecution = true;
-            _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Job execution completed";
+            _agentHeartbeat.LastReportedMessage = "Job execution completed";
         }
         private void RunAutomation(Job job, Automation automation, MachineCredential machineCredential,
             string mainScriptFilePath, List<string> projectDependencies)
@@ -284,10 +283,10 @@ namespace OpenBots.Service.Client.Manager.Execution
         {
             IsEngineBusy = isBusy;
             if (IsEngineBusy)
-                _agentHeartBeatManager.Heartbeat.LastReportedStatus = AgentStatus.Busy.ToString();
+                _agentHeartbeat.LastReportedStatus = AgentStatus.Busy.ToString();
             else
             {
-                _agentHeartBeatManager.Heartbeat.LastReportedStatus = AgentStatus.Available.ToString();
+                _agentHeartbeat.LastReportedStatus = AgentStatus.Available.ToString();
                 OnJobFinishedEvent(EventArgs.Empty);
             }
         }

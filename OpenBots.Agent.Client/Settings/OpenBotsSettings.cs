@@ -9,7 +9,7 @@
         public string AgentId { get; set; }
         public string AgentName { get; set; }
         public int HeartbeatInterval { get; set; }
-        public int JobsPollingInterval { get; set; }
+        public int JobsLoggingInterval { get; set; }
         public bool HighDensityAgent { get; set; }
         public bool SingleSessionExecution { get; set; }
         public bool SSLCertificateVerification { get; set; }

@@ -213,7 +213,7 @@ namespace OpenBots.Agent.Client
                     SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? SinkType.File.ToString() : _agentSettings.SinkType,
                     TracingLevel = string.IsNullOrEmpty(_agentSettings.TracingLevel) ? LogEventLevel.Information.ToString() : _agentSettings.TracingLevel,
                     HeartbeatInterval = _agentSettings.HeartbeatInterval,
-                    JobsPollingInterval = _agentSettings.JobsPollingInterval,
+                    JobsLoggingInterval = _agentSettings.JobsLoggingInterval,
                     HighDensityAgent = _agentSettings.HighDensityAgent,
                     SingleSessionExecution = _agentSettings.SingleSessionExecution,
                     SSLCertificateVerification = _agentSettings.SSLCertificateVerification,
@@ -483,7 +483,7 @@ namespace OpenBots.Agent.Client
             {
                 _agentSettings = frmAgentSettings.OBSettings;
                 ConnectionSettingsManager.Instance.ConnectionSettings.HeartbeatInterval = _agentSettings.HeartbeatInterval;
-                ConnectionSettingsManager.Instance.ConnectionSettings.JobsPollingInterval = _agentSettings.JobsPollingInterval;
+                ConnectionSettingsManager.Instance.ConnectionSettings.JobsLoggingInterval = _agentSettings.JobsLoggingInterval;
                 ConnectionSettingsManager.Instance.ConnectionSettings.HighDensityAgent = _agentSettings.HighDensityAgent;
                 ConnectionSettingsManager.Instance.ConnectionSettings.SingleSessionExecution = _agentSettings.SingleSessionExecution;
                 ConnectionSettingsManager.Instance.ConnectionSettings.SSLCertificateVerification = _agentSettings.SSLCertificateVerification;
