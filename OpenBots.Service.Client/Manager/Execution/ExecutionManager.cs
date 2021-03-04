@@ -522,9 +522,11 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                 foreach (var path in pathValues)
                 {
-                    appFullPath = Path.Combine(path, exeName);
-                    if (File.Exists(appFullPath))
+                    if (File.Exists(Path.Combine(path, exeName)))
+                    {
+                        appFullPath = Path.Combine(path, exeName);
                         break;
+                    }
                 }
             }
 
