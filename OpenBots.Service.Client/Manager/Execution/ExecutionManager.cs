@@ -195,7 +195,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             };
 
             // Run Automation
-            RunAutomation(job, automation, credential, mainScriptFilePath, assembliesList);
+            RunAutomation(job, automation, credential, mainScriptFilePath, executionDirPath, assembliesList);
 
             // Log Event
             _fileLogger.LogEvent("Job Execution", "Job execution completed");
@@ -232,7 +232,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             _agentHeartBeatManager.Heartbeat.LastReportedMessage = "Job execution completed";
         }
         private void RunAutomation(Job job, Automation automation, MachineCredential machineCredential,
-            string mainScriptFilePath, List<string> projectDependencies)
+            string mainScriptFilePath, string executionDirPath, List<string> projectDependencies)
         {
             try
             {
@@ -250,7 +250,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                         break;
 
                     case "TagUI":
-                        RunTagUIAutomation(job, automation, machineCredential, mainScriptFilePath);
+                        RunTagUIAutomation(job, automation, machineCredential, mainScriptFilePath, executionDirPath);
                         break;
 
                     case "CS-Script":
@@ -294,7 +294,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             return;
         }
 
-        private void RunTagUIAutomation(Job job, Automation automation, MachineCredential machineCredential, string mainScriptFilePath)
+        private void RunTagUIAutomation(Job job, Automation automation, MachineCredential machineCredential, 
+            string mainScriptFilePath, string executionDirPath)
         {
             string exePath = GetFullPathFromWindows("tagui");
             if (exePath == null)
@@ -305,13 +306,19 @@ namespace OpenBots.Service.Client.Manager.Execution
             if (!File.Exists(logFilePath))
                 File.Create(Path.Combine(Directory.GetParent(exePath).FullName, "tagui_logging"));
 
-            var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, null);
-            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptFilePath}\" > \"%USERPROFILE%\\Desktop\\tag.txt\"";
+            // Copy Script Folder/Files to ".\tagui\flows" Directory
+            var mainScriptPath = CopyTagUIAutomation(exePath, mainScriptFilePath, ref executionDirPath);
+
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\" > \"%USERPROFILE%\\Desktop\\tag.txt\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
 
-            SendTagUILogsToServer(mainScriptFilePath, executionParams);
+            var executionParams = GetJobExecutionParams(job, automation, mainScriptPath, null);
+            SendTagUILogsToServer(mainScriptPath, executionParams);
+
+            // Delete TagUI Execution Directory
+            Directory.Delete(executionDirPath, true);
 
             return;
         }
@@ -556,5 +563,31 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
         }
 
+        // Copy TagUI Automation Files to ".\tagui\flows"
+        private string CopyTagUIAutomation(string exePath, string mainScriptFilePath, ref string executionDirPath)
+        {
+            var taguiRootDirPath = Directory.GetParent(exePath).Parent.FullName;
+            var taguiFlowsDirPath = Path.Combine(taguiRootDirPath, "flows");
+            if (!Directory.Exists(taguiFlowsDirPath))
+                Directory.CreateDirectory(taguiFlowsDirPath);
+
+            // Execution Directory Name is actually the Job Id
+            var executionDirName = executionDirPath.Split(Path.DirectorySeparatorChar).Last();
+            var taguiExecutionDirPath = Path.Combine(taguiFlowsDirPath, executionDirName);
+
+            // Copy Execution Directory and Subdirectories to TagUI Directory
+            foreach (string dirPath in Directory.GetDirectories(executionDirPath, "*",
+                SearchOption.AllDirectories))
+                Directory.CreateDirectory(dirPath.Replace(executionDirPath, taguiExecutionDirPath));
+
+            // Copy all the files from Execution Directory to TagUI Directory
+            foreach (string newPath in Directory.GetFiles(executionDirPath, "*.*",
+                SearchOption.AllDirectories))
+                File.Copy(newPath, newPath.Replace(executionDirPath, taguiExecutionDirPath), true);
+
+            executionDirPath = taguiExecutionDirPath;
+            return Directory.GetFiles(executionDirPath, Path.GetFileName(mainScriptFilePath),
+                SearchOption.AllDirectories).First();
+        }
     }
 }
