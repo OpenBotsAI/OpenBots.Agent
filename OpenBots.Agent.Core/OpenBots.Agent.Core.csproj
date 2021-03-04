@@ -216,6 +216,7 @@
     <Compile Include="UserRegistry\RegistryManager.cs" />
     <Compile Include="Utilities\ExceptionSerializer.cs" />
     <Compile Include="Utilities\DataFormatter.cs" />
+    <Compile Include="Utilities\ExternalMethods.cs" />
     <Compile Include="Utilities\Logging.cs" />
     <Compile Include="Utilities\SystemInfo.cs" />
   </ItemGroup>

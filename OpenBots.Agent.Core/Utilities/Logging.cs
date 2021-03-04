@@ -1,9 +1,11 @@
-﻿using OpenBots.Agent.Core.Model;
+﻿using OpenBots.Agent.Core.Enums;
+using OpenBots.Agent.Core.Model;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using System;
+using System.IO;
 
 namespace OpenBots.Agent.Core.Utilities
 {
@@ -92,6 +94,35 @@ namespace OpenBots.Agent.Core.Utilities
             {
                 return null;
             }
+        }
+
+        public Logger GetLogger(JobExecutionParams executionParams)
+        {
+            Logger logger = null;
+
+            // Get Minimum Log Level
+            LogEventLevel minLogLevel;
+            Enum.TryParse(executionParams.ServerConnectionSettings.TracingLevel, out minLogLevel);
+
+            // Get Log Sink Type (File, HTTP)
+            SinkType sinkType;
+            Enum.TryParse(executionParams.ServerConnectionSettings.SinkType, out sinkType);
+
+            switch (sinkType)
+            {
+                case SinkType.File:
+                    string logFile = Path.Combine(executionParams.ServerConnectionSettings.LoggingValue1);
+                    logger = CreateFileLogger(logFile, Serilog.RollingInterval.Day, minLogLevel);
+
+                    break;
+                case SinkType.Http:
+                    logger = CreateHTTPLogger(executionParams,
+                        executionParams.ServerConnectionSettings.LoggingValue1, minLogLevel);
+
+                    break;
+            }
+
+            return logger;
         }
     }
 }

@@ -16,9 +16,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Text;
 using System.Timers;
 using JobParameter = OpenBots.Agent.Core.Model.JobParameter;
 
@@ -31,10 +30,6 @@ namespace OpenBots.Service.Client.Manager.Execution
         private Timer _newJobsCheckTimer;
         private AutomationExecutionLog _executionLog;
         private const int MAX_PATH = 260;
-
-        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
-        static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
-
 
         private ConnectionSettingsManager _connectionSettingsManager;
         private AuthAPIManager _authAPIManager;
@@ -156,7 +151,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Download Automation and Extract Files and Return File Paths of ProjectConfig and MainScript 
             automation.AutomationEngine = string.IsNullOrEmpty(automation.AutomationEngine) ? "OpenBots" : automation.AutomationEngine;
             string configFilePath;
-            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, job.Id.ToString(), userDomainName, connectedUserName, out configFilePath);
+            string executionDirPath;
+            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, job.Id.ToString(), userDomainName, connectedUserName, out executionDirPath, out configFilePath);
 
             // Install Project Dependencies
             List<string> assembliesList = null;
@@ -216,7 +212,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 });
 
             // Delete Job Directory
-            Directory.Delete(Directory.GetParent(mainScriptFilePath).Parent.FullName, true);
+            Directory.Delete(executionDirPath, true);
 
             // Update Automation Execution Log (Execution Finished)
             _executionLog.CompletedOn = DateTime.UtcNow;
@@ -254,7 +250,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                         break;
 
                     case "TagUI":
-                        RunTagUIAutomation(job, machineCredential, mainScriptFilePath);
+                        RunTagUIAutomation(job, automation, machineCredential, mainScriptFilePath);
                         break;
 
                     case "CS-Script":
@@ -274,13 +270,14 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void RunOpenBotsAutomation(Job job, Automation automation, MachineCredential machineCredential, string mainScriptFilePath, List<string> projectDependencies)
         {
-            var executionParams = GetExecutionParams(job, automation, mainScriptFilePath, projectDependencies);
+            var executionParams = GetExecutionParamsString(job, automation, mainScriptFilePath, projectDependencies);
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 
             // launch the Executor
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+
             return;
         }
 
@@ -297,15 +294,24 @@ namespace OpenBots.Service.Client.Manager.Execution
             return;
         }
 
-        private void RunTagUIAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
+        private void RunTagUIAutomation(Job job, Automation automation, MachineCredential machineCredential, string mainScriptFilePath)
         {
             string exePath = GetFullPathFromWindows("tagui");
             if (exePath == null)
                 throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
+
+            // Create "tagui_logging" file for generating logs file
+            var logFilePath = Path.Combine(Directory.GetParent(exePath).FullName, "tagui_logging");
+            if (!File.Exists(logFilePath))
+                File.Create(Path.Combine(Directory.GetParent(exePath).FullName, "tagui_logging"));
+
+            var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, null);
             string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptFilePath}\" > \"%USERPROFILE%\\Desktop\\tag.txt\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+
+            SendTagUILogsToServer(mainScriptFilePath, executionParams);
 
             return;
         }
@@ -342,9 +348,15 @@ namespace OpenBots.Service.Client.Manager.Execution
                 JobFinishedEvent?.Invoke(this, e);
         }
 
-        private string GetExecutionParams(Job job, Automation automation, string mainScriptFilePath, List<string> projectDependencies)
+        private string GetExecutionParamsString(Job job, Automation automation, string mainScriptFilePath, List<string> projectDependencies)
         {
-            var executionParams = new JobExecutionParams()
+            var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, projectDependencies);
+            var paramsJsonString = JsonConvert.SerializeObject(executionParams);
+            return DataFormatter.CompressString(paramsJsonString);
+        }
+        private JobExecutionParams GetJobExecutionParams(Job job, Automation automation, string mainScriptFilePath, List<string> projectDependencies)
+        {
+            return new JobExecutionParams()
             {
                 JobId = job.Id.ToString(),
                 AutomationId = automation.Id.ToString(),
@@ -355,10 +367,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ProjectDependencies = projectDependencies,
                 ServerConnectionSettings = _connectionSettingsManager.ConnectionSettings
             };
-            var paramsJsonString = JsonConvert.SerializeObject(executionParams);
-            return DataFormatter.CompressString(paramsJsonString);
         }
-
         private List<JobParameter> GetJobParameters(string jobId)
         {
             var jobViewModel = JobsAPIManager.GetJobViewModel(_authAPIManager, jobId);
@@ -473,14 +482,76 @@ namespace OpenBots.Service.Client.Manager.Execution
             _connectionSettingsManager.ConnectionSettings = connectionSettings;
         }
 
-        public static string GetFullPathFromWindows(string exeName)
+        public string GetFullPathFromWindows(string exeName)
         {
             if (exeName.Length >= MAX_PATH)
                 throw new ArgumentException($"The executable name '{exeName}' must have less than {MAX_PATH} characters.",
                     nameof(exeName));
 
             StringBuilder sb = new StringBuilder(exeName, MAX_PATH);
-            return PathFindOnPath(sb, null) ? sb.ToString() : null;
+            var exePath = ExternalMethods.PathFindOnPath(sb, null) ? sb.ToString() : null;
+
+            if (exePath != null)
+                return exePath;
+
+            // Get User Environment Variable "Path"
+            var envPathValue = new EnvironmentSettings().GetPathEnvironmentVariable(
+                _connectionSettingsManager.ConnectionSettings.DNSHost,
+                _connectionSettingsManager.ConnectionSettings.UserName);
+
+            exePath = FindAppPath(envPathValue, exeName);
+            if (!string.IsNullOrEmpty(exePath))
+                return exePath;
+
+            // Get System Environment Variable "Path"
+            envPathValue = Environment.GetEnvironmentVariable("Path");
+            exePath = FindAppPath(envPathValue, exeName);
+            if (!string.IsNullOrEmpty(exePath))
+                return exePath;
+            else
+                return null;
+
+        }
+
+        private string FindAppPath(string envPathValue, string exeName)
+        {
+            string appFullPath = string.Empty;
+            if (envPathValue != null)
+            {
+                var pathValues = envPathValue.ToString().Split(Path.PathSeparator);
+
+                foreach (var path in pathValues)
+                {
+                    appFullPath = Path.Combine(path, exeName);
+                    if (File.Exists(appFullPath))
+                        break;
+                }
+            }
+
+            return appFullPath;
+        }
+
+        private void SendTagUILogsToServer(string mainScriptFilePath, JobExecutionParams jobExecutionParams)
+        {
+            var logger = new Logging().GetLogger(jobExecutionParams);
+
+            // Get Log File Path
+            var logsFilePath = $"{mainScriptFilePath}.log";
+            if(File.Exists(logsFilePath))
+            {
+                var logs = File.ReadAllLines(logsFilePath).ToList();
+                foreach(var log in logs)
+                {
+                    if(log.Trim() == string.Empty || 
+                        log.ToLower().StartsWith("start - automation started") ||
+                        log.ToLower().StartsWith("finish - automation finished"))
+                    {
+                        continue;
+                    }
+
+                    logger.Information(log.Trim());
+                }
+            }
         }
 
     }

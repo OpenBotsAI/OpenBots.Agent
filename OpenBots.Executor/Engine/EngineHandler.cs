@@ -34,43 +34,14 @@ namespace OpenBots.Executor
             var engine = new AutomationEngineInstance(engineContext);
             engine.ExecuteScriptSync();
         }
-
-        private Logger GetLogger(JobExecutionParams executionParams)
-        {
-            Logger logger = null;
-
-            // Get Minimum Log Level
-            LogEventLevel minLogLevel;
-            Enum.TryParse(executionParams.ServerConnectionSettings.TracingLevel, out minLogLevel);
-
-            // Get Log Sink Type (File, HTTP)
-            SinkType sinkType;
-            Enum.TryParse(executionParams.ServerConnectionSettings.SinkType, out sinkType);
-
-            switch (sinkType)
-            {
-                case SinkType.File:
-                    string logFile = Path.Combine(executionParams.ServerConnectionSettings.LoggingValue1);
-                    logger = new Logging().CreateFileLogger(logFile, Serilog.RollingInterval.Day, minLogLevel);
-
-                    break;
-                case SinkType.Http:
-                    logger = new Logging().CreateHTTPLogger(executionParams,
-                        executionParams.ServerConnectionSettings.LoggingValue1, minLogLevel);
-
-                    break;
-            }
-
-            return logger;
-        }
-
+        
         private EngineContext GetEngineContext(JobExecutionParams executionParams)
         {
             return new EngineContext
             {
                 FilePath = executionParams.MainFilePath,
                 ProjectPath = executionParams.ProjectDirectoryPath,
-                EngineLogger = GetLogger(executionParams),
+                EngineLogger = new Logging().GetLogger(executionParams),
                 Container = _container,
                 Arguments = executionParams.JobParameters?.Select(arg =>
                 new ScriptArgument

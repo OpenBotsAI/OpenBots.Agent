@@ -12,9 +12,10 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string jobId, string domainName, string userName, out string configFilePath)
+        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string jobId, string domainName, string userName, out string executionDirectoryPath, out string configFilePath)
         {
             configFilePath = "";
+            executionDirectoryPath = "";
 
             // Check if (Root) Automations Directory Exists (under User's AppData Folder), If Not create it
             var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(domainName, userName), "Automations",
@@ -35,7 +36,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             var processNugetFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".nupkg");
 
             // Execution Directory Path
-            var executionDirectoryPath = Path.Combine(processDirectoryPath, string.IsNullOrEmpty(jobId) ? new Guid().ToString() : jobId);
+            executionDirectoryPath = Path.Combine(processDirectoryPath, string.IsNullOrEmpty(jobId) ? new Guid().ToString() : jobId);
             if (!Directory.Exists(executionDirectoryPath))
                 Directory.CreateDirectory(executionDirectoryPath);
 
