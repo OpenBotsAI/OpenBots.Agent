@@ -211,7 +211,6 @@
     <Compile Include="Manager\API\AutomationsAPIManager.cs" />
     <Compile Include="Manager\Execution\JobsPolling.cs" />
     <Compile Include="Manager\Execution\WMIQueries.cs" />
-    <Compile Include="Manager\HeartBeat\AgentHeartBeatManager.cs" />
     <Compile Include="Manager\Hub\HubManager.cs" />
     <Compile Include="Manager\Logs\FileLogger.cs" />
     <Compile Include="ProjectInstaller.cs">

@@ -27,7 +27,7 @@ namespace OpenBots.Service.API.Model
     /// HeartbeatViewModel
     /// </summary>
     [DataContract]
-        public partial class HeartbeatViewModel :  IEquatable<HeartbeatViewModel>, IValidatableObject
+    public partial class HeartbeatViewModel : IEquatable<HeartbeatViewModel>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HeartbeatViewModel" /> class.
@@ -37,44 +37,52 @@ namespace OpenBots.Service.API.Model
         /// <param name="lastReportedWork">lastReportedWork.</param>
         /// <param name="lastReportedMessage">lastReportedMessage.</param>
         /// <param name="isHealthy">isHealthy.</param>
-        public HeartbeatViewModel(DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?))
+        /// <param name="getNextJob">getNextJob.</param>
+        public HeartbeatViewModel(DateTime? lastReportedOn = default(DateTime?), string lastReportedStatus = default(string), string lastReportedWork = default(string), string lastReportedMessage = default(string), bool? isHealthy = default(bool?), bool? getNextJob = default(bool?))
         {
             this.LastReportedOn = lastReportedOn;
             this.LastReportedStatus = lastReportedStatus;
             this.LastReportedWork = lastReportedWork;
             this.LastReportedMessage = lastReportedMessage;
             this.IsHealthy = isHealthy;
+            this.GetNextJob = getNextJob;
         }
-        
+
         /// <summary>
         /// Gets or Sets LastReportedOn
         /// </summary>
-        [DataMember(Name="lastReportedOn", EmitDefaultValue=false)]
+        [DataMember(Name = "lastReportedOn", EmitDefaultValue = false)]
         public DateTime? LastReportedOn { get; set; }
 
         /// <summary>
         /// Gets or Sets LastReportedStatus
         /// </summary>
-        [DataMember(Name="lastReportedStatus", EmitDefaultValue=false)]
+        [DataMember(Name = "lastReportedStatus", EmitDefaultValue = false)]
         public string LastReportedStatus { get; set; }
 
         /// <summary>
         /// Gets or Sets LastReportedWork
         /// </summary>
-        [DataMember(Name="lastReportedWork", EmitDefaultValue=false)]
+        [DataMember(Name = "lastReportedWork", EmitDefaultValue = false)]
         public string LastReportedWork { get; set; }
 
         /// <summary>
         /// Gets or Sets LastReportedMessage
         /// </summary>
-        [DataMember(Name="lastReportedMessage", EmitDefaultValue=false)]
+        [DataMember(Name = "lastReportedMessage", EmitDefaultValue = false)]
         public string LastReportedMessage { get; set; }
 
         /// <summary>
         /// Gets or Sets IsHealthy
         /// </summary>
-        [DataMember(Name="isHealthy", EmitDefaultValue=false)]
+        [DataMember(Name = "isHealthy", EmitDefaultValue = false)]
         public bool? IsHealthy { get; set; }
+
+        /// <summary>
+        /// Gets or Sets GetNextJob
+        /// </summary>
+        [DataMember(Name = "getNextJob", EmitDefaultValue = false)]
+        public bool? GetNextJob { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -89,10 +97,11 @@ namespace OpenBots.Service.API.Model
             sb.Append("  LastReportedWork: ").Append(LastReportedWork).Append("\n");
             sb.Append("  LastReportedMessage: ").Append(LastReportedMessage).Append("\n");
             sb.Append("  IsHealthy: ").Append(IsHealthy).Append("\n");
+            sb.Append("  GetNextJob: ").Append(GetNextJob).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
-  
+
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
@@ -122,31 +131,36 @@ namespace OpenBots.Service.API.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.LastReportedOn == input.LastReportedOn ||
                     (this.LastReportedOn != null &&
                     this.LastReportedOn.Equals(input.LastReportedOn))
-                ) && 
+                ) &&
                 (
                     this.LastReportedStatus == input.LastReportedStatus ||
                     (this.LastReportedStatus != null &&
                     this.LastReportedStatus.Equals(input.LastReportedStatus))
-                ) && 
+                ) &&
                 (
                     this.LastReportedWork == input.LastReportedWork ||
                     (this.LastReportedWork != null &&
                     this.LastReportedWork.Equals(input.LastReportedWork))
-                ) && 
+                ) &&
                 (
                     this.LastReportedMessage == input.LastReportedMessage ||
                     (this.LastReportedMessage != null &&
                     this.LastReportedMessage.Equals(input.LastReportedMessage))
-                ) && 
+                ) &&
                 (
                     this.IsHealthy == input.IsHealthy ||
                     (this.IsHealthy != null &&
                     this.IsHealthy.Equals(input.IsHealthy))
+                ) &&
+                (
+                    this.GetNextJob == input.GetNextJob ||
+                    (this.GetNextJob != null &&
+                    this.GetNextJob.Equals(input.GetNextJob))
                 );
         }
 
@@ -169,6 +183,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.LastReportedMessage.GetHashCode();
                 if (this.IsHealthy != null)
                     hashCode = hashCode * 59 + this.IsHealthy.GetHashCode();
+                if (this.GetNextJob != null)
+                    hashCode = hashCode * 59 + this.GetNextJob.GetHashCode();
                 return hashCode;
             }
         }

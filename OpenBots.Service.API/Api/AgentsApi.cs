@@ -33,7 +33,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="agentId">Agent identifier</param>
         /// <param name="body">Heartbeat values to be updated (optional)</param>
         /// <returns>AgentHeartbeat</returns>
-        AgentHeartbeat ApiV1AgentsAgentIdAddHeartbeatPost(string agentId, AgentHeartbeat body = null);
+        NextJobViewModel ApiV1AgentsAgentIdAddHeartbeatPost(string agentId, HeartbeatViewModel body = null);
 
         /// <summary>
         /// Creates a new heartbeat for the specified AgentId
@@ -45,7 +45,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="agentId">Agent identifier</param>
         /// <param name="body">Heartbeat values to be updated (optional)</param>
         /// <returns>ApiResponse of AgentHeartbeat</returns>
-        ApiResponse<AgentHeartbeat> ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(string agentId, AgentHeartbeat body = null);
+        ApiResponse<NextJobViewModel> ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(string agentId, HeartbeatViewModel body = null);
         /// <summary>
         /// Provides an agent id and name if the provided machine matches an agent and updates the isConnected field
         /// </summary>
@@ -697,9 +697,9 @@ namespace OpenBots.Service.API.Api
         /// <param name="agentId">Agent identifier</param>
         /// <param name="body">Heartbeat values to be updated (optional)</param>
         /// <returns>AgentHeartbeat</returns>
-        public AgentHeartbeat ApiV1AgentsAgentIdAddHeartbeatPost(string agentId, AgentHeartbeat body = null)
+        public NextJobViewModel ApiV1AgentsAgentIdAddHeartbeatPost(string agentId, HeartbeatViewModel body = null)
         {
-            ApiResponse<AgentHeartbeat> localVarResponse = ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(agentId, body);
+            ApiResponse<NextJobViewModel> localVarResponse = ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(agentId, body);
             return localVarResponse.Data;
         }
 
@@ -710,7 +710,7 @@ namespace OpenBots.Service.API.Api
         /// <param name="agentId">Agent identifier</param>
         /// <param name="body">Heartbeat values to be updated (optional)</param>
         /// <returns>ApiResponse of AgentHeartbeat</returns>
-        public ApiResponse<AgentHeartbeat> ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(string agentId, AgentHeartbeat body = null)
+        public ApiResponse<NextJobViewModel> ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(string agentId, HeartbeatViewModel body = null)
         {
             // verify the required parameter 'agentId' is set
             if (agentId == null)
@@ -768,9 +768,9 @@ namespace OpenBots.Service.API.Api
                 if (exception != null) throw exception;
             }
 
-            return new ApiResponse<AgentHeartbeat>(localVarStatusCode,
+            return new ApiResponse<NextJobViewModel>(localVarStatusCode,
                 localVarResponse.Headers.ToDictionary(x => x.Name, x => string.Join(",", x.Value)),
-                (AgentHeartbeat)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(AgentHeartbeat)));
+                (NextJobViewModel)this.Configuration.ApiClient.Deserialize(localVarResponse, typeof(NextJobViewModel)));
         }
 
         /// <summary>

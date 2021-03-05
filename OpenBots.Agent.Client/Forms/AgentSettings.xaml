@@ -26,14 +26,14 @@
                         <xctk:IntegerUpDown Name="updown_HeartbeatInterval" Grid.Column="1" FontSize="16" VerticalContentAlignment="Center" BorderBrush="#FFABADB3" BorderThickness="1.5" />
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="pnl_JobPolling_Interval" Grid.Row="1"  VerticalAlignment="Center">
-                    <Grid Name="grd_JobPolling_Interval" Margin="0,0,10,0" >
+                <StackPanel Name="pnl_HttpLogging_Interval" Grid.Row="1"  VerticalAlignment="Center">
+                    <Grid Name="grd_HttpLogging_Interval" Margin="0,0,10,0" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="Job Polling Interval" FontWeight="DemiBold" Name="lbl_JobPolling_Interval"/>
-                        <xctk:IntegerUpDown Name="updown_PollingInterval" Grid.Column="1" FontSize="16" VerticalContentAlignment="Center" BorderBrush="#FFABADB3" BorderThickness="1.5" />
+                        <Label Content="Job Logging Interval" ToolTip="Time interval to send job logs to the server" FontWeight="DemiBold" Name="lbl_HttpLogging_Interval"/>
+                        <xctk:IntegerUpDown Name="updown_LoggingInterval" Grid.Column="1" FontSize="16" VerticalContentAlignment="Center" BorderBrush="#FFABADB3" BorderThickness="1.5" />
                     </Grid>
                 </StackPanel>
                 <!--<StackPanel Name="pnl_HighDensityAgent" Grid.Row="2"  VerticalAlignment="Center">
