@@ -254,7 +254,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                         break;
 
                     case "CS-Script":
-                        RunCSharpAutomation(job, machineCredential, mainScriptFilePath);
+                        RunCSharpAutomation(job, automation, machineCredential, mainScriptFilePath);
                         break;
 
                     default:
@@ -309,13 +309,13 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Copy Script Folder/Files to ".\tagui\flows" Directory
             var mainScriptPath = CopyTagUIAutomation(exePath, mainScriptFilePath, ref executionDirPath);
 
-            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\" > \"%USERPROFILE%\\Desktop\\tag.txt\"";
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
 
             var executionParams = GetJobExecutionParams(job, automation, mainScriptPath, null);
-            SendTagUILogsToServer(mainScriptPath, executionParams);
+            SendLogsToServer(mainScriptPath, executionParams);
 
             // Delete TagUI Execution Directory
             Directory.Delete(executionDirPath, true);
@@ -323,16 +323,20 @@ namespace OpenBots.Service.Client.Manager.Execution
             return;
         }
 
-        private void RunCSharpAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
+        private void RunCSharpAutomation(Job job, Automation automation, MachineCredential machineCredential, string mainScriptFilePath)
         {
             string exePath = GetFullPathFromWindows("cscs.exe");
             if (exePath == null)
                 throw new Exception("CS-Script installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
 
-            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" > \"%USERPROFILE%\\Desktop\\cscs.txt\"";
+            var logsFilePath = $"{mainScriptFilePath}.log";
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" > \"{logsFilePath}\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+
+            var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, null);
+            SendLogsToServer(mainScriptFilePath, executionParams);
 
             return;
         }
@@ -540,13 +544,15 @@ namespace OpenBots.Service.Client.Manager.Execution
             return appFullPath;
         }
 
-        private void SendTagUILogsToServer(string mainScriptFilePath, JobExecutionParams jobExecutionParams)
+        private void SendLogsToServer(string mainScriptFilePath, JobExecutionParams jobExecutionParams)
         {
             var logger = new Logging().GetLogger(jobExecutionParams);
 
             // Get Log File Path
-            var logsFilePath = $"{mainScriptFilePath}.log";
-            if(File.Exists(logsFilePath))
+            var logsFilePath = Directory.GetFiles(Directory.GetParent(mainScriptFilePath).FullName,
+                Path.GetFileNameWithoutExtension(mainScriptFilePath)+"*.log").FirstOrDefault();
+
+            if(logsFilePath != null && File.Exists(logsFilePath))
             {
                 var logs = File.ReadAllLines(logsFilePath).ToList();
                 foreach(var log in logs)
