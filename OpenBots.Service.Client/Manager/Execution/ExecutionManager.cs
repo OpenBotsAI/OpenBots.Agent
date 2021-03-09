@@ -282,10 +282,21 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void RunPythonAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
         {
-            string projectDir = Path.GetDirectoryName(mainScriptFilePath);
-            string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string pythonExecutable = GetPythonPath(machineCredential.UserName, "");
-            string cmdLine = $"powershell.exe -File \"{assemblyPath}\\Executors\\PythonExecutor.ps1\" \"{pythonExecutable}\" \"{projectDir}\" \"{mainScriptFilePath}\"";
+            string projectDir = Path.GetDirectoryName(mainScriptFilePath);
+
+            string commandsBatch = $"python -m pip install --upgrade pip && " +
+                $"python -m pip install --user virtualenv && " +
+                $"python -m venv \"{projectDir}\\.env3\" && " +
+                $"\"{projectDir}\\.env3\\Scripts\\activate.bat\" && " +
+                (File.Exists(Path.Combine(projectDir, "requirements.txt")) ? $"python -m pip install -r \"{Path.Combine(projectDir, "requirements.txt")}\" & " : "") +
+                $"python \"{projectDir}\\__main__.py\" && " +
+                $"deactivate";
+
+            string batchFilePath = Path.Combine(projectDir, job.Id.ToString() + ".bat");
+            File.WriteAllText(batchFilePath, commandsBatch);
+            string logsFilePath = $"{mainScriptFilePath}.log";
+            string cmdLine = $"{batchFilePath} > \"{logsFilePath}\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
@@ -293,7 +304,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             return;
         }
 
-        private void RunTagUIAutomation(Job job, Automation automation, MachineCredential machineCredential, 
+        private void RunTagUIAutomation(Job job, Automation automation, MachineCredential machineCredential,
             string mainScriptFilePath, string executionDirPath)
         {
             string exePath = GetFullPathFromWindows("tagui");
@@ -549,14 +560,14 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Get Log File Path
             var logsFilePath = Directory.GetFiles(Directory.GetParent(mainScriptFilePath).FullName,
-                Path.GetFileNameWithoutExtension(mainScriptFilePath)+"*.log").FirstOrDefault();
+                Path.GetFileNameWithoutExtension(mainScriptFilePath) + "*.log").FirstOrDefault();
 
-            if(logsFilePath != null && File.Exists(logsFilePath))
+            if (logsFilePath != null && File.Exists(logsFilePath))
             {
                 var logs = File.ReadAllLines(logsFilePath).ToList();
-                foreach(var log in logs)
+                foreach (var log in logs)
                 {
-                    if(log.Trim() == string.Empty || 
+                    if (log.Trim() == string.Empty ||
                         log.ToLower().StartsWith("start - automation started") ||
                         log.ToLower().StartsWith("finish - automation finished"))
                     {
