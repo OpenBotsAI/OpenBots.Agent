@@ -46,8 +46,8 @@ namespace OpenBots.Agent.Client
                 OpenBotsServerUrl = "",
                 AgentId = "",
                 AgentName = "",
-                HeartbeatInterval = 60,
-                JobsLoggingInterval = 60,
+                HeartbeatInterval = 30,
+                JobsLoggingInterval = 5,
                 HighDensityAgent = false,
                 SingleSessionExecution = false,
                 SSLCertificateVerification = false

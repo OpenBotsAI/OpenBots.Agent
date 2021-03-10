@@ -12,7 +12,8 @@ namespace OpenBots.Agent.Client.Forms
         public OpenBotsSettings OBSettings { get; private set; }
         public bool ChangesSaved { get; private set; } = false;
         private bool _settingsChanged = false;
-        private const int minInterval = 60;
+        private const int heartbeatMinInterval = 30;
+        private const int jobLoggingMinInterval = 5;
         public AgentSettings(OpenBotsSettings openBotsSettings)
         {
             InitializeComponent();
@@ -22,10 +23,10 @@ namespace OpenBots.Agent.Client.Forms
         private void OnLoad(object sender, RoutedEventArgs e)
         {
             updown_HeartbeatInterval.Value = OBSettings.HeartbeatInterval;
-            updown_HeartbeatInterval.Minimum = minInterval;
+            updown_HeartbeatInterval.Minimum = heartbeatMinInterval;
             updown_HeartbeatInterval.ValueChanged += OnHeartbeatIntervalChanged;
             updown_LoggingInterval.Value = OBSettings.JobsLoggingInterval;
-            updown_LoggingInterval.Minimum = minInterval;
+            updown_LoggingInterval.Minimum = jobLoggingMinInterval;
             updown_LoggingInterval.ValueChanged += OnLoggingIntervalChanged;
 
             //cmb_HighDensityAgent.ItemsSource = Enum.GetValues(typeof(AgentEnums.BooleanAlias));

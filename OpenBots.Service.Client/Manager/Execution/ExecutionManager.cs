@@ -246,21 +246,22 @@ namespace OpenBots.Service.Client.Manager.Execution
                 if (automation.AutomationEngine == "")
                     automation.AutomationEngine = "OpenBots";
 
-                switch (automation.AutomationEngine.ToString())
+                var automationType = (AutomationType)Enum.Parse(typeof(AutomationType), automation.AutomationEngine);
+                switch (automationType)
                 {
-                    case "OpenBots":
+                    case AutomationType.OpenBots:
                         RunOpenBotsAutomation(job, automation, machineCredential, mainScriptFilePath, projectDependencies);
                         break;
 
-                    case "Python":
+                    case AutomationType.Python:
                         RunPythonAutomation(job, automation, machineCredential, mainScriptFilePath);
                         break;
 
-                    case "TagUI":
+                    case AutomationType.TagUI:
                         RunTagUIAutomation(job, automation, machineCredential, mainScriptFilePath, executionDirPath);
                         break;
 
-                    case "CS-Script":
+                    case AutomationType.CSScript:
                         RunCSharpAutomation(job, automation, machineCredential, mainScriptFilePath);
                         break;
 
@@ -569,24 +570,35 @@ namespace OpenBots.Service.Client.Manager.Execution
         {
             var logger = new Logging().GetLogger(jobExecutionParams);
 
-            // Get Log File Path
-            var logsFilePath = Directory.GetFiles(Directory.GetParent(mainScriptFilePath).FullName,
-                Path.GetFileNameWithoutExtension(mainScriptFilePath) + "*.log").FirstOrDefault();
-
-            if (logsFilePath != null && File.Exists(logsFilePath))
+            try
             {
-                var logs = File.ReadAllLines(logsFilePath).ToList();
-                foreach (var log in logs)
-                {
-                    if (log.Trim() == string.Empty ||
-                        log.ToLower().StartsWith("start - automation started") ||
-                        log.ToLower().StartsWith("finish - automation finished"))
-                    {
-                        continue;
-                    }
+                // Get Log File Path
+                var logsFilePath = Directory.GetFiles(Directory.GetParent(mainScriptFilePath).FullName,
+                    Path.GetFileNameWithoutExtension(mainScriptFilePath) + "*.log").FirstOrDefault();
 
-                    logger.Information(log.Trim());
+                if (logsFilePath != null && File.Exists(logsFilePath))
+                {
+                    var logs = File.ReadAllLines(logsFilePath).ToList();
+                    foreach (var log in logs)
+                    {
+                        if (log.Trim() == string.Empty ||
+                            log.ToLower().StartsWith("start - automation started") ||
+                            log.ToLower().StartsWith("finish - automation finished"))
+                        {
+                            continue;
+                        }
+
+                        logger.Information(log.Trim());
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                logger.Dispose();
             }
         }
 
