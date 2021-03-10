@@ -211,7 +211,15 @@ namespace OpenBots.Service.Client.Manager.Execution
                 });
 
             // Delete Job Directory
-            Directory.Delete(executionDirPath, true);
+            try
+            {
+                Directory.Delete(executionDirPath, true);
+            }
+            catch (Exception)
+            {
+                // Appended 'Long Path Specifier' before the Directory Path
+                Directory.Delete(@"\\?\" + executionDirPath, true);
+            }
 
             // Update Automation Execution Log (Execution Finished)
             _executionLog.CompletedOn = DateTime.UtcNow;
@@ -245,7 +253,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                         break;
 
                     case "Python":
-                        RunPythonAutomation(job, machineCredential, mainScriptFilePath);
+                        RunPythonAutomation(job, automation, machineCredential, mainScriptFilePath);
                         break;
 
                     case "TagUI":
@@ -280,26 +288,29 @@ namespace OpenBots.Service.Client.Manager.Execution
             return;
         }
 
-        private void RunPythonAutomation(Job job, MachineCredential machineCredential, string mainScriptFilePath)
+        private void RunPythonAutomation(Job job, Automation automation, MachineCredential machineCredential, string mainScriptFilePath)
         {
             string pythonExecutable = GetPythonPath(machineCredential.UserName, "");
             string projectDir = Path.GetDirectoryName(mainScriptFilePath);
 
-            string commandsBatch = $"python -m pip install --upgrade pip && " +
-                $"python -m pip install --user virtualenv && " +
-                $"python -m venv \"{projectDir}\\.env3\" && " +
-                $"\"{projectDir}\\.env3\\Scripts\\activate.bat\" && " +
-                (File.Exists(Path.Combine(projectDir, "requirements.txt")) ? $"python -m pip install -r \"{Path.Combine(projectDir, "requirements.txt")}\" & " : "") +
-                $"python \"{projectDir}\\__main__.py\" && " +
+            string commandsBatch = $"\"{pythonExecutable}\" -m pip install --upgrade pip && " +
+                $"\"{pythonExecutable}\" -m pip install --user virtualenv && " +
+                $"\"{pythonExecutable}\" -m venv \"{Path.Combine(projectDir, ".env3")}\" && " +
+                $"\"{Path.Combine(projectDir, ".env3", "Scripts", "activate.bat")}\" && " +
+                (File.Exists(Path.Combine(projectDir, "requirements.txt")) ? $"\"{pythonExecutable}\" -m pip install -r \"{Path.Combine(projectDir, "requirements.txt")}\" & " : "") +
+                $"\"{pythonExecutable}\" \"{mainScriptFilePath}\" && " +
                 $"deactivate";
 
             string batchFilePath = Path.Combine(projectDir, job.Id.ToString() + ".bat");
             File.WriteAllText(batchFilePath, commandsBatch);
             string logsFilePath = $"{mainScriptFilePath}.log";
-            string cmdLine = $"{batchFilePath} > \"{logsFilePath}\"";
+            string cmdLine = $"\"{batchFilePath}\" > \"{logsFilePath}\"";
 
             ProcessLauncher.PROCESS_INFORMATION procInfo;
             ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+
+            var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, null);
+            SendLogsToServer(mainScriptFilePath, executionParams);
 
             return;
         }
