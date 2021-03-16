@@ -319,7 +319,8 @@ namespace OpenBots.Service.Client.Manager.Execution
         private void RunTagUIAutomation(Job job, Automation automation, MachineCredential machineCredential,
             string mainScriptFilePath, string executionDirPath)
         {
-            string exePath = GetFullPathFromWindows("tagui");
+            string exePath = GetFullPathFromWindows("tagui", _connectionSettingsManager.ConnectionSettings.DNSHost,
+                _connectionSettingsManager.ConnectionSettings.UserName);
             if (exePath == null)
                 throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
 
@@ -347,7 +348,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void RunCSharpAutomation(Job job, Automation automation, MachineCredential machineCredential, string mainScriptFilePath)
         {
-            string exePath = GetFullPathFromWindows("cscs.exe");
+            string exePath = GetFullPathFromWindows("cscs.exe", _connectionSettingsManager.ConnectionSettings.DNSHost,
+                _connectionSettingsManager.ConnectionSettings.UserName);
             if (exePath == null)
                 throw new Exception("CS-Script installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
 
@@ -415,7 +417,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             return jobParams;
         }
 
-        private static string GetPythonPath(string username, string requiredVersion = "")
+        public string GetPythonPath(string username, string requiredVersion = "")
         {
             var possiblePythonLocations = new List<string>()
             {
@@ -515,7 +517,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             _connectionSettingsManager.ConnectionSettings = connectionSettings;
         }
 
-        public string GetFullPathFromWindows(string exeName)
+        public string GetFullPathFromWindows(string exeName, string domain, string userName)
         {
             if (exeName.Length >= MAX_PATH)
                 throw new ArgumentException($"The executable name '{exeName}' must have less than {MAX_PATH} characters.",
@@ -528,9 +530,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 return exePath;
 
             // Get User Environment Variable "Path"
-            var envPathValue = new EnvironmentSettings().GetPathEnvironmentVariable(
-                _connectionSettingsManager.ConnectionSettings.DNSHost,
-                _connectionSettingsManager.ConnectionSettings.UserName);
+            var envPathValue = new EnvironmentSettings().GetPathEnvironmentVariable(domain, userName);
 
             exePath = FindAppPath(envPathValue, exeName);
             if (!string.IsNullOrEmpty(exePath))
@@ -603,7 +603,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         }
 
         // Copy TagUI Automation Files to ".\tagui\flows"
-        private string CopyTagUIAutomation(string exePath, string mainScriptFilePath, ref string executionDirPath)
+        public string CopyTagUIAutomation(string exePath, string mainScriptFilePath, ref string executionDirPath)
         {
             var taguiRootDirPath = Directory.GetParent(exePath).Parent.FullName;
             var taguiFlowsDirPath = Path.Combine(taguiRootDirPath, "flows");

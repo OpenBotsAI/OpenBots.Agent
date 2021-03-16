@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.Utilities;
@@ -52,10 +54,31 @@ namespace OpenBots.Service.Client.Manager.Execution
                     }
                     
                     projectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath);
-                    NugetPackageManager.InstallProjectDependencies(configFilePath, settings.DNSHost, settings.UserName);
-                    var assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath, settings.DNSHost, settings.UserName);
+                    string projectType = JObject.Parse(File.ReadAllText(configFilePath))["ProjectType"].ToString();
+                    var automationType = (AutomationType)Enum.Parse(typeof(AutomationType), projectType);
+                    switch (automationType)
+                    {
+                        case AutomationType.OpenBots:
+                            NugetPackageManager.InstallProjectDependencies(configFilePath, settings.DNSHost, settings.UserName);
+                            var assembliesList = NugetPackageManager.LoadPackageAssemblies(configFilePath, settings.DNSHost, settings.UserName);
+                            RunOpenBotsAutomation(mainScriptFilePath, Path.GetFileNameWithoutExtension(projectPackage), settings, assembliesList);
+                            break;
 
-                    RunAttendedAutomation(mainScriptFilePath, settings, assembliesList);
+                        case AutomationType.Python:
+                            RunPythonAutomation(mainScriptFilePath, Path.GetFileNameWithoutExtension(projectPackage), settings);
+                            break;
+
+                        case AutomationType.TagUI:
+                            RunTagUIAutomation(mainScriptFilePath, Path.GetFileNameWithoutExtension(projectPackage), settings, projectDirectoryPath);
+                            break;
+
+                        case AutomationType.CSScript:
+                            RunCSharpAutomation(mainScriptFilePath, Path.GetFileNameWithoutExtension(projectPackage), settings);
+                            break;
+
+                        default:
+                            throw new NotImplementedException($"Specified automation type \"{automationType}\" is not supported in the OpenBots Agent.");
+                    }
 
                     isSuccessful = true;
                 }
@@ -77,8 +100,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             return false;
         }
 
-        private void RunAttendedAutomation(string mainScriptFilePath, ServerConnectionSettings settings, List<string> projectDependencies)
+        private void RunOpenBotsAutomation(string mainScriptFilePath, string projectName, ServerConnectionSettings settings, List<string> projectDependencies)
         {
+            settings.LoggingValue1 = GetLogsFilePath(settings.LoggingValue1, AutomationType.OpenBots, projectName);
             var executionParams = GetExecutionParams(mainScriptFilePath, settings, projectDependencies);
             var userInfo = new MachineCredential
             {
@@ -106,5 +130,96 @@ namespace OpenBots.Service.Client.Manager.Execution
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);
             return DataFormatter.CompressString(paramsJsonString);
         }
+
+        private void RunPythonAutomation(string mainScriptFilePath, string projectName, ServerConnectionSettings settings)
+        {
+            string pythonExecutable = _executionManager.GetPythonPath(settings.UserName, "");
+            string projectDir = Path.GetDirectoryName(mainScriptFilePath);
+
+            string commandsBatch = $"\"{pythonExecutable}\" -m pip install --upgrade pip && " +
+                $"\"{pythonExecutable}\" -m pip install --user virtualenv && " +
+                $"\"{pythonExecutable}\" -m venv \"{Path.Combine(projectDir, ".env3")}\" && " +
+                $"\"{Path.Combine(projectDir, ".env3", "Scripts", "activate.bat")}\" && " +
+                (File.Exists(Path.Combine(projectDir, "requirements.txt")) ? $"\"{pythonExecutable}\" -m pip install -r \"{Path.Combine(projectDir, "requirements.txt")}\" & " : "") +
+                $"\"{pythonExecutable}\" \"{mainScriptFilePath}\" && " +
+                $"deactivate";
+
+            string batchFilePath = Path.Combine(projectDir, projectName + ".bat");
+            File.WriteAllText(batchFilePath, commandsBatch);
+            string logsFilePath = GetLogsFilePath(settings.LoggingValue1, AutomationType.Python, projectName);
+
+            string cmdLine = $"\"{batchFilePath}\" > \"{logsFilePath}\"";
+            var userInfo = new MachineCredential
+            {
+                Domain = settings.DNSHost,
+                UserName = settings.UserName
+            };
+
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, userInfo, out procInfo);
+
+            return;
+        }
+
+        private void RunTagUIAutomation(string mainScriptFilePath, string projectName, ServerConnectionSettings settings, string executionDirPath)
+        {
+            string exePath = _executionManager.GetFullPathFromWindows("tagui", settings.DNSHost, settings.UserName);
+            if (exePath == null)
+                throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
+
+            // Create "tagui_logging" file for generating logs file
+            var logFilePath = Path.Combine(Directory.GetParent(exePath).FullName, "tagui_logging");
+            if (!File.Exists(logFilePath))
+                File.Create(Path.Combine(Directory.GetParent(exePath).FullName, "tagui_logging"));
+
+            // Copy Script Folder/Files to ".\tagui\flows" Directory
+            var mainScriptPath = _executionManager.CopyTagUIAutomation(exePath, mainScriptFilePath, ref executionDirPath);
+            var logsFilePath = GetLogsFilePath(settings.LoggingValue1, AutomationType.TagUI, projectName);
+
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\" > \"{logsFilePath}\"";
+            var userInfo = new MachineCredential
+            {
+                Domain = settings.DNSHost,
+                UserName = settings.UserName
+            };
+
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, userInfo, out procInfo);
+
+            // Delete TagUI Execution Directory
+            Directory.Delete(executionDirPath, true);
+
+            return;
+        }
+
+        private void RunCSharpAutomation(string mainScriptFilePath, string projectName, ServerConnectionSettings settings)
+        {
+            string exePath = _executionManager.GetFullPathFromWindows("cscs.exe", settings.DNSHost, settings.UserName);
+            if (exePath == null)
+                throw new Exception("CS-Script installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
+
+            var logsFilePath = GetLogsFilePath(settings.LoggingValue1, AutomationType.CSScript, projectName);
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" > \"{logsFilePath}\"";
+            var userInfo = new MachineCredential
+            {
+                Domain = settings.DNSHost,
+                UserName = settings.UserName
+            };
+
+            ProcessLauncher.PROCESS_INFORMATION procInfo;
+            ProcessLauncher.LaunchProcess(cmdLine, userInfo, out procInfo);
+
+            return;
+        }
+
+        private string GetLogsFilePath(string logsDirectory, AutomationType automationType, string projectName)
+        {
+            string logsFilePath = $"{Path.Combine(logsDirectory, automationType.ToString(), projectName + DateTime.Now.ToString("MMddyyyyhhmmss") + ".txt")}";
+            if (!Directory.Exists(Path.GetDirectoryName(logsFilePath)))
+                Directory.CreateDirectory(Path.GetDirectoryName(logsFilePath));
+
+            return logsFilePath;
+        }
+
     }
 }

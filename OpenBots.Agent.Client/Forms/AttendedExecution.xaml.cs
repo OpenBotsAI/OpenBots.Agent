@@ -36,7 +36,7 @@ namespace OpenBots.Agent.Client.Forms
             {
                 SinkType = SinkType.File.ToString(),
                 TracingLevel = LogEventLevel.Information.ToString(),
-                LoggingValue1 = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(), "Logs", "Attended Execution", "log.txt"),
+                LoggingValue1 = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(), "Logs", "Attended Execution"),
                 DNSHost = SystemInfo.GetUserDomainName(),
                 UserName = Environment.UserName
             };
