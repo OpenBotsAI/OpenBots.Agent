@@ -64,7 +64,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Delete .zip File
             File.Delete(processZipFilePath);
 
-            configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.config", SearchOption.AllDirectories).First();
+            configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.obconfig", SearchOption.AllDirectories).First();
             string mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
             
             // Return "Main" Script File Path of the Automation
@@ -124,7 +124,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         {
             var unpackagedProjectDir = UnpackageNugetProjectFile(projectPackagePath);
 
-            configFilePath = Directory.GetFiles(unpackagedProjectDir, "project.config", SearchOption.AllDirectories).First();
+            configFilePath = Directory.GetFiles(unpackagedProjectDir, "project.obconfig", SearchOption.AllDirectories).First();
             var mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
 
             // Return "Main" Script File Path of the Automation

@@ -29,6 +29,8 @@ namespace OpenBots.Service.Client.Manager.Execution
         public ExecutionManager ExecutionManager;
         public JobsPolling()
         {
+            InitializeHeartbeat();
+            ExecutionManager = new ExecutionManager(Heartbeat);
         }
 
         private void Initialize(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
@@ -43,9 +45,9 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void UnInitialize()
         {
-            if(_connectionSettingsManager != null)
+            if (_connectionSettingsManager != null)
                 _connectionSettingsManager.ConnectionSettingsUpdatedEvent -= OnConnectionSettingsUpdate;
-            if(_authAPIManager != null)
+            if (_authAPIManager != null)
                 _authAPIManager.ConfigurationUpdatedEvent -= OnConfigurationUpdate;
         }
 
@@ -63,7 +65,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             StartExecutionManager();
         }
 
-        
+
         public void StopJobsPolling()
         {
             UnInitialize();
@@ -77,7 +79,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Stop Execution Manager
             StopExecutionManager();
         }
-        
+
 
         #region Heartbeat/TimedPolling
         private void StartHeartbeatTimer()
@@ -95,8 +97,6 @@ namespace OpenBots.Service.Client.Manager.Execution
                 _heartbeatTimer.Interval = (_connectionSettingsManager.ConnectionSettings.HeartbeatInterval * 1000);
                 _heartbeatTimer.Elapsed += HeartbeatTimer_Elapsed;
                 _heartbeatTimer.Enabled = true;
-
-                InitializeHeartbeat();
             }
 
             // Log Event
@@ -116,7 +116,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void InitializeHeartbeat()
         {
-            if(Heartbeat == null)
+            if (Heartbeat == null)
                 Heartbeat = new HeartbeatViewModel();
 
             Heartbeat.LastReportedStatus = AgentStatus.Available.ToString();
@@ -243,15 +243,15 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void StartExecutionManager()
         {
-            if (ExecutionManager == null)
-                ExecutionManager = new ExecutionManager(Heartbeat);
-
-            ExecutionManager.JobFinishedEvent += OnJobFinished;
-            ExecutionManager.StartNewJobsCheckTimer(_connectionSettingsManager, _authAPIManager, _fileLogger);
+            if (ExecutionManager != null)
+            {
+                ExecutionManager.JobFinishedEvent += OnJobFinished;
+                ExecutionManager.StartNewJobsCheckTimer(_connectionSettingsManager, _authAPIManager, _fileLogger);
+            }
         }
         private void StopExecutionManager()
         {
-            if(ExecutionManager != null)
+            if (ExecutionManager != null)
             {
                 ExecutionManager.JobFinishedEvent -= OnJobFinished;
                 ExecutionManager.StopNewJobsCheckTimer();
