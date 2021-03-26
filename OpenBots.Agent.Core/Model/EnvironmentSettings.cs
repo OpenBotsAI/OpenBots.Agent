@@ -57,15 +57,7 @@ namespace OpenBots.Agent.Core.Model
         {
             try
             {
-                NTAccount f = new NTAccount(domainName, userName);
-                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
-                string sidString = s.ToString();
-
-                var regView = (Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
-                var baseKey = RegistryKey.OpenBaseKey(RegistryHive.Users, regView);
-                var baseKeyPath = Path.Combine(sidString, "Environment");
-                var environmentKey = baseKey.OpenSubKey(baseKeyPath);
-                var envVariable = environmentKey.GetValue(EnvironmentVariableName);
+                var envVariable = GetUserEnvironmentVariable(domainName, userName, EnvironmentVariableName);
                 if(envVariable != null)
                 {
                     EnvironmentVariableValue = envVariable.ToString();
@@ -76,6 +68,60 @@ namespace OpenBots.Agent.Core.Model
             catch (Exception ex)
             {
                 return false;
+            }
+        }
+
+        public object GetUserEnvironmentVariable(string domainName, string userName, string variableName)
+        {
+            try
+            {
+                NTAccount f = new NTAccount(domainName, userName);
+                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                string sidString = s.ToString();
+
+                var regView = (Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+                var baseKey = RegistryKey.OpenBaseKey(RegistryHive.Users, regView);
+                var baseKeyPath = Path.Combine(sidString, "Environment");
+                var environmentKey = baseKey.OpenSubKey(baseKeyPath);
+                var envVariable = environmentKey.GetValue(variableName);
+
+                return envVariable;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string GetPathEnvironmentVariable(string domainName, string userName)
+        {
+            try
+            {
+                NTAccount f = new NTAccount(domainName, userName);
+                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                string sidString = s.ToString();
+
+                var regView = (Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+                var baseKey = RegistryKey.OpenBaseKey(RegistryHive.Users, regView);
+                var baseKeyPath = Path.Combine(sidString, "Environment");
+                var environmentKey = baseKey.OpenSubKey(baseKeyPath);
+                var variableNames = environmentKey.GetValueNames();
+
+                string pathVariableVal = string.Empty;
+                foreach(var varName in variableNames)
+                {
+                    if(varName.ToLower().Equals("path"))
+                    {
+                        pathVariableVal = environmentKey.GetValue(varName).ToString();
+                        break;
+                    }
+                }
+
+                return pathVariableVal;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

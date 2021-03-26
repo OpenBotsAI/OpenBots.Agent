@@ -12,9 +12,10 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string jobId, string domainName, string userName, out string configFilePath)
+        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string jobId, string domainName, string userName, out string executionDirectoryPath, out string configFilePath)
         {
             configFilePath = "";
+            executionDirectoryPath = "";
 
             // Check if (Root) Automations Directory Exists (under User's AppData Folder), If Not create it
             var automationsDirectory = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(domainName, userName), "Automations",
@@ -35,7 +36,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             var processNugetFilePath = Path.Combine(processDirectoryPath, automation.Name.ToString() + ".nupkg");
 
             // Execution Directory Path
-            var executionDirectoryPath = Path.Combine(processDirectoryPath, string.IsNullOrEmpty(jobId) ? new Guid().ToString() : jobId);
+            executionDirectoryPath = Path.Combine(processDirectoryPath, string.IsNullOrEmpty(jobId) ? new Guid().ToString() : jobId);
             if (!Directory.Exists(executionDirectoryPath))
                 Directory.CreateDirectory(executionDirectoryPath);
 
@@ -63,22 +64,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Delete .zip File
             File.Delete(processZipFilePath);
 
-            string mainFileName;
-            switch (automation.AutomationEngine.ToString())
-            {
-                case "OpenBots":
-                    configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.config", SearchOption.AllDirectories).First();
-                    mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
-                    break;
-
-                case "Python":
-                    mainFileName = "__main__.py";
-                    break;
-
-                default:
-                    throw new NotImplementedException($"Specified execution engine \"{automation.AutomationEngine}\" is not implemented on the OpenBots Agent.");
-            }
-
+            configFilePath = Directory.GetFiles(extractToDirectoryPath, "project.obconfig", SearchOption.AllDirectories).First();
+            string mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
+            
             // Return "Main" Script File Path of the Automation
             return Directory.GetFiles(extractToDirectoryPath, mainFileName, SearchOption.AllDirectories).First();
         }
@@ -136,7 +124,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         {
             var unpackagedProjectDir = UnpackageNugetProjectFile(projectPackagePath);
 
-            configFilePath = Directory.GetFiles(unpackagedProjectDir, "project.config", SearchOption.AllDirectories).First();
+            configFilePath = Directory.GetFiles(unpackagedProjectDir, "project.obconfig", SearchOption.AllDirectories).First();
             var mainFileName = JObject.Parse(File.ReadAllText(configFilePath))["Main"].ToString();
 
             // Return "Main" Script File Path of the Automation

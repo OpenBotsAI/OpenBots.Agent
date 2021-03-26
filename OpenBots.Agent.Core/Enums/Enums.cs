@@ -37,4 +37,13 @@
         Yes,
         No
     }
+
+    // Types of Automations
+    public enum AutomationType
+    {
+        OpenBots,
+        Python,
+        TagUI,
+        CSScript
+    }
 }

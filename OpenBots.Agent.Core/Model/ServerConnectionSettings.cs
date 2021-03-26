@@ -44,7 +44,7 @@ namespace OpenBots.Agent.Core.Model
         [DataMember]
         public int HeartbeatInterval { get; set; }
         [DataMember]
-        public int JobsPollingInterval { get; set; }
+        public int JobsLoggingInterval { get; set; }
         [DataMember]
         public bool HighDensityAgent { get; set; }
         [DataMember]

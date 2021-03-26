@@ -36,8 +36,13 @@ namespace OpenBots.Agent.Client
 
         private SystemForms.NotifyIcon _notifyIcon = null;
         private Dictionary<string, Drawing.Icon> _iconHandles = null;
-        private ContextMenu _contextMenuTrayIcon;
-
+        private ContextMenu _contextMenuGearIcon;
+        private SystemForms.ContextMenu _contextMenuTrayIcon;
+        private SystemForms.MenuItem _menuItemQuit;
+        private SystemForms.MenuItem _menuItemAgentSettings;
+        private SystemForms.MenuItem _menuItemNugetFeedManager;
+        private SystemForms.MenuItem _menuItemAttendedExecution;
+        
         private bool _minimizeToTray = true;
         private bool _isServiceUP = false;
         private bool _logInfoChanged = false;
@@ -55,10 +60,12 @@ namespace OpenBots.Agent.Client
             // Initialize Registry Manager
             _registryManager = new RegistryManager();
 
+            InitializeTrayContextMenu();
             _iconHandles = new Dictionary<string, Drawing.Icon>();
             _iconHandles.Add("QuickLaunch", new Drawing.Icon(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"OpenBots.ico")));
             _notifyIcon = new SystemForms.NotifyIcon();
             _notifyIcon.Click += notifyIcon_Click;
+            _notifyIcon.ContextMenu = _contextMenuTrayIcon;
             _notifyIcon.DoubleClick += notifyIcon_DoubleClick;
             _notifyIcon.Icon = _iconHandles["QuickLaunch"];
             StateChanged += OnStateChanged;
@@ -140,6 +147,40 @@ namespace OpenBots.Agent.Client
             this.Left = desktopWorkingArea.Right - this.Width;
             this.Top = desktopWorkingArea.Bottom - this.Height;
         }
+        private void InitializeTrayContextMenu()
+        {
+            _contextMenuTrayIcon = new SystemForms.ContextMenu();
+            _menuItemAgentSettings = new SystemForms.MenuItem();
+            _menuItemNugetFeedManager = new SystemForms.MenuItem();
+            _menuItemAttendedExecution = new SystemForms.MenuItem();
+            _menuItemQuit = new SystemForms.MenuItem();
+
+            // Initialize contextMenu
+            _contextMenuTrayIcon.MenuItems.AddRange(new SystemForms.MenuItem[]
+            {
+                _menuItemAgentSettings,
+                _menuItemNugetFeedManager,
+                _menuItemAttendedExecution,
+                _menuItemQuit
+            });
+
+            // Initialize _menuItemAgentSettings
+            _menuItemAgentSettings.Text = menuItemAgentSettings.Header.ToString();
+            _menuItemAgentSettings.Click += OnClick_TrayAgentSettings;
+
+            // Initialize _menuItemQuit
+            _menuItemNugetFeedManager.Text = menuItemNugetFeedManager.Header.ToString();
+            _menuItemNugetFeedManager.Click += OnClick_TrayNugetFeedManager;
+
+            // Initialize _menuItemQuit
+            _menuItemAttendedExecution.Text = menuItemAttendedExecution.Header.ToString();
+            _menuItemAttendedExecution.Click += OnClick_TrayAttendedExecution;
+
+            // Initialize _menuItemQuit
+            _menuItemQuit.Text = menuItemQuit.Header.ToString();
+            _menuItemQuit.Click += OnClick_TrayQuit;
+        }
+
         private void RegisterAgent()
         {
             PipeProxy.Instance.AddAgent();
@@ -172,7 +213,7 @@ namespace OpenBots.Agent.Client
                     SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? SinkType.File.ToString() : _agentSettings.SinkType,
                     TracingLevel = string.IsNullOrEmpty(_agentSettings.TracingLevel) ? LogEventLevel.Information.ToString() : _agentSettings.TracingLevel,
                     HeartbeatInterval = _agentSettings.HeartbeatInterval,
-                    JobsPollingInterval = _agentSettings.JobsPollingInterval,
+                    JobsLoggingInterval = _agentSettings.JobsLoggingInterval,
                     HighDensityAgent = _agentSettings.HighDensityAgent,
                     SingleSessionExecution = _agentSettings.SingleSessionExecution,
                     SSLCertificateVerification = _agentSettings.SSLCertificateVerification,
@@ -367,6 +408,32 @@ namespace OpenBots.Agent.Client
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
         }
+
+        private void OnClick_TrayQuit(object sender, EventArgs e)
+        {
+            ExitApplication();
+        }
+        private void OnClick_TrayAttendedExecution(object sender, EventArgs e)
+        {
+            ShowAttendedExecutionWindow();
+        }
+        private void OnClick_TrayNugetFeedManager(object sender, EventArgs e)
+        {
+            ShowNugetFeedManagerWindow();
+        }
+        private void OnClick_TrayClearCredentials(object sender, EventArgs e)
+        {
+            ClearCredentials();
+        }
+        private void OnClick_TrayAgentSettings(object sender, EventArgs e)
+        {
+            ShowAgentSettingsWindow();
+        }
+        private void OnClick_TrayMachineInfo(object sender, EventArgs e)
+        {
+            ShowMachineInfoWindow();
+        }
+
         private void ShowMachineInfoDialog(string serverIP)
         {
             MachineInfo machineInfoDialog = new MachineInfo(
@@ -378,6 +445,103 @@ namespace OpenBots.Agent.Client
 
             machineInfoDialog.Owner = Application.Current.MainWindow;
             machineInfoDialog.ShowDialog();
+        }
+        private void ShowMachineInfoWindow()
+        {
+            if (!string.IsNullOrEmpty(txt_ServerURL.Text.Trim()))
+            {
+                try
+                {
+                    ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL = txt_ServerURL.Text.Trim();
+
+                    var serverResponse = PipeProxy.Instance.PingServer();
+                    if (serverResponse?.Data != null)
+                    {
+                        ConnectionSettingsManager.Instance.ConnectionSettings.ServerIPAddress = (string)serverResponse.Data;
+                        ShowMachineInfoDialog(ConnectionSettingsManager.Instance.ConnectionSettings.ServerIPAddress);
+                    }
+                    else
+                    {
+                        ShowMachineInfoDialog(string.Empty);
+                    }
+                }
+                catch (Exception)
+                {
+                    ShowMachineInfoDialog(string.Empty);
+                }
+            }
+            else
+                ShowMachineInfoDialog(string.Empty);
+        }
+        private void ShowAgentSettingsWindow()
+        {
+            AgentSettings frmAgentSettings = new AgentSettings(_agentSettings);
+            frmAgentSettings.Owner = this;
+            frmAgentSettings.ShowDialog();
+
+            if (frmAgentSettings.ChangesSaved)
+            {
+                _agentSettings = frmAgentSettings.OBSettings;
+                ConnectionSettingsManager.Instance.ConnectionSettings.HeartbeatInterval = _agentSettings.HeartbeatInterval;
+                ConnectionSettingsManager.Instance.ConnectionSettings.JobsLoggingInterval = _agentSettings.JobsLoggingInterval;
+                ConnectionSettingsManager.Instance.ConnectionSettings.HighDensityAgent = _agentSettings.HighDensityAgent;
+                ConnectionSettingsManager.Instance.ConnectionSettings.SingleSessionExecution = _agentSettings.SingleSessionExecution;
+                ConnectionSettingsManager.Instance.ConnectionSettings.SSLCertificateVerification = _agentSettings.SSLCertificateVerification;
+            }
+        }
+        private void ShowNugetFeedManagerWindow()
+        {
+            string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath();
+            string appSettingsDirPath = Directory.GetParent(appDataPath).FullName;
+
+            var appSettings = new ApplicationSettings().GetOrCreateApplicationSettings(appSettingsDirPath);
+            var packageSourcesDT = appSettings.ClientSettings.PackageSourceDT;
+
+            NugetFeedManager nugetFeedManager = new NugetFeedManager(packageSourcesDT);
+            nugetFeedManager.Owner = this;
+            nugetFeedManager.ShowDialog();
+
+            if (nugetFeedManager.isDataUpdated)
+            {
+                appSettings.ClientSettings.PackageSourceDT = nugetFeedManager.GetPackageSourcesData();
+                appSettings.Save(appSettings, appSettingsDirPath);
+            }
+        }
+        private void ShowAttendedExecutionWindow()
+        {
+            if (_attendedExecutionWindow == null)
+            {
+                _attendedExecutionWindow = new AttendedExecution();
+                _attendedExecutionWindow.Closed += (s, args) => this._attendedExecutionWindow = null;
+                _attendedExecutionWindow.Show();
+            }
+            else
+                _attendedExecutionWindow.Activate();
+
+            this.WindowState = WindowState.Minimized;
+        }
+        private void ClearCredentials()
+        {
+            if (!string.IsNullOrEmpty(_registryManager.AgentUsername))
+            {
+                // Clear Agent Credentials from Registry
+                _registryManager.AgentUsername = string.Empty;
+                _registryManager.AgentPassword = string.Empty;
+
+                LoadConnectionSettings();
+
+                // Clear TextBoxes
+                txt_Username.Text = string.Empty;
+                txt_Password.Password = string.Empty;
+
+                MessageDialog messageDialog = new MessageDialog(
+                    "Credentials Cleared",
+                    "OpenBots Agent Credentials have been cleared.",
+                    true);
+
+                messageDialog.Owner = Application.Current.MainWindow;
+                messageDialog.ShowDialog();
+            }
         }
         private void ExitApplication()
         {
@@ -391,12 +555,6 @@ namespace OpenBots.Agent.Client
         {
             SystemForms.Application.Restart();
             ShutDownApplication();
-        }
-        private void ClearCredentials()
-        {
-            // Clear from Registry
-            _registryManager.AgentUsername = string.Empty;
-            _registryManager.AgentPassword = string.Empty;
         }
         #endregion
 
@@ -650,26 +808,26 @@ namespace OpenBots.Agent.Client
             if (!string.IsNullOrEmpty(_registryManager.AgentUsername) && 
                 !ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
             {
-                menuItemClearCredentials.IsEnabled = true;
-                menuItemClearCredentials.Visibility = Visibility.Visible;
+                img_ClearCredentials.IsEnabled = true;
             }
             else
             {
-                menuItemClearCredentials.IsEnabled = false;
-                menuItemClearCredentials.Visibility = Visibility.Collapsed;
+                img_ClearCredentials.IsEnabled = false;
             }
         }
         private void UpdateAgentSettingsUI()
         {
             if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
             {
-                menuItemAgentSettings.IsEnabled = false;
+                menuItemAgentSettings.IsEnabled = _menuItemAgentSettings.Enabled = false;
                 menuItemAgentSettings.Visibility = Visibility.Collapsed;
+                _menuItemAgentSettings.Visible = false;
             }
             else
             {
-                menuItemAgentSettings.IsEnabled = true;
+                menuItemAgentSettings.IsEnabled = _menuItemAgentSettings.Enabled = true;
                 menuItemAgentSettings.Visibility = Visibility.Visible;
+                _menuItemAgentSettings.Visible = true;
             }
         }
         private void UpdateConnectButtonState()
@@ -749,101 +907,25 @@ namespace OpenBots.Agent.Client
         #endregion
 
         #region Top MenuBar Controls Events
-        private void OnClick_MachineInfo(object sender, RoutedEventArgs e)
+        private void OnClick_MachineInfo(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (!string.IsNullOrEmpty(txt_ServerURL.Text.Trim()))
-            {
-                try
-                {
-                    ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL = txt_ServerURL.Text.Trim();
-
-                    var serverResponse = PipeProxy.Instance.PingServer();
-                    if (serverResponse?.Data != null)
-                    {
-                        ConnectionSettingsManager.Instance.ConnectionSettings.ServerIPAddress = (string)serverResponse.Data;
-                        ShowMachineInfoDialog(ConnectionSettingsManager.Instance.ConnectionSettings.ServerIPAddress);
-                    }
-                    else
-                    {
-                        ShowMachineInfoDialog(string.Empty);
-                    }
-                }
-                catch (Exception)
-                {
-                    ShowMachineInfoDialog(string.Empty);
-                }
-            }
-            else
-                ShowMachineInfoDialog(string.Empty);
+            ShowMachineInfoWindow();
         }
         private void OnClick_AgentSettings(object sender, RoutedEventArgs e)
         {
-            AgentSettings frmAgentSettings = new AgentSettings(_agentSettings);
-            frmAgentSettings.Owner = this;
-            frmAgentSettings.ShowDialog();
-
-            if(frmAgentSettings.ChangesSaved)
-            {
-                _agentSettings = frmAgentSettings.OBSettings;
-                ConnectionSettingsManager.Instance.ConnectionSettings.HeartbeatInterval = _agentSettings.HeartbeatInterval;
-                ConnectionSettingsManager.Instance.ConnectionSettings.JobsPollingInterval = _agentSettings.JobsPollingInterval;
-                ConnectionSettingsManager.Instance.ConnectionSettings.HighDensityAgent = _agentSettings.HighDensityAgent;
-                ConnectionSettingsManager.Instance.ConnectionSettings.SingleSessionExecution = _agentSettings.SingleSessionExecution;
-                ConnectionSettingsManager.Instance.ConnectionSettings.SSLCertificateVerification = _agentSettings.SSLCertificateVerification;
-            }
+            ShowAgentSettingsWindow();
         }
-
         private void OnClick_NugetFeedManager(object sender, RoutedEventArgs e)
         {
-            string appDataPath = new EnvironmentSettings().GetEnvironmentVariablePath();
-            string appSettingsDirPath = Directory.GetParent(appDataPath).FullName;
-
-            var appSettings = new ApplicationSettings().GetOrCreateApplicationSettings(appSettingsDirPath);
-            var packageSourcesDT = appSettings.ClientSettings.PackageSourceDT;
-
-            NugetFeedManager nugetFeedManager = new NugetFeedManager(packageSourcesDT);
-            nugetFeedManager.Owner = this;
-            nugetFeedManager.ShowDialog();
-
-            if (nugetFeedManager.isDataUpdated)
-            {
-                appSettings.ClientSettings.PackageSourceDT = nugetFeedManager.GetPackageSourcesData();
-                appSettings.Save(appSettings, appSettingsDirPath);
-            }
+            ShowNugetFeedManagerWindow();
         }
         private void OnClick_AttendedExecution(object sender, RoutedEventArgs e)
         {
-            if (_attendedExecutionWindow == null)
-            {
-                _attendedExecutionWindow = new AttendedExecution();
-                _attendedExecutionWindow.Closed += (s, args) => this._attendedExecutionWindow = null;
-                _attendedExecutionWindow.Show();
-            }
-            else
-                _attendedExecutionWindow.Activate();
-
-            this.WindowState = WindowState.Minimized;
-
+            ShowAttendedExecutionWindow();
         }
-        private void OnClick_ClearCredentials(object sender, RoutedEventArgs e)
+        private void OnClick_ClearCredentials(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (!string.IsNullOrEmpty(_registryManager.AgentUsername))
-            {
-                ClearCredentials();
-                LoadConnectionSettings();
-
-                // Clear TextBoxes
-                txt_Username.Text = string.Empty;
-                txt_Password.Password = string.Empty;
-
-                MessageDialog messageDialog = new MessageDialog(
-                    "Credentials Cleared",
-                    "OpenBots Agent Credentials have been cleared.",
-                    true);
-
-                messageDialog.Owner = Application.Current.MainWindow;
-                messageDialog.ShowDialog();
-            }
+            ClearCredentials();
         }
         private void OnClick_Quit(object sender, RoutedEventArgs e)
         {
@@ -853,17 +935,16 @@ namespace OpenBots.Agent.Client
         private void OnClick_Settings(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Image image = sender as Image;
-            _contextMenuTrayIcon = image.ContextMenu;
-            _contextMenuTrayIcon.PlacementTarget = image;
-            _contextMenuTrayIcon.IsOpen = true;
+            _contextMenuGearIcon = image.ContextMenu;
+            _contextMenuGearIcon.PlacementTarget = image;
+            _contextMenuGearIcon.IsOpen = true;
         }
         private void OnClick_Close(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             this.Close();
         }
 
-        #endregion
 
-        
+        #endregion
     }
 }

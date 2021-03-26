@@ -2,7 +2,6 @@
 using OpenBots.Service.API.Client;
 using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.Execution;
-using OpenBots.Service.Client.Manager.HeartBeat;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
 using Serilog.Events;
@@ -16,7 +15,6 @@ namespace OpenBots.Service.Client.Manager.Agents
     {
         private ConnectionSettingsManager _connectionSettingsManager;
         private AuthAPIManager _authAPIManager;
-        private AgentHeartBeatManager _agentHeartBeatManager;
         private JobsPolling _jobsPolling;
         private AttendedExecutionManager _attendedExecutionManager;
         private FileLogger _fileLogger;
@@ -25,14 +23,13 @@ namespace OpenBots.Service.Client.Manager.Agents
         {
             _connectionSettingsManager = new ConnectionSettingsManager();
             _authAPIManager = new AuthAPIManager();
-            _agentHeartBeatManager = new AgentHeartBeatManager();
-            _jobsPolling = new JobsPolling(_agentHeartBeatManager);
+            _jobsPolling = new JobsPolling();
             _attendedExecutionManager = new AttendedExecutionManager(_jobsPolling.ExecutionManager, _authAPIManager);
             _fileLogger = new FileLogger();
 
             _connectionSettingsManager.ConnectionSettingsUpdatedEvent += OnConnectionSettingsUpdate;
             _authAPIManager.ConfigurationUpdatedEvent += OnConfigurationUpdate;
-            _agentHeartBeatManager.ServerConnectionLostEvent += OnServerConnectionLost;
+            _jobsPolling.ServerConnectionLostEvent += OnServerConnectionLost;
         }
 
 
@@ -198,17 +195,11 @@ namespace OpenBots.Service.Client.Manager.Agents
         #region Server Communication Handling
         public void StartServerCommunication()
         {
-            // Start Heartbeat Timer
-            _agentHeartBeatManager.StartHeartBeatTimer(_connectionSettingsManager, _authAPIManager, _fileLogger);
-
             // Start Jobs Polling
             _jobsPolling.StartJobsPolling(_connectionSettingsManager, _authAPIManager, _fileLogger);
         }
         public void StopServerCommunication()
         {
-            // Stop Heartbeat
-            _agentHeartBeatManager.StopHeartBeatTimer();
-
             // Stop Jobs Polling
             _jobsPolling.StopJobsPolling();
         }

@@ -8,13 +8,13 @@ namespace OpenBots.Service.Client.Manager.API
 {
     public static class AgentsAPIManager
     {
-        public static int SendAgentHeartBeat(AuthAPIManager apiManager, string agentId, AgentHeartbeat body)
+        public static ApiResponse<NextJobViewModel> SendAgentHeartBeat(AuthAPIManager apiManager, string agentId, HeartbeatViewModel body)
         {
             AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
 
             try
             {
-                return agentsApi.ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(agentId, body).StatusCode;
+                return agentsApi.ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(agentId, body);
             }
             catch (Exception ex)
             {
@@ -23,7 +23,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(agentId, body).StatusCode;
+                    return agentsApi.ApiV1AgentsAgentIdAddHeartbeatPostWithHttpInfo(agentId, body);
                 }
                 throw ex;
             }

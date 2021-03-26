@@ -5,8 +5,8 @@
   "OpenBotsServerUrl": "",
   "AgentId": "",
   "AgentName": "",
-  "HeartbeatInterval": 60,
-  "JobsPollingInterval": 60,
+  "HeartbeatInterval": 30,
+  "JobsLoggingInterval": 5,
   "HighDensityAgent": false,
   "SingleSessionExecution": false,
   "SSLCertificateVerification": false

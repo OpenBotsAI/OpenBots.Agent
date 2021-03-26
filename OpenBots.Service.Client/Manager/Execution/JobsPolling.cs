@@ -1,7 +1,8 @@
-﻿using OpenBots.Agent.Core.Model;
+﻿using OpenBots.Agent.Core.Enums;
+using OpenBots.Agent.Core.Model;
 using OpenBots.Service.API.Client;
+using OpenBots.Service.API.Model;
 using OpenBots.Service.Client.Manager.API;
-using OpenBots.Service.Client.Manager.HeartBeat;
 using OpenBots.Service.Client.Manager.Hub;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
@@ -13,8 +14,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 {
     public class JobsPolling
     {
-        // Jobs Fetch Timer (for Timed Polling)
-        private Timer _newJobsFetchTimer;
+        // Heartbeat Timer
+        private Timer _heartbeatTimer;
 
         // Jobs Hub Manager (for Long Polling)
         private HubManager _jobsHubManager;
@@ -23,10 +24,13 @@ namespace OpenBots.Service.Client.Manager.Execution
         private AuthAPIManager _authAPIManager;
         private FileLogger _fileLogger;
 
+        public HeartbeatViewModel Heartbeat { get; set; }
+        public event EventHandler ServerConnectionLostEvent;
         public ExecutionManager ExecutionManager;
-        public JobsPolling(AgentHeartBeatManager agentHeartBeatManager)
+        public JobsPolling()
         {
-            ExecutionManager = new ExecutionManager(agentHeartBeatManager);
+            InitializeHeartbeat();
+            ExecutionManager = new ExecutionManager(Heartbeat);
         }
 
         private void Initialize(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
@@ -41,9 +45,9 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void UnInitialize()
         {
-            if(_connectionSettingsManager != null)
+            if (_connectionSettingsManager != null)
                 _connectionSettingsManager.ConnectionSettingsUpdatedEvent -= OnConnectionSettingsUpdate;
-            if(_authAPIManager != null)
+            if (_authAPIManager != null)
                 _authAPIManager.ConfigurationUpdatedEvent -= OnConfigurationUpdate;
         }
 
@@ -51,8 +55,8 @@ namespace OpenBots.Service.Client.Manager.Execution
         {
             Initialize(connectionSettingsManager, authAPIManager, fileLogger);
 
-            // Start Timed Polling
-            StartJobsFetchTimer();
+            // Start Heartbeat Timer
+            StartHeartbeatTimer();
 
             // Start Long Polling
             StartHubManager();
@@ -61,13 +65,13 @@ namespace OpenBots.Service.Client.Manager.Execution
             StartExecutionManager();
         }
 
-        
+
         public void StopJobsPolling()
         {
             UnInitialize();
 
-            // Stop Timed Polling
-            StopJobsFetchTimer();
+            // Stop Heartbeat Timer
+            StopHeartbeatTimer();
 
             // Stop Long Polling
             StopHubManager();
@@ -75,48 +79,61 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Stop Execution Manager
             StopExecutionManager();
         }
-        
 
-        #region TimedPolling
-        private void StartJobsFetchTimer()
+
+        #region Heartbeat/TimedPolling
+        private void StartHeartbeatTimer()
         {
             if (_connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled)
             {
                 //handle for reinitialization
-                if (_newJobsFetchTimer != null)
+                if (_heartbeatTimer != null)
                 {
-                    _newJobsFetchTimer.Elapsed -= JobsFetchTimer_Elapsed;
+                    _heartbeatTimer.Elapsed -= HeartbeatTimer_Elapsed;
                 }
 
                 //setup heartbeat to the server
-                _newJobsFetchTimer = new Timer();
-                _newJobsFetchTimer.Interval = (_connectionSettingsManager.ConnectionSettings.JobsPollingInterval * 1000);
-                _newJobsFetchTimer.Elapsed += JobsFetchTimer_Elapsed;
-                _newJobsFetchTimer.Enabled = true;
+                _heartbeatTimer = new Timer();
+                _heartbeatTimer.Interval = (_connectionSettingsManager.ConnectionSettings.HeartbeatInterval * 1000);
+                _heartbeatTimer.Elapsed += HeartbeatTimer_Elapsed;
+                _heartbeatTimer.Enabled = true;
             }
 
             // Log Event
-            _fileLogger.LogEvent("Timed Polling", "Started Timed Polling");
+            _fileLogger.LogEvent("Heartbeat", "Started Heartbeat Timer");
         }
-        private void StopJobsFetchTimer()
+        private void StopHeartbeatTimer()
         {
-            if (_newJobsFetchTimer != null)
+            if (_heartbeatTimer != null)
             {
-                _newJobsFetchTimer.Enabled = false;
-                _newJobsFetchTimer.Elapsed -= JobsFetchTimer_Elapsed;
+                _heartbeatTimer.Enabled = false;
+                _heartbeatTimer.Elapsed -= HeartbeatTimer_Elapsed;
 
                 // Log Event
-                _fileLogger.LogEvent("Timed Polling", "Stopped Timed Polling");
+                _fileLogger.LogEvent("Heartbeat", "Stopped Heartbeat Timer");
             }
         }
-        private void JobsFetchTimer_Elapsed(object sender, ElapsedEventArgs e)
+
+        private void InitializeHeartbeat()
         {
-            // Log Event
-            _fileLogger.LogEvent("Timed Polling", "Attempt to fetch new job");
-            FetchNewJobs();
+            if (Heartbeat == null)
+                Heartbeat = new HeartbeatViewModel();
+
+            Heartbeat.LastReportedStatus = AgentStatus.Available.ToString();
+            Heartbeat.LastReportedWork = string.Empty;
+            Heartbeat.LastReportedMessage = string.Empty;
+            Heartbeat.IsHealthy = true;
+            Heartbeat.GetNextJob = true;
         }
 
-        #endregion TimedPolling
+        private void HeartbeatTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            // Log Event
+            _fileLogger.LogEvent("Heartbeat", "Heartbeat Timer Elapsed");
+            SendHeartbeat();
+        }
+
+        #endregion Heartbeat/TimedPolling
 
         #region LongPolling
         private void StartHubManager()
@@ -140,7 +157,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 // Log Event
                 _fileLogger.LogEvent("Job Fetch", $"Attempt to fetch new Job for AgentId \"{_connectionSettingsManager.ConnectionSettings.AgentId}\"");
 
-                FetchNewJobs();
+                SendHeartbeat();
             }
         }
 
@@ -157,6 +174,45 @@ namespace OpenBots.Service.Client.Manager.Execution
         }
 
         #endregion LongPolling
+
+        private void SendHeartbeat()
+        {
+            int statusCode = 0;
+            try
+            {
+                // Update LastReportedOn
+                Heartbeat.LastReportedOn = DateTime.UtcNow;
+
+                // Send HeartBeat to the Server
+                var apiResponse = AgentsAPIManager.SendAgentHeartBeat(
+                    _authAPIManager,
+                    _connectionSettingsManager.ConnectionSettings.AgentId,
+                    Heartbeat);
+
+                statusCode = apiResponse.StatusCode;
+                if (statusCode != 200)
+                {
+                    _connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled = false;
+                    _connectionSettingsManager.UpdateConnectionSettings(_connectionSettingsManager.ConnectionSettings);
+                }
+                else if (apiResponse.Data?.AssignedJob != null)
+                {
+                    ExecutionManager.JobsQueueManager.EnqueueJob(apiResponse.Data.AssignedJob);
+
+                    // Log Event
+                    _fileLogger.LogEvent("Job Fetch", "Job fetched and queued for execution");
+                }
+            }
+            catch (Exception ex)
+            {
+                _fileLogger.LogEvent("HeartBeat", $"Status Code: {statusCode} || Exception: {ex.ToString()}", LogEventLevel.Error);
+                _connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled = false;
+                _connectionSettingsManager.UpdateConnectionSettings(_connectionSettingsManager.ConnectionSettings);
+
+                // Invoke event to Stop Server Communication
+                ServerConnectionLostEvent?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         private void FetchNewJobs()
         {
@@ -187,18 +243,24 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void StartExecutionManager()
         {
-            ExecutionManager.JobFinishedEvent += OnJobFinished;
-            ExecutionManager.StartNewJobsCheckTimer(_connectionSettingsManager, _authAPIManager, _fileLogger);
+            if (ExecutionManager != null)
+            {
+                ExecutionManager.JobFinishedEvent += OnJobFinished;
+                ExecutionManager.StartNewJobsCheckTimer(_connectionSettingsManager, _authAPIManager, _fileLogger);
+            }
         }
         private void StopExecutionManager()
         {
-            ExecutionManager.JobFinishedEvent -= OnJobFinished;
-            ExecutionManager.StopNewJobsCheckTimer();
+            if (ExecutionManager != null)
+            {
+                ExecutionManager.JobFinishedEvent -= OnJobFinished;
+                ExecutionManager.StopNewJobsCheckTimer();
+            }
         }
 
         private void OnJobFinished(object sender, EventArgs e)
         {
-            FetchNewJobs();
+            SendHeartbeat();
         }
 
         private void OnConfigurationUpdate(object sender, Configuration configuration)
