@@ -124,15 +124,15 @@ namespace OpenBots.Service.Client.Manager.Agents
             }
         }
 
-        public ServerResponse GetAutomations()
+        public ServerResponse GetAutomations(string automationEngine)
         {
             try
             {
-                var apiResponse = AutomationsAPIManager.GetAutomations(_authAPIManager);
+                string filter = $"automationEngine eq '{automationEngine}'";
+                var apiResponse = AutomationsAPIManager.GetAutomations(_authAPIManager, filter);
                 var automationPackageNames = apiResponse.Data.Items.Where(
                     a => !string.IsNullOrEmpty(a.OriginalPackageName) &&
-                    a.OriginalPackageName.EndsWith(".nupkg") &&
-                    a.AutomationEngine.Equals("OpenBots")
+                    a.OriginalPackageName.EndsWith(".nupkg")
                     ).Select(a => a.OriginalPackageName).ToList();
                 return new ServerResponse(automationPackageNames, apiResponse.StatusCode.ToString());
             }

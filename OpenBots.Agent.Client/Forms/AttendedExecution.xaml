@@ -11,6 +11,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel x:Name="pnlSource" Grid.Row="0">
             <Grid>
@@ -18,11 +19,21 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Source" FontWeight="DemiBold" Name="lbl_Source" Grid.Column="0"/>
+                <Label Content="Source" FontWeight="DemiBold" Name="lbl_Source" Grid.Column="0" ToolTip="Automation Source"/>
                 <ComboBox Name="cmb_Source" Grid.Column="1" Height="29" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_Source"/>
             </Grid>
         </StackPanel>
-        <StackPanel x:Name="pnlProjects" Grid.Row="1" Margin="0,10,0,0">
+        <StackPanel x:Name="pnlAutomationTypes" Grid.Row="1" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Engine" FontWeight="DemiBold" Name="lbl_AutomationType" Grid.Column="0" ToolTip="Automation Engine"/>
+                <ComboBox Name="cmb_AutomationType" Grid.Column="1" Height="29" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_AutomationType"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="pnlProjects" Grid.Row="2" Margin="0,10,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -32,7 +43,7 @@
                 <ComboBox Name="cmb_PublishedProjects" Grid.Column="1" Height="29" VerticalContentAlignment="Center"/>
             </Grid>
         </StackPanel>
-        <StackPanel x:Name="pnlBtns" Grid.Row="2" Margin="0,10,0,0">
+        <StackPanel x:Name="pnlBtns" Grid.Row="3" Margin="0,10,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
