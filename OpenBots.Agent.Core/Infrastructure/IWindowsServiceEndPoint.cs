@@ -39,6 +39,6 @@ namespace OpenBots.Agent.Core.Infrastructure
 
         [OperationContract]
         [ServiceKnownType(typeof(List<string>))]
-        ServerResponse GetAutomations(string domainName, string userName);
+        ServerResponse GetAutomations(string domainName, string userName, string automationEngine);
     }
 }
