@@ -1,13 +1,11 @@
 ﻿using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Utilities;
+using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Win32;
+using Serilog.Events;
 using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenBots.Agent.Core.Enums;
-using OpenBots.Service.Client.Manager.Logs;
-using Serilog.Events;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -19,7 +17,7 @@ namespace OpenBots.Service.Client.Manager.Execution
     {
         private Win32Utilities _win32Helper;
         private FileLogger _fileLogger;
-        private int _rdpConnectionState = 0;
+        private int _rdpConnectionState = -1;
 
         private const int _disconnected = 0;
         private const int _connected = 1;
@@ -123,11 +121,10 @@ namespace OpenBots.Service.Client.Manager.Execution
             bool isConnected = true;
 
             int sec = 0;
-            while (sec < 60)
+            while (sec < seconds)
             {
                 if (_rdpConnectionState == _connected ||
-                    _rdpConnectionState == _errored ||
-                    _rdpConnectionState == _disconnected)
+                    _rdpConnectionState == _errored)
                     break;
 
                 Thread.Sleep(1000);
@@ -135,8 +132,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
 
             if (sec == 60 ||
-                _rdpConnectionState == _errored ||
-                _rdpConnectionState == _disconnected)
+                _rdpConnectionState == _errored)
             {
                 isConnected = false;
             }
