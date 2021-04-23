@@ -282,9 +282,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 
-            // launch the Executor
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            // Run Automation
+            RunJob(cmdLine, machineCredential);
 
             return;
         }
@@ -307,8 +306,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             string logsFilePath = $"{mainScriptFilePath}.log";
             string cmdLine = $"\"{batchFilePath}\" > \"{logsFilePath}\"";
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            // Run Automation
+            RunJob(cmdLine, machineCredential);
 
             var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, null);
             SendLogsToServer(mainScriptFilePath, executionParams);
@@ -334,8 +333,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\"";
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            // Run Automation
+            RunJob(cmdLine, machineCredential);
 
             var executionParams = GetJobExecutionParams(job, automation, mainScriptPath, null);
             SendLogsToServer(mainScriptPath, executionParams);
@@ -356,13 +355,19 @@ namespace OpenBots.Service.Client.Manager.Execution
             var logsFilePath = $"{mainScriptFilePath}.log";
             string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" > \"{logsFilePath}\"";
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            // Run Automation
+            RunJob(cmdLine, machineCredential);
 
             var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, null);
             SendLogsToServer(mainScriptFilePath, executionParams);
 
             return;
+        }
+
+        private void RunJob(string commandLine, MachineCredential machineCredential)
+        {
+            Executor executor = new Executor(_fileLogger);
+            executor.RunAutomation(commandLine, machineCredential);
         }
 
         public void SetEngineStatus(bool isBusy)
@@ -389,6 +394,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);
             return DataFormatter.CompressString(paramsJsonString);
         }
+
         private JobExecutionParams GetJobExecutionParams(Job job, Automation automation, string mainScriptFilePath, List<string> projectDependencies)
         {
             return new JobExecutionParams()
@@ -403,6 +409,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ServerConnectionSettings = _connectionSettingsManager.ConnectionSettings
             };
         }
+        
         private List<JobParameter> GetJobParameters(string jobId)
         {
             var jobViewModel = JobsAPIManager.GetJobViewModel(_authAPIManager, jobId);
