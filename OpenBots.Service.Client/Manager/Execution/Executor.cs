@@ -1,4 +1,6 @@
-﻿using OpenBots.Agent.Core.Model;
+﻿using OpenBots.Agent.Core.Enums;
+using OpenBots.Agent.Core.Model;
+using OpenBots.Agent.Core.Model.RDP;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Win32;
@@ -17,11 +19,8 @@ namespace OpenBots.Service.Client.Manager.Execution
     {
         private Win32Utilities _win32Helper;
         private FileLogger _fileLogger;
-        private int _rdpConnectionState = -1;
+        private RemoteDesktopState _rdpConnectionState = RemoteDesktopState.Unknown;
 
-        private const int _disconnected = 0;
-        private const int _connected = 1;
-        private const int _errored = 2;
         public Executor(FileLogger fileLogger)
         {
             _win32Helper = new Win32Utilities();
@@ -62,6 +61,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                     _fileLogger?.LogEvent("CreateRDPConnection", "Start RDP Connection", LogEventLevel.Information);
 
                     // Attempt to create a Remote Desktop Session
+                    _fileLogger?.LogEvent("UserInfo", $"Server: {Environment.MachineName}, User: {machineCredential.UserName}" +
+                        $", Domain: {machineCredential.Domain}, Password: {machineCredential.PasswordSecret}", LogEventLevel.Information);
+
                     rdpUtil = new RemoteDesktop();
                     rdpUtil.ConnectionStateChangedEvent += OnConnectionStateChanged;
                     Task.Run(() => rdpUtil.CreateRdpConnection(
@@ -77,7 +79,8 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                     if (!isConnected)
                     {
-                        throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
+                        if(!(sessionFound = _win32Helper.GetUserSessionToken(machineCredential, ref hPToken)))
+                            throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
                     }
                     else
                     {
@@ -123,8 +126,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             int sec = 0;
             while (sec < seconds)
             {
-                if (_rdpConnectionState == _connected ||
-                    _rdpConnectionState == _errored)
+                if (_rdpConnectionState == RemoteDesktopState.Connected ||
+                    _rdpConnectionState == RemoteDesktopState.Errored)
                     break;
 
                 Thread.Sleep(1000);
@@ -132,7 +135,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
 
             if (sec == 60 ||
-                _rdpConnectionState == _errored)
+                _rdpConnectionState == RemoteDesktopState.Errored)
             {
                 isConnected = false;
             }
@@ -140,10 +143,13 @@ namespace OpenBots.Service.Client.Manager.Execution
             return isConnected;
         }
 
-        private void OnConnectionStateChanged(object sender, int state)
+        private void OnConnectionStateChanged(object sender, RemoteDesktopEventArgs rdEventArgs)
         {
-            _rdpConnectionState = state;
-            _fileLogger?.LogEvent("OnConnectionStateChanged", $"RDP Connection State: {state}", LogEventLevel.Information);
+            _rdpConnectionState = rdEventArgs.ConnectionState;
+            _fileLogger?.LogEvent("OnConnectionStateChanged", $"RDP Connection State: {_rdpConnectionState}" +
+                ((_rdpConnectionState == RemoteDesktopState.Disconnected ||
+                _rdpConnectionState == RemoteDesktopState.Errored) ? $", Error Code: {rdEventArgs.ErrorCode}, " +
+                $"Error Description: {rdEventArgs.ErrorDescription}" : ""), LogEventLevel.Information);
         }
     }
 }

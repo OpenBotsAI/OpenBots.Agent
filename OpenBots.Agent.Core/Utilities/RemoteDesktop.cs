@@ -6,13 +6,47 @@ using System.Threading;
 using System.Windows.Forms;
 using AxMSTSCLib;
 using MSTSCLib;
+using OpenBots.Agent.Core.Model.RDP;
+using OpenBots.Agent.Core.Enums;
 
 namespace OpenBots.Agent.Core.Utilities
 {
     public class RemoteDesktop
     {
+        public enum ExtendedDisconnectReasonCode
+        {
+            exDiscReasonNoInfo = 0,
+            exDiscReasonAPIInitiatedDisconnect = 1,
+            exDiscReasonAPIInitiatedLogoff = 2,
+            exDiscReasonServerIdleTimeout = 3,
+            exDiscReasonServerLogonTimeout = 4,
+            exDiscReasonReplacedByOtherConnection = 5,
+            exDiscReasonOutOfMemory = 6,
+            exDiscReasonServerDeniedConnection = 7,
+            exDiscReasonServerDeniedConnectionFips = 8,
+            exDiscReasonServerInsufficientPrivileges = 9,
+            exDiscReasonServerFreshCredsRequired = 10,
+            exDiscReasonRpcInitiatedDisconnectByUser = 11,
+            exDiscReasonLogoffByUser = 2,
+            exDiscReasonLicenseInternal = 256,
+            exDiscReasonLicenseNoLicenseServer = 257,
+            exDiscReasonLicenseNoLicense = 258,
+            exDiscReasonLicenseErrClientMsg = 259,
+            exDiscReasonLicenseHwidDoesntMatchLicense = 260,
+            exDiscReasonLicenseErrClientLicense = 261,
+            exDiscReasonLicenseCantFinishProtocol = 262,
+            exDiscReasonLicenseClientEndedProtocol = 263,
+            exDiscReasonLicenseErrClientEncryption = 264,
+            exDiscReasonLicenseCantUpgradeLicense = 265,
+            exDiscReasonLicenseNoRemoteConnections = 266,
+            exDiscReasonLicenseCreatingLicStoreAccDenied = 267,
+            exDiscReasonRdpEncInvalidCredentials = 768,
+            exDiscReasonProtocolRangeStart = 4096,
+            exDiscReasonProtocolRangeEnd = 32767
+        }
+
         public int LogonErrorCode { get; set; }
-        public event EventHandler<int> ConnectionStateChangedEvent;
+        public event EventHandler<RemoteDesktopEventArgs> ConnectionStateChangedEvent;
         private AxMsRdpClient9NotSafeForScripting rdpConnection = null;
         public void CreateRdpConnection(string server, string user, string domain, string password)
         {
@@ -23,7 +57,7 @@ namespace OpenBots.Agent.Core.Utilities
                 {
                     rdpConnection = new AxMSTSCLib.AxMsRdpClient9NotSafeForScripting();
                     form.Controls.Add(rdpConnection);
-                    rdpConnection.Server = server;
+                    //rdpConnection.Server = server;
                     rdpConnection.Domain = domain;
                     rdpConnection.UserName = user;
                     rdpConnection.AdvancedSettings9.ClearTextPassword = password;
@@ -60,23 +94,27 @@ namespace OpenBots.Agent.Core.Utilities
         private void RdpConnectionOnOnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
         {
             LogonErrorCode = e.lError;
-            ConnectionStateChangedEvent.Invoke(this, 2);
-            //File.AppendAllText(@"C:\temp1.txt", $"OnLogonError: {LogonErrorCode} EventTime: {DateTime.Now.ToString()}\n");
+            ConnectionStateChangedEvent.Invoke(this, 
+                new RemoteDesktopEventArgs() { ConnectionState = RemoteDesktopState.Errored, ErrorCode = e.lError });
         }
         private void RdpConnectionOnOnLoginComplete(object sender, EventArgs e)
         {
             if (LogonErrorCode == -2)
             {
-                //File.AppendAllText(@"C:\temp1.txt", $"OnLoginComplete: New Session Detected. EventTime: {DateTime.Now.ToString()}\n");
-                ConnectionStateChangedEvent.Invoke(this, 3);
+                ConnectionStateChangedEvent.Invoke(this, 
+                    new RemoteDesktopEventArgs() { ConnectionState = RemoteDesktopState.Connected, ErrorCode = 0 });
             }
-            //File.AppendAllText(@"C:\temp1.txt", $"OnLoginComplete: New Session Created. EventTime: {DateTime.Now.ToString()}\n");
-            ConnectionStateChangedEvent.Invoke(this, 1);
+            ConnectionStateChangedEvent.Invoke(this,
+                new RemoteDesktopEventArgs() { ConnectionState = RemoteDesktopState.Connected, ErrorCode = 0 });
         }
         private void RdpConnectionOnOnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            //File.AppendAllText(@"C:\temp1.txt", $"OnDisconnected: New Session Terminated. EventTime: {DateTime.Now.ToString()}\n");
-            ConnectionStateChangedEvent.Invoke(this, 0);
+
+            string disconnectReason = rdpConnection.GetErrorDescription((uint)e.discReason, (uint)rdpConnection.ExtendedDisconnectReason);
+            ConnectionStateChangedEvent.Invoke(this, new RemoteDesktopEventArgs() { 
+                ConnectionState = RemoteDesktopState.Disconnected, 
+                ErrorCode = e.discReason, 
+                ErrorDescription = disconnectReason });
         }
     }
 }

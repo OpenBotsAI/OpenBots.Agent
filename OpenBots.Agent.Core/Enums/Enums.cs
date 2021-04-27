@@ -46,4 +46,12 @@
         TagUI,
         CSScript
     }
+
+    public enum RemoteDesktopState
+    {
+        Connected,
+        Disconnected,
+        Errored,
+        Unknown
+    }
 }

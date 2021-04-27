@@ -221,6 +221,7 @@
     <Compile Include="Model\JobParameter.cs" />
     <Compile Include="Model\MachineCredentials.cs" />
     <Compile Include="Model\NugetPackageSource.cs" />
+    <Compile Include="Model\RDP\RemoteDesktopEventArgs.cs" />
     <Compile Include="Model\ServerConnectionSettings.cs" />
     <Compile Include="Model\ServerResponse.cs" />
     <Compile Include="Nuget\NugetPackageManager.cs" />
