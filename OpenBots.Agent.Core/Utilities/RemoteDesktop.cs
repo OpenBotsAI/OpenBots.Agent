@@ -13,38 +13,6 @@ namespace OpenBots.Agent.Core.Utilities
 {
     public class RemoteDesktop
     {
-        public enum ExtendedDisconnectReasonCode
-        {
-            exDiscReasonNoInfo = 0,
-            exDiscReasonAPIInitiatedDisconnect = 1,
-            exDiscReasonAPIInitiatedLogoff = 2,
-            exDiscReasonServerIdleTimeout = 3,
-            exDiscReasonServerLogonTimeout = 4,
-            exDiscReasonReplacedByOtherConnection = 5,
-            exDiscReasonOutOfMemory = 6,
-            exDiscReasonServerDeniedConnection = 7,
-            exDiscReasonServerDeniedConnectionFips = 8,
-            exDiscReasonServerInsufficientPrivileges = 9,
-            exDiscReasonServerFreshCredsRequired = 10,
-            exDiscReasonRpcInitiatedDisconnectByUser = 11,
-            exDiscReasonLogoffByUser = 2,
-            exDiscReasonLicenseInternal = 256,
-            exDiscReasonLicenseNoLicenseServer = 257,
-            exDiscReasonLicenseNoLicense = 258,
-            exDiscReasonLicenseErrClientMsg = 259,
-            exDiscReasonLicenseHwidDoesntMatchLicense = 260,
-            exDiscReasonLicenseErrClientLicense = 261,
-            exDiscReasonLicenseCantFinishProtocol = 262,
-            exDiscReasonLicenseClientEndedProtocol = 263,
-            exDiscReasonLicenseErrClientEncryption = 264,
-            exDiscReasonLicenseCantUpgradeLicense = 265,
-            exDiscReasonLicenseNoRemoteConnections = 266,
-            exDiscReasonLicenseCreatingLicStoreAccDenied = 267,
-            exDiscReasonRdpEncInvalidCredentials = 768,
-            exDiscReasonProtocolRangeStart = 4096,
-            exDiscReasonProtocolRangeEnd = 32767
-        }
-
         public int LogonErrorCode { get; set; }
         public event EventHandler<RemoteDesktopEventArgs> ConnectionStateChangedEvent;
         private AxMsRdpClient9NotSafeForScripting rdpConnection = null;
@@ -57,7 +25,7 @@ namespace OpenBots.Agent.Core.Utilities
                 {
                     rdpConnection = new AxMSTSCLib.AxMsRdpClient9NotSafeForScripting();
                     form.Controls.Add(rdpConnection);
-                    //rdpConnection.Server = server;
+                    rdpConnection.Server = server;
                     rdpConnection.Domain = domain;
                     rdpConnection.UserName = user;
                     rdpConnection.AdvancedSettings9.ClearTextPassword = password;
