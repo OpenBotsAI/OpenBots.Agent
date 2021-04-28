@@ -16,7 +16,7 @@ namespace OpenBots.Agent.Core.Utilities
         public int LogonErrorCode { get; set; }
         public event EventHandler<RemoteDesktopEventArgs> ConnectionStateChangedEvent;
         private AxMsRdpClient9NotSafeForScripting rdpConnection = null;
-        public void CreateRdpConnection(string server, string user, string domain, string password)
+        public void CreateRdpConnection(string server, string user, string domain, string password, int desktopWidth, int desktopHeight)
         {
             void ProcessTaskThread()
             {
@@ -36,6 +36,8 @@ namespace OpenBots.Agent.Core.Utilities
                         rdpConnection.OnLoginComplete += RdpConnectionOnOnLoginComplete;
                         rdpConnection.OnLogonError += RdpConnectionOnOnLogonError;
                     }
+                    rdpConnection.DesktopHeight = desktopHeight;
+                    rdpConnection.DesktopWidth = desktopWidth;
                     rdpConnection.Connect();
                     rdpConnection.Enabled = false;
                     rdpConnection.Dock = DockStyle.Fill;

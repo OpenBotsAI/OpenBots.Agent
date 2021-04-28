@@ -33,7 +33,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         /// <param name="commandLine">Command line containing automation info to be run by the executor</param>
         /// <param name="machineCredential">Machine credentials contaning the User Account info to run the job for.</param>
         /// <returns>Exit Code of the Process</returns>
-        public void RunAutomation(String commandLine, MachineCredential machineCredential)
+        public void RunAutomation(String commandLine, MachineCredential machineCredential, ServerConnectionSettings serverSettings)
         {
             bool isRDPSession = false;
             IntPtr hPToken = IntPtr.Zero;
@@ -70,7 +70,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                         Environment.MachineName,
                         machineCredential.UserName,
                         machineCredential.Domain,
-                        machineCredential.PasswordSecret));
+                        machineCredential.PasswordSecret,
+                        serverSettings.ResolutionWidth,
+                        serverSettings.ResolutionHeight));
 
                     _fileLogger?.LogEvent("WaitForRDPConnection", "Wait for RDP Connection", LogEventLevel.Information);
 
@@ -79,7 +81,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                     if (!isConnected)
                     {
-                        if(!(sessionFound = _win32Helper.GetUserSessionToken(machineCredential, ref hPToken)))
+                        if (!(sessionFound = _win32Helper.LogonUserA(machineCredential, ref hPToken)))
                             throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
                     }
                     else
@@ -127,7 +129,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             while (sec < seconds)
             {
                 if (_rdpConnectionState == RemoteDesktopState.Connected ||
-                    _rdpConnectionState == RemoteDesktopState.Errored)
+                    _rdpConnectionState == RemoteDesktopState.Errored ||
+                    _rdpConnectionState == RemoteDesktopState.Disconnected)
                     break;
 
                 Thread.Sleep(1000);
@@ -135,7 +138,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
 
             if (sec == 60 ||
-                _rdpConnectionState == RemoteDesktopState.Errored)
+                _rdpConnectionState == RemoteDesktopState.Errored || 
+                _rdpConnectionState == RemoteDesktopState.Disconnected)
             {
                 isConnected = false;
             }

@@ -367,7 +367,7 @@ namespace OpenBots.Service.Client.Manager.Execution
         private void RunJob(string commandLine, MachineCredential machineCredential)
         {
             Executor executor = new Executor(_fileLogger);
-            executor.RunAutomation(commandLine, machineCredential);
+            executor.RunAutomation(commandLine, machineCredential, _connectionSettingsManager.ConnectionSettings);
         }
 
         public void SetEngineStatus(bool isBusy)

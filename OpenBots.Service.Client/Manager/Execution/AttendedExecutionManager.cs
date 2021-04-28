@@ -114,7 +114,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 
             // Run Automation
-            RunAutomation(cmdLine, userInfo);
+            RunAutomation(cmdLine, userInfo, settings);
         }
 
         private string GetExecutionParams(string mainScriptFilePath, ServerConnectionSettings settings, List<string> projectDependencies)
@@ -154,7 +154,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 UserName = settings.UserName
             };
 
-            RunAutomation(cmdLine, userInfo);
+            RunAutomation(cmdLine, userInfo, settings);
 
             return;
         }
@@ -181,7 +181,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 UserName = settings.UserName
             };
 
-            RunAutomation(cmdLine, userInfo);
+            RunAutomation(cmdLine, userInfo, settings);
 
             // Delete TagUI Execution Directory
             Directory.Delete(executionDirPath, true);
@@ -203,15 +203,15 @@ namespace OpenBots.Service.Client.Manager.Execution
                 UserName = settings.UserName
             };
 
-            RunAutomation(cmdLine, userInfo);
+            RunAutomation(cmdLine, userInfo, settings);
 
             return;
         }
 
-        private void RunAutomation(string commandLine, MachineCredential machineCredential)
+        private void RunAutomation(string commandLine, MachineCredential machineCredential, ServerConnectionSettings settings)
         {
             Executor executor = new Executor(null);
-            executor.RunAutomation(commandLine, machineCredential);
+            executor.RunAutomation(commandLine, machineCredential, settings);
         }
 
         private string GetLogsFilePath(string logsDirectory, AutomationType automationType, string projectName)

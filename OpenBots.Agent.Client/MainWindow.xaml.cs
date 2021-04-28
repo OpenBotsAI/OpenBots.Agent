@@ -214,6 +214,8 @@ namespace OpenBots.Agent.Client
                     TracingLevel = string.IsNullOrEmpty(_agentSettings.TracingLevel) ? LogEventLevel.Information.ToString() : _agentSettings.TracingLevel,
                     HeartbeatInterval = _agentSettings.HeartbeatInterval,
                     JobsLoggingInterval = _agentSettings.JobsLoggingInterval,
+                    ResolutionHeight = (_agentSettings.ResolutionHeight == 0 ? SystemForms.Screen.PrimaryScreen.Bounds.Height : _agentSettings.ResolutionHeight),
+                    ResolutionWidth = (_agentSettings.ResolutionWidth == 0 ? SystemForms.Screen.PrimaryScreen.Bounds.Width : _agentSettings.ResolutionWidth),
                     HighDensityAgent = _agentSettings.HighDensityAgent,
                     SingleSessionExecution = _agentSettings.SingleSessionExecution,
                     SSLCertificateVerification = _agentSettings.SSLCertificateVerification,

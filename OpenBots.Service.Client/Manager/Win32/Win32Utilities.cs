@@ -97,6 +97,17 @@ namespace OpenBots.Service.Client.Manager.Win32
             return bResult;
         }
 
+        public bool LogonUserA(MachineCredential machineCredential, ref IntPtr phUserToken)
+        {
+            return LogonUser(
+                machineCredential.UserName,
+                machineCredential.Domain,
+                machineCredential.PasswordSecret,
+                LOGON32_LOGON_BATCH,
+                LOGON32_PROVIDER_DEFAULT,
+                ref phUserToken);
+        }
+
         public bool ValidateUser(MachineCredential machineCredential, out int errorCode)
         {
             bool isValid = false;
@@ -190,8 +201,8 @@ namespace OpenBots.Service.Client.Manager.Win32
 
                 GetExitCodeProcess(processInfo.hProcess, out exitCode);
 
-                //if(exitCode != 0)
-                //    throw new Exception($"Exception occurred when starting automation.\n Exit Code: {exitCode}");
+                if (exitCode != 0)
+                    throw new Exception($"Exception occurred in the Executor App when starting automation.\n Exit Code: {exitCode}");
             }
             finally
             {
