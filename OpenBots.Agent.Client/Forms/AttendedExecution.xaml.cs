@@ -190,7 +190,7 @@ namespace OpenBots.Agent.Client.Forms
                 _automationProjects = Directory.GetFiles(publishedProjectsDir, "*.nupkg");
                 var automationNames = from fileName in _automationProjects select Path.GetFileName(fileName);
 
-                cmb_PublishedProjects.ItemsSource = automationNames;
+                cmb_PublishedProjects.ItemsSource = automationNames.OrderBy(automationName => automationName);
                 cmb_PublishedProjects.SelectedIndex = 0;
             });
         }
@@ -214,7 +214,7 @@ namespace OpenBots.Agent.Client.Forms
                 var serverResponse = PipeProxy.Instance.GetAutomations(_automationType);
                 if (serverResponse.Data != null)
                 {
-                    cmb_PublishedProjects.ItemsSource = (List<string>)serverResponse.Data;
+                    cmb_PublishedProjects.ItemsSource = ((List<string>)serverResponse.Data).OrderBy(automationName => automationName);
                     cmb_PublishedProjects.SelectedIndex = 0;
                 }
                 else
