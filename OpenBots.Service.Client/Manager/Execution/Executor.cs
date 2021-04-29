@@ -28,11 +28,11 @@ namespace OpenBots.Service.Client.Manager.Execution
         }
 
         /// <summary>
-        /// Launches the given application with full admin rights, and in addition bypasses the Vista UAC prompt
+        /// Launches given application in the security context of specified user
         /// </summary>
         /// <param name="commandLine">Command line containing automation info to be run by the executor</param>
         /// <param name="machineCredential">Machine credentials contaning the User Account info to run the job for.</param>
-        /// <returns>Exit Code of the Process</returns>
+        /// <param name="serverSettings">Server Connection Settings containing screen resolution info for RDP session.</param>
         public void RunAutomation(String commandLine, MachineCredential machineCredential, ServerConnectionSettings serverSettings)
         {
             bool isRDPSession = false;
@@ -61,9 +61,6 @@ namespace OpenBots.Service.Client.Manager.Execution
                     _fileLogger?.LogEvent("CreateRDPConnection", "Start RDP Connection", LogEventLevel.Information);
 
                     // Attempt to create a Remote Desktop Session
-                    _fileLogger?.LogEvent("UserInfo", $"Server: {Environment.MachineName}, User: {machineCredential.UserName}" +
-                        $", Domain: {machineCredential.Domain}, Password: {machineCredential.PasswordSecret}", LogEventLevel.Information);
-
                     rdpUtil = new RemoteDesktop();
                     rdpUtil.ConnectionStateChangedEvent += OnConnectionStateChanged;
                     Task.Run(() => rdpUtil.CreateRdpConnection(
@@ -81,12 +78,16 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                     if (!isConnected)
                     {
+                        _fileLogger?.LogEvent("CreateRDPConnection", "Unable to create the RDP Session", LogEventLevel.Error);
+                        
+                        _fileLogger?.LogEvent("LogonUser", "Logon User to perform automation in non-interactive session", LogEventLevel.Error);
+
                         if (!(sessionFound = _win32Helper.LogonUserA(machineCredential, ref hPToken)))
                             throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
                     }
                     else
                     {
-                        _fileLogger?.LogEvent("CreateNewSession", $"New RDP Session Created.", LogEventLevel.Information);
+                        _fileLogger?.LogEvent("CreateNewSession", $"New Session Created.", LogEventLevel.Information);
 
                         // Obtain the id of Remote Desktop Session
                         sessionFound = _win32Helper.GetUserSessionToken(machineCredential, ref hPToken);
@@ -95,14 +96,14 @@ namespace OpenBots.Service.Client.Manager.Execution
                         if (!sessionFound)
                             throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
 
-                        _fileLogger?.LogEvent("GetActiveUserSession", "RDP session " +
+                        _fileLogger?.LogEvent("GetActiveUserSession", "Session " +
                             (!sessionFound ? "not found" : "found"), LogEventLevel.Information);
 
-                        isRDPSession = true;
+                        isRDPSession = isConnected;
                     }
                 }
 
-                _fileLogger?.LogEvent("RunProcessAsCurrentUser", $"Start Automation in the RDP Session.", LogEventLevel.Information);
+                _fileLogger?.LogEvent("RunProcessAsCurrentUser", $"Start Automation", LogEventLevel.Information);
 
                 // Start a new process in the current user's logon session
                 _win32Helper.RunProcessAsCurrentUser(hPToken, commandLine);

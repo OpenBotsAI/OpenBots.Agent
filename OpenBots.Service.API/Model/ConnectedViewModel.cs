@@ -27,30 +27,38 @@ namespace OpenBots.Service.API.Model
     /// ConnectedViewModel
     /// </summary>
     [DataContract]
-        public partial class ConnectedViewModel :  IEquatable<ConnectedViewModel>, IValidatableObject
+    public partial class ConnectedViewModel : IEquatable<ConnectedViewModel>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectedViewModel" /> class.
         /// </summary>
         /// <param name="agentId">agentId.</param>
         /// <param name="agentName">agentName.</param>
-        public ConnectedViewModel(string agentId = default(string), string agentName = default(string))
+        /// <param name="agentSetting">agentSetting.</param>
+        public ConnectedViewModel(string agentId = default(string), string agentName = default(string), AgentSettingViewModel agentSetting = default(AgentSettingViewModel))
         {
             this.AgentId = agentId;
             this.AgentName = agentName;
+            this.AgentSetting = agentSetting;
         }
-        
+
         /// <summary>
         /// Gets or Sets AgentId
         /// </summary>
-        [DataMember(Name="agentId", EmitDefaultValue=false)]
+        [DataMember(Name = "agentId", EmitDefaultValue = false)]
         public string AgentId { get; set; }
 
         /// <summary>
         /// Gets or Sets AgentName
         /// </summary>
-        [DataMember(Name="agentName", EmitDefaultValue=false)]
+        [DataMember(Name = "agentName", EmitDefaultValue = false)]
         public string AgentName { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AgentSetting
+        /// </summary>
+        [DataMember(Name = "agentSetting", EmitDefaultValue = false)]
+        public AgentSettingViewModel AgentSetting { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -62,10 +70,11 @@ namespace OpenBots.Service.API.Model
             sb.Append("class ConnectedViewModel {\n");
             sb.Append("  AgentId: ").Append(AgentId).Append("\n");
             sb.Append("  AgentName: ").Append(AgentName).Append("\n");
+            sb.Append("  AgentSetting: ").Append(AgentSetting).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
-  
+
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
@@ -95,16 +104,21 @@ namespace OpenBots.Service.API.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.AgentId == input.AgentId ||
                     (this.AgentId != null &&
                     this.AgentId.Equals(input.AgentId))
-                ) && 
+                ) &&
                 (
                     this.AgentName == input.AgentName ||
                     (this.AgentName != null &&
                     this.AgentName.Equals(input.AgentName))
+                ) &&
+                (
+                    this.AgentSetting == input.AgentSetting ||
+                    (this.AgentSetting != null &&
+                    this.AgentSetting.Equals(input.AgentSetting))
                 );
         }
 
@@ -121,6 +135,8 @@ namespace OpenBots.Service.API.Model
                     hashCode = hashCode * 59 + this.AgentId.GetHashCode();
                 if (this.AgentName != null)
                     hashCode = hashCode * 59 + this.AgentName.GetHashCode();
+                if (this.AgentSetting != null)
+                    hashCode = hashCode * 59 + this.AgentSetting.GetHashCode();
                 return hashCode;
             }
         }

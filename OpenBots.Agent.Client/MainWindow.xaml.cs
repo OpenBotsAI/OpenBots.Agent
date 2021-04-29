@@ -634,6 +634,9 @@ namespace OpenBots.Agent.Client
                             _agentSettings.OpenBotsServerUrl = ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL;
                             _agentSettings.AgentId = ((ServerConnectionSettings)serverResponse.Data).AgentId.ToString();
                             _agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
+                            _agentSettings.HeartbeatInterval = ((ServerConnectionSettings)serverResponse.Data).HeartbeatInterval;
+                            _agentSettings.JobsLoggingInterval = ((ServerConnectionSettings)serverResponse.Data).JobsLoggingInterval;
+                            _agentSettings.SSLCertificateVerification = ((ServerConnectionSettings)serverResponse.Data).SSLCertificateVerification;
                             OnUpdateHttpSinkURL(isSinkURLModified, true);
 
                             UpdateUIOnConnect();
