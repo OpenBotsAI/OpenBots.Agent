@@ -293,12 +293,16 @@ namespace OpenBots.Service.Client.Manager.Execution
             string pythonExecutable = GetPythonPath(machineCredential.UserName, "");
             string projectDir = Path.GetDirectoryName(mainScriptFilePath);
 
+            var jobParameters = GetJobParameters(job.Id.ToString());
+            string strScriptArgs = string.Join(" ", jobParameters.Select(arg => $"\"{arg.Name}\" \"{arg.Value}\"".Trim())
+                                                              .ToList());
+
             string commandsBatch = $"\"{pythonExecutable}\" -m pip install --upgrade pip && " +
                 $"\"{pythonExecutable}\" -m pip install --user virtualenv && " +
                 $"\"{pythonExecutable}\" -m venv \"{Path.Combine(projectDir, ".env3")}\" && " +
                 $"\"{Path.Combine(projectDir, ".env3", "Scripts", "activate.bat")}\" && " +
                 (File.Exists(Path.Combine(projectDir, "requirements.txt")) ? $"\"{pythonExecutable}\" -m pip install -r \"{Path.Combine(projectDir, "requirements.txt")}\" & " : "") +
-                $"\"{pythonExecutable}\" \"{mainScriptFilePath}\" && " +
+                $"\"{pythonExecutable}\" \"{mainScriptFilePath}\" {strScriptArgs} && " +
                 $"deactivate";
 
             string batchFilePath = Path.Combine(projectDir, job.Id.ToString() + ".bat");
@@ -321,7 +325,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             string exePath = GetFullPathFromWindows("tagui", _connectionSettingsManager.ConnectionSettings.DNSHost,
                 _connectionSettingsManager.ConnectionSettings.UserName);
             if (exePath == null)
-                throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
+                throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.\n" +
+                                    "https://tagui.readthedocs.io/en/latest/setup.html");
 
             // Create "tagui_logging" file for generating logs file
             var logFilePath = Path.Combine(Directory.GetParent(exePath).FullName, "tagui_logging");
@@ -331,7 +336,11 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Copy Script Folder/Files to ".\tagui\flows" Directory
             var mainScriptPath = CopyTagUIAutomation(exePath, mainScriptFilePath, ref executionDirPath);
 
-            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\"";
+            var jobParameters = GetJobParameters(job.Id.ToString());
+            string strScriptArgs = string.Join(" ", jobParameters.Select(arg => $"{arg.Name} {arg.Value}".Trim())
+                                                              .ToList());
+
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\" {strScriptArgs}";
 
             // Run Automation
             RunJob(cmdLine, machineCredential);
@@ -352,8 +361,11 @@ namespace OpenBots.Service.Client.Manager.Execution
             if (exePath == null)
                 throw new Exception("CS-Script installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
 
+            var jobParameters = GetJobParameters(job.Id.ToString());
+            string strScriptArgs = string.Join(" ", jobParameters.Select(arg => $"\"{arg.Value}\"".Trim())
+                                                              .ToList());
             var logsFilePath = $"{mainScriptFilePath}.log";
-            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" > \"{logsFilePath}\"";
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" {strScriptArgs} > \"{logsFilePath}\"";
 
             // Run Automation
             RunJob(cmdLine, machineCredential);
