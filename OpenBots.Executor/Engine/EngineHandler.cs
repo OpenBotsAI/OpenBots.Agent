@@ -47,9 +47,36 @@ namespace OpenBots.Executor
                 new ScriptArgument
                 {
                     ArgumentName = arg.Name,
-                    ArgumentValue = arg.Value
+                    ArgumentType = GetArgumentType(arg.DataType),
+                    ArgumentValue = GetTypeCastedValue(GetArgumentType(arg.DataType), arg.Value)
                 }).ToList()
             };
+        }
+
+        private Type GetArgumentType(string serverType)
+        {
+            switch (serverType)
+            {
+                case "Text":
+                    return typeof(string);
+                case "Number":
+                    return typeof(int);
+                default:
+                    return null;
+            }
+        }
+
+        private object GetTypeCastedValue(Type argumentType, object argumentValue)
+        {
+            switch (argumentType.ToString())
+            {
+                case "System.String":
+                    return $"\"{Convert.ChangeType(argumentValue, argumentType)}\"";
+                case "System.Int32":
+                    return argumentValue.ToString();
+                default:
+                    return null;
+            }
         }
     }
 }
