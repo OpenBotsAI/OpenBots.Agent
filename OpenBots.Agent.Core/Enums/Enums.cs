@@ -11,6 +11,12 @@
         Abandoned
     }
 
+    public enum OrchestratorType
+    {
+        Cloud,
+        Local
+    }
+
     // Sink Type for Logging
     public enum SinkType
     {
