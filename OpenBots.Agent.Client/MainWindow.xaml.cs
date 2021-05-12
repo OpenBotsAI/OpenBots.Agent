@@ -207,7 +207,9 @@ namespace OpenBots.Agent.Client
                 ConnectionSettingsManager.Instance.ConnectionSettings = new ServerConnectionSettings()
                 {
                     ServerConnectionEnabled = false,
+                    ServerType = _agentSettings.OpenBotsServerType ?? string.Empty,
                     ServerURL = _registryManager.ServerURL ?? string.Empty,          // Load Server URL from User Registry,
+                    OrganizationName = _agentSettings.OpenBotsOrganizationName ?? string.Empty, 
                     AgentUsername = _registryManager.AgentUsername ?? string.Empty,  // Load Username from User Registry
                     AgentPassword = _registryManager.AgentPassword ?? string.Empty,  // Load Password from User Registry
                     SinkType = string.IsNullOrEmpty(_agentSettings.SinkType) ? SinkType.File.ToString() : _agentSettings.SinkType,
@@ -230,9 +232,12 @@ namespace OpenBots.Agent.Client
             }
 
             // Loading settings in UI
+            cmb_Orchestrator.SelectedIndex = Array.IndexOf(Enum.GetValues(typeof(OrchestratorType)), Enum.Parse(typeof(OrchestratorType),
+                ConnectionSettingsManager.Instance.ConnectionSettings.ServerType));
             txt_Username.Text = ConnectionSettingsManager.Instance.ConnectionSettings.AgentUsername;
             txt_Password.Password = ConnectionSettingsManager.Instance.ConnectionSettings.AgentPassword;
             txt_ServerURL.Text = ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL;
+            txt_OrganizationName.Text = ConnectionSettingsManager.Instance.ConnectionSettings.OrganizationName;
             cmb_LogLevel.ItemsSource = Enum.GetValues(typeof(LogEventLevel));
             cmb_LogLevel.SelectedIndex = Array.IndexOf((Array)cmb_LogLevel.ItemsSource, Enum.Parse(typeof(LogEventLevel),
                 ConnectionSettingsManager.Instance.ConnectionSettings.TracingLevel));
@@ -241,7 +246,7 @@ namespace OpenBots.Agent.Client
                 ConnectionSettingsManager.Instance.ConnectionSettings.SinkType));
 
             // Update UI Controls after loading settings
-            OnSetRegistryKeys();
+            OnOrchestratorSelectionChange();
             UpdateClearCredentialsUI();
             OnSinkSelectionChange();
 
@@ -561,6 +566,10 @@ namespace OpenBots.Agent.Client
         #endregion
 
         #region Input Control Events / Helper Methods
+        private void OnDropDownClosed_Orchestrator(object sender, EventArgs e)
+        {
+            OnOrchestratorSelectionChange();
+        }
         private void OnTextChange_ServerURL(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             UpdateConnectButtonState();
@@ -613,7 +622,9 @@ namespace OpenBots.Agent.Client
                 var isSinkURLModified = UpdateHttpSinkURL();
 
                 // Server Configuration
+                ConnectionSettingsManager.Instance.ConnectionSettings.ServerType = ((OrchestratorType)cmb_Orchestrator.SelectedIndex).ToString();
                 ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL = txt_ServerURL.Text;
+                ConnectionSettingsManager.Instance.ConnectionSettings.OrganizationName = txt_OrganizationName.Text;
                 ConnectionSettingsManager.Instance.ConnectionSettings.AgentUsername = txt_Username.Text;
                 ConnectionSettingsManager.Instance.ConnectionSettings.AgentPassword = txt_Password.Password;
 
@@ -631,7 +642,9 @@ namespace OpenBots.Agent.Client
                         if (serverResponse.Data != null)
                         {
                             ConnectionSettingsManager.Instance.ConnectionSettings = (ServerConnectionSettings)serverResponse.Data;
+                            _agentSettings.OpenBotsServerType = ConnectionSettingsManager.Instance.ConnectionSettings.ServerType;
                             _agentSettings.OpenBotsServerUrl = ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL;
+                            _agentSettings.OpenBotsOrganizationName = ConnectionSettingsManager.Instance.ConnectionSettings.OrganizationName;
                             _agentSettings.AgentId = ((ServerConnectionSettings)serverResponse.Data).AgentId.ToString();
                             _agentSettings.AgentName = ((ServerConnectionSettings)serverResponse.Data).AgentName.ToString();
                             _agentSettings.HeartbeatInterval = ((ServerConnectionSettings)serverResponse.Data).HeartbeatInterval;
@@ -776,7 +789,11 @@ namespace OpenBots.Agent.Client
             lbl_StatusValue.FontWeight = FontWeights.Bold;
 
             // Disable Input Controls
+            cmb_Orchestrator.IsEnabled = false;
             txt_ServerURL.IsEnabled = false;
+            txt_OrganizationName.IsEnabled = false;
+            txt_Username.IsEnabled = false;
+            txt_Password.IsEnabled = false;
 
             cmb_LogLevel.IsEnabled = false;
             cmb_SinkType.IsEnabled = false;
@@ -796,7 +813,15 @@ namespace OpenBots.Agent.Client
             lbl_StatusValue.FontWeight = FontWeights.Normal;
 
             // Enable Input Controls
+            cmb_Orchestrator.IsEnabled = true;
             txt_ServerURL.IsEnabled = true;
+            txt_OrganizationName.IsEnabled = true;
+
+            if ((OrchestratorType)cmb_Orchestrator.SelectedIndex == OrchestratorType.Cloud)
+            {
+                txt_Username.IsEnabled = true;
+                txt_Password.IsEnabled = true;
+            }
 
             cmb_LogLevel.IsEnabled = true;
             cmb_SinkType.IsEnabled = true;
@@ -822,7 +847,8 @@ namespace OpenBots.Agent.Client
         }
         private void UpdateAgentSettingsUI()
         {
-            if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
+            if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled ||
+                ((OrchestratorType)cmb_Orchestrator.SelectedIndex) == OrchestratorType.Cloud)
             {
                 menuItemAgentSettings.IsEnabled = _menuItemAgentSettings.Enabled = false;
                 menuItemAgentSettings.Visibility = Visibility.Collapsed;
@@ -855,6 +881,29 @@ namespace OpenBots.Agent.Client
 
             UpdateConnectButtonState();
         }
+        private void OnOrchestratorSelectionChange()
+        {
+            switch ((OrchestratorType)cmb_Orchestrator.SelectedIndex)
+            {
+                case OrchestratorType.Cloud:
+                    // Show Organization Name Panel
+                    // Hide Server URL Panel
+                    pnl_ServerURL.Visibility = Visibility.Collapsed;
+                    pnl_OrganizationName.Visibility = Visibility.Visible;
+
+                    break;
+                case OrchestratorType.Local:
+                    // Hide Organization Name Panel
+                    // Show Server URL Panel
+                    pnl_OrganizationName.Visibility = Visibility.Collapsed;
+                    pnl_ServerURL.Visibility = Visibility.Visible;
+
+                    break;
+            }
+
+            OnSetRegistryKeys();
+            UpdateAgentSettingsUI();
+        }
         private void OnSinkSelectionChange()
         {
             switch (cmb_SinkType.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
@@ -885,8 +934,10 @@ namespace OpenBots.Agent.Client
         }
         private void OnSetRegistryKeys()
         {
-            // If Agent's Credentials (Username, Password) exist in the Registry
-            if (!string.IsNullOrEmpty(_registryManager.AgentUsername) && !string.IsNullOrEmpty(_registryManager.AgentPassword))
+            // If Orchestrator Type is "Local" and Agent's Credentials (Username, Password) exist in the Registry
+            if ((OrchestratorType)cmb_Orchestrator.SelectedIndex == OrchestratorType.Local && 
+                !string.IsNullOrEmpty(_registryManager.AgentUsername) && 
+                !string.IsNullOrEmpty(_registryManager.AgentPassword))
             {
                 // Disable Credentials Controls
                 txt_Username.IsEnabled = false;
@@ -951,5 +1002,6 @@ namespace OpenBots.Agent.Client
 
 
         #endregion
+
     }
 }

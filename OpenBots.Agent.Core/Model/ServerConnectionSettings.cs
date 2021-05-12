@@ -6,7 +6,11 @@ namespace OpenBots.Agent.Core.Model
     public class ServerConnectionSettings
     {
         [DataMember]
+        public string ServerType { get; set; }
+        [DataMember]
         public string ServerURL { get; set; }
+        [DataMember]
+        public string OrganizationName { get; set; }
         [DataMember]
         public string AgentUsername { get; set; }
         [DataMember]
