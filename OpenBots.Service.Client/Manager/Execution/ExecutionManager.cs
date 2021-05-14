@@ -282,9 +282,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 
-            // launch the Executor
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            // Run Automation
+            RunJob(cmdLine, machineCredential);
 
             return;
         }
@@ -294,12 +293,16 @@ namespace OpenBots.Service.Client.Manager.Execution
             string pythonExecutable = GetPythonPath(machineCredential.UserName, "");
             string projectDir = Path.GetDirectoryName(mainScriptFilePath);
 
+            var jobParameters = GetJobParameters(job.Id.ToString());
+            string strScriptArgs = string.Join(" ", jobParameters.Select(arg => $"\"{arg.Name}\" \"{arg.Value}\"".Trim())
+                                                              .ToList());
+
             string commandsBatch = $"\"{pythonExecutable}\" -m pip install --upgrade pip && " +
                 $"\"{pythonExecutable}\" -m pip install --user virtualenv && " +
                 $"\"{pythonExecutable}\" -m venv \"{Path.Combine(projectDir, ".env3")}\" && " +
                 $"\"{Path.Combine(projectDir, ".env3", "Scripts", "activate.bat")}\" && " +
                 (File.Exists(Path.Combine(projectDir, "requirements.txt")) ? $"\"{pythonExecutable}\" -m pip install -r \"{Path.Combine(projectDir, "requirements.txt")}\" & " : "") +
-                $"\"{pythonExecutable}\" \"{mainScriptFilePath}\" && " +
+                $"\"{pythonExecutable}\" \"{mainScriptFilePath}\" {strScriptArgs} && " +
                 $"deactivate";
 
             string batchFilePath = Path.Combine(projectDir, job.Id.ToString() + ".bat");
@@ -307,8 +310,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             string logsFilePath = $"{mainScriptFilePath}.log";
             string cmdLine = $"\"{batchFilePath}\" > \"{logsFilePath}\"";
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            // Run Automation
+            RunJob(cmdLine, machineCredential);
 
             var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, null);
             SendLogsToServer(mainScriptFilePath, executionParams);
@@ -322,7 +325,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             string exePath = GetFullPathFromWindows("tagui", _connectionSettingsManager.ConnectionSettings.DNSHost,
                 _connectionSettingsManager.ConnectionSettings.UserName);
             if (exePath == null)
-                throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
+                throw new Exception("TagUI installation was not detected on the machine. Please perform the installation as outlined in the official documentation.\n" +
+                                    "https://tagui.readthedocs.io/en/latest/setup.html");
 
             // Create "tagui_logging" file for generating logs file
             var logFilePath = Path.Combine(Directory.GetParent(exePath).FullName, "tagui_logging");
@@ -332,10 +336,14 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Copy Script Folder/Files to ".\tagui\flows" Directory
             var mainScriptPath = CopyTagUIAutomation(exePath, mainScriptFilePath, ref executionDirPath);
 
-            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\"";
+            var jobParameters = GetJobParameters(job.Id.ToString());
+            string strScriptArgs = string.Join(" ", jobParameters.Select(arg => $"{arg.Name} {arg.Value}".Trim())
+                                                              .ToList());
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\" {strScriptArgs}";
+
+            // Run Automation
+            RunJob(cmdLine, machineCredential);
 
             var executionParams = GetJobExecutionParams(job, automation, mainScriptPath, null);
             SendLogsToServer(mainScriptPath, executionParams);
@@ -353,16 +361,25 @@ namespace OpenBots.Service.Client.Manager.Execution
             if (exePath == null)
                 throw new Exception("CS-Script installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
 
+            var jobParameters = GetJobParameters(job.Id.ToString());
+            string strScriptArgs = string.Join(" ", jobParameters.Select(arg => $"\"{arg.Value}\"".Trim())
+                                                              .ToList());
             var logsFilePath = $"{mainScriptFilePath}.log";
-            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" > \"{logsFilePath}\"";
+            string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" {strScriptArgs} > \"{logsFilePath}\"";
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, machineCredential, out procInfo);
+            // Run Automation
+            RunJob(cmdLine, machineCredential);
 
             var executionParams = GetJobExecutionParams(job, automation, mainScriptFilePath, null);
             SendLogsToServer(mainScriptFilePath, executionParams);
 
             return;
+        }
+
+        private void RunJob(string commandLine, MachineCredential machineCredential)
+        {
+            Executor executor = new Executor(_fileLogger);
+            executor.RunAutomation(commandLine, machineCredential, _connectionSettingsManager.ConnectionSettings);
         }
 
         public void SetEngineStatus(bool isBusy)
@@ -389,6 +406,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             var paramsJsonString = JsonConvert.SerializeObject(executionParams);
             return DataFormatter.CompressString(paramsJsonString);
         }
+
         private JobExecutionParams GetJobExecutionParams(Job job, Automation automation, string mainScriptFilePath, List<string> projectDependencies)
         {
             return new JobExecutionParams()
@@ -403,6 +421,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ServerConnectionSettings = _connectionSettingsManager.ConnectionSettings
             };
         }
+        
         private List<JobParameter> GetJobParameters(string jobId)
         {
             var jobViewModel = JobsAPIManager.GetJobViewModel(_authAPIManager, jobId);

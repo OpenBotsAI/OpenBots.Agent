@@ -59,6 +59,15 @@ namespace OpenBots.Service.Client.Manager.Agents
                 _connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled = true;
                 _connectionSettingsManager.ConnectionSettings.AgentId = connectAPIResponse.Data.AgentId.ToString();
                 _connectionSettingsManager.ConnectionSettings.AgentName = connectAPIResponse.Data.AgentName.ToString();
+                
+                if(connectAPIResponse.Data.AgentSetting?.HeartbeatInterval != null)
+                    _connectionSettingsManager.ConnectionSettings.HeartbeatInterval = (int)connectAPIResponse.Data.AgentSetting.HeartbeatInterval;
+                
+                if(connectAPIResponse.Data.AgentSetting?.JobLoggingInterval != null)
+                    _connectionSettingsManager.ConnectionSettings.JobsLoggingInterval = (int)connectAPIResponse.Data.AgentSetting.JobLoggingInterval;
+                
+                if(connectAPIResponse.Data.AgentSetting?.VerifySslCertificate != null)
+                    _connectionSettingsManager.ConnectionSettings.SSLCertificateVerification = (bool)connectAPIResponse.Data.AgentSetting.VerifySslCertificate;
 
                 // Start Server Communication
                 StartServerCommunication();

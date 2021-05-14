@@ -113,9 +113,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             var executorPath = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OpenBots.Executor.exe").FirstOrDefault();
             var cmdLine = $"\"{executorPath}\" \"{executionParams}\"";
 
-            // launch the Executor
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, userInfo, out procInfo);
+            // Run Automation
+            RunAutomation(cmdLine, userInfo, settings);
         }
 
         private string GetExecutionParams(string mainScriptFilePath, ServerConnectionSettings settings, List<string> projectDependencies)
@@ -155,8 +154,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 UserName = settings.UserName
             };
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, userInfo, out procInfo);
+            RunAutomation(cmdLine, userInfo, settings);
 
             return;
         }
@@ -183,8 +181,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 UserName = settings.UserName
             };
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, userInfo, out procInfo);
+            RunAutomation(cmdLine, userInfo, settings);
 
             // Delete TagUI Execution Directory
             Directory.Delete(executionDirPath, true);
@@ -206,10 +203,15 @@ namespace OpenBots.Service.Client.Manager.Execution
                 UserName = settings.UserName
             };
 
-            ProcessLauncher.PROCESS_INFORMATION procInfo;
-            ProcessLauncher.LaunchProcess(cmdLine, userInfo, out procInfo);
+            RunAutomation(cmdLine, userInfo, settings);
 
             return;
+        }
+
+        private void RunAutomation(string commandLine, MachineCredential machineCredential, ServerConnectionSettings settings)
+        {
+            Executor executor = new Executor(null);
+            executor.RunAutomation(commandLine, machineCredential, settings);
         }
 
         private string GetLogsFilePath(string logsDirectory, AutomationType automationType, string projectName)
