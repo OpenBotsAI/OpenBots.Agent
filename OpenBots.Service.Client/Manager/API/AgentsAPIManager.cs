@@ -35,7 +35,7 @@ namespace OpenBots.Service.Client.Manager.API
 
             try
             {
-                return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
+                return agentsApi.ApiV1AgentsAgentIDConnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.ApiV1AgentsConnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
+                    return agentsApi.ApiV1AgentsAgentIDConnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
                 }
                 throw ex;
             }
@@ -55,7 +55,7 @@ namespace OpenBots.Service.Client.Manager.API
             AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
             try
             {
-                return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
+                return agentsApi.ApiV1AgentsAgentIDDisconnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
             }
             catch (Exception ex)
             {
@@ -64,52 +64,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.ApiV1AgentsDisconnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
-                }
-                throw ex;
-            }
-        }
-
-        public static string CreateAgent(AuthAPIManager apiManager, ServerConnectionSettings serverSettings)
-        {
-            AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
-            var agentModel = new CreateAgentViewModel(null, serverSettings.AgentName, serverSettings.DNSHost, serverSettings.MACAddress,
-                serverSettings.IPAddress, true, null, null, null, null, true, false, null, 
-                serverSettings.AgentUsername, serverSettings.AgentPassword);
-            
-            try
-            {
-                return agentsApi.ApiV1AgentsPostWithHttpInfo(agentModel).Data.Id.ToString();
-            }
-            catch (Exception ex)
-            {
-                // In case of Unauthorized request
-                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
-                {
-                    // Refresh Token and Call API
-                    agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.ApiV1AgentsPostWithHttpInfo(agentModel).Data.Id.ToString();
-                }
-                throw ex;
-            }
-        }
-
-        public static bool FindAgent(AuthAPIManager apiManager, string filter)
-        {
-            AgentsApi agentsApi = new AgentsApi(apiManager.Configuration);
-
-            try
-            {
-                return (agentsApi.ApiV1AgentsGetWithHttpInfo(filter).Data.Items.Count == 0) ? false : true;
-            }
-            catch (Exception ex)
-            {
-                // In case of Unauthorized request
-                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401")
-                {
-                    // Refresh Token and Call API
-                    agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return (agentsApi.ApiV1AgentsGetWithHttpInfo(filter).Data.Items.Count == 0) ? false : true;
+                    return agentsApi.ApiV1AgentsAgentIDDisconnectPatchWithHttpInfo(serverSettings.AgentId, serverSettings.MachineName, serverSettings.MACAddress);
                 }
                 throw ex;
             }
@@ -121,7 +76,7 @@ namespace OpenBots.Service.Client.Manager.API
 
             try
             {
-                return agentsApi.GetAgentModel(agentId);
+                return agentsApi.GetAgent(agentId);
             }
             catch (Exception ex)
             {
@@ -130,7 +85,7 @@ namespace OpenBots.Service.Client.Manager.API
                 {
                     // Refresh Token and Call API
                     agentsApi.Configuration.AccessToken = apiManager.GetToken();
-                    return agentsApi.GetAgentModel(agentId);
+                    return agentsApi.GetAgent(agentId);
                 }
                 throw ex;
             }

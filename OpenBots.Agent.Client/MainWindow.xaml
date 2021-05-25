@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client"
         mc:Ignorable="d"
-        Title="OpenBots Agent" Name="wndMain" Height="530" Width="488" Loaded="OnLoad" ResizeMode="NoResize" WindowStyle="None"
+        Title="OpenBots Agent" Name="wndMain" Height="510" Width="488" Loaded="OnLoad" ResizeMode="NoResize" WindowStyle="None"
         Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed"
         BorderThickness="2" UseLayoutRounding="True">
     <Window.Resources>
@@ -59,7 +59,7 @@
     <Grid Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="288"/>
+            <RowDefinition Height="267"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StatusBar Name="CustomBar" Margin="5,0,5,0" Background="Transparent" Grid.Row="0">
@@ -100,24 +100,80 @@
             </Grid>
         </StatusBar>
         <GroupBox Header="Server Configuration" FontSize="14" Margin="10,5,10,10" BorderThickness="2,2,2,2" Grid.Row="1">
-            <StackPanel x:Name="pnl_ServerConfiguration" Margin="0,10,0,0">
-                <Label Content="User Name" FontWeight="Bold" x:Name="lbl_Username"></Label>
-                <TextBox x:Name="txt_Username" FontSize="16" Margin="5,0,10,0" Height="29" VerticalContentAlignment="Center" TextChanged="OnTextChange_AgentUsername"/>
-                <Label Content="Password" FontWeight="Bold" x:Name="lbl_Password"></Label>
-                <PasswordBox x:Name="txt_Password" Height="29" FontSize="16" Margin="5,0,10,0" VerticalContentAlignment="Center" PasswordChanged="OnPasswordChange_AgentPassword"/>
-                <Label Content="Server URL" FontWeight="Bold" Name="lbl_ServerURL"></Label>
-                <TextBox Name="txt_ServerURL" Height="29" FontSize="16" Margin="5,0,10,0" VerticalContentAlignment="Center" TextChanged="OnTextChange_ServerURL"/>
-                <Grid Name="connect_Controls" Margin="0,18,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Status:" FontSize="16" FontWeight="DemiBold" VerticalContentAlignment="Center"/>
-                    <Label Content="Offline" Name="lbl_StatusValue" Foreground="#FFBBB5B5" Grid.Column="1" VerticalContentAlignment="Center"/>
-                    <Button Content="Connect" Name="btn_Connect" Margin="54,0,10,0" Grid.Column="2" FontSize="16" VerticalContentAlignment="Center" Background="White" Click="OnClick_ConnectBtn"/>
-                </Grid>
-            </StackPanel>
+            <Grid Margin="0,15,0,0" x:Name="grd_ServerConfiguration" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="pnl_Orchestrator" Grid.Row="0">
+                    <Grid Name="grd_Orchestrator">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Orchestrator" FontWeight="Bold" Name="lbl_Orchestrator" ToolTip="Orchestrator Type"/>
+                        <ComboBox Name="cmb_Orchestrator" Grid.Column="1" Height="29" FontSize="16" Margin="5,0,10,0" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_Orchestrator">
+                            <ComboBoxItem Content="OpenBots Cloud Server" Tag="Cloud"/>
+                            <ComboBoxItem Content="On-Premises" Tag="Local"/>
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+                <StackPanel x:Name="pnl_ServerURL" Grid.Row="1">
+                    <Grid Name="grd_ServerURL">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Server URL" FontWeight="Bold" Name="lbl_ServerURL"/>
+                        <TextBox Name="txt_ServerURL" Grid.Column="1" Height="29" FontSize="16" Margin="5,0,10,0" VerticalContentAlignment="Center" TextChanged="OnTextChange_ServerURL"/>
+                    </Grid>
+                </StackPanel>
+                <StackPanel x:Name="pnl_OrganizationName" Grid.Row="1" Visibility="Collapsed">
+                    <Grid Name="grd_OrganizationName">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Organization" FontWeight="Bold" Name="lbl_OrganizationName" ToolTip="Organization Name"/>
+                        <TextBox Name="txt_OrganizationName" Grid.Column="1" Height="29" FontSize="16" Margin="5,0,10,0" VerticalContentAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+                <StackPanel x:Name="pnl_UserName" Grid.Row="2">
+                    <Grid Name="grd_userName">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="User Name" FontWeight="Bold" x:Name="lbl_Username"/>
+                        <TextBox x:Name="txt_Username" Grid.Column="1" FontSize="16" Margin="5,0,10,0" Height="29" VerticalContentAlignment="Center" TextChanged="OnTextChange_AgentUsername"/>
+                    </Grid>
+                </StackPanel>
+                <StackPanel x:Name="pnl_Password" Grid.Row="3">
+                    <Grid Name="grd_Password">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Password" FontWeight="Bold" x:Name="lbl_Password"></Label>
+                        <PasswordBox x:Name="txt_Password" Grid.Column="1" Height="29" FontSize="16" Margin="5,0,10,0" VerticalContentAlignment="Center" PasswordChanged="OnPasswordChange_AgentPassword"/>
+                    </Grid>
+                </StackPanel>
+                <StackPanel x:Name="pnl_Connection" Grid.Row="4">
+                    <Grid Name="connect_Controls" Margin="0,7,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Status:" FontSize="16" FontWeight="DemiBold" VerticalContentAlignment="Center"/>
+                        <Label Content="Offline" Name="lbl_StatusValue" Foreground="#FFBBB5B5" Grid.Column="1" VerticalContentAlignment="Center"/>
+                        <Button Content="Connect" Name="btn_Connect" Margin="54,0,10,0" Grid.Column="2" FontSize="16" VerticalContentAlignment="Center" Background="White" Click="OnClick_ConnectBtn"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
         </GroupBox>
         <GroupBox Header="Logging" FontSize="14" BorderThickness="2,2,2,2" Margin="10,0,10,10" Grid.Row="2">
             <Grid Margin="0,10,0,0" x:Name="loggingGrid">
@@ -138,9 +194,6 @@
                 <StackPanel Name="pnl_SinkType" Grid.Row="1">
                     <Grid Name="grd_SinkType" Margin="0,10,0,0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
@@ -165,7 +218,7 @@
                                 <TextBox Name="txt_SinkType_Logging1" FontSize="16" Grid.Column="1" VerticalContentAlignment="Center" TextChanged="OnTextChange_Logging1"/>
                             </Grid>
                         </StackPanel>
-                        <StackPanel Name="pnl_SinkType_Save" Grid.Row="2" Margin="0,13,0,5" Height="29">
+                        <StackPanel Name="pnl_SinkType_Save" Grid.Row="2" Margin="0,15,0,5" Height="29">
                             <Grid Name="grd_SinkType_Save">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150"/>

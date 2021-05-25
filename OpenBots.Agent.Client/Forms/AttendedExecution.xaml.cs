@@ -26,6 +26,7 @@ namespace OpenBots.Agent.Client.Forms
         private FileSystemWatcher _publishedProjectsWatcher;
         private ServerConnectionSettings _connectionSettings;
         private string _automationSource;
+        private string _automationType;
 
         public AttendedExecution()
         {
@@ -75,6 +76,18 @@ namespace OpenBots.Agent.Client.Forms
             {
                 cmb_Source.SelectedIndex = 0;
                 _automationSource = cmb_Source.Text;
+            }
+        }
+
+        private void LoadAutomationTypes()
+        {
+            cmb_AutomationType.ItemsSource = Enum.GetValues(typeof(AgentEnums.AutomationType));
+            if (!string.IsNullOrEmpty(_automationType))
+                cmb_AutomationType.SelectedIndex = Array.IndexOf((Array)cmb_AutomationType.ItemsSource, Enum.Parse(typeof(AgentEnums.AutomationType), _automationType));
+            else
+            {
+                cmb_AutomationType.SelectedIndex = 0;
+                _automationType = cmb_AutomationType.Text;
             }
         }
 
@@ -171,30 +184,43 @@ namespace OpenBots.Agent.Client.Forms
         {
             Dispatcher.Invoke(() =>
             {
+                ShowAutomationTypeDropDown(false);
+
                 var publishedProjectsDir = Folders.GetFolder(FolderType.PublishedFolder);
                 _automationProjects = Directory.GetFiles(publishedProjectsDir, "*.nupkg");
                 var automationNames = from fileName in _automationProjects select Path.GetFileName(fileName);
 
-                cmb_PublishedProjects.ItemsSource = automationNames;
+                cmb_PublishedProjects.ItemsSource = automationNames.OrderBy(automationName => automationName);
                 cmb_PublishedProjects.SelectedIndex = 0;
             });
         }
 
+        private void ShowAutomationTypeDropDown(bool flag)
+        {
+            if (flag)
+                pnlAutomationTypes.Visibility = Visibility.Visible;
+            else
+                pnlAutomationTypes.Visibility = Visibility.Collapsed;
+        }
+
         private void LoadServerAutomations()
         {
+            LoadAutomationTypes();
+            ShowAutomationTypeDropDown(true);
+
             if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled)
             {
                 // Fetch Server Automations
-                var serverResponse = PipeProxy.Instance.GetAutomations();
-                if(serverResponse.Data != null)
+                var serverResponse = PipeProxy.Instance.GetAutomations(_automationType);
+                if (serverResponse.Data != null)
                 {
-                    cmb_PublishedProjects.ItemsSource = (List<string>)serverResponse.Data;
+                    cmb_PublishedProjects.ItemsSource = ((List<string>)serverResponse.Data).OrderBy(automationName => automationName);
                     cmb_PublishedProjects.SelectedIndex = 0;
                 }
                 else
                 {
                     ErrorDialog errorDialog = new ErrorDialog("An error occurred while getting automations from the server.",
-                        serverResponse.StatusCode, 
+                        serverResponse.StatusCode,
                         serverResponse.Message);
 
                     errorDialog.Owner = this;
@@ -212,7 +238,15 @@ namespace OpenBots.Agent.Client.Forms
                 LoadAutomations();
             }
         }
-
+        private void OnDropDownClosed_AutomationType(object sender, EventArgs e)
+        {
+            // Update Automations List on Source Selection Change
+            if (_automationType != cmb_AutomationType.SelectedItem.ToString())
+            {
+                _automationType = cmb_AutomationType.SelectedItem.ToString();
+                LoadAutomations();
+            }
+        }
         private void UpdateStatusOnSourceSelection()
         {
             if (!ConnectionSettingsManager.Instance.ConnectionSettings.ServerConnectionEnabled && _automationSource == "Server")
@@ -253,5 +287,7 @@ namespace OpenBots.Agent.Client.Forms
             _isEngineBusy = PipeProxy.Instance.IsEngineBusy();
             return _isEngineBusy;
         }
+
+        
     }
 }

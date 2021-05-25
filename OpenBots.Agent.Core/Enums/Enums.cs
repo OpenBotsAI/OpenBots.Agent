@@ -11,6 +11,12 @@
         Abandoned
     }
 
+    public enum OrchestratorType
+    {
+        Cloud,
+        Local
+    }
+
     // Sink Type for Logging
     public enum SinkType
     {
@@ -45,5 +51,13 @@
         Python,
         TagUI,
         CSScript
+    }
+
+    public enum RemoteDesktopState
+    {
+        Connected,
+        Disconnected,
+        Errored,
+        Unknown
     }
 }

@@ -49,13 +49,13 @@ namespace OpenBots.Service.Client
             return await task.ConfigureAwait(false);
         }
 
-        public ServerResponse GetAutomations(string domainName, string userName)
+        public ServerResponse GetAutomations(string domainName, string userName, string automationEngine)
         {
             // User validation check
             if (!ServiceController.IsValidUser(domainName, userName))
                 return null;
 
-            return AgentsManager.GetAgent(userName).GetAutomations();
+            return AgentsManager.GetAgent(userName).GetAutomations(automationEngine);
         }
 
         public ServerConnectionSettings GetConnectionSettings(string domainName, string userName)
