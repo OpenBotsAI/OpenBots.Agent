@@ -72,6 +72,9 @@ namespace OpenBots.Agent.Core.Utilities
         /// <returns></returns>
         public static string EncryptText(string plainText, string additionalEntropy)
         {
+            if (string.IsNullOrEmpty(plainText))
+                return plainText;
+
             // Getting bytes of the string plainText
             var plainTextBytes = UTF8Encoding.UTF8.GetBytes(plainText);
             var entropyBytes = UTF8Encoding.UTF8.GetBytes(additionalEntropy);

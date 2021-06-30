@@ -4,9 +4,6 @@ using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.Utilities;
-using OpenBots.Service.API.Client;
-using OpenBots.Service.API.Model;
-using OpenBots.Service.Client.Manager.API;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
 using Serilog.Events;
@@ -14,11 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Timers;
 using JobParameter = OpenBots.Agent.Core.Model.JobParameter;
+using OpenBots.Server.SDK.HelperMethods;
+using OpenBots.Server.SDK.Model;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -27,15 +25,16 @@ namespace OpenBots.Service.Client.Manager.Execution
         public bool IsEngineBusy { get; set; } = false;
         private bool _isSuccessfulExecution = false;
         private Timer _newJobsCheckTimer;
+        private AuthMethods _authMethods;
         private AutomationExecutionLog _executionLog;
         private const int MAX_PATH = 260;
 
         private ConnectionSettingsManager _connectionSettingsManager;
-        private AuthAPIManager _authAPIManager;
         private HeartbeatViewModel _agentHeartbeat;
         private FileLogger _fileLogger;
 
         public JobsQueueManager JobsQueueManager { get; set; }
+        public event EventHandler JobStartedEvent;
         public event EventHandler JobFinishedEvent;
 
         public ExecutionManager(HeartbeatViewModel agentHeartbeat)
@@ -44,9 +43,9 @@ namespace OpenBots.Service.Client.Manager.Execution
             _agentHeartbeat = agentHeartbeat;
         }
 
-        public void StartNewJobsCheckTimer(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
+        public void StartNewJobsCheckTimer(ConnectionSettingsManager connectionSettingsManager, FileLogger fileLogger)
         {
-            Initialize(connectionSettingsManager, authAPIManager, fileLogger);
+            Initialize(connectionSettingsManager, fileLogger);
 
             //handle for reinitialization
             if (_newJobsCheckTimer != null)
@@ -91,6 +90,9 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                 try
                 {
+                    // Authenticate Agent
+                    var userInfo = _authMethods.GetUserInfo();
+
                     var job = JobsQueueManager.DequeueJob();
 
                     // Update Automation Execution Log (Execution Failure)
@@ -100,11 +102,22 @@ namespace OpenBots.Service.Client.Manager.Execution
                         _executionLog.HasErrors = true;
                         _executionLog.ErrorMessage = ex.Message;
                         _executionLog.ErrorDetails = ex.ToString();
-                        ExecutionLogsAPIManager.UpdateExecutionLog(_authAPIManager, _executionLog);
+                        ExecutionLogMethods.UpdateExecutionLog(userInfo, _executionLog);
                     }
 
+                    // Authenticate Agent
+                    userInfo = _authMethods.GetUserInfo();
+
+                    // Update Job End Time
+                    JobMethods.UpdateJobPatch(userInfo, job.Id.ToString(),
+                        new List<Operation>()
+                        {
+                            new Operation(){ Op = "replace", Path = "/endTime", Value = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")},
+                            new Operation(){ Op = "replace", Path = "/isSuccessful", Value = false}
+                        });
+
                     // Update Job Status (Failed)
-                    JobsAPIManager.UpdateJobStatus(_authAPIManager, job.AgentId.ToString(), job.Id.ToString(),
+                    JobMethods.UpdateJobStatus(userInfo, job.AgentId.ToString(), job.Id.ToString(),
                     JobStatusType.Failed, new JobErrorViewModel(
                         ex.Message,
                         ex.GetType().GetProperty("ErrorCode")?.GetValue(ex, null)?.ToString() ?? string.Empty,
@@ -134,8 +147,11 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             _fileLogger.LogEvent("Job Execution", "Attempt to fetch Automation Detail");
 
+            // Authenticate Agent
+            var userInfo = _authMethods.GetUserInfo();
+
             // Get Automation Info
-            var automation = AutomationsAPIManager.GetAutomation(_authAPIManager, job.AutomationId.ToString());
+            var automation = AutomationMethods.GetAutomation(userInfo, job.AutomationId.ToString());
 
             // Update LastReportedMessage and LastReportedWork
             _agentHeartbeat.LastReportedMessage = "Job execution started";
@@ -151,7 +167,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             automation.AutomationEngine = string.IsNullOrEmpty(automation.AutomationEngine) ? "OpenBots" : automation.AutomationEngine;
             string configFilePath;
             string executionDirPath;
-            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, job.Id.ToString(), userDomainName, connectedUserName, out executionDirPath, out configFilePath);
+            var mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authMethods, automation, job.Id.ToString(), userDomainName, connectedUserName, out executionDirPath, out configFilePath);
 
             // Install Project Dependencies
             List<string> assembliesList = null;
@@ -164,17 +180,26 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             _fileLogger.LogEvent("Job Execution", "Attempt to update Job Status (Pre-execution)");
 
+            // Authenticate Agent
+            userInfo = _authMethods.GetUserInfo();
+
             // Create Automation Execution Log (Execution Started)
-            _executionLog = ExecutionLogsAPIManager.CreateExecutionLog(_authAPIManager, new AutomationExecutionLog(
+            _executionLog = ExecutionLogMethods.CreateExecutionLog(userInfo, new AutomationExecutionLog(
                 null, false, null, DateTime.UtcNow, null, null, null, null, null, job.Id, job.AutomationId, job.AgentId,
                 DateTime.UtcNow, null, null, null, "Job has started processing"));
 
+            // Authenticate Agent
+            userInfo = _authMethods.GetUserInfo();
+
             // Update Job Status (InProgress)
-            JobsAPIManager.UpdateJobStatus(_authAPIManager, job.AgentId.ToString(), job.Id.ToString(),
+            JobMethods.UpdateJobStatus(userInfo, job.AgentId.ToString(), job.Id.ToString(),
                 JobStatusType.InProgress, new JobErrorViewModel());
 
+            // Authenticate Agent
+            userInfo = _authMethods.GetUserInfo();
+
             // Update Job Start Time
-            JobsAPIManager.UpdateJobPatch(_authAPIManager, job.Id.ToString(),
+            JobMethods.UpdateJobPatch(userInfo, job.Id.ToString(),
                 new List<Operation>()
                 {
                     new Operation(){ Op = "replace", Path = "/startTime", Value = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")}
@@ -183,8 +208,15 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             _fileLogger.LogEvent("Job Execution", "Attempt to execute process");
 
-            AgentViewModel agent = AgentsAPIManager.GetAgent(_authAPIManager, job.AgentId.ToString());
-            var userCredential = CredentialsAPIManager.GetCredentials(_authAPIManager, agent.CredentialId.ToString());
+            // Authenticate Agent
+            userInfo = _authMethods.GetUserInfo();
+
+            AgentViewModel agent = AgentMethods.GetAgent(userInfo, job.AgentId.ToString());
+
+            // Authenticate Agent
+            userInfo = _authMethods.GetUserInfo();
+
+            var userCredential = CredentialMethods.GetCredentials(userInfo, agent.CredentialId.ToString());
             MachineCredential credential = new MachineCredential
             {
                 Name = userCredential.Name,
@@ -202,8 +234,11 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Log Event
             _fileLogger.LogEvent("Job Execution", "Attempt to update Job Status (Post-execution)");
 
+            // Authenticate Agent
+            userInfo = _authMethods.GetUserInfo();
+
             // Update Job End Time
-            JobsAPIManager.UpdateJobPatch(_authAPIManager, job.Id.ToString(),
+            JobMethods.UpdateJobPatch(userInfo, job.Id.ToString(),
                 new List<Operation>()
                 {
                     new Operation(){ Op = "replace", Path = "/endTime", Value = DateTime.UtcNow.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'")},
@@ -221,13 +256,19 @@ namespace OpenBots.Service.Client.Manager.Execution
                 Directory.Delete(@"\\?\" + executionDirPath, true);
             }
 
+            // Authenticate Agent
+            userInfo = _authMethods.GetUserInfo();
+
             // Update Automation Execution Log (Execution Finished)
             _executionLog.CompletedOn = DateTime.UtcNow;
             _executionLog.Status = "Job has finished processing";
-            ExecutionLogsAPIManager.UpdateExecutionLog(_authAPIManager, _executionLog);
+            ExecutionLogMethods.UpdateExecutionLog(userInfo, _executionLog);
+
+            // Authenticate Agent
+            userInfo = _authMethods.GetUserInfo();
 
             // Update Job Status (Completed)
-            JobsAPIManager.UpdateJobStatus(_authAPIManager, job.AgentId.ToString(), job.Id.ToString(),
+            JobMethods.UpdateJobStatus(userInfo, job.AgentId.ToString(), job.Id.ToString(),
                 JobStatusType.Completed, new JobErrorViewModel());
 
             _fileLogger.LogEvent("Job Execution", "Job status updated. Removing from queue.");
@@ -386,12 +427,20 @@ namespace OpenBots.Service.Client.Manager.Execution
         {
             IsEngineBusy = isBusy;
             if (IsEngineBusy)
+            {
                 _agentHeartbeat.LastReportedStatus = AgentStatus.Busy.ToString();
+                OnJobStartedEvent(EventArgs.Empty);
+            }
             else
             {
                 _agentHeartbeat.LastReportedStatus = AgentStatus.Available.ToString();
                 OnJobFinishedEvent(EventArgs.Empty);
             }
+        }
+
+        protected virtual void OnJobStartedEvent(EventArgs e)
+        {
+            JobStartedEvent?.Invoke(this, e);
         }
 
         protected virtual void OnJobFinishedEvent(EventArgs e)
@@ -421,10 +470,14 @@ namespace OpenBots.Service.Client.Manager.Execution
                 ServerConnectionSettings = _connectionSettingsManager.ConnectionSettings
             };
         }
-        
+
         private List<JobParameter> GetJobParameters(string jobId)
         {
-            var jobViewModel = JobsAPIManager.GetJobViewModel(_authAPIManager, jobId);
+
+            // Authenticate Agent
+            var userInfo = _authMethods.GetUserInfo();
+
+            var jobViewModel = JobMethods.GetJobViewModel(userInfo, jobId);
             var jobParams = jobViewModel.JobParameters?.Where(p => p.IsDeleted == false)?.Select(p =>
             new JobParameter
             {
@@ -508,27 +561,27 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
         }
 
-        private void Initialize(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
+        private void Initialize(ConnectionSettingsManager connectionSettingsManager, FileLogger fileLogger)
         {
             _connectionSettingsManager = connectionSettingsManager;
-            _authAPIManager = authAPIManager;
             _fileLogger = fileLogger;
 
             _connectionSettingsManager.ConnectionSettingsUpdatedEvent += OnConnectionSettingsUpdate;
-            _authAPIManager.ConfigurationUpdatedEvent += OnConfigurationUpdate;
+
+            _authMethods = new AuthMethods(
+                    _connectionSettingsManager.ConnectionSettings.ServerType,
+                    _connectionSettingsManager.ConnectionSettings.OrganizationName,
+                    _connectionSettingsManager.ConnectionSettings.ServerURL,
+                    _connectionSettingsManager.ConnectionSettings.AgentUsername,
+                    _connectionSettingsManager.ConnectionSettings.AgentPassword,
+                    _connectionSettingsManager.ConnectionSettings.UserName,
+                    _connectionSettingsManager.ConnectionSettings.DNSHost);
         }
 
         private void UnInitialize()
         {
             if (_connectionSettingsManager != null)
                 _connectionSettingsManager.ConnectionSettingsUpdatedEvent -= OnConnectionSettingsUpdate;
-            if (_authAPIManager != null)
-                _authAPIManager.ConfigurationUpdatedEvent -= OnConfigurationUpdate;
-        }
-
-        private void OnConfigurationUpdate(object sender, Configuration configuration)
-        {
-            _authAPIManager.Configuration = configuration;
         }
 
         private void OnConnectionSettingsUpdate(object sender, ServerConnectionSettings connectionSettings)

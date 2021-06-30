@@ -1,13 +1,12 @@
-﻿using OpenBots.Agent.Core.Enums;
-using OpenBots.Agent.Core.Model;
+﻿using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Model.RDP;
-using OpenBots.Agent.Core.Utilities;
+using OpenBots.Service.Client.Manager.FreeRDP;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Win32;
 using Serilog.Events;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
+using static OpenBots.Service.Client.Manager.Win32.WTSAPI32;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
@@ -19,7 +18,6 @@ namespace OpenBots.Service.Client.Manager.Execution
     {
         private Win32Utilities _win32Helper;
         private FileLogger _fileLogger;
-        private RemoteDesktopState _rdpConnectionState = RemoteDesktopState.Unknown;
 
         public Executor(FileLogger fileLogger)
         {
@@ -37,7 +35,8 @@ namespace OpenBots.Service.Client.Manager.Execution
         {
             bool isRDPSession = false;
             IntPtr hPToken = IntPtr.Zero;
-            RemoteDesktop rdpUtil = null;
+            RDPSessionManager rdpSessionManager = null;
+            string domainUsername = $"{machineCredential.Domain}\\{machineCredential.UserName}";
 
             try
             {
@@ -60,49 +59,49 @@ namespace OpenBots.Service.Client.Manager.Execution
 
                     _fileLogger?.LogEvent("CreateRDPConnection", "Start RDP Connection", LogEventLevel.Information);
 
-                    // Attempt to create a Remote Desktop Session
-                    rdpUtil = new RemoteDesktop();
-                    rdpUtil.ConnectionStateChangedEvent += OnConnectionStateChanged;
-                    Task.Run(() => rdpUtil.CreateRdpConnection(
-                        Environment.MachineName,
-                        machineCredential.UserName,
-                        machineCredential.Domain,
-                        machineCredential.PasswordSecret,
-                        serverSettings.ResolutionWidth,
-                        serverSettings.ResolutionHeight));
-
-                    _fileLogger?.LogEvent("WaitForRDPConnection", "Wait for RDP Connection", LogEventLevel.Information);
-
-                    // Wait for RDP connection to be established within 60 sec
-                    bool isConnected = WaitForRDPConnection();
-
-                    if (!isConnected)
+                    rdpSessionManager = new RDPSessionManager();
+                    rdpSessionManager.OpenRDPSession(new RemoteDesktopInfo
+                    {
+                        Host = "localhost",
+                        User = machineCredential.UserName,
+                        Domain = machineCredential.Domain,
+                        Password = machineCredential.PasswordSecret,
+                        DesktopWidth = serverSettings.ResolutionWidth,
+                        DesktopHeight = serverSettings.ResolutionHeight,
+                        ColorDepth = 32
+                    });
+                    
+                    if (!rdpSessionManager.isConnected)
                     {
                         _fileLogger?.LogEvent("CreateRDPConnection", "Unable to create the RDP Session", LogEventLevel.Error);
-                        
-                        _fileLogger?.LogEvent("LogonUser", "Logon User to perform automation in non-interactive session", LogEventLevel.Error);
+                        throw new Exception($"Unable to Create a Remote Desktop Session for provided Credential \"{machineCredential.Name}\" ");
 
-                        if (!(sessionFound = _win32Helper.LogonUserA(machineCredential, ref hPToken)))
-                            throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
+                        //_fileLogger?.LogEvent("LogonUser", "Logon User to perform automation in non-interactive session", LogEventLevel.Error);
+
+                        //if (!(sessionFound = _win32Helper.LogonUserA(machineCredential, ref hPToken)))
+                        //    throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
                     }
                     else
                     {
-                        _fileLogger?.LogEvent("CreateNewSession", $"New Session Created.", LogEventLevel.Information);
+                        _fileLogger?.LogEvent("CreateRDPConnection", "Connecting to RDP Connection", LogEventLevel.Information);
+                        _fileLogger?.LogEvent("CreateRDPConnection", "Wait for RDP Connection", LogEventLevel.Information);
+
+                        // Wait for RDP connection to be established within 60 sec
+                        bool isConnected = WaitForRDPConnection(domainUsername);
 
                         // Obtain the id of Remote Desktop Session
                         sessionFound = _win32Helper.GetUserSessionToken(machineCredential, ref hPToken);
 
-                        // If unable to find/create an Active User Session
-                        if (!sessionFound)
-                            throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
-
                         _fileLogger?.LogEvent("GetActiveUserSession", "Session " +
                             (!sessionFound ? "not found" : "found"), LogEventLevel.Information);
 
-                        isRDPSession = isConnected;
+                        // If unable to find/create an Active User Session
+                        if (!sessionFound)
+                            throw new Exception($"Unable to Create a Remote Desktop Session for provided Credential \"{machineCredential.Name}\" ");
+
+                        isRDPSession = rdpSessionManager.isConnected;
                     }
                 }
-
                 _fileLogger?.LogEvent("RunProcessAsCurrentUser", $"Start Automation", LogEventLevel.Information);
 
                 // Start a new process in the current user's logon session
@@ -114,47 +113,39 @@ namespace OpenBots.Service.Client.Manager.Execution
             }
             finally
             {
-                if (hPToken != IntPtr.Zero)
-                    _win32Helper.ClosePtrHandle(hPToken);
+                try
+                {
+                    if (hPToken != IntPtr.Zero)
+                        _win32Helper.ClosePtrHandle(hPToken);
 
-                if (isRDPSession)
-                    rdpUtil.DisconnectRDP();
+                    if (isRDPSession)
+                        rdpSessionManager.CloseRDPSession();
+                }
+                catch (Exception)
+                {
+                    // Suppress Exception
+                }
             }
         }
 
-        private bool WaitForRDPConnection(int seconds = 60)
+        private bool WaitForRDPConnection(string domainUser, int seconds = 60)
         {
             bool isConnected = true;
 
             int sec = 0;
             while (sec < seconds)
             {
-                if (_rdpConnectionState == RemoteDesktopState.Connected ||
-                    _rdpConnectionState == RemoteDesktopState.Errored ||
-                    _rdpConnectionState == RemoteDesktopState.Disconnected)
+                if (_win32Helper.GetActiveUserSessionId(domainUser) != INVALID_SESSION_ID)
                     break;
 
                 Thread.Sleep(1000);
                 sec++;
             }
 
-            if (sec == 60 ||
-                _rdpConnectionState == RemoteDesktopState.Errored || 
-                _rdpConnectionState == RemoteDesktopState.Disconnected)
-            {
+            if (sec == 60)
                 isConnected = false;
-            }
 
             return isConnected;
-        }
-
-        private void OnConnectionStateChanged(object sender, RemoteDesktopEventArgs rdEventArgs)
-        {
-            _rdpConnectionState = rdEventArgs.ConnectionState;
-            _fileLogger?.LogEvent("OnConnectionStateChanged", $"RDP Connection State: {_rdpConnectionState}" +
-                ((_rdpConnectionState == RemoteDesktopState.Disconnected ||
-                _rdpConnectionState == RemoteDesktopState.Errored) ? $", Error Code: {rdEventArgs.ErrorCode}, " +
-                $"Error Description: {rdEventArgs.ErrorDescription}" : ""), LogEventLevel.Information);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace OpenBots.Executor.Utilities
                                                      .FirstOrDefault();
 
                     if (existingAssembly == null && name != "RestSharp" && name != "WebDriver" && 
-                        name != "OpenBots.Core" && name != "Serilog.Sinks.File")
+                        name != "OpenBots.Core" && name != "Serilog.Sinks.File" && name != "Serilog")
                     {
                         var assembly = Assembly.LoadFrom(path);
                         existingAssemblies.Add(assembly);

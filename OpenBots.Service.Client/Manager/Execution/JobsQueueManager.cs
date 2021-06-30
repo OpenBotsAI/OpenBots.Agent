@@ -1,4 +1,4 @@
-﻿using OpenBots.Service.API.Model;
+﻿using OpenBots.Server.SDK.Model;
 using System.Collections.Generic;
 using System.Linq;
 

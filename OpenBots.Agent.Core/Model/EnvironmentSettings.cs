@@ -8,6 +8,7 @@ namespace OpenBots.Agent.Core.Model
     public class EnvironmentSettings
     {
         public string EnvironmentVariableName { get; } = "OpenBots_Agent_Data_Path";
+        public string CloudServerEnvironmentVariable { get; } = "OpenBots_Environment";
         public string EnvironmentVariablePath { get; } = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                         "OpenBots Inc",
@@ -122,6 +123,23 @@ namespace OpenBots.Agent.Core.Model
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public string GetCloudServerEnvironmentVariable()
+        {
+            try
+            {
+                var envVariable = Environment.GetEnvironmentVariable(CloudServerEnvironmentVariable, EnvironmentVariableTarget.Machine);
+
+                if (!string.IsNullOrEmpty(envVariable))
+                    return envVariable.ToString();
+                else
+                    return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
             }
         }
     }

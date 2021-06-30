@@ -2,17 +2,18 @@
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Core.Model;
-using OpenBots.Service.API.Model;
-using OpenBots.Service.Client.Manager.API;
+using OpenBots.Server.SDK.HelperMethods;
+using OpenBots.Server.SDK.Model;
 using System;
 using System.IO;
+using SystemIO = System.IO;
 using System.Linq;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string jobId, string domainName, string userName, out string executionDirectoryPath, out string configFilePath)
+        public static string DownloadAndExtractAutomation(AuthMethods authMethods, Automation automation, string jobId, string domainName, string userName, out string executionDirectoryPath, out string configFilePath)
         {
             configFilePath = "";
             executionDirectoryPath = "";
@@ -45,11 +46,14 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Check if Automation (.nupkg) file exists if Not Download it
             if (!File.Exists(processNugetFilePath))
             {
+                // Authenticate Agent
+                var userInfo = authMethods.GetUserInfo();
+
                 // Download Automation by Id
-                var apiResponse = AutomationsAPIManager.ExportAutomation(authAPIManager, automation.Id.ToString());
+                var apiResponse = AutomationMethods.ExportAutomation(userInfo, automation.Id.ToString());
 
                 // Write Downloaded(.nupkg) file in the Automation Directory
-                File.WriteAllBytes(processNugetFilePath, apiResponse.Data.ToArray());
+                File.WriteAllBytes(processNugetFilePath, apiResponse.ToArray());
             }
 
             // Create .zip file if it doesn't exist
@@ -78,7 +82,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 Directory.CreateDirectory(targetDirectory);
 
             // Extract Files/Folders from downloaded (.zip) file
-            FileStream fs = File.OpenRead(processZipFilePath);
+            SystemIO.FileStream fs = File.OpenRead(processZipFilePath);
             ZipFile file = new ZipFile(fs);
 
             foreach (ZipEntry zipEntry in file)
@@ -109,7 +113,7 @@ namespace OpenBots.Service.Client.Manager.Execution
                 // Unzip file in buffered chunks. This is just as fast as unpacking to a buffer the full size
                 // of the file, but does not waste memory.
                 // The "using" will close the stream even if an exception occurs.
-                using (FileStream streamWriter = File.Create(fullZipToPath))
+                using (SystemIO.FileStream streamWriter = File.Create(fullZipToPath))
                     StreamUtils.Copy(zipStream, streamWriter, buffer);
             }
 

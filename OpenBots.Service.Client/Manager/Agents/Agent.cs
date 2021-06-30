@@ -1,12 +1,12 @@
 ﻿using OpenBots.Agent.Core.Model;
-using OpenBots.Service.API.Client;
-using OpenBots.Service.Client.Manager.API;
+using OpenBots.Server.SDK.Api;
+using OpenBots.Server.SDK.HelperMethods;
+using OpenBots.Server.SDK.Model;
 using OpenBots.Service.Client.Manager.Execution;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
 using Serilog.Events;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenBots.Service.Client.Manager.Agents
@@ -14,7 +14,7 @@ namespace OpenBots.Service.Client.Manager.Agents
     public class Agent
     {
         private ConnectionSettingsManager _connectionSettingsManager;
-        private AuthAPIManager _authAPIManager;
+        private AuthMethods _authMethods;
         private JobsPolling _jobsPolling;
         private AttendedExecutionManager _attendedExecutionManager;
         private FileLogger _fileLogger;
@@ -22,13 +22,11 @@ namespace OpenBots.Service.Client.Manager.Agents
         public Agent()
         {
             _connectionSettingsManager = new ConnectionSettingsManager();
-            _authAPIManager = new AuthAPIManager();
             _jobsPolling = new JobsPolling();
-            _attendedExecutionManager = new AttendedExecutionManager(_jobsPolling.ExecutionManager, _authAPIManager);
+            _attendedExecutionManager = new AttendedExecutionManager(_jobsPolling.ExecutionManager);
             _fileLogger = new FileLogger();
 
             _connectionSettingsManager.ConnectionSettingsUpdatedEvent += OnConnectionSettingsUpdate;
-            _authAPIManager.ConfigurationUpdatedEvent += OnConfigurationUpdate;
             _jobsPolling.ServerConnectionLostEvent += OnServerConnectionLost;
         }
 
@@ -44,36 +42,48 @@ namespace OpenBots.Service.Client.Manager.Agents
 
             _connectionSettingsManager.ConnectionSettings = connectionSettings;
 
-            // Initialize AuthAPIManager
-            _authAPIManager.Initialize(_connectionSettingsManager.ConnectionSettings);
             try
             {
                 // Authenticate Agent
-                _authAPIManager.GetToken();
+                _authMethods = new AuthMethods(connectionSettings.ServerType,
+                    connectionSettings.OrganizationName, connectionSettings.ServerURL, 
+                    connectionSettings.AgentUsername, connectionSettings.AgentPassword,
+                    connectionSettings.UserName, connectionSettings.DNSHost);
+
+                var userInfo = _authMethods.GetUserInfo();
+
+                // Call to Resolve (to get AgentId, AgentName, AgentGroup, HeartbeatInterval, JobLoggingInterval, SSLVerification)
+                var resolveApiResponse = AgentMethods.ResolveAgent(userInfo, new ResolveAgentViewModel(null, null, connectionSettings.MachineName, null));
+
+                _connectionSettingsManager.ConnectionSettings.AgentId = resolveApiResponse.AgentId.ToString();
+                _connectionSettingsManager.ConnectionSettings.ServerURL = userInfo.ServerUrl;
 
                 // API Call to Connect
-                var connectAPIResponse = AgentsAPIManager.ConnectAgent(_authAPIManager, 
-                    _connectionSettingsManager.ConnectionSettings = _authAPIManager.ConnectionSettings);
+                var connectAPIResponse = AgentMethods.ConnectAgent(userInfo, _connectionSettingsManager.ConnectionSettings.AgentId,
+                    new ConnectAgentViewModel{
+                        MachineName = _connectionSettingsManager.ConnectionSettings.MachineName,
+                        MacAddresses = _connectionSettingsManager.ConnectionSettings.MACAddress
+                    });
 
                 // Update Server Settings
                 _connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled = true;
-                _connectionSettingsManager.ConnectionSettings.AgentId = connectAPIResponse.Data.AgentId.ToString();
-                _connectionSettingsManager.ConnectionSettings.AgentName = connectAPIResponse.Data.AgentName.ToString();
+                _connectionSettingsManager.ConnectionSettings.AgentId = connectAPIResponse.AgentId.ToString();
+                _connectionSettingsManager.ConnectionSettings.AgentName = connectAPIResponse.AgentName.ToString();
                 
-                if(connectAPIResponse.Data.AgentSetting?.HeartbeatInterval != null)
-                    _connectionSettingsManager.ConnectionSettings.HeartbeatInterval = (int)connectAPIResponse.Data.AgentSetting.HeartbeatInterval;
+                if(resolveApiResponse.HeartbeatInterval != null)
+                    _connectionSettingsManager.ConnectionSettings.HeartbeatInterval = (int)resolveApiResponse.HeartbeatInterval;
                 
-                if(connectAPIResponse.Data.AgentSetting?.JobLoggingInterval != null)
-                    _connectionSettingsManager.ConnectionSettings.JobsLoggingInterval = (int)connectAPIResponse.Data.AgentSetting.JobLoggingInterval;
+                if(resolveApiResponse.JobLoggingInterval != null)
+                    _connectionSettingsManager.ConnectionSettings.JobsLoggingInterval = (int)resolveApiResponse.JobLoggingInterval;
                 
-                if(connectAPIResponse.Data.AgentSetting?.VerifySslCertificate != null)
-                    _connectionSettingsManager.ConnectionSettings.SSLCertificateVerification = (bool)connectAPIResponse.Data.AgentSetting.VerifySslCertificate;
+                if(resolveApiResponse.VerifySslCertificate != null)
+                    _connectionSettingsManager.ConnectionSettings.SSLCertificateVerification = (bool)resolveApiResponse.VerifySslCertificate;
 
                 // Start Server Communication
                 StartServerCommunication();
 
                 // Send Response to Agent
-                return new ServerResponse(_connectionSettingsManager.ConnectionSettings, connectAPIResponse.StatusCode.ToString());
+                return new ServerResponse(_connectionSettingsManager.ConnectionSettings);
             }
             catch (Exception ex)
             {
@@ -102,8 +112,15 @@ namespace OpenBots.Service.Client.Manager.Agents
 
             try
             {
+                var userInfo = _authMethods.GetUserInfo();
+
                 // API Call to Disconnect
-                var apiResponse = AgentsAPIManager.DisconnectAgent(_authAPIManager, _connectionSettingsManager.ConnectionSettings);
+                AgentMethods.DisconnectAgent(userInfo, _connectionSettingsManager.ConnectionSettings.AgentId,
+                    new ConnectAgentViewModel
+                    {
+                        MachineName = _connectionSettingsManager.ConnectionSettings.MachineName,
+                        MacAddresses = _connectionSettingsManager.ConnectionSettings.MACAddress
+                    });
 
                 // Update settings
                 _connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled = false;
@@ -113,11 +130,8 @@ namespace OpenBots.Service.Client.Manager.Agents
                 // Stop Server Communication
                 StopServerCommunication();
 
-                // UnInitialize Configuration
-                _authAPIManager.UnInitialize();
-
                 // Form Server Response
-                return new ServerResponse(_connectionSettingsManager.ConnectionSettings, apiResponse.StatusCode.ToString());
+                return new ServerResponse(_connectionSettingsManager.ConnectionSettings);
             }
             catch (Exception ex)
             {
@@ -137,13 +151,22 @@ namespace OpenBots.Service.Client.Manager.Agents
         {
             try
             {
+                var serverSettings = _connectionSettingsManager.ConnectionSettings;
+
+                AuthMethods authMethods = new AuthMethods(serverSettings.ServerType,
+                    serverSettings.OrganizationName, serverSettings.ServerURL,
+                    serverSettings.AgentUsername, serverSettings.AgentPassword,
+                    serverSettings.UserName, serverSettings.DNSHost);
+
+                var userInfo = authMethods.GetUserInfo();
+
                 string filter = $"automationEngine eq '{automationEngine}'";
-                var apiResponse = AutomationsAPIManager.GetAutomations(_authAPIManager, filter);
-                var automationPackageNames = apiResponse.Data.Items.Where(
+                var apiResponse = AutomationMethods.GetAutomations(userInfo, filter);
+                var automationPackageNames = apiResponse.Items.Where(
                     a => !string.IsNullOrEmpty(a.OriginalPackageName) &&
                     a.OriginalPackageName.EndsWith(".nupkg")
                     ).Select(a => a.OriginalPackageName).ToList();
-                return new ServerResponse(automationPackageNames, apiResponse.StatusCode.ToString());
+                return new ServerResponse(automationPackageNames);
             }
             catch (Exception ex)
             {
@@ -178,9 +201,12 @@ namespace OpenBots.Service.Client.Manager.Agents
         {
             try
             {
-                _authAPIManager.Initialize(serverSettings);
-                var serverIP = _authAPIManager.Ping();
-                _authAPIManager.UnInitialize();
+                AuthMethods authMethods = new AuthMethods(serverSettings.ServerType, 
+                    serverSettings.OrganizationName, serverSettings.ServerURL, 
+                    serverSettings.AgentUsername, serverSettings.AgentPassword,
+                    serverSettings.UserName, serverSettings.DNSHost);
+
+                var serverIP = authMethods.Ping();
 
                 return new ServerResponse(serverIP);
             }
@@ -205,7 +231,7 @@ namespace OpenBots.Service.Client.Manager.Agents
         public void StartServerCommunication()
         {
             // Start Jobs Polling
-            _jobsPolling.StartJobsPolling(_connectionSettingsManager, _authAPIManager, _fileLogger);
+            _jobsPolling.StartJobsPolling(_connectionSettingsManager, _fileLogger);
         }
         public void StopServerCommunication()
         {
@@ -218,10 +244,6 @@ namespace OpenBots.Service.Client.Manager.Agents
         private void OnConnectionSettingsUpdate(object sender, ServerConnectionSettings connectionSettings)
         {
             _connectionSettingsManager.ConnectionSettings = connectionSettings;
-        }
-        private void OnConfigurationUpdate(object sender, Configuration configuration)
-        {
-            _authAPIManager.Configuration = configuration;
         }
         private void OnServerConnectionLost(object sender, EventArgs e)
         {

@@ -4,8 +4,7 @@ using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.Utilities;
-using OpenBots.Service.API.Client;
-using OpenBots.Service.Client.Manager.API;
+using OpenBots.Server.SDK.HelperMethods;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,22 +15,24 @@ namespace OpenBots.Service.Client.Manager.Execution
     public class AttendedExecutionManager
     {
         private ExecutionManager _executionManager;
-        private AuthAPIManager _authAPIManager;
-        public AttendedExecutionManager(ExecutionManager executionManager, AuthAPIManager authAPIManager)
+        private AuthMethods _authMethods;
+
+        public AttendedExecutionManager(ExecutionManager executionManager)
         {
             _executionManager = executionManager;
-            _authAPIManager = authAPIManager;
-
-            _authAPIManager.ConfigurationUpdatedEvent += OnConfigurationUpdate; 
-        }
-
-        private void OnConfigurationUpdate(object sender, Configuration configuration)
-        {
-            _authAPIManager.Configuration = configuration;
         }
 
         public bool ExecuteTask(string projectPackage, ServerConnectionSettings settings, bool isServerAutomation)
         {
+            _authMethods = new AuthMethods(
+                    settings.ServerType,
+                    settings.OrganizationName,
+                    settings.ServerURL,
+                    settings.AgentUsername,
+                    settings.AgentPassword,
+                    settings.UserName,
+                    settings.DNSHost);
+
             if (!_executionManager.IsEngineBusy)
             {
                 bool isSuccessful;
@@ -44,8 +45,12 @@ namespace OpenBots.Service.Client.Manager.Execution
                     {
                         // projectPackage is "Name" of the Project Package here
                         string filter = $"originalPackageName eq '{projectPackage}'";
-                        var automation = AutomationsAPIManager.GetAutomations(_authAPIManager, filter).Data?.Items.FirstOrDefault();
-                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, string.Empty, settings.DNSHost, settings.UserName, out projectDirectoryPath, out configFilePath);
+
+                        // Authenticate Agent
+                        var userInfo = _authMethods.GetUserInfo();
+
+                        var automation = AutomationMethods.GetAutomations(userInfo, filter).Items.FirstOrDefault();
+                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authMethods, automation, string.Empty, settings.DNSHost, settings.UserName, out projectDirectoryPath, out configFilePath);
                     }
                     else
                     {

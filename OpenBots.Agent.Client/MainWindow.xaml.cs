@@ -227,7 +227,7 @@ namespace OpenBots.Agent.Client
                     MachineName = Environment.MachineName,
                     AgentId = string.Empty,
                     MACAddress = SystemInfo.GetMacAddress(),
-                    IPAddress = new WebClient().DownloadString("https://ipv4.icanhazip.com/").Trim()
+                    IPAddress = string.Empty
                 };
             }
 
@@ -465,6 +465,7 @@ namespace OpenBots.Agent.Client
                     if (serverResponse?.Data != null)
                     {
                         ConnectionSettingsManager.Instance.ConnectionSettings.ServerIPAddress = (string)serverResponse.Data;
+                        ConnectionSettingsManager.Instance.ConnectionSettings.IPAddress = (string)serverResponse.Data;
                         ShowMachineInfoDialog(ConnectionSettingsManager.Instance.ConnectionSettings.ServerIPAddress);
                     }
                     else
@@ -518,7 +519,7 @@ namespace OpenBots.Agent.Client
         {
             if (_attendedExecutionWindow == null)
             {
-                _attendedExecutionWindow = new AttendedExecution();
+                _attendedExecutionWindow = new AttendedExecution(ConnectionSettingsManager.Instance.ConnectionSettings);
                 _attendedExecutionWindow.Closed += (s, args) => this._attendedExecutionWindow = null;
                 _attendedExecutionWindow.Show();
             }
@@ -537,9 +538,8 @@ namespace OpenBots.Agent.Client
 
                 LoadConnectionSettings();
 
-                // Clear TextBoxes
-                txt_Username.Text = string.Empty;
-                txt_Password.Password = string.Empty;
+                // Clear Credentials UI
+                ClearCredentialsUI();
 
                 MessageDialog messageDialog = new MessageDialog(
                     "Credentials Cleared",
@@ -550,6 +550,14 @@ namespace OpenBots.Agent.Client
                 messageDialog.ShowDialog();
             }
         }
+
+        private void ClearCredentialsUI()
+        {
+            // Clear TextBoxes
+            txt_Username.Text = string.Empty;
+            txt_Password.Password = string.Empty;
+        }
+
         private void ExitApplication()
         {
             ShutDownApplication();
@@ -574,6 +582,10 @@ namespace OpenBots.Agent.Client
         {
             UpdateConnectButtonState();
         }
+        private void OnTextChange_OrganizationName(object sender, TextChangedEventArgs e)
+        {
+            UpdateConnectButtonState();
+        }
         private bool UpdateHttpSinkURL()
         {
             string endPoint = SettingsManager.Instance.GetDefaultSettings().LoggingValue1;
@@ -582,8 +594,15 @@ namespace OpenBots.Agent.Client
             if (cmb_SinkType.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Http" &&
                 string.IsNullOrEmpty(txt_SinkType_Logging1.Text))
             {
-                Uri baseUri = new Uri(txt_ServerURL.Text);
-                txt_SinkType_Logging1.Text = new Uri(baseUri, endPoint).ToString();
+                if (ConnectionSettingsManager.Instance.ConnectionSettings.ServerType == OrchestratorType.Local.ToString())
+                {
+                    Uri baseUri = new Uri(txt_ServerURL.Text);
+                    txt_SinkType_Logging1.Text = new Uri(baseUri, endPoint).ToString();
+                }
+                else
+                {
+                    txt_SinkType_Logging1.Text = string.Empty;
+                }
                 btn_Save.IsEnabled = false;
 
                 return true;
@@ -618,15 +637,16 @@ namespace OpenBots.Agent.Client
         {
             if (btn_Connect.Content.ToString() == "Connect")
             {
-                // Update Http Sink URL
-                var isSinkURLModified = UpdateHttpSinkURL();
-
+                
                 // Server Configuration
                 ConnectionSettingsManager.Instance.ConnectionSettings.ServerType = ((OrchestratorType)cmb_Orchestrator.SelectedIndex).ToString();
                 ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL = txt_ServerURL.Text;
                 ConnectionSettingsManager.Instance.ConnectionSettings.OrganizationName = txt_OrganizationName.Text;
                 ConnectionSettingsManager.Instance.ConnectionSettings.AgentUsername = txt_Username.Text;
                 ConnectionSettingsManager.Instance.ConnectionSettings.AgentPassword = txt_Password.Password;
+
+                // Update Http Sink URL
+                var isSinkURLModified = UpdateHttpSinkURL();
 
                 // Logging
                 ConnectionSettingsManager.Instance.ConnectionSettings.TracingLevel = cmb_LogLevel.Text;
@@ -654,8 +674,10 @@ namespace OpenBots.Agent.Client
 
                             UpdateUIOnConnect();
 
-                            //Set Registry Keys if NOT already Set
-                            if (string.IsNullOrEmpty(_registryManager.AgentUsername) || string.IsNullOrEmpty(_registryManager.AgentPassword) ||
+
+                            // Set Registry Keys if NOT already Set
+                            if (string.IsNullOrEmpty(_registryManager.AgentUsername) || 
+                                string.IsNullOrEmpty(_registryManager.AgentPassword) ||
                                 string.IsNullOrEmpty(_registryManager.ServerURL))
                             {
                                 _registryManager.AgentUsername = ConnectionSettingsManager.Instance.ConnectionSettings.AgentUsername;
@@ -664,10 +686,14 @@ namespace OpenBots.Agent.Client
 
                                 OnSetRegistryKeys();
                             }
-                            else if (_registryManager.ServerURL != ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL)
+                            else if (_registryManager.ServerURL != ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL ||
+                                _registryManager.AgentUsername != ConnectionSettingsManager.Instance.ConnectionSettings.AgentUsername ||
+                                _registryManager.AgentPassword != ConnectionSettingsManager.Instance.ConnectionSettings.AgentPassword)
                             {
                                 // If Server URL is updated
                                 _registryManager.ServerURL = ConnectionSettingsManager.Instance.ConnectionSettings.ServerURL;
+                                _registryManager.AgentUsername = ConnectionSettingsManager.Instance.ConnectionSettings.AgentUsername;
+                                _registryManager.AgentPassword = ConnectionSettingsManager.Instance.ConnectionSettings.AgentPassword;
                             }
 
                             // Update OpenBots.settings file
@@ -702,7 +728,7 @@ namespace OpenBots.Agent.Client
                     var serverResponse = PipeProxy.Instance.DisconnectFromServer();
                     if (serverResponse != null)
                     {
-                        if (serverResponse.StatusCode == "200")
+                        if (serverResponse.Data != null)
                         {
                             ConnectionSettingsManager.Instance.ConnectionSettings = (ServerConnectionSettings)serverResponse.Data;
                             _agentSettings.OpenBotsServerUrl = "";
@@ -863,7 +889,11 @@ namespace OpenBots.Agent.Client
         }
         private void UpdateConnectButtonState()
         {
-            if (lbl_StatusValue.Content.ToString() != "Not Connected" && !string.IsNullOrEmpty(txt_ServerURL.Text)
+            if (lbl_StatusValue.Content.ToString() != "Not Connected" &&
+                (((OrchestratorType)cmb_Orchestrator.SelectedIndex == OrchestratorType.Local &&
+                !string.IsNullOrEmpty(txt_ServerURL.Text)) ||
+                ((OrchestratorType)cmb_Orchestrator.SelectedIndex == OrchestratorType.Cloud &&
+                !string.IsNullOrEmpty(txt_OrganizationName.Text)))
                 && !string.IsNullOrEmpty(txt_Username.Text) && !string.IsNullOrEmpty(txt_Password.Password)
                 && !btn_Save.IsEnabled)
                 btn_Connect.IsEnabled = true;
@@ -891,12 +921,17 @@ namespace OpenBots.Agent.Client
                     pnl_ServerURL.Visibility = Visibility.Collapsed;
                     pnl_OrganizationName.Visibility = Visibility.Visible;
 
+                    //ClearCredentialsUI();
                     break;
                 case OrchestratorType.Local:
                     // Hide Organization Name Panel
                     // Show Server URL Panel
                     pnl_OrganizationName.Visibility = Visibility.Collapsed;
                     pnl_ServerURL.Visibility = Visibility.Visible;
+
+                    // Populate Credentials UI
+                    txt_Username.Text = _registryManager.AgentUsername;
+                    txt_Password.Password = _registryManager.AgentPassword;
 
                     break;
             }

@@ -1,6 +1,5 @@
 using OpenBots.Agent.Client.Settings;
 using OpenBots.Agent.Core.Model;
-using OpenBots.Agent.Core.Utilities;
 using OpenBots.Core.Enums;
 using OpenBots.Core.IO;
 using Serilog.Events;
@@ -28,18 +27,36 @@ namespace OpenBots.Agent.Client.Forms
         private string _automationSource;
         private string _automationType;
 
-        public AttendedExecution()
+        public AttendedExecution(ServerConnectionSettings connectionSettings)
         {
             InitializeComponent();
             _publishedProjectsWatcher = new FileSystemWatcher();
 
             _connectionSettings = new ServerConnectionSettings()
             {
+                ServerConnectionEnabled = connectionSettings.ServerConnectionEnabled,
+                ServerType = connectionSettings.ServerType,
+                ServerURL = connectionSettings.ServerURL,
+                OrganizationName = connectionSettings.OrganizationName,
+                AgentUsername = connectionSettings.AgentUsername,
+                AgentPassword = connectionSettings.AgentPassword,
+                HeartbeatInterval = connectionSettings.HeartbeatInterval,
+                JobsLoggingInterval = connectionSettings.JobsLoggingInterval,
+                ResolutionHeight = connectionSettings.ResolutionHeight,
+                ResolutionWidth = connectionSettings.ResolutionWidth,
+                HighDensityAgent = connectionSettings.HighDensityAgent,
+                SingleSessionExecution = connectionSettings.SingleSessionExecution,
+                SSLCertificateVerification = connectionSettings.SSLCertificateVerification,
+                DNSHost = connectionSettings.DNSHost,
+                UserName = connectionSettings.UserName,
+                WhoAmI = connectionSettings.WhoAmI,
+                MachineName = connectionSettings.MachineName,
+                AgentId = connectionSettings.AgentId,
+                MACAddress = connectionSettings.MACAddress,
+                IPAddress = connectionSettings.IPAddress,
                 SinkType = SinkType.File.ToString(),
                 TracingLevel = LogEventLevel.Information.ToString(),
                 LoggingValue1 = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(), "Logs", "Attended Execution"),
-                DNSHost = SystemInfo.GetUserDomainName(),
-                UserName = Environment.UserName
             };
         }
 
@@ -288,6 +305,5 @@ namespace OpenBots.Agent.Client.Forms
             return _isEngineBusy;
         }
 
-        
     }
 }

@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -199,19 +200,14 @@
   <ItemGroup>
     <Compile Include="Manager\Agents\Agent.cs" />
     <Compile Include="Manager\Agents\AgentsManager.cs" />
-    <Compile Include="Manager\API\ExecutionLogsAPIManager.cs" />
-    <Compile Include="Manager\API\CredentialsAPIManager.cs" />
     <Compile Include="Manager\Execution\AttendedExecutionManager.cs" />
     <Compile Include="Manager\Execution\ExecutionManager.cs" />
     <Compile Include="Manager\Execution\JobsQueueManager.cs" />
     <Compile Include="Manager\Execution\Executor.cs" />
     <Compile Include="Manager\Execution\AutomationManager.cs" />
-    <Compile Include="Manager\API\AgentsAPIManager.cs" />
-    <Compile Include="Manager\API\AuthAPIManager.cs" />
-    <Compile Include="Manager\API\JobsAPIManager.cs" />
-    <Compile Include="Manager\API\AutomationsAPIManager.cs" />
     <Compile Include="Manager\Execution\JobsPolling.cs" />
     <Compile Include="Manager\Execution\WMIQueries.cs" />
+    <Compile Include="Manager\FreeRDP\RDPSessionManager.cs" />
     <Compile Include="Manager\Hub\HubManager.cs" />
     <Compile Include="Manager\Logs\FileLogger.cs" />
     <Compile Include="Manager\Win32\ADVAPI32.cs" />
@@ -251,11 +247,25 @@
       <Project>{93ebf09a-d073-49a8-a07d-9528f3eaf78f}</Project>
       <Name>OpenBots.Agent.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenBots.Service.API\OpenBots.Service.API.csproj">
-      <Project>{fbd953e4-9510-4e2a-8fa2-5ae749354546}</Project>
-      <Name>OpenBots.Service.API</Name>
+    <ProjectReference Include="..\OpenBots.Server.SDK\OpenBots.Server.SDK.csproj">
+      <Project>{9f13c5ca-eee7-49d1-bea1-2a0bbf6df261}</Project>
+      <Name>OpenBots.Server.SDK</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Lib\32bit\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\64bit\freerdp-client3.dll" />
+    <Content Include="Lib\64bit\freerdp3.dll" />
+    <Content Include="Lib\64bit\libcrypto-1_1-x64.dll" />
+    <Content Include="Lib\64bit\libssl-1_1-x64.dll" />
+    <Content Include="Lib\64bit\libusb-1.0.dll" />
+    <Content Include="Lib\64bit\winpr-tools3.dll" />
+    <Content Include="Lib\64bit\winpr3.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y  "$(ProjectDir)Lib\64bit\*.dll" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
