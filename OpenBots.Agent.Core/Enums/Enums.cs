@@ -1,27 +1,22 @@
 ﻿namespace OpenBots.Agent.Core.Enums
 {
-    public enum JobStatus
-    {
-        Unknown,
-        New,
-        Assigned,
-        InProgress,
-        Completed,
-        Failed,
-        Abandoned
-    }
-
     public enum OrchestratorType
     {
         Cloud,
         Local
     }
 
+    public enum ServerConfigurationSource
+    {
+        Environment,
+        Registry
+    }
+
     // Sink Type for Logging
     public enum SinkType
     {
-        File,
-        Http
+        Http,
+        File
     }
 
     public enum AgentStatus
@@ -53,11 +48,9 @@
         CSScript
     }
 
-    public enum RemoteDesktopState
+    public enum RegistryType
     {
-        Connected,
-        Disconnected,
-        Errored,
-        Unknown
+        Machine,
+        User
     }
 }

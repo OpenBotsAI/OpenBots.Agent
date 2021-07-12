@@ -200,17 +200,18 @@
   <ItemGroup>
     <Compile Include="Manager\Agents\Agent.cs" />
     <Compile Include="Manager\Agents\AgentsManager.cs" />
+    <Compile Include="Manager\Common\AuthAPIManager.cs" />
     <Compile Include="Manager\Execution\AttendedExecutionManager.cs" />
     <Compile Include="Manager\Execution\ExecutionManager.cs" />
     <Compile Include="Manager\Execution\JobsQueueManager.cs" />
     <Compile Include="Manager\Execution\Executor.cs" />
     <Compile Include="Manager\Execution\AutomationManager.cs" />
     <Compile Include="Manager\Execution\JobsPolling.cs" />
-    <Compile Include="Manager\Execution\WMIQueries.cs" />
     <Compile Include="Manager\FreeRDP\RDPSessionManager.cs" />
     <Compile Include="Manager\Hub\HubManager.cs" />
     <Compile Include="Manager\Logs\FileLogger.cs" />
     <Compile Include="Manager\Win32\ADVAPI32.cs" />
+    <Compile Include="Manager\Win32\SHLWAPI.cs" />
     <Compile Include="Manager\Win32\Win32Utilities.cs" />
     <Compile Include="Manager\Win32\KERNEL32.cs" />
     <Compile Include="Manager\Win32\USERENV32.cs" />

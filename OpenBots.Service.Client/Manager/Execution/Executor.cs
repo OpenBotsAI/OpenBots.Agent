@@ -1,5 +1,7 @@
-﻿using OpenBots.Agent.Core.Model;
+﻿using OpenBots.Agent.Core.Enums;
+using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Model.RDP;
+using OpenBots.Agent.Core.WinRegistry;
 using OpenBots.Service.Client.Manager.FreeRDP;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Win32;
@@ -37,6 +39,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             IntPtr hPToken = IntPtr.Zero;
             RDPSessionManager rdpSessionManager = null;
             string domainUsername = $"{machineCredential.Domain}\\{machineCredential.UserName}";
+            RDPRegistryKeys rdpRegistryKeys = new RDPRegistryKeys();
+            RegistryManager registryManager = new RegistryManager();
 
             try
             {
@@ -57,49 +61,64 @@ namespace OpenBots.Service.Client.Manager.Execution
                             $"as the provided User Credentials are invalid.\n" +
                             (errorCode != 0 ? $"Error Code: {errorCode}" : string.Empty));
 
+                    // Bypassing Legal Notice Screen (if Enabled)
+                    GetLegalNoticeValues(rdpRegistryKeys, registryManager);
+                    SetLegalNoticeValues(rdpRegistryKeys, registryManager, false);
+
                     _fileLogger?.LogEvent("CreateRDPConnection", "Start RDP Connection", LogEventLevel.Information);
 
-                    rdpSessionManager = new RDPSessionManager();
-                    rdpSessionManager.OpenRDPSession(new RemoteDesktopInfo
+                    try
                     {
-                        Host = "localhost",
-                        User = machineCredential.UserName,
-                        Domain = machineCredential.Domain,
-                        Password = machineCredential.PasswordSecret,
-                        DesktopWidth = serverSettings.ResolutionWidth,
-                        DesktopHeight = serverSettings.ResolutionHeight,
-                        ColorDepth = 32
-                    });
-                    
-                    if (!rdpSessionManager.isConnected)
-                    {
-                        _fileLogger?.LogEvent("CreateRDPConnection", "Unable to create the RDP Session", LogEventLevel.Error);
-                        throw new Exception($"Unable to Create a Remote Desktop Session for provided Credential \"{machineCredential.Name}\" ");
+                        rdpSessionManager = new RDPSessionManager();
+                        rdpSessionManager.OpenRDPSession(new RemoteDesktopInfo
+                        {
+                            Host = "localhost",
+                            User = machineCredential.UserName,
+                            Domain = machineCredential.Domain,
+                            Password = machineCredential.PasswordSecret,
+                            DesktopWidth = serverSettings.ResolutionWidth,
+                            DesktopHeight = serverSettings.ResolutionHeight,
+                            ColorDepth = 32
+                        });
 
-                        //_fileLogger?.LogEvent("LogonUser", "Logon User to perform automation in non-interactive session", LogEventLevel.Error);
-
-                        //if (!(sessionFound = _win32Helper.LogonUserA(machineCredential, ref hPToken)))
-                        //    throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
-                    }
-                    else
-                    {
-                        _fileLogger?.LogEvent("CreateRDPConnection", "Connecting to RDP Connection", LogEventLevel.Information);
-                        _fileLogger?.LogEvent("CreateRDPConnection", "Wait for RDP Connection", LogEventLevel.Information);
-
-                        // Wait for RDP connection to be established within 60 sec
-                        bool isConnected = WaitForRDPConnection(domainUsername);
-
-                        // Obtain the id of Remote Desktop Session
-                        sessionFound = _win32Helper.GetUserSessionToken(machineCredential, ref hPToken);
-
-                        _fileLogger?.LogEvent("GetActiveUserSession", "Session " +
-                            (!sessionFound ? "not found" : "found"), LogEventLevel.Information);
-
-                        // If unable to find/create an Active User Session
-                        if (!sessionFound)
+                        if (!rdpSessionManager.isConnected)
+                        {
+                            _fileLogger?.LogEvent("CreateRDPConnection", "Unable to create the RDP Session", LogEventLevel.Error);
                             throw new Exception($"Unable to Create a Remote Desktop Session for provided Credential \"{machineCredential.Name}\" ");
 
-                        isRDPSession = rdpSessionManager.isConnected;
+                            //_fileLogger?.LogEvent("LogonUser", "Logon User to perform automation in non-interactive session", LogEventLevel.Error);
+
+                            //if (!(sessionFound = _win32Helper.LogonUserA(machineCredential, ref hPToken)))
+                            //    throw new Exception($"Unable to Create an Active User Session for provided Credential \"{machineCredential.Name}\" ");
+                        }
+                        else
+                        {
+                            _fileLogger?.LogEvent("CreateRDPConnection", "Connecting to RDP Connection", LogEventLevel.Information);
+                            _fileLogger?.LogEvent("CreateRDPConnection", "Wait for RDP Connection", LogEventLevel.Information);
+
+                            // Wait for RDP connection to be established within 60 sec
+                            bool isConnected = WaitForRDPConnection(domainUsername);
+
+                            // Obtain the id of Remote Desktop Session
+                            sessionFound = _win32Helper.GetUserSessionToken(machineCredential, ref hPToken);
+
+                            _fileLogger?.LogEvent("GetActiveUserSession", "Session " +
+                                (!sessionFound ? "not found" : "found"), LogEventLevel.Information);
+
+                            // If unable to find/create an Active User Session
+                            if (!sessionFound)
+                                throw new Exception($"Unable to Create a Remote Desktop Session for provided Credential \"{machineCredential.Name}\" ");
+
+                            isRDPSession = rdpSessionManager.isConnected;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    finally
+                    {
+                        SetLegalNoticeValues(rdpRegistryKeys, registryManager, true);
                     }
                 }
                 _fileLogger?.LogEvent("RunProcessAsCurrentUser", $"Start Automation", LogEventLevel.Information);
@@ -146,6 +165,42 @@ namespace OpenBots.Service.Client.Manager.Execution
                 isConnected = false;
 
             return isConnected;
+        }
+
+        private void GetLegalNoticeValues(RDPRegistryKeys rdpRegistryKeys, RegistryManager registryManager)
+        {
+            try
+            {
+                rdpRegistryKeys.LegalNoticeCaptionValue = registryManager.GetKeyValue(RegistryType.Machine,
+                                rdpRegistryKeys.SubKey, rdpRegistryKeys.LegalNoticeCaptionKey);
+
+                rdpRegistryKeys.LegalNoticeTextValue = registryManager.GetKeyValue(RegistryType.Machine,
+                    rdpRegistryKeys.SubKey, rdpRegistryKeys.LegalNoticeTextKey);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception occurred while getting the Legal-Notice Registry Values: {ex.Message}");
+            }
+        }
+
+        private void SetLegalNoticeValues(RDPRegistryKeys rdpRegistryKeys, RegistryManager registryManager, bool setBack)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(rdpRegistryKeys.LegalNoticeCaptionValue) ||
+                        !string.IsNullOrEmpty(rdpRegistryKeys.LegalNoticeTextValue))
+                {
+                    registryManager.SetKeyValue(RegistryType.Machine, rdpRegistryKeys.SubKey, rdpRegistryKeys.LegalNoticeCaptionKey,
+                            (!string.IsNullOrEmpty(rdpRegistryKeys.LegalNoticeCaptionValue) && !setBack) ? "" : rdpRegistryKeys.LegalNoticeCaptionValue);
+
+                    registryManager.SetKeyValue(RegistryType.Machine, rdpRegistryKeys.SubKey, rdpRegistryKeys.LegalNoticeTextKey,
+                        (!string.IsNullOrEmpty(rdpRegistryKeys.LegalNoticeTextValue) && !setBack) ? "" : rdpRegistryKeys.LegalNoticeTextValue);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception occurred while setting the Legal-Notice Registry Values: {ex.Message}");
+            }
         }
     }
 }

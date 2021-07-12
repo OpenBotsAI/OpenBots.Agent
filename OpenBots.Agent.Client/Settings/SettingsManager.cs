@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using System;
 using System.IO;
@@ -8,6 +9,7 @@ namespace OpenBots.Agent.Client
     public class SettingsManager
     {
         public EnvironmentSettings EnvironmentSettings;
+        public string LogAPIEndPoint = "/api/v1/Logger/Agent";
         public static SettingsManager Instance
         {
             get
@@ -40,12 +42,6 @@ namespace OpenBots.Agent.Client
             // Default Settings
             return new OpenBotsSettings()
             {
-                TracingLevel = "Information",
-                SinkType = "Http",
-                LoggingValue1 = "/api/v1/Logger/Agent",
-                OpenBotsServerType = "Local",
-                OpenBotsServerUrl = "",
-                OpenBotsOrganizationName = "",
                 AgentId = "",
                 AgentName = "",
                 HeartbeatInterval = 30,
@@ -54,15 +50,14 @@ namespace OpenBots.Agent.Client
                 ResolutionHeight = 0,
                 HighDensityAgent = false,
                 SingleSessionExecution = false,
-                SSLCertificateVerification = false
+                SSLCertificateVerification = false,
+                ServerConfigurationSource = ServerConfigurationSource.Registry.ToString()
             };
         }
 
         public OpenBotsSettings ResetToDefaultSettings()
         {
             var agentSettings = GetDefaultSettings();
-            agentSettings.LoggingValue1 = string.Empty;
-
             UpdateSettings(agentSettings);
 
             return agentSettings;

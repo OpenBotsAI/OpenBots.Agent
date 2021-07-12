@@ -52,10 +52,13 @@ namespace OpenBots.Server.SDK.Client
         {
             var status = (int)response.StatusCode;
             var content = response.Content;
+
             if (status >= 400)
             {
-                //if (content.Contains("[]"))
-                //    content.Replace("[]", "null");
+                if (string.IsNullOrEmpty(content))
+                    return new ApiException(status,
+                        string.Format("Error calling {0} with status {1}: {2}", methodName, status, response.StatusCode));
+
                 var resultDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
                 var error = resultDict["title"].ToString();
                 return new ApiException(status,

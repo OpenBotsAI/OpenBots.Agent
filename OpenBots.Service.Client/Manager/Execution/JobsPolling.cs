@@ -2,6 +2,7 @@
 using OpenBots.Agent.Core.Model;
 using OpenBots.Server.SDK.HelperMethods;
 using OpenBots.Server.SDK.Model;
+using OpenBots.Service.Client.Manager.Common;
 using OpenBots.Service.Client.Manager.Hub;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
@@ -18,9 +19,9 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         // Jobs Hub Manager (for Long Polling)
         private HubManager _jobsHubManager;
-        private AuthMethods _authMethods;
 
         private ConnectionSettingsManager _connectionSettingsManager;
+        private AuthAPIManager _authAPIManager;
         private FileLogger _fileLogger;
 
         public HeartbeatViewModel Heartbeat { get; set; }
@@ -32,22 +33,14 @@ namespace OpenBots.Service.Client.Manager.Execution
             ExecutionManager = new ExecutionManager(Heartbeat);
         }
 
-        private void Initialize(ConnectionSettingsManager connectionSettingsManager, FileLogger fileLogger)
+        private void Initialize(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
         {
             
             _connectionSettingsManager = connectionSettingsManager;
+            _authAPIManager = authAPIManager;
             _fileLogger = fileLogger;
 
             _connectionSettingsManager.ConnectionSettingsUpdatedEvent += OnConnectionSettingsUpdate;
-
-            _authMethods = new AuthMethods(
-                    _connectionSettingsManager.ConnectionSettings.ServerType,
-                    _connectionSettingsManager.ConnectionSettings.OrganizationName,
-                    _connectionSettingsManager.ConnectionSettings.ServerURL,
-                    _connectionSettingsManager.ConnectionSettings.AgentUsername,
-                    _connectionSettingsManager.ConnectionSettings.AgentPassword,
-                    _connectionSettingsManager.ConnectionSettings.UserName,
-                    _connectionSettingsManager.ConnectionSettings.DNSHost);
         }
 
         private void UnInitialize()
@@ -56,9 +49,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                 _connectionSettingsManager.ConnectionSettingsUpdatedEvent -= OnConnectionSettingsUpdate;
         }
 
-        public void StartJobsPolling(ConnectionSettingsManager connectionSettingsManager, FileLogger fileLogger)
+        public void StartJobsPolling(ConnectionSettingsManager connectionSettingsManager, AuthAPIManager authAPIManager, FileLogger fileLogger)
         {
-            Initialize(connectionSettingsManager, fileLogger);
+            Initialize(connectionSettingsManager, authAPIManager, fileLogger);
 
             // Start Heartbeat Timer
             StartHeartbeatTimer();
@@ -188,12 +181,9 @@ namespace OpenBots.Service.Client.Manager.Execution
                 // Update LastReportedOn
                 Heartbeat.LastReportedOn = DateTime.UtcNow;
 
-                // Authenticate Agent
-                var userInfo = _authMethods.GetUserInfo();
-
                 // Send HeartBeat to the Server
                 var apiResponse = AgentMethods.SendAgentHeartBeat(
-                    userInfo,
+                    _authAPIManager.UserInfo,
                     _connectionSettingsManager.ConnectionSettings.AgentId,
                     Heartbeat);
 
@@ -227,7 +217,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             {
                 ExecutionManager.JobStartedEvent += OnJobStarted;
                 ExecutionManager.JobFinishedEvent += OnJobFinished;
-                ExecutionManager.StartNewJobsCheckTimer(_connectionSettingsManager, _fileLogger);
+                ExecutionManager.StartNewJobsCheckTimer(_connectionSettingsManager, _authAPIManager, _fileLogger);
             }
         }
 

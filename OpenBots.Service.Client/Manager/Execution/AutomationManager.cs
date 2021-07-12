@@ -4,16 +4,17 @@ using Newtonsoft.Json.Linq;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Server.SDK.HelperMethods;
 using OpenBots.Server.SDK.Model;
+using OpenBots.Service.Client.Manager.Common;
 using System;
 using System.IO;
-using SystemIO = System.IO;
 using System.Linq;
+using SystemIO = System.IO;
 
 namespace OpenBots.Service.Client.Manager.Execution
 {
     public static class AutomationManager
     {
-        public static string DownloadAndExtractAutomation(AuthMethods authMethods, Automation automation, string jobId, string domainName, string userName, out string executionDirectoryPath, out string configFilePath)
+        public static string DownloadAndExtractAutomation(AuthAPIManager authAPIManager, Automation automation, string jobId, string domainName, string userName, out string executionDirectoryPath, out string configFilePath)
         {
             configFilePath = "";
             executionDirectoryPath = "";
@@ -46,11 +47,8 @@ namespace OpenBots.Service.Client.Manager.Execution
             // Check if Automation (.nupkg) file exists if Not Download it
             if (!File.Exists(processNugetFilePath))
             {
-                // Authenticate Agent
-                var userInfo = authMethods.GetUserInfo();
-
                 // Download Automation by Id
-                var apiResponse = AutomationMethods.ExportAutomation(userInfo, automation.Id.ToString());
+                var apiResponse = AutomationMethods.ExportAutomation(authAPIManager.UserInfo, automation.Id.ToString());
 
                 // Write Downloaded(.nupkg) file in the Automation Directory
                 File.WriteAllBytes(processNugetFilePath, apiResponse.ToArray());

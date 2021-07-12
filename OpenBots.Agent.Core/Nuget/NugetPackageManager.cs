@@ -263,6 +263,7 @@ namespace OpenBots.Agent.Core.Nuget
         public static void SetupFirstTimeUserEnvironment(string domainName, string userName, string productVersion)
         {
             string packagesPath = Folders.GetFolder(FolderType.LocalAppDataPackagesFolder);
+            var applicationSettings = new ApplicationSettings().GetOrCreateApplicationSettings();
 
             if (!Directory.Exists(packagesPath))
                 Directory.CreateDirectory(packagesPath);
@@ -274,7 +275,7 @@ namespace OpenBots.Agent.Core.Nuget
 
             var commandVersion = Regex.Matches(productVersion, @"\d+\.\d+\.\d+")[0].ToString();
 
-            Dictionary<string, string> dependencies = Project.DefaultCommandGroups.ToDictionary(x => $"OpenBots.Commands.{x}", x => commandVersion);
+            Dictionary<string, string> dependencies = applicationSettings.ClientSettings.DefaultPackages.ToDictionary(x => x, x => commandVersion);
 
             List<string> existingOpenBotsPackages = Directory.GetDirectories(packagesPath)
                                                              .Where(x => new DirectoryInfo(x).Name.StartsWith("OpenBots"))

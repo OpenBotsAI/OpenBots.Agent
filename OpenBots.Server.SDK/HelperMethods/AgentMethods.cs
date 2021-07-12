@@ -1,17 +1,12 @@
 ﻿using OpenBots.Server.SDK.Api;
-using OpenBots.Server.SDK.Client;
 using OpenBots.Server.SDK.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenBots.Server.SDK.HelperMethods
 {
     public class AgentMethods
     {
-        public static NextJobViewModel SendAgentHeartBeat(UserInfo userInfo, string agentId, HeartbeatViewModel body)
+        public static NextJobViewModel SendAgentHeartBeat(UserInfo userInfo, string agentId, HeartbeatViewModel body, int count = 0)
         {
             var agentsApi = GetApiInstance(userInfo.Token, userInfo.ServerUrl);
 
@@ -21,14 +16,20 @@ namespace OpenBots.Server.SDK.HelperMethods
             }
             catch (Exception ex)
             {
-                if (ex.Message != "One or more errors occurred.")
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401" && count < 2)
+                {
+                    UtilityMethods.RefreshToken(userInfo);
+                    count++;
+                    return SendAgentHeartBeat(userInfo, agentId, body, count);
+                }
+                else if (ex.Message != "One or more errors occurred.")
                     throw new InvalidOperationException("Exception when calling AgentsApi.SendAgentHeartBeat: " + ex.Message);
                 else
                     throw new InvalidOperationException(ex.InnerException.Message);
             }
         }
 
-        public static ResolvedAgentResponseViewModel ResolveAgent(UserInfo userInfo, ResolveAgentViewModel body)
+        public static ResolvedAgentResponseViewModel ResolveAgent(UserInfo userInfo, ResolveAgentViewModel body, int count = 0)
         {
             var agentsApi = GetApiInstance(userInfo.Token, userInfo.ServerUrl);
 
@@ -38,14 +39,20 @@ namespace OpenBots.Server.SDK.HelperMethods
             }
             catch (Exception ex)
             {
-                if (ex.Message != "One or more errors occurred.")
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401" && count < 2)
+                {
+                    UtilityMethods.RefreshToken(userInfo);
+                    count++;
+                    return ResolveAgent(userInfo, body, count);
+                }
+                else if (ex.Message != "One or more errors occurred.")
                     throw new InvalidOperationException("Exception when calling AgentsApi.ResolveAgent: " + ex.Message);
                 else
                     throw new InvalidOperationException(ex.InnerException.Message);
             }
         }
 
-        public static ConnectedViewModel ConnectAgent(UserInfo userInfo, string agentId, ConnectAgentViewModel connectAgentViewModel)
+        public static ConnectedViewModel ConnectAgent(UserInfo userInfo, string agentId, ConnectAgentViewModel connectAgentViewModel, int count = 0)
         {
             var agentsApi = GetApiInstance(userInfo.Token, userInfo.ServerUrl);
 
@@ -55,14 +62,20 @@ namespace OpenBots.Server.SDK.HelperMethods
             }
             catch (Exception ex)
             {
-                if (ex.Message != "One or more errors occurred.")
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401" && count < 2)
+                {
+                    UtilityMethods.RefreshToken(userInfo);
+                    count++;
+                    return ConnectAgent(userInfo, agentId, connectAgentViewModel, count);
+                }
+                else if (ex.Message != "One or more errors occurred.")
                     throw new InvalidOperationException("Exception when calling AgentsApi.ConnectAgent: " + ex.Message);
                 else
                     throw new InvalidOperationException(ex.InnerException.Message);
             }
         }
 
-        public static void DisconnectAgent(UserInfo userInfo, string agentId, ConnectAgentViewModel connectAgentViewModel)
+        public static void DisconnectAgent(UserInfo userInfo, string agentId, ConnectAgentViewModel connectAgentViewModel, int count = 0)
         {
             var agentsApi = GetApiInstance(userInfo.Token, userInfo.ServerUrl);
             try
@@ -71,14 +84,20 @@ namespace OpenBots.Server.SDK.HelperMethods
             }
             catch (Exception ex)
             {
-                if (ex.Message != "One or more errors occurred.")
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401" && count < 2)
+                {
+                    UtilityMethods.RefreshToken(userInfo);
+                    count++;
+                    DisconnectAgent(userInfo, agentId, connectAgentViewModel, count);
+                }
+                else if (ex.Message != "One or more errors occurred.")
                     throw new InvalidOperationException("Exception when calling AgentsApi.DisconnectAgent: " + ex.Message);
                 else
                     throw new InvalidOperationException(ex.InnerException.Message);
             }
         }
 
-        public static AgentViewModel GetAgent(UserInfo userInfo, string agentId)
+        public static AgentViewModel GetAgent(UserInfo userInfo, string agentId, int count = 0)
         {
             var agentsApi = GetApiInstance(userInfo.Token, userInfo.ServerUrl);
 
@@ -88,7 +107,13 @@ namespace OpenBots.Server.SDK.HelperMethods
             }
             catch (Exception ex)
             {
-                if (ex.Message != "One or more errors occurred.")
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401" && count < 2)
+                {
+                    UtilityMethods.RefreshToken(userInfo);
+                    count++;
+                    return GetAgent(userInfo, agentId, count);
+                }
+                else if (ex.Message != "One or more errors occurred.")
                     throw new InvalidOperationException("Exception when calling AgentsApi.GetAgent: " + ex.Message);
                 else
                     throw new InvalidOperationException(ex.InnerException.Message);

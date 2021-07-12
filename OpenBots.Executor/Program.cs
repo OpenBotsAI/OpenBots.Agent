@@ -2,7 +2,6 @@
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Utilities;
 
-
 namespace OpenBots.Executor
 {
     class Program

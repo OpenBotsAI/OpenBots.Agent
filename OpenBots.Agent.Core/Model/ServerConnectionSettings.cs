@@ -30,15 +30,17 @@ namespace OpenBots.Agent.Core.Model
         [DataMember]
         public string MACAddress { get; set; }
         [DataMember]
-        public string IPAddress { get; set; }
-        [DataMember]
         public string ServerIPAddress { get; set; }
         [DataMember]
         public string TracingLevel { get; set; }
         [DataMember]
+        public string LogStorage { get; set; }
+        [DataMember]
         public string SinkType { get; set; }
         [DataMember]
-        public string LoggingValue1 { get; set; }
+        public string LogUrl { get; set; }
+        [DataMember]
+        public string LogFilePath { get; set; }
         [DataMember]
         public int HeartbeatInterval { get; set; }
         [DataMember]

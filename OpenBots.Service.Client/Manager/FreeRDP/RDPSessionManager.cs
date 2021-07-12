@@ -1,6 +1,5 @@
 ﻿using OpenBots.Agent.Core.Model.RDP;
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace OpenBots.Service.Client.Manager.FreeRDP
@@ -8,7 +7,7 @@ namespace OpenBots.Service.Client.Manager.FreeRDP
     public class RDPSessionManager
     {
         public bool isConnected { get; private set; }
-        private string _freerdpLibPath = "freerdp-client3.dll";
+        private const string _freerdpLibPath = "freerdp-client3.dll";
 
         private RdpConnectResponse _rdpConnectResponse;
 
@@ -46,9 +45,9 @@ namespace OpenBots.Service.Client.Manager.FreeRDP
             public IntPtr context;
         };
 
-        [DllImport(@"freerdp-client3.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(_freerdpLibPath, CallingConvention = CallingConvention.Cdecl)]
         static extern void FreeRDPConnect(RdpConnectRequest connectRequest, [MarshalAs(UnmanagedType.Struct)] ref RdpConnectResponse connectResponse);
-        [DllImport(@"freerdp-client3.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(_freerdpLibPath, CallingConvention = CallingConvention.Cdecl)]
         static extern void FreeRDPDisconnect(RdpConnectResponse disconnectRequest, [MarshalAs(UnmanagedType.Struct)] ref RdpDisconnectResponse disconnectResponse);
 
         public RDPSessionManager()

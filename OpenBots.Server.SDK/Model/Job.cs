@@ -27,7 +27,7 @@ namespace OpenBots.Server.SDK.Model
     /// Job
     /// </summary>
     [DataContract]
-        public partial class Job :  IEquatable<Job>, IValidatableObject
+    public partial class Job : IEquatable<Job>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Job" /> class.
@@ -57,7 +57,7 @@ namespace OpenBots.Server.SDK.Model
         /// <param name="errorReason">errorReason.</param>
         /// <param name="errorCode">errorCode.</param>
         /// <param name="serializedErrorString">serializedErrorString.</param>
-        public Job(Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string), Guid? agentId = default(Guid?), Guid? agentGroupId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), double? executionTimeInMinutes = default(double?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? automationId = default(Guid?), int? automationVersion = default(int?), Guid? automationVersionId = default(Guid?), JobStatusType jobStatus = default(JobStatusType), string message = default(string), bool? isSuccessful = default(bool?), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string))
+        public Job(Guid? id = default(Guid?), bool? isDeleted = false, string createdBy = default(string), DateTime? createdOn = default(DateTime?), string deletedBy = default(string), DateTime? deleteOn = default(DateTime?), byte[] timestamp = default(byte[]), DateTime? updatedOn = default(DateTime?), string updatedBy = default(string), Guid? scheduleId = default(Guid?), Guid? agentId = default(Guid?), Guid? agentGroupId = default(Guid?), DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), int? startDay = default(int?), int? endDay = default(int?), double? executionTimeInMinutes = default(double?), DateTime? enqueueTime = default(DateTime?), DateTime? dequeueTime = default(DateTime?), Guid? automationId = default(Guid?), int? automationVersion = default(int?), Guid? automationVersionId = default(Guid?), JobStatusType jobStatus = default(JobStatusType), string message = default(string), bool? isSuccessful = default(bool?), string errorReason = default(string), string errorCode = default(string), string serializedErrorString = default(string), int automationLogCount = default(int), int automationExecutionLogCount = default(int))
         {
             // to ensure "automationId" is required (not null)
             if (automationId == null)
@@ -103,10 +103,13 @@ namespace OpenBots.Server.SDK.Model
             this.Timestamp = timestamp;
             this.UpdatedOn = updatedOn;
             this.UpdatedBy = updatedBy;
+            this.ScheduleId = scheduleId;
             this.AgentId = agentId;
             this.AgentGroupId = agentGroupId;
             this.StartTime = startTime;
             this.EndTime = endTime;
+            this.StartDay = startDay;
+            this.EndDay = endDay;
             this.ExecutionTimeInMinutes = executionTimeInMinutes;
             this.EnqueueTime = enqueueTime;
             this.DequeueTime = dequeueTime;
@@ -116,157 +119,184 @@ namespace OpenBots.Server.SDK.Model
             this.ErrorReason = errorReason;
             this.ErrorCode = errorCode;
             this.SerializedErrorString = serializedErrorString;
+            this.AutomationLogCount = automationLogCount;
+            this.AutomationExecutionLogCount = automationExecutionLogCount;
         }
-        
+
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name="id", EmitDefaultValue=false)]
+        [DataMember(Name = "id", EmitDefaultValue = false)]
         public Guid? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets IsDeleted
         /// </summary>
-        [DataMember(Name="isDeleted", EmitDefaultValue=false)]
+        [DataMember(Name = "isDeleted", EmitDefaultValue = false)]
         public bool? IsDeleted { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedBy
         /// </summary>
-        [DataMember(Name="createdBy", EmitDefaultValue=false)]
+        [DataMember(Name = "createdBy", EmitDefaultValue = false)]
         public string CreatedBy { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedOn
         /// </summary>
-        [DataMember(Name="createdOn", EmitDefaultValue=false)]
+        [DataMember(Name = "createdOn", EmitDefaultValue = false)]
         public DateTime? CreatedOn { get; set; }
 
         /// <summary>
         /// Gets or Sets DeletedBy
         /// </summary>
-        [DataMember(Name="deletedBy", EmitDefaultValue=false)]
+        [DataMember(Name = "deletedBy", EmitDefaultValue = false)]
         public string DeletedBy { get; set; }
 
         /// <summary>
         /// Gets or Sets DeleteOn
         /// </summary>
-        [DataMember(Name="deleteOn", EmitDefaultValue=false)]
+        [DataMember(Name = "deleteOn", EmitDefaultValue = false)]
         public DateTime? DeleteOn { get; set; }
 
         /// <summary>
         /// Gets or Sets Timestamp
         /// </summary>
-        [DataMember(Name="timestamp", EmitDefaultValue=false)]
+        [DataMember(Name = "timestamp", EmitDefaultValue = false)]
         public byte[] Timestamp { get; set; }
 
         /// <summary>
         /// Gets or Sets UpdatedOn
         /// </summary>
-        [DataMember(Name="updatedOn", EmitDefaultValue=false)]
+        [DataMember(Name = "updatedOn", EmitDefaultValue = false)]
         public DateTime? UpdatedOn { get; set; }
 
         /// <summary>
         /// Gets or Sets UpdatedBy
         /// </summary>
-        [DataMember(Name="updatedBy", EmitDefaultValue=false)]
+        [DataMember(Name = "updatedBy", EmitDefaultValue = false)]
         public string UpdatedBy { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ScheduleId
+        /// </summary>
+        public Guid? ScheduleId { get; set; }
 
         /// <summary>
         /// Gets or Sets AgentId
         /// </summary>
-        [DataMember(Name="agentId", EmitDefaultValue=false)]
+        [DataMember(Name = "agentId", EmitDefaultValue = false)]
         public Guid? AgentId { get; set; }
 
         /// <summary>
         /// Gets or Sets AgentGroupId
         /// </summary>
-        [DataMember(Name="agentGroupId", EmitDefaultValue=false)]
+        [DataMember(Name = "agentGroupId", EmitDefaultValue = false)]
         public Guid? AgentGroupId { get; set; }
 
         /// <summary>
         /// Gets or Sets StartTime
         /// </summary>
-        [DataMember(Name="startTime", EmitDefaultValue=false)]
+        [DataMember(Name = "startTime", EmitDefaultValue = false)]
         public DateTime? StartTime { get; set; }
 
         /// <summary>
         /// Gets or Sets EndTime
         /// </summary>
-        [DataMember(Name="endTime", EmitDefaultValue=false)]
+        [DataMember(Name = "endTime", EmitDefaultValue = false)]
         public DateTime? EndTime { get; set; }
+
+        /// <summary>
+        /// Get or Sets StartDay
+        /// </summary>
+        public int? StartDay { get; set; }//number of days since Jan 1st 2020
+
+        /// <summary>
+        /// Gets or Sets EndDay
+        /// </summary>
+        public int? EndDay { get; set; }
 
         /// <summary>
         /// Gets or Sets ExecutionTimeInMinutes
         /// </summary>
-        [DataMember(Name="executionTimeInMinutes", EmitDefaultValue=false)]
+        [DataMember(Name = "executionTimeInMinutes", EmitDefaultValue = false)]
         public double? ExecutionTimeInMinutes { get; set; }
 
         /// <summary>
         /// Gets or Sets EnqueueTime
         /// </summary>
-        [DataMember(Name="enqueueTime", EmitDefaultValue=false)]
+        [DataMember(Name = "enqueueTime", EmitDefaultValue = false)]
         public DateTime? EnqueueTime { get; set; }
 
         /// <summary>
         /// Gets or Sets DequeueTime
         /// </summary>
-        [DataMember(Name="dequeueTime", EmitDefaultValue=false)]
+        [DataMember(Name = "dequeueTime", EmitDefaultValue = false)]
         public DateTime? DequeueTime { get; set; }
 
         /// <summary>
         /// Gets or Sets AutomationId
         /// </summary>
-        [DataMember(Name="automationId", EmitDefaultValue=false)]
+        [DataMember(Name = "automationId", EmitDefaultValue = false)]
         public Guid? AutomationId { get; set; }
 
         /// <summary>
         /// Gets or Sets AutomationVersion
         /// </summary>
-        [DataMember(Name="automationVersion", EmitDefaultValue=false)]
+        [DataMember(Name = "automationVersion", EmitDefaultValue = false)]
         public int? AutomationVersion { get; set; }
 
         /// <summary>
         /// Gets or Sets AutomationVersionId
         /// </summary>
-        [DataMember(Name="automationVersionId", EmitDefaultValue=false)]
+        [DataMember(Name = "automationVersionId", EmitDefaultValue = false)]
         public Guid? AutomationVersionId { get; set; }
 
         /// <summary>
         /// Gets or Sets JobStatus
         /// </summary>
-        [DataMember(Name="jobStatus", EmitDefaultValue=false)]
+        [DataMember(Name = "jobStatus", EmitDefaultValue = false)]
         public JobStatusType JobStatus { get; set; }
 
         /// <summary>
         /// Gets or Sets Message
         /// </summary>
-        [DataMember(Name="message", EmitDefaultValue=false)]
+        [DataMember(Name = "message", EmitDefaultValue = false)]
         public string Message { get; set; }
 
         /// <summary>
         /// Gets or Sets IsSuccessful
         /// </summary>
-        [DataMember(Name="isSuccessful", EmitDefaultValue=false)]
+        [DataMember(Name = "isSuccessful", EmitDefaultValue = false)]
         public bool? IsSuccessful { get; set; }
 
         /// <summary>
         /// Gets or Sets ErrorReason
         /// </summary>
-        [DataMember(Name="errorReason", EmitDefaultValue=false)]
+        [DataMember(Name = "errorReason", EmitDefaultValue = false)]
         public string ErrorReason { get; set; }
 
         /// <summary>
         /// Gets or Sets ErrorCode
         /// </summary>
-        [DataMember(Name="errorCode", EmitDefaultValue=false)]
+        [DataMember(Name = "errorCode", EmitDefaultValue = false)]
         public string ErrorCode { get; set; }
 
         /// <summary>
         /// Gets or Sets SerializedErrorString
         /// </summary>
-        [DataMember(Name="serializedErrorString", EmitDefaultValue=false)]
+        [DataMember(Name = "serializedErrorString", EmitDefaultValue = false)]
         public string SerializedErrorString { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AutomationLogCount
+        /// </summary>
+        public int AutomationLogCount { get; set; }
+
+        /// <summary>
+        /// Gets or Sets AutomationExecutionLogCount
+        /// </summary>
+        public int AutomationExecutionLogCount { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -285,10 +315,13 @@ namespace OpenBots.Server.SDK.Model
             sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
             sb.Append("  UpdatedOn: ").Append(UpdatedOn).Append("\n");
             sb.Append("  UpdatedBy: ").Append(UpdatedBy).Append("\n");
+            sb.Append("  ScheduleId: ").Append(ScheduleId).Append("\n");
             sb.Append("  AgentId: ").Append(AgentId).Append("\n");
             sb.Append("  AgentGroupId: ").Append(AgentGroupId).Append("\n");
             sb.Append("  StartTime: ").Append(StartTime).Append("\n");
             sb.Append("  EndTime: ").Append(EndTime).Append("\n");
+            sb.Append("  StartDay: ").Append(StartDay).Append("\n");
+            sb.Append("  EndDay: ").Append(EndDay).Append("\n");
             sb.Append("  ExecutionTimeInMinutes: ").Append(ExecutionTimeInMinutes).Append("\n");
             sb.Append("  EnqueueTime: ").Append(EnqueueTime).Append("\n");
             sb.Append("  DequeueTime: ").Append(DequeueTime).Append("\n");
@@ -301,10 +334,12 @@ namespace OpenBots.Server.SDK.Model
             sb.Append("  ErrorReason: ").Append(ErrorReason).Append("\n");
             sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
             sb.Append("  SerializedErrorString: ").Append(SerializedErrorString).Append("\n");
+            sb.Append("  AutomationLogCount: ").Append(AutomationLogCount).Append("\n");
+            sb.Append("  AutomationExecutionLogCount: ").Append(AutomationExecutionLogCount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
-  
+
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
@@ -334,127 +369,127 @@ namespace OpenBots.Server.SDK.Model
             if (input == null)
                 return false;
 
-            return 
+            return
                 (
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
-                ) && 
+                ) &&
                 (
                     this.IsDeleted == input.IsDeleted ||
                     (this.IsDeleted != null &&
                     this.IsDeleted.Equals(input.IsDeleted))
-                ) && 
+                ) &&
                 (
                     this.CreatedBy == input.CreatedBy ||
                     (this.CreatedBy != null &&
                     this.CreatedBy.Equals(input.CreatedBy))
-                ) && 
+                ) &&
                 (
                     this.CreatedOn == input.CreatedOn ||
                     (this.CreatedOn != null &&
                     this.CreatedOn.Equals(input.CreatedOn))
-                ) && 
+                ) &&
                 (
                     this.DeletedBy == input.DeletedBy ||
                     (this.DeletedBy != null &&
                     this.DeletedBy.Equals(input.DeletedBy))
-                ) && 
+                ) &&
                 (
                     this.DeleteOn == input.DeleteOn ||
                     (this.DeleteOn != null &&
                     this.DeleteOn.Equals(input.DeleteOn))
-                ) && 
+                ) &&
                 (
                     this.Timestamp == input.Timestamp ||
                     (this.Timestamp != null &&
                     this.Timestamp.Equals(input.Timestamp))
-                ) && 
+                ) &&
                 (
                     this.UpdatedOn == input.UpdatedOn ||
                     (this.UpdatedOn != null &&
                     this.UpdatedOn.Equals(input.UpdatedOn))
-                ) && 
+                ) &&
                 (
                     this.UpdatedBy == input.UpdatedBy ||
                     (this.UpdatedBy != null &&
                     this.UpdatedBy.Equals(input.UpdatedBy))
-                ) && 
+                ) &&
                 (
                     this.AgentId == input.AgentId ||
                     (this.AgentId != null &&
                     this.AgentId.Equals(input.AgentId))
-                ) && 
+                ) &&
                 (
                     this.AgentGroupId == input.AgentGroupId ||
                     (this.AgentGroupId != null &&
                     this.AgentGroupId.Equals(input.AgentGroupId))
-                ) && 
+                ) &&
                 (
                     this.StartTime == input.StartTime ||
                     (this.StartTime != null &&
                     this.StartTime.Equals(input.StartTime))
-                ) && 
+                ) &&
                 (
                     this.EndTime == input.EndTime ||
                     (this.EndTime != null &&
                     this.EndTime.Equals(input.EndTime))
-                ) && 
+                ) &&
                 (
                     this.ExecutionTimeInMinutes == input.ExecutionTimeInMinutes ||
                     (this.ExecutionTimeInMinutes != null &&
                     this.ExecutionTimeInMinutes.Equals(input.ExecutionTimeInMinutes))
-                ) && 
+                ) &&
                 (
                     this.EnqueueTime == input.EnqueueTime ||
                     (this.EnqueueTime != null &&
                     this.EnqueueTime.Equals(input.EnqueueTime))
-                ) && 
+                ) &&
                 (
                     this.DequeueTime == input.DequeueTime ||
                     (this.DequeueTime != null &&
                     this.DequeueTime.Equals(input.DequeueTime))
-                ) && 
+                ) &&
                 (
                     this.AutomationId == input.AutomationId ||
                     (this.AutomationId != null &&
                     this.AutomationId.Equals(input.AutomationId))
-                ) && 
+                ) &&
                 (
                     this.AutomationVersion == input.AutomationVersion ||
                     (this.AutomationVersion != null &&
                     this.AutomationVersion.Equals(input.AutomationVersion))
-                ) && 
+                ) &&
                 (
                     this.AutomationVersionId == input.AutomationVersionId ||
                     (this.AutomationVersionId != null &&
                     this.AutomationVersionId.Equals(input.AutomationVersionId))
-                ) && 
+                ) &&
                 (
                     this.JobStatus == input.JobStatus ||
                     (this.JobStatus != null &&
                     this.JobStatus.Equals(input.JobStatus))
-                ) && 
+                ) &&
                 (
                     this.Message == input.Message ||
                     (this.Message != null &&
                     this.Message.Equals(input.Message))
-                ) && 
+                ) &&
                 (
                     this.IsSuccessful == input.IsSuccessful ||
                     (this.IsSuccessful != null &&
                     this.IsSuccessful.Equals(input.IsSuccessful))
-                ) && 
+                ) &&
                 (
                     this.ErrorReason == input.ErrorReason ||
                     (this.ErrorReason != null &&
                     this.ErrorReason.Equals(input.ErrorReason))
-                ) && 
+                ) &&
                 (
                     this.ErrorCode == input.ErrorCode ||
                     (this.ErrorCode != null &&
                     this.ErrorCode.Equals(input.ErrorCode))
-                ) && 
+                ) &&
                 (
                     this.SerializedErrorString == input.SerializedErrorString ||
                     (this.SerializedErrorString != null &&

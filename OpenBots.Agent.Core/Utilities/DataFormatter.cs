@@ -100,7 +100,7 @@ namespace OpenBots.Agent.Core.Utilities
             }
             catch
             {
-                return encryptedText;
+                return string.Empty;
             }
         }
         #endregion Data Encryption

@@ -91,15 +91,22 @@ namespace OpenBots.Agent.Client.Forms
 
         private void OnClick_SaveBtn(object sender, RoutedEventArgs e)
         {
-            OBSettings.HeartbeatInterval = (int)updown_HeartbeatInterval.Value;
-            OBSettings.JobsLoggingInterval = (int)updown_LoggingInterval.Value;
-            //OBSettings.HighDensityAgent = GetBoolAliasOfEnum(cmb_HighDensityAgent.Text);
-            OBSettings.SSLCertificateVerification = GetBoolAliasOfEnum(cmb_SSLCertificateVerification.Text);
+            try
+            {
+                OBSettings.HeartbeatInterval = (int)updown_HeartbeatInterval.Value;
+                OBSettings.JobsLoggingInterval = (int)updown_LoggingInterval.Value;
+                //OBSettings.HighDensityAgent = GetBoolAliasOfEnum(cmb_HighDensityAgent.Text);
+                OBSettings.SSLCertificateVerification = GetBoolAliasOfEnum(cmb_SSLCertificateVerification.Text);
 
-            SettingsManager.Instance.UpdateSettings(OBSettings);
-            _settingsChanged = false;
-            ChangesSaved = true;
-            UpdateSaveButtonState();
+                SettingsManager.Instance.UpdateSettings(OBSettings);
+                _settingsChanged = false;
+                ChangesSaved = true;
+                Close();
+            }
+            catch
+            {
+                Close();
+            }
         }
     }
 }

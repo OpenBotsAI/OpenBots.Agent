@@ -29,7 +29,6 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Name="pnl_MachineInfo_WhoAmI" Height="29">
                     <Grid Name="grd_MachineInfo_WhoAmI" Margin="0,0,10,0">
@@ -67,19 +66,7 @@
                         <Image x:Name="img_macAddress" Grid.Column="2" MouseLeftButtonDown="OnClick_CopyImage"/>
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="pnl_MachineInfo_IPAddress" Grid.Row="3" Height="29">
-                    <Grid Name="grd_MachineInfo_IPAddress" Margin="0,0,10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="121"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="35"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="IP Address:" FontWeight="DemiBold"/>
-                        <Label Name="lbl_MachineInfo_IPAddress" Content="" Grid.Column="1" VerticalContentAlignment="Center"/>
-                        <Image x:Name="img_ipAddress" Grid.Column="2" MouseLeftButtonDown="OnClick_CopyImage"/>
-                    </Grid>
-                </StackPanel>
-                <StackPanel Name="pnl_MachineInfo_ServerIPAddress" Grid.Row="4" Height="29">
+                <StackPanel Name="pnl_MachineInfo_ServerIPAddress" Grid.Row="3" Height="29">
                     <Grid Name="grd_MachineInfo_ServerIPAddress" Margin="0,0,10,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="121"/>
@@ -91,7 +78,7 @@
                         <Image x:Name="img_serverIPAddress" Grid.Column="2" MouseLeftButtonDown="OnClick_CopyImage"/>
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="pnl_MachineInfo_Copy" Grid.Row="5" Margin="0,5,0,0" Height="29">
+                <StackPanel Name="pnl_MachineInfo_Copy" Grid.Row="4" Margin="0,5,0,0" Height="29">
                     <Label Name="lbl_CopytoClipboard" Content="Copied to Clipboard!" Visibility="Collapsed" FontWeight="DemiBold" Foreground="#808080"/>
                 </StackPanel>
             </Grid>

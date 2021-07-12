@@ -111,13 +111,13 @@ namespace OpenBots.Agent.Core.Utilities
             switch (sinkType)
             {
                 case SinkType.File:
-                    string logFile = Path.Combine(executionParams.ServerConnectionSettings.LoggingValue1);
+                    string logFile = Path.Combine(executionParams.ServerConnectionSettings.LogFilePath);
                     logger = CreateFileLogger(logFile, Serilog.RollingInterval.Day, minLogLevel);
 
                     break;
                 case SinkType.Http:
                     logger = CreateHTTPLogger(executionParams,
-                        executionParams.ServerConnectionSettings.LoggingValue1, minLogLevel);
+                        executionParams.ServerConnectionSettings.LogUrl, minLogLevel);
 
                     break;
             }

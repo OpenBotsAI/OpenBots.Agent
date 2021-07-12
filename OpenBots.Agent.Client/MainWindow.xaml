@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenBots.Agent.Client"
         mc:Ignorable="d"
-        Title="OpenBots Agent" Name="wndMain" Height="510" Width="488" Loaded="OnLoad" ResizeMode="NoResize" WindowStyle="None"
+        Title="OpenBots Agent" Name="wndMain" Height="555" Width="488" Loaded="OnLoad" ResizeMode="NoResize" WindowStyle="None"
         Unloaded="OnUnload" Initialized="OnInitialized" Closing="OnClosing" StateChanged="OnStateChanged" Closed="OnClosed"
         BorderThickness="2" UseLayoutRounding="True">
     <Window.Resources>
@@ -16,16 +16,6 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Source" Value="/resources/machine_info_black.png"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="UnlockImage" TargetType="{x:Type Image}">
-            <Setter Property="Source" Value="/resources/clear_credential_gray.png" />
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="ToolTip" Value="Clear Credentials"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Source" Value="/resources/clear_credential_black.png"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -83,7 +73,7 @@
                         <ColumnDefinition Width="27"/>
                         <ColumnDefinition Width="22"/>
                     </Grid.ColumnDefinitions>
-                    <Image Name="img_settings" Style="{StaticResource GearImage}" RenderOptions.BitmapScalingMode="HighQuality" MouseLeftButtonUp="OnClick_Settings" Grid.Column="0" Margin="0,2" Width="19">
+                    <Image Name="img_settings" Style="{StaticResource GearImage}" RenderOptions.BitmapScalingMode="HighQuality" MouseLeftButtonUp="OnClick_Settings" Grid.Column="1" Margin="0,2" Width="19">
                         <Image.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Name="menuItemAgentSettings" Header="Agent Settings" Click="OnClick_AgentSettings"/>
@@ -93,8 +83,7 @@
                             </ContextMenu>
                         </Image.ContextMenu>
                     </Image>
-                    <Image Name="img_MachineInfo" Style="{StaticResource MachineInfoImage}" Grid.Column="1" Margin="0,0,1,2" Width="21" MouseLeftButtonDown="OnClick_MachineInfo"/>
-                    <Image Name="img_ClearCredentials" Style="{StaticResource UnlockImage}" Grid.Column="2" Width="19" MouseLeftButtonDown="OnClick_ClearCredentials"/>
+                    <Image Name="img_MachineInfo" Style="{StaticResource MachineInfoImage}" Grid.Column="2" Margin="0,0,1,2" Width="21" MouseLeftButtonDown="OnClick_MachineInfo"/>
                     <Image Name="img_CloseApp" Style="{StaticResource CloseImage}" Grid.Column="3" MouseLeftButtonDown="OnClick_Close" Margin="0,4" Width="15" />
                 </Grid>
             </Grid>
@@ -176,39 +165,56 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="Logging" FontSize="14" BorderThickness="2,2,2,2" Margin="10,0,10,10" Grid.Row="2">
-            <Grid Margin="0,10,0,0" x:Name="loggingGrid">
+            <Grid Margin="0,13,0,0" x:Name="loggingGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Name="pnl_LogLevel">
-                    <Grid Name="loggingLevelGrid">
+                <StackPanel Name="pnl_LogStorage" Grid.Row="0" Height="29">
+                    <Grid Name="logStorageGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="Minimum Log Level" FontWeight="DemiBold" Name="lbl_Level"/>
-                        <ComboBox Name="cmb_LogLevel" Grid.Column="1" Margin="0,0,10,0" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_LogLevel"/>
+                        <Label Content="Log Storage" FontWeight="DemiBold" Name="lbl_LogStorage"/>
+                        <ComboBox Name="cmb_LogStorage" Grid.Column="1" Height="29" FontSize="16" Margin="0,0,10,10" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_LogStorage">
+                            <ComboBoxItem Content="OpenBots Cloud Server" Tag="Cloud"/>
+                            <ComboBoxItem Content="On-Premises" Tag="Local"/>
+                        </ComboBox>
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="pnl_SinkType" Grid.Row="1">
-                    <Grid Name="grd_SinkType" Margin="0,10,0,0">
+                <StackPanel Name="pnl_LoggingControls" Grid.Row="1">
+                    <Grid Name="grd_LoggingControls" Margin="0,10,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <StackPanel Name="pnl_SinkType_Controls">
-                            <Grid Name="grd_SinkType_Controls">
+                        <StackPanel Name="pnl_LogLevel" Grid.Row="0"  Height="29">
+                            <Grid Name="loggingLevelGrid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Minimum Log Level" FontWeight="DemiBold" Name="lbl_Level"/>
+                                <ComboBox Name="cmb_LogLevel" Grid.Column="1" Margin="0,0,10,0" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_LogLevel"/>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Name="pnl_SinkType" Grid.Row="1" Height="29" Margin="0,10,0,0">
+                            <Grid Name="grd_SinkType">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Sink Type" FontWeight="DemiBold" Name="lbl_SinkType"/>
-                                <ComboBox Name="cmb_SinkType" Grid.Column="1" Margin="0,0,10,0" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_SinkType"/>
+                                <ComboBox Name="cmb_SinkType" Grid.Column="1" Margin="0,0,10,0" VerticalContentAlignment="Center" DropDownClosed="OnDropDownClosed_SinkType">
+                                    <ComboBoxItem Content="Http" Tag="Http"/>
+                                    <ComboBoxItem Content="File" Tag="File"/>
+                                </ComboBox>
                             </Grid>
                         </StackPanel>
-                        <StackPanel Name="pnl_SinkType_Logging1" Grid.Row="1" Margin="0,10,0,0" Height="29">
+                        <StackPanel Name="pnl_SinkType_Logging1" Grid.Row="2" Margin="0,10,0,0" Height="29">
                             <Grid Name="grd_SinkType_Logging1" Margin="0,0,10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150"/>
@@ -218,13 +224,13 @@
                                 <TextBox Name="txt_SinkType_Logging1" FontSize="16" Grid.Column="1" VerticalContentAlignment="Center" TextChanged="OnTextChange_Logging1"/>
                             </Grid>
                         </StackPanel>
-                        <StackPanel Name="pnl_SinkType_Save" Grid.Row="2" Margin="0,15,0,5" Height="29">
+                        <StackPanel Name="pnl_SinkType_Save" Grid.Row="3" Margin="0,15,10,5" Height="29">
                             <Grid Name="grd_SinkType_Save">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Content="Save" Name="btn_Save" Margin="0,0,10,5"  Grid.Column="1" HorizontalAlignment="Right" FontSize="16" VerticalContentAlignment="Center" Background="White" Height="29" Width="100" Click="OnClick_SaveBtn"/>
+                                <Button Content="Save" Name="btn_Save" Grid.Column="1" HorizontalAlignment="Right" FontSize="16" VerticalContentAlignment="Center" Background="White" Height="29" Width="100" Click="OnClick_SaveBtn"/>
                             </Grid>
                         </StackPanel>
                     </Grid>

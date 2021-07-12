@@ -5,6 +5,7 @@ using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Nuget;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Server.SDK.HelperMethods;
+using OpenBots.Service.Client.Manager.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,24 +16,16 @@ namespace OpenBots.Service.Client.Manager.Execution
     public class AttendedExecutionManager
     {
         private ExecutionManager _executionManager;
-        private AuthMethods _authMethods;
+        private AuthAPIManager _authAPIManager;
 
-        public AttendedExecutionManager(ExecutionManager executionManager)
+        public AttendedExecutionManager(ExecutionManager executionManager, AuthAPIManager authAPIManager)
         {
             _executionManager = executionManager;
+            _authAPIManager = authAPIManager;
         }
 
         public bool ExecuteTask(string projectPackage, ServerConnectionSettings settings, bool isServerAutomation)
         {
-            _authMethods = new AuthMethods(
-                    settings.ServerType,
-                    settings.OrganizationName,
-                    settings.ServerURL,
-                    settings.AgentUsername,
-                    settings.AgentPassword,
-                    settings.UserName,
-                    settings.DNSHost);
-
             if (!_executionManager.IsEngineBusy)
             {
                 bool isSuccessful;
@@ -46,18 +39,15 @@ namespace OpenBots.Service.Client.Manager.Execution
                         // projectPackage is "Name" of the Project Package here
                         string filter = $"originalPackageName eq '{projectPackage}'";
 
-                        // Authenticate Agent
-                        var userInfo = _authMethods.GetUserInfo();
-
-                        var automation = AutomationMethods.GetAutomations(userInfo, filter).Items.FirstOrDefault();
-                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authMethods, automation, string.Empty, settings.DNSHost, settings.UserName, out projectDirectoryPath, out configFilePath);
+                        var automation = AutomationMethods.GetAutomations(_authAPIManager.UserInfo, filter).Items.FirstOrDefault();
+                        mainScriptFilePath = AutomationManager.DownloadAndExtractAutomation(_authAPIManager, automation, string.Empty, settings.DNSHost, settings.UserName, out projectDirectoryPath, out configFilePath);
                     }
                     else
                     {
                         // projectPackage is "Path" of the Project Package here
                         mainScriptFilePath = AutomationManager.GetMainScriptFilePath(projectPackage, out configFilePath);
                     }
-                    
+
                     projectDirectoryPath = Path.GetDirectoryName(mainScriptFilePath);
                     string projectType = JObject.Parse(File.ReadAllText(configFilePath))["ProjectType"].ToString();
                     var automationType = (AutomationType)Enum.Parse(typeof(AutomationType), projectType);
@@ -107,7 +97,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
         private void RunOpenBotsAutomation(string mainScriptFilePath, string projectName, ServerConnectionSettings settings, List<string> projectDependencies)
         {
-            settings.LoggingValue1 = GetLogsFilePath(settings.LoggingValue1, AutomationType.OpenBots, projectName);
+            settings.LogFilePath = GetLogsFilePath(settings.LogFilePath, AutomationType.OpenBots, projectName);
             var executionParams = GetExecutionParams(mainScriptFilePath, settings, projectDependencies);
             var userInfo = new MachineCredential
             {
@@ -150,7 +140,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             string batchFilePath = Path.Combine(projectDir, projectName + ".bat");
             File.WriteAllText(batchFilePath, commandsBatch);
-            string logsFilePath = GetLogsFilePath(settings.LoggingValue1, AutomationType.Python, projectName);
+            string logsFilePath = GetLogsFilePath(settings.LogFilePath, AutomationType.Python, projectName);
 
             string cmdLine = $"\"{batchFilePath}\" > \"{logsFilePath}\"";
             var userInfo = new MachineCredential
@@ -177,7 +167,7 @@ namespace OpenBots.Service.Client.Manager.Execution
 
             // Copy Script Folder/Files to ".\tagui\flows" Directory
             var mainScriptPath = _executionManager.CopyTagUIAutomation(exePath, mainScriptFilePath, ref executionDirPath);
-            var logsFilePath = GetLogsFilePath(settings.LoggingValue1, AutomationType.TagUI, projectName);
+            var logsFilePath = GetLogsFilePath(settings.LogFilePath, AutomationType.TagUI, projectName);
 
             string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C tagui \"{mainScriptPath}\" > \"{logsFilePath}\"";
             var userInfo = new MachineCredential
@@ -200,7 +190,7 @@ namespace OpenBots.Service.Client.Manager.Execution
             if (exePath == null)
                 throw new Exception("CS-Script installation was not detected on the machine. Please perform the installation as outlined in the official documentation.");
 
-            var logsFilePath = GetLogsFilePath(settings.LoggingValue1, AutomationType.CSScript, projectName);
+            var logsFilePath = GetLogsFilePath(settings.LogFilePath, AutomationType.CSScript, projectName);
             string cmdLine = $"C:\\Windows\\System32\\cmd.exe /C cscs \"{mainScriptFilePath}\" > \"{logsFilePath}\"";
             var userInfo = new MachineCredential
             {

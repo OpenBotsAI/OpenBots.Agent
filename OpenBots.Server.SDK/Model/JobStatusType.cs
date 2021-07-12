@@ -28,41 +28,47 @@ namespace OpenBots.Server.SDK.Model
     /// </summary>
     /// <value>Stores the current status of a job</value>
     [JsonConverter(typeof(StringEnumConverter))]
-        public enum JobStatusType
+    public enum JobStatusType
     {
         /// <summary>
         /// Enum Unknown for value: Unknown
         /// </summary>
         [EnumMember(Value = "Unknown")]
-        Unknown = 1,
+        Unknown = 0,
         /// <summary>
         /// Enum New for value: New
         /// </summary>
         [EnumMember(Value = "New")]
-        New = 2,
+        New = 1,
         /// <summary>
         /// Enum Assigned for value: Assigned
         /// </summary>
         [EnumMember(Value = "Assigned")]
-        Assigned = 3,
+        Assigned = 2,
         /// <summary>
         /// Enum InProgress for value: InProgress
         /// </summary>
         [EnumMember(Value = "InProgress")]
-        InProgress = 4,
+        InProgress = 3,
         /// <summary>
         /// Enum Failed for value: Failed
         /// </summary>
         [EnumMember(Value = "Failed")]
-        Failed = 5,
+        Failed = 4,
         /// <summary>
         /// Enum Completed for value: Completed
         /// </summary>
         [EnumMember(Value = "Completed")]
-        Completed = 6,
+        Completed = 5,
+        /// <summary>
+        /// Enum Stopping for value: Stopping
+        /// </summary>
+        [EnumMember(Value = "Stopping")]
+        Stopping = 6,
         /// <summary>
         /// Enum Abandoned for value: Abandoned
         /// </summary>
         [EnumMember(Value = "Abandoned")]
-        Abandoned = 7    }
+        Abandoned = 9
+    }
 }

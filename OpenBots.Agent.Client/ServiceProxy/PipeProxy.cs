@@ -3,7 +3,6 @@ using OpenBots.Agent.Core.Infrastructure;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Utilities;
 using System;
-using System.Collections.Generic;
 using System.ServiceModel;
 
 namespace OpenBots.Agent.Client

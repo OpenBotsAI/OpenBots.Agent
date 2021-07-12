@@ -9,10 +9,10 @@ namespace OpenBots.Server.SDK.HelperMethods
 {
     public class ServerEmailMethods
     {
-        public static void SendServerEmail(string token, string serverUrl, string organizationId, EmailMessage emailMessage, List<string> attachments, string accountName, string apiVersion)
+        public static void SendServerEmail(UserInfo userInfo, EmailMessage emailMessage, List<string> attachments, string accountName, int count = 0)
         {
-            var apiInstance = new EmailsApi(serverUrl);
-            apiInstance.Configuration.AccessToken = token;
+            var apiInstance = new EmailsApi(userInfo.ServerUrl);
+            apiInstance.Configuration.AccessToken = userInfo.Token;
 
             try
             {
@@ -28,7 +28,7 @@ namespace OpenBots.Server.SDK.HelperMethods
                         attachmentsList.Add(_file);
                     }
 
-                    apiInstance.ApiVapiVersionEmailsSendPostAsyncWithHttpInfo(apiVersion, organizationId, emailMessageJson, attachmentsList, accountName).Wait();
+                    apiInstance.ApiVapiVersionEmailsSendPostAsyncWithHttpInfo(userInfo.ApiVersion, userInfo.OrganizationId, emailMessageJson, attachmentsList, accountName).Wait();
 
                     foreach (var file in attachmentsList)
                     {
@@ -38,11 +38,17 @@ namespace OpenBots.Server.SDK.HelperMethods
                     }
                 }
                 else
-                    apiInstance.ApiVapiVersionEmailsSendPostAsyncWithHttpInfo(apiVersion, organizationId, emailMessageJson, null, accountName).Wait();
+                    apiInstance.ApiVapiVersionEmailsSendPostAsyncWithHttpInfo(userInfo.ApiVersion, userInfo.OrganizationId, emailMessageJson, null, accountName).Wait();
             }
             catch (Exception ex)
             {
-                if (ex.Message != "One or more errors occurred.")
+                if (ex.GetType().GetProperty("ErrorCode").GetValue(ex, null).ToString() == "401" && count < 2)
+                {
+                    UtilityMethods.RefreshToken(userInfo);
+                    count++;
+                    SendServerEmail(userInfo, emailMessage, attachments, accountName, count);
+                }
+                else if (ex.Message != "One or more errors occurred.")
                     throw new InvalidOperationException("Exception when calling EmailsApi.SendEmail: " + ex.Message);
                 else
                     throw new InvalidOperationException(ex.InnerException.Message);

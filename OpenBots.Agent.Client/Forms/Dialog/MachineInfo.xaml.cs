@@ -11,13 +11,12 @@ namespace OpenBots.Agent.Client.Forms.Dialog
     public partial class MachineInfo : Window
     {
         private DispatcherTimer _dispatcherTimer;
-        public MachineInfo(string whoami, string machineName, string macAddress, string ipAddress, string serverGeneratedIP)
+        public MachineInfo(string whoami, string machineName, string macAddress, string serverGeneratedIP)
         {
             InitializeComponent();
             lbl_MachineInfo_WhoAmI.Content = whoami;
             lbl_MachineInfo_MachineName.Content = machineName;
             lbl_MachineInfo_MACAddress.Content = macAddress;
-            lbl_MachineInfo_IPAddress.Content = ipAddress;
             lbl_MachineInfo_ServerIPAddress.Content = string.IsNullOrEmpty(serverGeneratedIP) ? "Not Available" : serverGeneratedIP;
             lbl_MachineInfo_ServerIPAddress.Foreground = string.IsNullOrEmpty(serverGeneratedIP) ? Brushes.Red : Brushes.Black;
 
@@ -56,9 +55,6 @@ namespace OpenBots.Agent.Client.Forms.Dialog
                     break;
                 case "img_macAddress":
                     Clipboard.SetText(lbl_MachineInfo_MACAddress.Content.ToString());
-                    break;
-                case "img_ipAddress":
-                    Clipboard.SetText(lbl_MachineInfo_IPAddress.Content.ToString());
                     break;
                 case "img_serverIPAddress":
                     Clipboard.SetText(lbl_MachineInfo_ServerIPAddress.Content.ToString());

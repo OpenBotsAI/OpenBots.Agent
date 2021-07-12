@@ -1,17 +1,14 @@
 ﻿using Autofac;
-using OpenBots.Agent.Core.Enums;
 using OpenBots.Agent.Core.Model;
 using OpenBots.Agent.Core.Utilities;
 using OpenBots.Core.Model.EngineModel;
 using OpenBots.Core.Script;
 using OpenBots.Engine;
 using OpenBots.Executor.Utilities;
-using Serilog.Core;
-using Serilog.Events;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using Utils = OpenBots.Core.Utilities.CommonUtilities;
 
 namespace OpenBots.Executor
 {
@@ -32,6 +29,9 @@ namespace OpenBots.Executor
         {
             var engineContext = GetEngineContext(executionParams);
             var engine = new AutomationEngineInstance(engineContext);
+
+            if(!string.IsNullOrEmpty(executionParams.JobId))
+                Utils.SessionVariableMethods.SetJobId(engine, executionParams.JobId);
             engine.ExecuteScriptSync();
         }
         

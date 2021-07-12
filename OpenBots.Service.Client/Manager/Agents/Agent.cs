@@ -1,7 +1,9 @@
-﻿using OpenBots.Agent.Core.Model;
+﻿using OpenBots.Agent.Core.Enums;
+using OpenBots.Agent.Core.Model;
 using OpenBots.Server.SDK.Api;
 using OpenBots.Server.SDK.HelperMethods;
 using OpenBots.Server.SDK.Model;
+using OpenBots.Service.Client.Manager.Common;
 using OpenBots.Service.Client.Manager.Execution;
 using OpenBots.Service.Client.Manager.Logs;
 using OpenBots.Service.Client.Manager.Settings;
@@ -14,7 +16,7 @@ namespace OpenBots.Service.Client.Manager.Agents
     public class Agent
     {
         private ConnectionSettingsManager _connectionSettingsManager;
-        private AuthMethods _authMethods;
+        private AuthAPIManager _authAPIManager;
         private JobsPolling _jobsPolling;
         private AttendedExecutionManager _attendedExecutionManager;
         private FileLogger _fileLogger;
@@ -22,8 +24,9 @@ namespace OpenBots.Service.Client.Manager.Agents
         public Agent()
         {
             _connectionSettingsManager = new ConnectionSettingsManager();
+            _authAPIManager = new AuthAPIManager();
             _jobsPolling = new JobsPolling();
-            _attendedExecutionManager = new AttendedExecutionManager(_jobsPolling.ExecutionManager);
+            _attendedExecutionManager = new AttendedExecutionManager(_jobsPolling.ExecutionManager, _authAPIManager);
             _fileLogger = new FileLogger();
 
             _connectionSettingsManager.ConnectionSettingsUpdatedEvent += OnConnectionSettingsUpdate;
@@ -45,21 +48,21 @@ namespace OpenBots.Service.Client.Manager.Agents
             try
             {
                 // Authenticate Agent
-                _authMethods = new AuthMethods(connectionSettings.ServerType,
+                _authAPIManager.AuthMethods.Initialize(connectionSettings.ServerType,
                     connectionSettings.OrganizationName, connectionSettings.ServerURL, 
-                    connectionSettings.AgentUsername, connectionSettings.AgentPassword,
-                    connectionSettings.UserName, connectionSettings.DNSHost);
+                    connectionSettings.AgentUsername, connectionSettings.AgentPassword, 
+                    connectionSettings.AgentId ?? "", connectionSettings.UserName, connectionSettings.DNSHost);
 
-                var userInfo = _authMethods.GetUserInfo();
+                _authAPIManager.UserInfo = _authAPIManager.AuthMethods.GetUserInfo();
 
                 // Call to Resolve (to get AgentId, AgentName, AgentGroup, HeartbeatInterval, JobLoggingInterval, SSLVerification)
-                var resolveApiResponse = AgentMethods.ResolveAgent(userInfo, new ResolveAgentViewModel(null, null, connectionSettings.MachineName, null));
+                var resolveApiResponse = AgentMethods.ResolveAgent(_authAPIManager.UserInfo, new ResolveAgentViewModel(null, null, connectionSettings.MachineName, null));
 
                 _connectionSettingsManager.ConnectionSettings.AgentId = resolveApiResponse.AgentId.ToString();
-                _connectionSettingsManager.ConnectionSettings.ServerURL = userInfo.ServerUrl;
+                _connectionSettingsManager.ConnectionSettings.ServerURL = _authAPIManager.UserInfo.ServerUrl;
 
                 // API Call to Connect
-                var connectAPIResponse = AgentMethods.ConnectAgent(userInfo, _connectionSettingsManager.ConnectionSettings.AgentId,
+                var connectAPIResponse = AgentMethods.ConnectAgent(_authAPIManager.UserInfo, _connectionSettingsManager.ConnectionSettings.AgentId,
                     new ConnectAgentViewModel{
                         MachineName = _connectionSettingsManager.ConnectionSettings.MachineName,
                         MacAddresses = _connectionSettingsManager.ConnectionSettings.MACAddress
@@ -69,7 +72,10 @@ namespace OpenBots.Service.Client.Manager.Agents
                 _connectionSettingsManager.ConnectionSettings.ServerConnectionEnabled = true;
                 _connectionSettingsManager.ConnectionSettings.AgentId = connectAPIResponse.AgentId.ToString();
                 _connectionSettingsManager.ConnectionSettings.AgentName = connectAPIResponse.AgentName.ToString();
-                
+
+                // Update Logging URL for Cloud
+                UpdateLoggingURL();
+
                 if(resolveApiResponse.HeartbeatInterval != null)
                     _connectionSettingsManager.ConnectionSettings.HeartbeatInterval = (int)resolveApiResponse.HeartbeatInterval;
                 
@@ -112,10 +118,8 @@ namespace OpenBots.Service.Client.Manager.Agents
 
             try
             {
-                var userInfo = _authMethods.GetUserInfo();
-
                 // API Call to Disconnect
-                AgentMethods.DisconnectAgent(userInfo, _connectionSettingsManager.ConnectionSettings.AgentId,
+                AgentMethods.DisconnectAgent(_authAPIManager.UserInfo, _connectionSettingsManager.ConnectionSettings.AgentId,
                     new ConnectAgentViewModel
                     {
                         MachineName = _connectionSettingsManager.ConnectionSettings.MachineName,
@@ -153,15 +157,8 @@ namespace OpenBots.Service.Client.Manager.Agents
             {
                 var serverSettings = _connectionSettingsManager.ConnectionSettings;
 
-                AuthMethods authMethods = new AuthMethods(serverSettings.ServerType,
-                    serverSettings.OrganizationName, serverSettings.ServerURL,
-                    serverSettings.AgentUsername, serverSettings.AgentPassword,
-                    serverSettings.UserName, serverSettings.DNSHost);
-
-                var userInfo = authMethods.GetUserInfo();
-
                 string filter = $"automationEngine eq '{automationEngine}'";
-                var apiResponse = AutomationMethods.GetAutomations(userInfo, filter);
+                var apiResponse = AutomationMethods.GetAutomations(_authAPIManager.UserInfo, filter);
                 var automationPackageNames = apiResponse.Items.Where(
                     a => !string.IsNullOrEmpty(a.OriginalPackageName) &&
                     a.OriginalPackageName.EndsWith(".nupkg")
@@ -201,12 +198,12 @@ namespace OpenBots.Service.Client.Manager.Agents
         {
             try
             {
-                AuthMethods authMethods = new AuthMethods(serverSettings.ServerType, 
+                _authAPIManager.AuthMethods.Initialize(serverSettings.ServerType, 
                     serverSettings.OrganizationName, serverSettings.ServerURL, 
-                    serverSettings.AgentUsername, serverSettings.AgentPassword,
-                    serverSettings.UserName, serverSettings.DNSHost);
+                    serverSettings.AgentUsername, serverSettings.AgentPassword, 
+                    serverSettings.AgentId ?? "", serverSettings.UserName, serverSettings.DNSHost);
 
-                var serverIP = authMethods.Ping();
+                var serverIP = _authAPIManager.AuthMethods.Ping();
 
                 return new ServerResponse(serverIP);
             }
@@ -231,7 +228,7 @@ namespace OpenBots.Service.Client.Manager.Agents
         public void StartServerCommunication()
         {
             // Start Jobs Polling
-            _jobsPolling.StartJobsPolling(_connectionSettingsManager, _fileLogger);
+            _jobsPolling.StartJobsPolling(_connectionSettingsManager, _authAPIManager, _fileLogger);
         }
         public void StopServerCommunication()
         {
@@ -248,6 +245,19 @@ namespace OpenBots.Service.Client.Manager.Agents
         private void OnServerConnectionLost(object sender, EventArgs e)
         {
             StopServerCommunication();
+        }
+        #endregion
+
+        #region Helper Methods
+        // Update Logging URL for Cloud Only
+        private void UpdateLoggingURL()
+        {
+            if (_connectionSettingsManager.ConnectionSettings.ServerType == OrchestratorType.Cloud.ToString() &&
+                _connectionSettingsManager.ConnectionSettings.LogStorage == OrchestratorType.Cloud.ToString())
+            {
+                Uri baseUri = new Uri(_connectionSettingsManager.ConnectionSettings.ServerURL);
+                _connectionSettingsManager.ConnectionSettings.LogUrl = new Uri(baseUri, _connectionSettingsManager.ConnectionSettings.LogUrl).ToString();
+            }
         }
         #endregion
 

@@ -53,10 +53,9 @@ namespace OpenBots.Agent.Client.Forms
                 MachineName = connectionSettings.MachineName,
                 AgentId = connectionSettings.AgentId,
                 MACAddress = connectionSettings.MACAddress,
-                IPAddress = connectionSettings.IPAddress,
                 SinkType = SinkType.File.ToString(),
                 TracingLevel = LogEventLevel.Information.ToString(),
-                LoggingValue1 = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(), "Logs", "Attended Execution"),
+                LogFilePath = Path.Combine(new EnvironmentSettings().GetEnvironmentVariablePath(), "Logs", "Attended Execution"),
             };
         }
 

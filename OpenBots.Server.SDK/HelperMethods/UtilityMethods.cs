@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
+using OpenBots.Server.SDK.Model;
 using System;
 using System.IO;
-using System.Net;
 using System.Security.Principal;
 
 namespace OpenBots.Server.SDK.HelperMethods
@@ -28,6 +28,12 @@ namespace OpenBots.Server.SDK.HelperMethods
             {
                 return string.Empty;
             }
+        }
+
+        public static void RefreshToken(UserInfo userInfo)
+        {
+            var authMethods = new AuthMethods();
+            authMethods.RefreshToken(userInfo);
         }
     }
 }

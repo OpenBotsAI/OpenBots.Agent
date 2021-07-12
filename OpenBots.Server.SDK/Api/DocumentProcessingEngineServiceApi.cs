@@ -4567,7 +4567,7 @@ namespace OpenBots.Server.SDK.Api
                                 //get page image
                                 string pageDetails = ApiServicesAppDocumentprocessingengineserviceGetpageimageGetWithHttpInfo(humanTaskId, doc.DocumentId.Value, page.File.Value).Data;
                                 var imageData = Convert.FromBase64String(pageDetails);
-                                Bitmap bmp;
+                                //Bitmap bmp;
 
                                 using (var ms = new System.IO.MemoryStream(imageData))
                                 {
